@@ -1,0 +1,162 @@
+* A Data Storage Manifesto *DRAFT*
+
+** Background, Purpose and Status of this Document
+
+Storing digital data efficiently and reliably has been a major topic since the
+beginning of computing.
+
+There are lots of techniques which work for special kinds of data. There are
+only a few kinds of techniques which work reasonably well for almost all kinds
+of data. Currently most data is stored as byte sequences in Posix (Unix-style)
+Filesystems. A lot of data is stored in Relational Database Management Systems -
+almost all of which are layered on top of Posix filesystems. An increasing
+amount of important data - namely information in textual form - is now being
+stored in Git (and similar version management systems) Repositories, encoded in
+a wide variety of syntactically complex document structures, e.g. markup
+languages such as dialects of XML, Markdown, OrgMode etc.
+
+Experts have been aware of serious problems with Posix Filesystems, RDBMSs, Git
+and markup languages since their inception. Ways to mitigate most of these
+problems have been known by experts for a long time yet those mitigating
+practices are not well followed. Superior alternatives to all of these systems
+have been proposed and sometimes developed by creative experts only to fail to
+gain traction.
+
+This Manifesto is about
+- What can be done in the short term
+- More that can be done in the medium term
+- Radical possibilities for further in the future
+
+This Manifesto is a *DRAFT*!
+- It is an opportunity to record some of my thoughts and opinions
+- it currently provides few justifications or citations to back up these opinions.
+
+If you, dear reader, would like this Manifesto to rise above a *DRAFT* and Idea
+Dump, I am open to being enrolled in that possibility and I will also ask for
+your assistance!
+
+** Some Principles of Data Management
+
+- Data should always be "checksummed"
+- Data should be immutable where possible.
+
+- Any changes in a data store should be tranactional.
+- Changes should be monotonic when data can't be immutable.
+
+The original Postgres DBMS was monotonic: Deleting a tuple simply caused
+it's close data to be filled in. Updating a field of a tuple caused its closed
+date to be filled in and a new tuple to be created with the fields that had not
+"changed" copied form the old tuple and the new data placed in the fields which
+had "changed".  By default, queries ignored the 
+
+- Data should be invisible to global processes where it is not monotonic.
+
+- Global non-monotonic transactions should create new versions
+
+
+
+** Some Principles of Structured Documents
+
+Structured documents are generally some kind of Tree or Forest of Trees,
+possibly with further structure such as
+- Namespaces defining Metadata Syntax
+- HyperLinks to related content
+
+XML would be much nicer if
+- All metadata were expressed in element syntax
+- Metadata syntax defined with Namespace URLs
+- Classes clearly associated with specific namespaces
+- Attributes associated with specific classes
+- Expressed in something nice like CSS Selector Notation
+
+Any such Tree/Forest structured documents should be stored in a database which
+- Understands the hierarchical structure
+- Does not introduce spurious line structure
+- Understands metadata symbol scope
+- Supports validity-preserving refactoring
+- Supports path queries
+- Integrates with Version Control
+  - Simple changes in Symbol Names or structure
+    - Should be captured as simple transformations
+    - i.e. should not be viewed as "line changes"
+
+While export/inport to/from text (and compressed) form should be supported,
+Documents should normally be used either (1) interactively from a browser-like
+interface or (2) programmatically using a mathematically clean command language.
+
+** Some Hardware Influences on Design
+
+The original Postgres DBMS used an Optical Disk Jukebox as a Tertiary Store. The
+Vacuum process would eventually move "closed" Tuples to the jukebox. Closed
+Tuples would be consulted if a query gave a time range which included the time
+after their Open Date and before their Closed Date. This was called "Time
+Travel".
+
+As Postgres was ported to production systems in the late 20th century which did
+not have automated Tertiary Store and had limited Secondary Storage and as the
+SQL Standard did not support "time travel" and the market did not expect such a
+feature, time travel was removed - although the underlying MVCC representation
+remains, along with the vacuum process which removes closed tuples
+asynchronously from transactions.
+
+Thus, because of lack of hardware resources and lack of vision, PostgreSQL lost
+the monotonicity which was a key feature of Postgres.
+
+*** Hard Drive RAID systems are now cheap!
+
+With modern hard drive RAID systems, we can afford Time Travel and monotonic
+storage!
+
+*** 3D X-Point and similar tech is imminent
+
+We should soon see the ready availability of persistent storage which is faster
+than flash, does not have the write wear of flash and is no more expensive than
+DRAM. Optane aka 3D X-Point is such a technology although it is not yet readily
+available. Fast cheap persistent memory allows for much cheaper transactions and
+indexes and persistent caches.
+
+*** We should not expect a rush to restore monotonicity!
+
+The lack of vision and market awareness of opportunities provided by the recent
+abundances of hardware resources will tend to resist any restoration of lost
+functionality, let alone new possibilities.
+
+** Some New Possibilities for Relational Database Management Systems
+
+*** Better Type Systems in RDBMS Schemas
+
+Modern Hindley-Millner type systems would greatly improve RDBMS Type Systems,
+especially adding Sum Types.
+
+Allowing all types to be first class would open up a world of possibilities,
+e.g. Elements of Tuples could be Relations or Databases!
+
+*** Versions and Monotonicity
+
+Any transaction which created globally visible monotonicity could create a new
+(structure sharing) Database, with a new version. Think of them like versions
+in Git. New connections would default to the most recent version of a database
+repository.
+
+Rows of monotonic tables would automatically get unique integer keys, without
+needing to store them. (They could then be given an appropriate type and
+methods.)
+
+*** Wicci-like Object References and Generic Operations
+
+Row references would have static and (when necessary, also) dynamic types.
+
+Generic operations would be associated with static object (tuple) types and
+dispatched to type and table-specific methods.
+
+*** Reproducible Caching Build-Systems for Constructed Blobs
+
+RDBMSs usually have a way to store binary blobs when no other structure for the
+data is available - and this needs to be at least as effective as the best
+filesystem.
+
+Most blobs have been constructed from a build process. Such a blob should be primarily stored as its ingredients, with proper structural relationships and relationships to the elements of the build process sufficient to allow a reproducible build.
+
+For efficiency, a binary blob which is expensive to build (like any value which
+is expensive to compute) should cached and the cache invalidated (or relegated
+to an earlier database version) when the structured data evolves.
