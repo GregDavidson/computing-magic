@@ -268,7 +268,7 @@ foreign websites, etc.
 
 Under Posix, any supposed Textfile can actually contain any Byte Sequence,
 possibly deeply into the file. Such characters may have an unknown effect on the
-interpretation of the file as input to a program. Any Unicode Textfile can can
+interpretation of the file as input to a program. Any Unicode Textfile can
 contain invalid Unicode encodings which, once again, can have an unpredictable
 effect on the interpretation of the file by a program.
 
