@@ -152,7 +152,7 @@ suitably configured and deployed - should be strongly preferred.
  /Configuration/, /Metadata Schemas/ and /Query Commands/ of Database Systems
  are commonly stored as Textfiles and managed using /Text Editors/!
 
-** Leveraging Files and especially Textfiles
+** A Deeper Understanding of Modern Data Files
 
 In order to understand how to do things better, it helps to understand current
 practices and a bit about how we got to them!
