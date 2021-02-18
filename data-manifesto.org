@@ -24,7 +24,7 @@ It would be great to begin with a succinct Case for Action!
 Many if not most of the /italicized/ terms in the document should become foreign
 hyperlinks. The acronyms should be glossed, e.g. with hovers, popups or links.
 
-*** Why Do We Need A Data Storage Manifesto
+*** Why We Need A Data Storage Manifesto
 
 How we store /Data/ and /Information/ underlies everything we do with
 /Computers/. (Since Information has to be /Encoded/ as Data, we'll use Data as
@@ -41,7 +41,7 @@ Summary
 - There are better strategies we can use now
 - We can improve our systems to do much better
 
-*** I'm Assuming That You Are
+*** We're Assuming That You Are
 
 The author(s) are assuming that you, dear reader, have some rôle in using
 computers creatively to solve problems which require some amount of well-managed
