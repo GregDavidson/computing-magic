@@ -572,3 +572,11 @@ gain traction.
 *** Datalog
 
 Somewhere mention Datalog and Datomic.
+
+
+*** The Wicci
+
+Link to appropriate parts of the Wicci Schemas for examples of how to extend
+PostgreSQL!
+
+And link to the Wicci Project overall as part of our motivation.
