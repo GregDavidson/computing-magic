@@ -301,11 +301,12 @@ structure.  There are thousands of formats, such as
     powerful software tools (parsers, etc.) to work with.
 - And so much more!  Only C-3PO knows them all!
 #+begin_quote
-I am fluent in over six million forms of communication.
- - C-3PO
+I am fluent in over six million forms of communication. - C-3PO
 #+end_quote
+#+begin_comment
 --> Some examples would be nice but would also add a lot of bulk.
 --> Perhaps a secondary file with examples would be helpful! 
+#+end_comment
 
 *** Source Files Are Moving To Git!
 
