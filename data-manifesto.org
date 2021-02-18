@@ -86,11 +86,12 @@ suitably configured and deployed - should be strongly preferred.
 
  Most on-line data is stored in /Posix/ (/Unix/-style) or similar /Filesystems/.
  Within Filesystems, data is stored in /Files/ which consist of /Byte
- Sequences/. /Textfiles/ consist of Byte Sequences encoding text which is
- readable by both humans and computer programs. All other files are called
- /Binary files/ which consist of sequences of bytes encoded in a myriad of
- formats readable only by carefully written computer software. These Files are
- indexed by /Directories/, also known as /Folders/.
+ Sequences/. /Textfiles/ consist of Byte Sequences representing sequences of
+ characters of text which is readable by both humans and computer programs. All
+ other files are called /Binary files/ which consist of arbitrary sequences of
+ bytes interpreted in indiosyncratic ways by carefully written computer
+ software. Files are grouped and indexed by /Directories/, also known as
+ /Folders/.
 
  Filesystems also associate /Metadata/ with Files and Directories, such as
  ownership, timestamps and access permissions. For the rest of this document we
