@@ -1,24 +1,67 @@
 * A Data Storage Manifesto *DRAFT*
 
-** Status, Purpose and Background
 
-*** Status of this Documents
+** Status, Purpose, Audience and Background
 
-This document is a /DRAFT/.  Please help improve it!
+*** Status of this Document
 
-*** Why a Data Storage Manifesto
+This document is a /DRAFT/. Please help improve it!
+
+This document is written in [[https://orgmode.org][OrgMode]]. OrgMode is a Text Format Markup Language
+fully supported by [[https://www.gnu.org/software/emacs][Emacs]], partially supported by [[https://github.com][Github]] and [[https://gitlab.com][Gitlab]] and some
+other editors, systems and apps. The original author uses and recommends the
+[[https://www.spacemacs.org][Spacemacs]] version of Emacs. OrgMode is extremely easy to write and edit and it
+can be converted to many other formats with [[https://pandoc.org/][Pandoc]] or with [[https://orgmode.org/manual/Exporting.html][Emacs OrgMode Export]].
+
+Some parts of this document are still related to an earlier version. Some parts
+of this document are too detailed and either need to be condensed or provided
+with a tl;dr summary. Other parts are too brief or are unclear and require
+expansion. There is missing material needed to bridge some of the parts. There
+is material which is entirely missing! Your assistance can make a difference!
+
+It would be great to begin with a succinct Case for Action!
+
+Many if not most of the /italicized/ terms in the document should become foreign
+hyperlinks. The acronyms should be glossed, e.g. with hovers, popups or links.
+
+*** Why Do We Need A Data Storage Manifesto
 
 How we store /Data/ and /Information/ underlies everything we do with
-/Computers/. Since Information has to be /Encoded/ as Data, we'll use Data as
-the inclusive term. Awkwardness in Data Storage undermines our creative
+/Computers/. (Since Information has to be /Encoded/ as Data, we'll use Data as
+the inclusive term.) Awkwardness in Data Storage undermines our creative
 expression and the success of our projects. There are opportunities to greatly
-improve our reach and our effectivness using existing techniques and available
+improve our reach and our effectiveness using existing techniques and available
 technologies. Modest improvements to existing technologies offer even greater
 rewards. Improvements which would once have exacted too much /Administrative/
 effort to /Install/ and /Maintain/ can now be copied and deployed as /VMs/. It's
 time to move the state of the art forward and reap the rewards!
 
-*** The State of Data Management in the World
+Summary
+- Our current systems often work poorly
+- There are better strategies we can use now
+- We can improve our systems to do much better
+
+*** I'm Assuming That You Are
+
+The author(s) are assuming that you, dear reader, have some rôle in using
+computers creatively to solve problems which require some amount of well-managed
+data.
+
+We do /not/ assume you have an extensive technical computing background. If you
+do, you can skim or skip much of this document - but try not to miss the good
+parts! If you don't have a strong technical computing background you may want to
+skim over some of the material on the first read-through and then come back and
+gradually read everything - perhaps more than once! Eventually you'll want to
+follow some of the links.
+
+We hope that you find the document Interesting and at least Potentially Useful.
+We hope that some of you will join us in developing, documenting, improving
+and/or packaging some of the techniques we mention here. We would love your
+assistance in making this document better for people like you! To that end,
+please feel free to post issues and especially to fork and improve this document
+and send us pull requests!
+
+** The State of Data Management in the World Today
 
 Storing /Digital/ data and information efficiently and reliably has been a major
 challenge since the beginning of computing. Creating good solutions in this area
@@ -26,177 +69,480 @@ has given meaningful careers to a small number of scientists and engineers. As
 in many other areas of human endeavor, good solutions are regularly ignored or
 incorrectly used. Dealing with problems caused by storage methods has created a
 huge amount of mind-numbing maintenance work for computer /Operators/ and
-/Administrators/. Poor storage methods have created obstacles and frustration
-for /Developers/ attempting to solve important problems for humanity. Important
-information is regularly corrupted, lost or inappropriately leaked.
+/Administrators/. Data Storage issues have created obstacles and frustration for
+both amateur and professional /Developers/ attempting to solve important
+problems for humanity. Even when projects succeed, information is regularly
+corrupted, lost or inappropriately leaked.
 
 There are lots of storage techniques which work for special kinds of data. There
 are only a few kinds of techniques which work reasonably well for almost all
-kinds of data such that it is on-line, i.e. immediately available to currently
+kinds of on-line data, i.e. data which is immediately available to currently
 running programs. The two principal methods are Filesystems and Database
 Management Systems. Although most on-line data is currently stored in
-Filesystems, this Manifesto will be claiming that /Relational Database
-Management Systems/ - suitably configured and deployed - should be strongly
-preferred.
+Filesystems, this Manifesto claims that [[https://en.wikipedia.org/wiki/Relational_database#RDBMS][Relational Database Management Systems]] -
+suitably configured and deployed - should be strongly preferred.
 
-**** Filesystems
+*** Most On-Line Data Lives In Filesystems
 
-Most on-line data is stored in /Posix/ (/Unix/-style) or similar
-/Filesystems/. Within Filesystems, data is stored in /Files/ which consist of
-/Byte Sequences/. /Textfiles/ consist of Byte Sequences encoding text which is
-readable by both humans and computer programs. All other files are called
-/Binary files/ which consist of data encoded in a myriad of formats readable
-only by carefully written computer software. These Files are indexed by
-/Directories/, also known as /Folders/.
+ Most on-line data is stored in /Posix/ (/Unix/-style) or similar /Filesystems/.
+ Within Filesystems, data is stored in /Files/ which consist of /Byte
+ Sequences/. /Textfiles/ consist of Byte Sequences encoding text which is
+ readable by both humans and computer programs. All other files are called
+ /Binary files/ which consist of sequences of bytes encoded in a myriad of
+ formats readable only by carefully written computer software. These Files are
+ indexed by /Directories/, also known as /Folders/.
 
-Filesystems also associate /Metadata/ with Files and Directories, such as
-ownership, timestamps and access permissions. For our purposes here, we will
-concentrate on the basic fact that Filesystems store Data as Byte Sequences in
-Files. Files are popular because they impose the least constraint on the
-structure of data. Applications with permission to create and modify files can
-write any sequence they wish and modify any part of a file at will. It is up to
-the applications which access those files to interpret the meaning, if any, of
-the contents. Once a Posix Filesystem allows a program write access to a file or
-directory, no attempt is made by the system to maintain any integrity in the
-contents the of files or to protect data from being lost or misinterpreted.
+ Filesystems also associate /Metadata/ with Files and Directories, such as
+ ownership, timestamps and access permissions. For the rest of this document we
+ will be ignoring Directories and Filesystem Metadata in order to concentrate on
+ the manner in which Data is stored as Byte Sequences in Files.
 
-/Operating Systems/ generally include general, stable and efficient Filesystems
-as a standard feature. Operating systems are expected to ensure the integrity of
-the Filesystem, i.e. preserving the structure of the byte structure of files,
-the structure of Directories and the Metadata is reliable - even while providing
-no protection against (or awareness of) corruption caused by erroneous
-operations of authorized applications.
+ Files are popular because they impose the least constraint on the structure of
+ data. Applications with permission to create and modify files can write any
+ sequence they wish and modify any part of a file at will. It is up to the
+ applications which access those files to interpret the meaning, if any, of the
+ contents. Once a Posix Filesystem allows a program write access to a file or
+ directory, no attempt is made by the system to maintain any integrity in the
+ contents the of files or to protect data from being lost or misinterpreted.
 
-By the way, computer storage devices, /Physical Hardware/ such as /Hard Drives/,
-/SSDs/, /DVDs/, /Thumbdrives/, etc. do not directly provide Fileystems, Files or
-Folders. It is the Filesystem software of the Operating System which interprets
-the fixed-size blocks of bytes on our physical media as an encoding of Files,
-Folders and Metadata.
+ /Operating Systems/ generally include general, stable and efficient Filesystems
+ as a standard feature. Operating systems are expected to ensure the integrity
+ of the Filesystem, i.e. preserving the structure of the byte structure of
+ files, the structure of Directories and the Metadata is reliable - even while
+ providing no protection against (or awareness of) corruption caused by
+ erroneous operations of authorized applications.
 
-**** Database Management Systems
+ By the way, computer storage devices, /Physical Hardware/ such as /Hard
+ Drives/, /SSDs/, /DVDs/, /Thumbdrives/, etc. do not directly provide
+ Filesystems, Files or Folders. Filesystems are a /System Abstraction/ provided
+ by the Filesystem software of the Operating System which insulates users and
+ programs from the diverse low-level storage structures of physical media.
 
-Some highly important data is stored in /Relational Database Management Systems/
-which maintain its integrity and accessibility even when it is used by multiple
-applications at the same time, even when some of those applications might be
-altering the information. Metadata called a /Schema/ specifies the structure of
-the data along with integrity constraints. It is not possible for applications
-modifying the data to violate the Schema. Some of the most advanced RDBMSs, such
-as PostgreSQL, even allow the Schema to be altered even while the data is being
-accessed and modified, without danger of corruption or misinterpretation!
+*** Important On-Line Data Often Lives In Databases
 
-Operating Systems do /not/ generally provide general, stable and efficient
-Database Management Systems. Properly adding a good DBMS requires significant
-computer administrative expertise. Maintaining a good DBMS over time, as updates
-are applied to all parts of the system (including hardware updates, software
-security and version updates, etc.) has generally been considered the job of a
-highly skilled professional system administrator. It is no surprise that amateur
-users of personal computers and amateurs building websites on stock servers
-generally do so without the advantages of a good DBMS.
+ Some highly important data is stored in /Relational Database Management
+ Systems/ which maintain integrity and accessibility even when some data is used
+ by multiple applications at the same time, even when some of those applications
+ might be altering the information at the same time it's being accessed!
+ Metadata called a /Schema/ specifies the structure of the data along with
+ integrity constraints. It is not possible for applications modifying the data
+ to violate the Schema. Some of the most advanced RDBMSs, such as PostgreSQL,
+ even allow the Schema to be altered at the same time as the data is being
+ accessed and modified, without danger of corruption or misinterpretation!
 
-Recently pre-packaged services, such as DBMSs, have become available as /Virtual
-Machines/ which can be easily installed and updated by unskilled users. VMs can
-allow developers to leverage advanced DBMSs without the support of professional
-administrators! It is still necessary for someone to package advanced DBMSs into
-VMs in an easily exploited configuration and to educate Developers in how to use
-them effectively.
+ Operating Systems /do not/ generally provide general, stable and efficient
+ Database Management Systems. Properly adding a good DBMS requires significant
+ computer administrative expertise. Maintaining a good DBMS over time, as
+ updates are applied to all parts of the system (including hardware updates,
+ software security and version updates, etc.) has generally been considered the
+ job of a highly skilled professional systems administrator. It is no surprise
+ that amateur users of personal computers and amateurs building websites on
+ stock servers generally do so without the advantages of a good DBMS.
 
-And for the foreseable future, it will still be necessary for developers to
-understand and work with files, especially Textfiles. Indeed, the
-/Configuration/, /Metadata Schemas/ and /Query Commands/ of Database Systems are
-commonly stored as Textfiles and managed using /Text Editors/!
+ Recently pre-packaged services, such as DBMSs, have become available as
+ /Virtual Machines/ which can be easily installed and updated by unskilled
+ users. VMs can allow developers to leverage advanced DBMSs without the support
+ of professional administrators! It is still necessary for someone to package
+ advanced DBMSs into VMs in an easily exploited configuration and to educate
+ Developers in how to use them effectively.
 
-*** Leveraging Files and especially Textfiles
+ And for the foreseeable future, it will still be necessary for developers to
+ understand and work with files, especially Textfiles. Indeed, the
+ /Configuration/, /Metadata Schemas/ and /Query Commands/ of Database Systems
+ are commonly stored as Textfiles and managed using /Text Editors/!
 
-**** How We Got Here - Unix and its Descendants Rule the World
+** Leveraging Files and especially Textfiles
 
-Many Operating Systems developed before 1970 attempted to regulate and protect
-the integrity of the contents of files. These mechanisms added so much
-complexity and overhead that they were largely abandoned when Unix promoted the
-idea that an Operating System should simply reliably store Byte Sequences in
-Files and allow Application and Utility Programs to interpret those Bytes
-Sequences any way desired by their programmers. As providing specialized
-programs for every kind of data would be too much work, Unix suggested storing
+In order to understand how to do things better, it helps to understand current
+practices and a bit about how we got to them!
+
+If this seems overly detailed, take heart: We left out almost everything!
+
+*** Unix and its Descendants Took Over The World
+
+Operating Systems used to be more ambitious and more complex than the ones
+popular today. Many Operating Systems developed before 1970 attempted to
+regulate and protect the integrity of the contents of files. These mechanisms
+were too complex for the early Mini-Computer and Micro-Computer systems of the
+1970s and 1980s. The developers of Unix suggested that an Operating System
+could give up responsibility for the contents of files and simply store the
+contents as a sequence of bytes. It would be the responsibility of Application
+and Utility Programs to interpret those Bytes Sequences through explicit
+programming. Because providing specialized programs for every kind of data
+would require too much programming, the inventors of Unix suggested storing
 most data in the form of Textfiles, so that humans could immediately understand
-the contents. Unix also provided a suite of programs, ironically called the
-/Unix Programmers' Workbench/, which could flexibly manipulate structured
-information stored in Textfiles. The most powerful tools in the /Unix
-Programers' Workbench? were Text Editors which allowed the contents of Textfiles
-to be modified either /Interactively/ by a human /User/ or automatically by a
-/Script/ - a sequence of commands which could be stored in yet another Textfile!
-In the Unix Environment, writing powerful Scripts for tools in the Programmers'
-Workbench replaced most traditional computer programming tasks.
+the contents. To go with this approach Unix provided a suite of programs as
+part of the /Unix Programmers' Workbench/, which could flexibly manipulate
+structured information stored in Textfiles.
 
-The Unix philosophy of Files was adopted by all Microcomputer Operating Systems.
-Microsoft adopted the Unix File and Directory system in /MS-DOS 4.2/ and
-continued it with every version of /Microsoft Windows/. The /University of
-California at Berkeley/ created the /Berkeley Software Distribution/ as an
-advanced version of Unix. /BSD/ became the testbed for the networking software
-which evolved into /The Internet/. BSD, often eronenously called "Berkeley
-Unix", became the basis for all of Apple's Operating Systems after Steve Jobs
-resumed the helm. The /Linux Kernel/ was created to provide the services of the
-pre-existing Unix and BSD Kernels as FLOSS - Free/Libre Open Source Software,
-unincumbered by any Proprietary "Intellectual Property". Linux, and the GNU
-System implemented on top of it, are protected by the Gnu Public License which
-makes sure that it continues to be free to use and modify by developers. The
-Linux Kernel is the basis of Google's Android OS and of the many versions of
-GNU/Linux. GNU/Linux (often confusingly just called Linux) is the basis for a
-vast number of specialized /Linux Distibutions/ such as Red Hat, Ubuntu, Mint,
-etc. These highly customizable GNU/Linux Distributions run most of the World's
-Supercomputers, Enterprise Servers, provide most of the infrastucture of the
-Internet and hide within an increasing number of our ubiquitous
-computer-controlled appliances.
+The most powerful tools in the Workbench were Text Editors which allowed the
+contents of Textfiles to be modified either /Interactively/ by a human /User/
+or automatically by a /Script/ - a sequence of commands which could be stored
+in yet another Textfile! This helped create the Unix Power User Philosophy:
+Power Users could issue commands interactively via a /Shell/ and later combine
+those commands with control logic in a /Script/. Scripts were useful when you
+wanted to do roughly the same sequence of commands again and again. A script
+both automates an otherwise tedious task and also documents the procedure used
+since it consists of a Textfile detailing that procedure using familiar
+commands. (We're stressing these points because they will be a key part of the
+Manifesto later!) Even Unix Programmers used the system this way, rarely
+writing programs in traditional programming languages which greatly increased
+their productivity.
 
-**** Files in the Unix World
+Because it allowed Operating Systems to be simpler and smaller, the basic
+elements of the Unix Filesystem Design was adopted by all major (surviving)
+Modern Operating Systems. Microsoft copied the Unix File and Directory system
+in /MS-DOS 4.2/ and continued it with every version of /Microsoft Windows/. The
+/University of California at Berkeley/ created the [[https://en.wikipedia.org/wiki/Berkeley_Software_Distribution][Berkeley Software
+Distribution]] as an advanced version of Unix. /BSD/ became the testbed for the
+networking software which evolved into /The Internet/. BSD, often erroneously
+called "Berkeley Unix", became the basis for all of Apple's Operating Systems
+after Steve Jobs resumed the helm. The [[https://en.wikipedia.org/wiki/Linux_kernel][Linux Kernel]] was created to provide the
+services of the pre-existing Unix and BSD Kernels as FLOSS - Free/Libre Open
+Source Software, unencumbered by any Proprietary "Intellectual Property".
+Linux, and the [[https://www.gnu.org][GNU System]] implemented on top of it, are protected by the [[https://www.gnu.org/licenses/licenses.html#GPL][Gnu
+Public License]] which makes sure that it continues to be free to use and modify
+by developers. The Linux Kernel is the basis of [[https://en.wikipedia.org/wiki/Android_(operating_system)][Google's Android OS]] and of the
+many versions of GNU/Linux. [[https://www.gnu.org/gnu/gnu-linux-faq.html#why][GNU/Linux]] (often confusingly just called Linux) is
+the basis for a vast number of specialized [[https://distrowatch.com/][Linux Distributions]] such as Red Hat,
+Ubuntu, Mint, etc. These highly customizable GNU/Linux Distributions run most
+of the World's [[https://itsfoss.com/linux-runs-top-supercomputers][Supercomputers]], Enterprise Servers, provide most of the
+infrastructure of the Internet and hide within an increasing number of our
+ubiquitous computer-controlled appliances.
+
+All modern computers are descendants of those early microcomputer systems - the
+first systems with their entire CPU on one silicon chip. And although today's
+computers are vastly more powerful than the most powerful computers of the
+past, our modern operating systems have continued to be based on strategies to
+avoid a level of overhead that we would now consider trivial to support!
+
+*** Raw Byte-Sequence Files in the Modern World
 
 Since Unix-like Operating Systems have no way to manage the contents of files,
-any datafile with unknown provenence must be assumed to be corrupted. Attempts
-to use a file while it is being modified by another program can easily happen by
-accident and lead to misinterpretation of the file's contents and often to the
-corruption of the file's contents.
+any datafile with unknown provenance must be considered to possibly be
+corrupted. Attempts to use a file while it is being modified by another program
+can easily happen by accident and lead to misinterpretation of the file's
+contents and is a common cause of file corruption.
 
-**** Binary Files in the Unix World
+*** Raw Binary Files in the Modern World
 
-The format of binary files must be managed by specialized computer software,
-often packaged in libraries, which will incorrectly handle files which have
-become corrupted. A frequent cause of errors occurs when a data format is
-updated to add a new feature or fix a problem, leading to a new /version/ of a
-given /data format/. A file which used to be correct will now cause a problem
-when it is /opened/ by a newer program. Similarly, a program which used to work
-perfectly will now get in trouble when it opens a newer file. Failure to manage
-these problems regularly leads to calamities: systems crashing, security
-failures, data loss, incorrect reports, etc.
+The format of binary data files must be managed by specialized computer
+software, either written into a simple program or packaged as a library if that
+format must be managed by multiple programs. These programs and libraries have
+limited ability to deal with (or even notice) when the format of a binary file
+deviates from what a programmer expected. A frequent cause of errors occurs
+when a data format is updated, e.g. to support a new feature, leading to a new
+/version/ of a /data format/. A file which used to be correct will now cause a
+problem when it is /opened/ by a newer program. Similarly, a program which used
+to work perfectly will now get in trouble when it opens a file using a newer
+version of the formatting scheme. Failure to manage these problems regularly
+leads to calamities: systems crashing, security failures, data loss, incorrect
+reports, etc. Such problems have led to injuries, deaths and the failures of
+projects, careers and companies.
 
-**** Textfiles in the Unix World
+*** Raw Textfiles in the Modern World
 
-Like Binary Files, Textfiles come in many specialized and often complex formats.
-Unlike Binary Files, Textfiles can be inspected by Humans without specialized
-software. A Human familiar with a particular Textfile Format can often spot
-formatting problems by eye and correct the problems with a text editor - either
-interactively or with a script.
+Like Binary Files, Textfiles come in many specialized and often complex formats,
+indicated by special characters indicating syntax. Despite the idea of Textfiles
+being transparent, a human unfamiliar with the syntax may not understand or may
+misunderstand the content. Terrible problems are caused when Textfiles are
+editing by Users who do not understand the syntax!
+
+A new issue comes from the recent demand for Textfiles to be able to represent
+more than just [[https://en.wikipedia.org/wiki/ASCII][English]] or [[https://en.wikipedia.org/wiki/ISO/IEC_8859-1][Western European]] characters. The world has now mostly
+adopted a system called [[https://en.wikipedia.org/wiki/Unicode][Unicode]], but Unicode keeps evolving - and there is more
+than one way of representing Unicode - and alas, the standard does specify any
+metadata to indicate which Unicode version or encoding is intended! One system
+may write a file using a particular Unicode version and encoding which another
+system tries to interpret using a different Unicode version or encoding. The
+world is gradually converging to a file encoding called [[https://en.wikipedia.org/wiki/UTF-8][utf8]]. Additional
+confusion is caused because there's no standard way of providing an intelligible
+transliteration of a character set for a human unfamiliar with it. Con artists
+have fooled users using a series of characters that look familiar but are
+actually foreign lookalikes - this has been used to trick users into trusting
+foreign websites, etc.
+
+Under Posix, any supposed Textfile can actually contain any Byte Sequence,
+possibly deeply into the file. Such characters may have an unknown effect on the
+interpretation of the file as input to a program. Any Unicode Textfile can can
+contain invalid Unicode encodings which, once again, can have an unpredictable
+effect on the interpretation of the file by a program.
+
+For historical reasons (that should long ago have become obsolete!) many
+software tools require Textfiles to consist of fairly short lines of less
+than 81 characters. Textfiles often look terrible when displayed in windows
+that are too narrow or two wide! Line breaks are syntactically significant
+in many Text Formats so tools for reflowing cannot be used. 'Beautifying"
+programs are available for many important Text formats, to rearrange the
+content to be more consistent and more readable.
+
+All these problems aside, unlike Binary Files, Textfiles can be inspected by
+Humans without specialized software. A human familiar with a particular Textfile
+Format can often spot formatting problems by eye and correct the problems with a
+general-purpose text editor - either interactively or with a script.
 
 What kinds of Textfile formats are there, what do they look like, what do they do?
 
 Much highly important data is stored as text files with complex syntactic
-structure such as
-- Diverse XML-related "data languages", including
-  - The various dialects of HTML
-  - "Office" files, e.g. Word Processor and Spreadsheet Documents
-    - These are often compressed archives of XML-structured textfiles!
-- Casual markup languages such as Markdown and OrgMode
-  - Markdown is simple, popular and poorly standardized
-  - OrgMode is more powerful but very geeky!
-- Programming language source code
+structure.  There are thousands of formats, such as
+- [[https://en.wikipedia.org/wiki/List_of_markup_languages][Markup Languages]]
+ - [[https://en.wikipedia.org/wiki/XML][XML]] - a general-purpose or "Meta" Document Language, including
+   - [[https://en.wikipedia.org/wiki/OpenDocument][OpenDocument]] - for "Office" Documents
+   - [[https://en.wikipedia.org/wiki/HTML][HTML]] Web Document Language - for Web Page Content
+   - [[https://orgmode.org][OrgMode]] - Organize your whole line in text!
+- [[https://en.wikipedia.org/wiki/Configuration_file][Traditional Configuration Files]]
+- [[https://en.wikipedia.org/wiki/CSS][CSS]] - for styling Web Pages
+- [[https://en.wikipedia.org/wiki/List_of_programming_languages][Programming languages]] - source is almost always structured text
   - These generally require highly trained users, e.g. programmers and very
     powerful software tools (parsers, etc.) to work with.
-- And much more!
+- And so much more!  Only C-3PO knows them all!
+#+begin_quote
+I am fluent in over six million forms of communication.
+ - C-3PO
+#+end_quote
+--> Some examples would be nice but would also add a lot of bulk.
+--> Perhaps a secondary file with examples would be helpful! 
 
-Even more data is stored as highly structured binary files. Common formats of
-binary files are much more diverse and less likely to be standardized than the
-formats for text files!
+*** Source Files Are Moving To Git!
+
+In computer parlance, Source refers to content generated by humans. Source
+Files are files containing Source, usually in some sort of Text format. In
+the course of a creative project, Source Files undergo changes, often made
+by multiple collaborators. Keeping track of all of the changes is the job
+of Revision Management Systems.
+
+Underlyingly, current Revision Management Systems work by identifying
+sequences of lines which have changed between versions of Textfiles and
+tagging them with metadata such as who made the change and when along with
+a new version number.
+
+The [[https://git-scm.com][Git]] Revision Control System is currently the most popular software for
+managing the Source Files of a creative Project, whether it be a project to
+write a book, create a website, write a computer program or a wide range of
+other possibilities. A collection of Files (and possibly Folders, so a
+/Filesystem Tree/) managed by Git is called a Repository.
+
+A Git Repository can be stored and managed on any computer, but for
+convenience of collaboration it is convenient to have a copy of the
+Repository on a Server which may (or may not) be public and may (or may
+not) provide the Repository as a Website. Many Project Repositories are
+hosted on private servers and many are hosted on Commercial Servers such as
+- [[https://github.com][GitHub]]
+- [[https://about.gitlab.com][GitLab]]
+Both GitHub and GitLab provide free hosting for small projects to individuals
+and to organizations for FLOSS projects, a policy which greatly increases their
+popularity and therefore their market recognition!
+
+Current Revision Control Systems have some serious limitations, such as 
+- Changes need to make sense as changes to a subset of lines
+  - Changes in indentation and line breaks appear as complete rewrites
+- Git has trouble with
+  - Files with very long lines
+  - Very large files
+  - Binary Files
+
+However, Git (and most other Revision Control Systems) add some very important
+features which Posix Filesystems do not provide:
+- Git-managed files do not actually change!
+  - "Changes" always create new versions
+  - Older versions can always be recovered
+  - Data can't be lost without removing the whole repository!
+- Repositories can be copied and "modified" independently
+  - After diverging, separate repositories can be recombined
+  - Older incompatible changes simply show up as additional versions
+- Git creates a "hash" or "checksum" of all files
+  - a Checksum is a large number derived from the content of a file
+  - a Checksum can ensure that the content of a file has not changed
+  - Checksums are an excellent support for data integrity
+- Replications of Git Repositories provide excellent backups!
+
+** How We Can Improve Data Storage
+
+
+We claim that almost all of the practices involving Files, Folders, Filesystem
+Metadata and Revision Control Systems will work better if we move all of the
+data into a Modern Relational Datbase Management System.
+
+We will give examples of how all of the desirable properties of Filesystems
+listed above can be retained and how all of the undesirable properties can be
+overcome.
+
+We will list additional advantages and also some drawbacks or costs.
+
+
+We will propose some extensions and changes to existing RDBMSs which will add
+still more advantages and reduce or remove some of the drawbacks.
+
+We will suggest some tactical and stragic plans for obtaining these advantages.
+
+*** Some Desirable General Principles of Data Management
+
+We list some general principles of Data Management which are not provided by
+Posix Filesytems and are also not provided by regular RDBMSs "out of the box".
+
+Desirable General Princples of Data Management
+- Data should always be "checksummed"
+- Data should be immutable where possible.
+- Any changes in a data store should be tranactional.
+- Changes should be monotonic when data can't be immutable.
+- Data should be invisible to global processes where it is not monotonic.
+- Global non-monotonic transactions should create new versions of the entire store
+- The store should use "structure sharing" between revisions
+
+Git provides a number of these features, but not for all kinds of files and it
+can be subverted - it is just a convention layered on a conventional filesystem,
+it has no means of enforcing any of these principles.
+
+Some of the advanced Filesystems such as ZFS and Btrfs support some of these
+features, but not all and not in a standard way.
+
+Modern RDBMSs are transactional.
+
+The original Postgres DBMS was monotonic: Deleting a tuple simply caused it's
+close data to be filled in. Updating a field of a tuple caused its closed date
+to be filled in and a new tuple to be created with the fields that had not
+"changed" copied form the old tuple and the new data placed in the fields which
+had "changed". By default, queries ignored tupples which were closed but if an
+open or closed time range was added to a query it would consider any of the
+closed tuples which were open during that time range. This feature was called
+"Time Travel" and it was removed when Postgres dropped the Query Language from
+the original Berkeley Project in favor of standard SQL and renamed Postgres to
+PostgreSQL. 
+
+All of these principles can be provided and enforced by the current PostgreSQL
+RDBMS through its extension mechanism, while still retaining compatibility with
+standards. For example, there's a contributed PostgreSQL extension which can
+restore Time Travel for any set of tables, thus restoring monotonicity. Some
+other RDBMSs have extension mechanisms which may be able to do the same.
+
+*** Some Principles of Structured Documents
+
+Structured documents are generally some kind of Tree or Forest of Trees,
+possibly with further structure such as
+- Namespaces defining Metadata Syntax
+- HyperLinks to related content
+
+XML would be much nicer if
+- All metadata were expressed in element syntax
+- Metadata syntax defined with Namespace URLs
+- Classes clearly associated with specific namespaces
+- Attributes associated with specific classes
+- Expressed in something nice like CSS Selector Notation
+
+Any such Tree/Forest structured documents should be stored in a database which
+- Understands the hierarchical structure
+- Does not introduce spurious line structure
+- Understands metadata symbol scope
+- Supports validity-preserving refactoring
+- Supports path queries
+- Integrates with Version Control
+Simple changes in Symbol Names or structure
+- Should be captured as simple transformations
+- i.e. should not be viewed as "line changes"
+
+While export/inport to/from text (and compressed) form should be supported,
+Documents should normally be used either (1) interactively from a browser-like
+interface or (2) programmatically using a mathematically clean command language.
+
+*** Legacy Hardware Influences and New Possibilities
+
+The original Postgres DBMS used an Optical Disk Jukebox as a Tertiary Store. The
+Vacuum process would eventually move "closed" Tuples to the jukebox. Closed
+Tuples would be consulted if a query gave a time range which included the time
+after their Open Date and before their Closed Date. This was called "Time
+Travel".
+
+As Postgres was ported to production systems in the late 20th century which did
+not have automated Tertiary Store and had limited Secondary Storage and as the
+SQL Standard did not support "time travel" and the market did not expect such a
+feature, time travel was removed - although the underlying MVCC representation
+remains, along with the vacuum process which removes closed tuples
+asynchronously from transactions.
+
+Thus, because of lack of hardware resources and lack of vision, PostgreSQL lost
+the monotonicity which was a key feature of Postgres.
+
+**** Hard Drive RAID systems are now cheap!
+
+With modern hard drive RAID systems, we can afford Time Travel and monotonic
+storage!
+
+**** 3D X-Point and similar tech is imminent
+
+We should soon see the ready availability of persistent storage which is faster
+than flash, does not have the write wear of flash and is no more expensive than
+DRAM. Optane aka 3D X-Point is such a technology although it is not yet readily
+available. Fast cheap persistent memory allows for much cheaper transactions and
+indexes and persistent caches.
+
+**** We should not expect a rush to restore monotonicity!
+
+The lack of vision and market awareness of opportunities provided by the recent
+abundances of hardware resources will tend to resist any restoration of lost
+functionality, let alone new possibilities.
+
+*** Some New Possibilities for Relational Database Management Systems
+
+**** Better Type Systems in RDBMS Schemas
+
+Modern Hindley-Millner type systems would greatly improve RDBMS Type Systems,
+especially adding Sum Types.
+
+Allowing all types to be first class would open up a world of possibilities,
+e.g. Elements of Tuples could be Relations or Databases!
+
+**** Versions and Monotonicity
+
+Any transaction which created globally visible monotonicity could create a new
+(structure sharing) Database, with a new version. Think of them like versions in
+Git. New connections would default to the most recent version of a database
+repository.
+
+Rows of monotonic tables would automatically get unique integer keys, without
+needing to store them. (They could then be given an appropriate type and
+methods.)
+
+**** Wicci-like Object References and Generic Operations
+
+Row references would have static and (when necessary, also) dynamic types.
+
+Generic operations would be associated with static object (tuple) types and
+dispatched to type and table-specific methods.
+
+**** Reproducible Caching Build-Systems for Constructed Blobs
+
+RDBMSs usually have a way to store binary blobs when no other structure for the
+data is available - and this needs to be at least as effective as the best
+filesystem.
+
+Most blobs have been constructed from a build process. Such a blob should be
+primarily stored as its ingredients, with proper structural relationships and
+relationships to the elements of the build process sufficient to allow a
+reproducible build.
+
+For efficiency, a binary blob which is expensive to build (like any value which
+is expensive to compute) should cached and the cache invalidated (or relegated
+to an earlier database version) when the structured data evolves.
+
+
+** Scraps to work into the document or delete
+
+*** Relational vs. Hierarchical vs. Network Database Management Systems
+
+Somewhere put in the weird shunning of simple hierarchical strategies by RDBMSs,
+e.g. the lack of hierarchical namespaces.
+
+The Wicci would be a lot simpler if RDBMSs had better support for hierarchical
+data - especially a superset of XML with real namespaces!
+
+Somewhere put in the trick of using foo.bar or foo->bar in queries where foo
+REFERENCES another TABLE with field bar. Allowing this and not needing to
+manually put in a reference to bar's TABLE would simplify a lot of queries!
  
 
-**** Revision and Version Management - and Git
+*** Git critical and aspirational
 
+ 
 These files do not support the integrity provided by amount of important
 information, especially information that is in (usually structured) text
 formats - is now being stored using Git (or other version management)
@@ -219,157 +565,6 @@ practices are not well followed. Superior alternatives to all of these systems
 have been proposed and sometimes developed by creative experts only to fail to
 gain traction.
 
-** Some Principles of Data Management
+*** Datalog
 
-- Data should always be "checksummed"
-- Data should be immutable where possible.
-
-- Any changes in a data store should be tranactional.
-- Changes should be monotonic when data can't be immutable.
-
-The original Postgres DBMS was monotonic: Deleting a tuple simply caused
-it's close data to be filled in. Updating a field of a tuple caused its closed
-date to be filled in and a new tuple to be created with the fields that had not
-"changed" copied form the old tuple and the new data placed in the fields which
-had "changed".  By default, queries ignored the 
-
-- Data should be invisible to global processes where it is not monotonic.
-
-- Global non-monotonic transactions should create new versions
-
-** Some Principles of Structured Documents
-
-Structured documents are generally some kind of Tree or Forest of Trees,
-possibly with further structure such as
-- Namespaces defining Metadata Syntax
-- HyperLinks to related content
-
-XML would be much nicer if
-- All metadata were expressed in element syntax
-- Metadata syntax defined with Namespace URLs
-- Classes clearly associated with specific namespaces
-- Attributes associated with specific classes
-- Expressed in something nice like CSS Selector Notation
-
-Any such Tree/Forest structured documents should be stored in a database which
-- Understands the hierarchical structure
-- Does not introduce spurious line structure
-- Understands metadata symbol scope
-- Supports validity-preserving refactoring
-- Supports path queries
-- Integrates with Version Control
-  - Simple changes in Symbol Names or structure
-    - Should be captured as simple transformations
-    - i.e. should not be viewed as "line changes"
-
-While export/inport to/from text (and compressed) form should be supported,
-Documents should normally be used either (1) interactively from a browser-like
-interface or (2) programmatically using a mathematically clean command language.
-
-** Some Hardware Influences on Design
-
-The original Postgres DBMS used an Optical Disk Jukebox as a Tertiary Store. The
-Vacuum process would eventually move "closed" Tuples to the jukebox. Closed
-Tuples would be consulted if a query gave a time range which included the time
-after their Open Date and before their Closed Date. This was called "Time
-Travel".
-
-As Postgres was ported to production systems in the late 20th century which did
-not have automated Tertiary Store and had limited Secondary Storage and as the
-SQL Standard did not support "time travel" and the market did not expect such a
-feature, time travel was removed - although the underlying MVCC representation
-remains, along with the vacuum process which removes closed tuples
-asynchronously from transactions.
-
-Thus, because of lack of hardware resources and lack of vision, PostgreSQL lost
-the monotonicity which was a key feature of Postgres.
-
-*** Hard Drive RAID systems are now cheap!
-
-With modern hard drive RAID systems, we can afford Time Travel and monotonic
-storage!
-
-*** 3D X-Point and similar tech is imminent
-
-We should soon see the ready availability of persistent storage which is faster
-than flash, does not have the write wear of flash and is no more expensive than
-DRAM. Optane aka 3D X-Point is such a technology although it is not yet readily
-available. Fast cheap persistent memory allows for much cheaper transactions and
-indexes and persistent caches.
-
-*** We should not expect a rush to restore monotonicity!
-
-The lack of vision and market awareness of opportunities provided by the recent
-abundances of hardware resources will tend to resist any restoration of lost
-functionality, let alone new possibilities.
-
-** Some New Possibilities for Relational Database Management Systems
-
-*** Better Type Systems in RDBMS Schemas
-
-Modern Hindley-Millner type systems would greatly improve RDBMS Type Systems,
-especially adding Sum Types.
-
-Allowing all types to be first class would open up a world of possibilities,
-e.g. Elements of Tuples could be Relations or Databases!
-
-*** Versions and Monotonicity
-
-Any transaction which created globally visible monotonicity could create a new
-(structure sharing) Database, with a new version. Think of them like versions
-in Git. New connections would default to the most recent version of a database
-repository.
-
-Rows of monotonic tables would automatically get unique integer keys, without
-needing to store them. (They could then be given an appropriate type and
-methods.)
-
-*** Wicci-like Object References and Generic Operations
-
-Row references would have static and (when necessary, also) dynamic types.
-
-Generic operations would be associated with static object (tuple) types and
-dispatched to type and table-specific methods.
-
-*** Reproducible Caching Build-Systems for Constructed Blobs
-
-RDBMSs usually have a way to store binary blobs when no other structure for the
-data is available - and this needs to be at least as effective as the best
-filesystem.
-
-Most blobs have been constructed from a build process. Such a blob should be primarily stored as its ingredients, with proper structural relationships and relationships to the elements of the build process sufficient to allow a reproducible build.
-
-For efficiency, a binary blob which is expensive to build (like any value which
-is expensive to compute) should cached and the cache invalidated (or relegated
-to an earlier database version) when the structured data evolves.
-
-
-** Scraps to work into the document or delete
-
-*** Relational vs. Hierarchical vs. Network Database Management Systems
-
-Somewhere put in the weird shunning of simple hierarchical strategies by RDBMSs,
-e.g. the lack of hierarchical namespaces.
-
-The Wicci would be a lot simpler if RDBMSs had better support for hierarchical
-data - especially a superset of XML with real namespaces!
-
-Somewhere put in the trick of using foo.bar or foo->bar in queries where foo
-REFERENCES another TABLE with field bar. Allowing this and not needing to
-manually put in a reference to bar's TABLE would simplify a lot of queries!
-
-
-*** This Manifesto is about
-- What can be done in the short term
-- More that can be done in the medium term
-- Radical possibilities for further in the future
-
-*** How you can help improve this document
-
-This Manifesto is a *DRAFT*!
-- It is an opportunity to record some of my thoughts and opinions
-- it currently provides few justifications or citations to back up these opinions.
-
-If you, dear reader, would like this Manifesto to rise above a *DRAFT* and Idea
-Dump, I am open to being enrolled in that possibility and I will also ask for
-your assistance!
+Somewhere mention Datalog and Datomic.
