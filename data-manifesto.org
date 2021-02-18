@@ -159,6 +159,9 @@ practices and a bit about how we got to them!
 
 If this seems overly detailed, take heart: We left out almost everything!
 
+If you're sufficiently expert that varied Unicode File Formats and Git are old
+hat you can skip this whole section without missing anything essential.
+
 *** Unix and its Descendants Took Over The World
 
 Operating Systems used to be more ambitious and more complex than the ones
