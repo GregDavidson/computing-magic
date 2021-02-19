@@ -1,4 +1,4 @@
-* A Data Storage Manifesto *DRAFT*
+* A Data Storage Manifesto /- DRAFT/
 
 
 ** Status, Purpose, Audience and Background
@@ -19,7 +19,7 @@ with a tl;dr summary. Other parts are too brief or are unclear and require
 expansion. There is missing material needed to bridge some of the parts. There
 is material which is entirely missing! Your assistance can make a difference!
 
-It would be great to begin with a succinct Case for Action!
+It would be great to begin with a more powerful Case for Action!
 
 Many if not most of the /italicized/ terms in the document should become foreign
 hyperlinks. The acronyms should be glossed, e.g. with hovers, popups or links.
@@ -40,6 +40,10 @@ Summary
 - Our current systems often work poorly
 - There are better strategies we can use now
 - We can improve our systems to do much better
+
+This manifesto is the result of many years of experience with diverse projects
+using a great variety of storage systems. Many of the ideas for doing better
+came from [[https://gregdavidson.github.io/wicci-core-S0_lib][The Wicci System]].
 
 *** We're Assuming That You Are
 
@@ -157,10 +161,10 @@ suitably configured and deployed - should be strongly preferred.
 In order to understand how to do things better, it helps to understand current
 practices and a bit about how we got to them!
 
-If this seems overly detailed, take heart: We left out almost everything!
-
-If you're sufficiently expert that varied Unicode File Formats and Git are old
-hat you can skip this whole section without missing anything essential.
+You can skip this section if you're familiar with
+- Unicode File Formats
+- Command scripts in Textfiles
+- Git being built on top of Line Diffs
 
 *** Unix and its Descendants Took Over The World
 
@@ -180,53 +184,50 @@ part of the /Unix Programmers' Workbench/, which could flexibly manipulate
 structured information stored in Textfiles.
 
 The most powerful tools in the Workbench were Text Editors which allowed the
-contents of Textfiles to be modified either /Interactively/ by a human /User/
-or automatically by a /Script/ - a sequence of commands which could be stored
-in yet another Textfile! This helped create the Unix Power User Philosophy:
-Power Users could issue commands interactively via a /Shell/ and later combine
-those commands with control logic in a /Script/. Scripts were useful when you
-wanted to do roughly the same sequence of commands again and again. A script
-both automates an otherwise tedious task and also documents the procedure used
-since it consists of a Textfile detailing that procedure using familiar
-commands. (We're stressing these points because they will be a key part of the
-Manifesto later!) Even Unix Programmers used the system this way, rarely
-writing programs in traditional programming languages which greatly increased
-their productivity.
+contents of Textfiles to be modified by a human /User/ issuing a sequence of
+commands /Interactively/ or by running a a /Script/ - the same sequence of
+commands but stored in yet another Textfile. This was part of the Unix /Power
+User/ Philosophy: Users could gradually automate any task by moving familiar
+commands into a Script and optionally adding some control commands. A script
+both automates an otherwise tedious task and also documents the procedure.
+(We're stressing these points because they will be a key part of the Manifesto
+later!) Even Unix Programmers used the system this way, rarely writing programs
+in traditional programming languages, greatly increasing their productivity!
 
 Because it allowed Operating Systems to be simpler and smaller, the basic
-elements of the Unix Filesystem Design was adopted by all major (surviving)
-Modern Operating Systems. Microsoft copied the Unix File and Directory system
-in /MS-DOS 4.2/ and continued it with every version of /Microsoft Windows/. The
+elements of the Unix Filesystem Design was adopted by all later (surviving)
+Operating Systems. Microsoft imitated the Unix File and Directory system in
+/MS-DOS 4.2/ and continued it with every version of /Microsoft Windows/. The
 /University of California at Berkeley/ created the [[https://en.wikipedia.org/wiki/Berkeley_Software_Distribution][Berkeley Software
 Distribution]] as an advanced version of Unix. /BSD/ became the testbed for the
-networking software which evolved into /The Internet/. BSD, often erroneously
-called "Berkeley Unix", became the basis for all of Apple's Operating Systems
+networking software which evolved into /The Internet/. BSD (often erroneously
+called "Berkeley Unix") became the basis for all of Apple's Operating Systems
 after Steve Jobs resumed the helm. The [[https://en.wikipedia.org/wiki/Linux_kernel][Linux Kernel]] was created to provide the
 services of the pre-existing Unix and BSD Kernels as FLOSS - Free/Libre Open
-Source Software, unencumbered by any Proprietary "Intellectual Property".
-Linux, and the [[https://www.gnu.org][GNU System]] implemented on top of it, are protected by the [[https://www.gnu.org/licenses/licenses.html#GPL][Gnu
-Public License]] which makes sure that it continues to be free to use and modify
-by developers. The Linux Kernel is the basis of [[https://en.wikipedia.org/wiki/Android_(operating_system)][Google's Android OS]] and of the
-many versions of GNU/Linux. [[https://www.gnu.org/gnu/gnu-linux-faq.html#why][GNU/Linux]] (often confusingly just called Linux) is
-the basis for a vast number of specialized [[https://distrowatch.com/][Linux Distributions]] such as Red Hat,
-Ubuntu, Mint, etc. These highly customizable GNU/Linux Distributions run most
-of the World's [[https://itsfoss.com/linux-runs-top-supercomputers][Supercomputers]], Enterprise Servers, provide most of the
-infrastructure of the Internet and hide within an increasing number of our
+Source Software, unencumbered by any Proprietary "Intellectual Property". The
+Linux Kernel and the [[https://www.gnu.org][GNU System]] implemented on top of it, are protected by the
+[[https://www.gnu.org/licenses/licenses.html#GPL][Gnu Public License]] which makes sure that they continues to be free to use and
+modify by developers. The Linux Kernel is the basis of [[https://en.wikipedia.org/wiki/Android_(operating_system)][Google's Android OS]] and
+of the many versions of GNU/Linux. [[https://www.gnu.org/gnu/gnu-linux-faq.html#why][GNU/Linux]] (often confusingly just called
+Linux) is the basis for a vast number of specialized [[https://distrowatch.com/][Linux Distributions]] such as
+Red Hat, Ubuntu, Mint, etc. These highly customizable GNU/Linux Distributions
+run most of the World's [[https://itsfoss.com/linux-runs-top-supercomputers][Supercomputers]], Enterprise Servers, provide most of the
+infrastructure of The Internet and operate within an increasing number of our
 ubiquitous computer-controlled appliances.
 
 All modern computers are descendants of those early microcomputer systems - the
 first systems with their entire CPU on one silicon chip. And although today's
 computers are vastly more powerful than the most powerful computers of the
 past, our modern operating systems have continued to be based on strategies to
-avoid a level of overhead that we would now consider trivial to support!
+avoid a level of overhead that we would now consider tiny!
 
 *** Raw Byte-Sequence Files in the Modern World
 
 Since Unix-like Operating Systems have no way to manage the contents of files,
-any datafile with unknown provenance must be considered to possibly be
-corrupted. Attempts to use a file while it is being modified by another program
-can easily happen by accident and lead to misinterpretation of the file's
-contents and is a common cause of file corruption.
+any datafile with unknown provenance must be suspected to be corrupt. Attempts
+to use a file while it is being modified by another program can easily happen by
+accident and lead to misinterpretation of the file's contents and is a common
+cause of file corruption.
 
 *** Raw Binary Files in the Modern World
 
@@ -293,7 +294,7 @@ structure.  There are thousands of formats, such as
  - [[https://en.wikipedia.org/wiki/XML][XML]] - a general-purpose or "Meta" Document Language, including
    - [[https://en.wikipedia.org/wiki/OpenDocument][OpenDocument]] - for "Office" Documents
    - [[https://en.wikipedia.org/wiki/HTML][HTML]] Web Document Language - for Web Page Content
-   - [[https://orgmode.org][OrgMode]] - Organize your whole line in text!
+   - [[https://orgmode.org][OrgMode]] - Organize your whole life in text!
 - [[https://en.wikipedia.org/wiki/Configuration_file][Traditional Configuration Files]]
 - [[https://en.wikipedia.org/wiki/CSS][CSS]] - for styling Web Pages
 - [[https://en.wikipedia.org/wiki/List_of_programming_languages][Programming languages]] - source is almost always structured text
@@ -310,16 +311,14 @@ I am fluent in over six million forms of communication. - C-3PO
 
 *** Source Files Are Moving To Git!
 
-In computer parlance, Source refers to content generated by humans. Source
-Files are files containing Source, usually in some sort of Text format. In
-the course of a creative project, Source Files undergo changes, often made
-by multiple collaborators. Keeping track of all of the changes is the job
-of Revision Management Systems.
+In computer parlance, Source refers to content generated by humans, often stored
+in Textfiles. In the course of a creative project, Source Files are revised,
+often by multiple collaborators. Keeping track of all of those revisions is the
+job of Revision Management Systems.
 
-Underlyingly, current Revision Management Systems work by identifying
-sequences of lines which have changed between versions of Textfiles and
-tagging them with metadata such as who made the change and when along with
-a new version number.
+Underlyingly, most Revision Management Systems work by identifying sequences of
+/Lines/ which have changed between versions of Textfiles and tagging them with
+metadata such as who made the change and when along with a new version number.
 
 The [[https://git-scm.com][Git]] Revision Control System is currently the most popular software for
 managing the Source Files of a creative Project, whether it be a project to
@@ -328,15 +327,13 @@ other possibilities. A collection of Files (and possibly Folders, so a
 /Filesystem Tree/) managed by Git is called a Repository.
 
 A Git Repository can be stored and managed on any computer, but for
-convenience of collaboration it is convenient to have a copy of the
-Repository on a Server which may (or may not) be public and may (or may
-not) provide the Repository as a Website. Many Project Repositories are
-hosted on private servers and many are hosted on Commercial Servers such as
-- [[https://github.com][GitHub]]
-- [[https://about.gitlab.com][GitLab]]
-Both GitHub and GitLab provide free hosting for small projects to individuals
-and to organizations for FLOSS projects, a policy which greatly increases their
-popularity and therefore their market recognition!
+collaboration it is convenient to have a copy of the Repository on a Server
+which may (or may not) be public and may (or may not) provide the Repository as
+a Website. Many Project Repositories are hosted on private servers and many are
+hosted on Commercial Servers such as [[https://github.com][GitHub]] or [[https://about.gitlab.com][GitLab]]. Both GitHub and GitLab
+provide free hosting for small projects to individuals and to organizations for
+FLOSS projects, an enlightened policy which increases their popularity and
+market recognition!
 
 Current Revision Control Systems have some serious limitations, such as 
 - Changes need to make sense as changes to a subset of lines
@@ -349,17 +346,16 @@ Current Revision Control Systems have some serious limitations, such as
 However, Git (and most other Revision Control Systems) add some very important
 features which Posix Filesystems do not provide:
 - Git-managed files do not actually change!
-  - "Changes" always create new versions
+  - Revisons always create new versions
   - Older versions can always be recovered
   - Data can't be lost without removing the whole repository!
-- Repositories can be copied and "modified" independently
-  - After diverging, separate repositories can be recombined
-  - Older incompatible changes simply show up as additional versions
-- Git creates a "hash" or "checksum" of all files
-  - a Checksum is a large number derived from the content of a file
+- Repositories can be copied (/forked/) and revised independently
+  - After diverging, separate repositories can be merged
+  - Separate revisions appear as versions, possibly on different /branches/
+  - Forks of Git Repositories provide excellent backups!
+- Git creates a [[https://en.wikipedia.org/wiki/Checksum][checksum]] aka "hash" of all files
   - a Checksum can ensure that the content of a file has not changed
-  - Checksums are an excellent support for data integrity
-- Replications of Git Repositories provide excellent backups!
+  - Checksums can be an excellent support for data integrity
 
 ** How We Can Improve Data Storage
 
@@ -374,11 +370,15 @@ overcome.
 
 We will list additional advantages and also some drawbacks or costs.
 
-
 We will propose some extensions and changes to existing RDBMSs which will add
 still more advantages and reduce or remove some of the drawbacks.
 
 We will suggest some tactical and stragic plans for obtaining these advantages.
+
+It is only fair to mention that there have been a series of Relational Database
+Manifestos, e.g. [[https://database.guide/what-is-the-third-manifesto][The Third Manifesto]]. Although the earlier manifestos have a lot
+of good ideas, we believe that they have been too theoretically motivated and
+idealistic to make much difference in the real world.
 
 *** Some Desirable General Principles of Data Management
 
@@ -388,11 +388,11 @@ Posix Filesytems and are also not provided by regular RDBMSs "out of the box".
 Desirable General Princples of Data Management
 - Data should always be "checksummed"
 - Data should be immutable where possible.
-- Any changes in a data store should be tranactional.
+- Any changes in a data store should be transactional.
 - Changes should be monotonic when data can't be immutable.
 - Data should be invisible to global processes where it is not monotonic.
 - Global non-monotonic transactions should create new versions of the entire store
-- The store should use "structure sharing" between revisions
+- The store should use "structure sharing" between such versions
 
 Git provides a number of these features, but not for all kinds of files and it
 can be subverted - it is just a convention layered on a conventional filesystem,
@@ -401,38 +401,42 @@ it has no means of enforcing any of these principles.
 Some of the advanced Filesystems such as ZFS and Btrfs support some of these
 features, but not all and not in a standard way.
 
-Modern RDBMSs are transactional.
+All serious modern RDBMSs are transactional but don't support any of the rest of
+these criteria without extensions.
 
-The original Postgres DBMS was monotonic: Deleting a tuple simply caused it's
-close data to be filled in. Updating a field of a tuple caused its closed date
-to be filled in and a new tuple to be created with the fields that had not
-"changed" copied form the old tuple and the new data placed in the fields which
-had "changed". By default, queries ignored tupples which were closed but if an
-open or closed time range was added to a query it would consider any of the
-closed tuples which were open during that time range. This feature was called
-"Time Travel" and it was removed when Postgres dropped the Query Language from
-the original Berkeley Project in favor of standard SQL and renamed Postgres to
-PostgreSQL. 
+The original Postgres RDBMS (developed at UC Berkeley) was monotonic: Deleting a
+/Tuple/, a /Row/ of a /Table/, simply caused it's close data to be filled in.
+Updating a field of a tuple caused its closed date to be filled in and a new
+tuple with the new contents to replace it. By default, Queries ignored closed
+Tuples but if a /Time Range/ was added to a Query it would only consider Tuples
+which were Open during that Time Range. This feature was called "Time Travel"
+and it was removed when Postgres dropped the original Berkeley Query Language in
+favor of the newer SQL standard and renamed Postgres to PostgreSQL.
 
-All of these principles can be provided and enforced by the current PostgreSQL
-RDBMS through its extension mechanism, while still retaining compatibility with
-standards. For example, there's a contributed PostgreSQL extension which can
+All of the principles listed above can be provided and enforced by the current
+PostgreSQL RDBMS through extensions while still retaining compatibility with
+standard SQL. For example, there's a contributed PostgreSQL extension which can
 restore Time Travel for any set of tables, thus restoring monotonicity. Some
-other RDBMSs have extension mechanisms which may be able to do the same.
+other RDBMSs have extension mechanisms which may also suffice.
 
 *** Some Principles of Structured Documents
 
-Structured documents are generally some kind of Tree or Forest of Trees,
-possibly with further structure such as
+Structured documents generally have a /Hierarchical Strcture/, i.e. some kind of
+/Tree/ or /Forest/ of Trees, possibly with further structure such as
 - Namespaces defining Metadata Syntax
 - HyperLinks to related content
 
-XML would be much nicer if
-- All metadata were expressed in element syntax
-- Metadata syntax defined with Namespace URLs
-- Classes clearly associated with specific namespaces
-- Attributes associated with specific classes
-- Expressed in something nice like CSS Selector Notation
+XML could almost perfectly represent documents if
+- All metadata were expressed in element syntax, i.e. regular Tags
+- Namespace URLs linked to Schemas defining their syntax
+- Classes were clearly associated with specific namespaces
+- Attributes were associated with specific classes
+- A syntax similar to CSS Selector Notation could be used
+
+Text and Binary Data Formats can all be translated into an RDBMS Schema allowing
+for their data to be stored in Relation Form with great advantages
+- Relationships become explicit
+- Integrity is ensured
 
 Any such Tree/Forest structured documents should be stored in a database which
 - Understands the hierarchical structure
@@ -448,6 +452,20 @@ Simple changes in Symbol Names or structure
 While export/inport to/from text (and compressed) form should be supported,
 Documents should normally be used either (1) interactively from a browser-like
 interface or (2) programmatically using a mathematically clean command language.
+
+Information that has traditionally been stored in Binary Files is every bit as
+much a candidate for storing in a RDBMS instead.
+
+Ideally information would be stored directly in an RDBMS at the time of
+creation, rather than first appearing as a Textfile or Binary File and having to
+somehow be imported into the database. Also ideally, all programs which
+currently access the information via files would instead connect to the
+database. This approach offers the greatest rewards and should always be used in
+any new project. Converting a legacy system from Files to a Database can be a
+significant challenge. It is often best to approach such a transition slowly,
+supporting the traditional file storage arrangement alongside the database
+storage arrangement. Many good techniques and tools exist to assist in such a
+transition.
 
 *** Legacy Hardware Influences and New Possibilities
 
@@ -488,6 +506,9 @@ functionality, let alone new possibilities.
 
 *** Some New Possibilities for Relational Database Management Systems
 
+Some of these ideas have been prototyped in the PostgreSQL implementation of [[https://gregdavidson.github.io/wicci-core-S0_lib][The
+Wicci System]].
+
 **** Better Type Systems in RDBMS Schemas
 
 Modern Hindley-Millner type systems would greatly improve RDBMS Type Systems,
@@ -495,6 +516,18 @@ especially adding Sum Types.
 
 Allowing all types to be first class would open up a world of possibilities,
 e.g. Elements of Tuples could be Relations or Databases!
+
+
+**** Generic and Metaprogramming Support in RDBMSs
+
+SQL is a verbose language which does not support generic programming. Generic
+programming capabilities should be added along with the improved RDBMS Type
+System, as with many programming languages, examples include Template Haskell,
+ML Modules, etc.
+
+The most powerful method for extending and automating SQL programming is a
+general metaprogramming facility. A system for metaprogramming in PostgreSQL is
+in the [[https://github.com/GregDavidson/wicci-core-S0_lib][Wicci Core]].
 
 **** Versions and Monotonicity
 
@@ -507,12 +540,18 @@ Rows of monotonic tables would automatically get unique integer keys, without
 needing to store them. (They could then be given an appropriate type and
 methods.)
 
+To coexist with Git there should be a versioning schema in the RDBMS which is
+isomorphic with the Filesystem encoding approach taken by Git. This would allow
+any Git repository to be treated the same as a remote fork of a repository in
+the Database, merging any changes in either direction.
+
 **** Wicci-like Object References and Generic Operations
 
 Row references would have static and (when necessary, also) dynamic types.
 
 Generic operations would be associated with static object (tuple) types and
-dispatched to type and table-specific methods.
+dispatched to type and table-specific methods. A system for doing this in
+PostgreSQL is in [[https://github.com/GregDavidson/wicci-core-S1_refs][Wicci Schema 1:Refs]].
 
 **** Reproducible Caching Build-Systems for Constructed Blobs
 
@@ -529,55 +568,101 @@ For efficiency, a binary blob which is expensive to build (like any value which
 is expensive to compute) should cached and the cache invalidated (or relegated
 to an earlier database version) when the structured data evolves.
 
+**** Relational vs. Hierarchical vs. Network Database Features
 
-** Scraps to work into the document or delete
+At one time there was a competition between three different models of Database
+Systems. The simplest, most intuitive but most limited was the /Hierarchical
+Model/. The most expressive was the /Network Model/ which lives on in Graph
+Structured Databases accessed by GraphQL. The Model which won out for general
+purpose use was the Relational Model. While the Relational Model deserved to
+(mostly) win this competition, it is sometimes appropriate to borrow ideas from
+the other Models for use within a Relational Database.
 
-*** Relational vs. Hierarchical vs. Network Database Management Systems
+RDBMSs would benefit from Hierarchical Namespaces!
 
-Somewhere put in the weird shunning of simple hierarchical strategies by RDBMSs,
-e.g. the lack of hierarchical namespaces.
+RDBMSs need to have extensions for mapping Hierarchical Data, e.g. Documents,
+into Relational Tables. PostgreSQL has built-in support for XML, including
+XPath, XQuery and XSLT functionality, but it does this by representing XML
+internally as strings.  RDBMSs need to provide a variety of strategies for mapping
+hierarchical structures into /Relational Tables/ with /Foreign Key References/.
 
-The Wicci would be a lot simpler if RDBMSs had better support for hierarchical
-data - especially a superset of XML with real namespaces!
+A particularly flexible system for mapping any kind of Mostly-Hierarchical
+Document into Relational Tables and supporting Monotonic Updates is prototyped
+in [[https://github.com/GregDavidson/wicci-core-S4_doc][Wicci Schema 4: Doc]] with application to XML Specifically in [[https://github.com/GregDavidson/wicci-core-S5_xml][Wicci Schema 5:
+XML]].
 
-Somewhere put in the trick of using foo.bar or foo->bar in queries where foo
-REFERENCES another TABLE with field bar. Allowing this and not needing to
-manually put in a reference to bar's TABLE would simplify a lot of queries!
- 
+Navigating links among Relational Tables could be made much easier with a simple
+syntax foo->bar or even just foo.bar where foo is a field of a TABLE which
+REFERENCES a field bar of another TABLE. It should suffice to declare foo's
+TABLE in the FROM clause of the query.  This would simplify so many queries!
 
-*** Git critical and aspirational
+**** SQL Should Be Treated Like A Serious Programming Language
 
- 
-These files do not support the integrity provided by amount of important
-information, especially information that is in (usually structured) text
-formats - is now being stored using Git (or other version management)
-Repositories. Git stores this text information by breaking it up into groups of
-lines of lines without regard to the larger structure of those files. Accessing
-the information requires checking the information out of the repository, an
-expensive operation. Working with information from multiple versions or across
-multiple repositories is awkward. Moving information among repositories is
-awkward.
+Many of the features suggested above would give SQL better expressivity, in some
+cases exceeding the expressivity of Functional and Relational Programming
+languages, such as Haskell and Curry. At the same time SQL needs to be as
+straightforward as, e.g. Typed Racket.
 
-??? in Git files without regard to preserving efficient access to meaningul
-operations on those files. The files have to be "checked out" how those into ,
-mapped to Po , encoded in a wide variety of syntactically complex document
-structures, e.g. markup languages
+There should never be any performance loss from expressing part of a system's
+code in SQL rather than some lower level managed language like Java. SQL should
+be compiled, both AOT and JIT, just as Java is in the JVM. PostgreSQL is ahead
+of most other RDBMSs by allowing FUNCTIONS and PROCEDURES to be written in
+regular SQL. However, these FUNCTIONS and PROCEDURES need to be compiled
+efficiently, including using appropriate inlining.
 
-Experts have been aware of serious problems with Posix Filesystems, RDBMSs, Git
-and markup languages since their inception. Ways to mitigate most of these
-problems have been known by experts for a long time yet those mitigating
-practices are not well followed. Superior alternatives to all of these systems
-have been proposed and sometimes developed by creative experts only to fail to
-gain traction.
+**** SQL Should Be RESTful and Play Well With The Web
 
-*** Datalog
+Being RESTful means being accessible in the same stateless manner that Web
+Servers are accessible. There are several projects providing RESTful HTTP
+interfaces to PostgreSQL, including [[https://github.com/GregDavidson/wicci-core-S6_htt][Wicci Schema Level 6: HTTP]] which works in
+conjuction with [[https://github.com/GregDavidson/Wicci-Shim-Racket][The Wicci Shim]].
 
-Somewhere mention Datalog and Datomic.
+It should be possible to build nice Web Front Ends to an RDBMS. In addition to
+supporting arbitrary Dynamic Web Pages as other frameworks do, there should be
+special support for Document-Oriented Content Management Systems and
+Notebook-Style Development Environments. Support for this kind of system is in
+the [[https://github.com/GregDavidson/wicci-core-S7_wicci][Wicci Schema 7: Wicci]]. We anticipate being able to use The Wicci to produce
+a better Wiki System than Wikipedia, a better Notebook System than Juypeter and
+to be the ideal Collaborative Software Development Environment for use in
+developing itself and all of the other ideas expressed in this Manifesto!
 
+** Final Thoughts
 
-*** The Wicci
+While researchers at AT&T Bell Laboratories were inventing Unix in the 1970s,
+researchers at UC Berkeley were co-inventing Relational Databases, producing the
+Ingres System. A few years later, the BSD Project at UC Berkeley added the few
+key missing features to Unix, including Virtual Memory and TCP/IP Networking,
+which allowed the Unix Operating System Model to eat the world while at the same
+time, the group at UC Berkeley that invented Ingres was inventing Postgres, the
+first Extensible Object-Relational Database Management System.
 
-Link to appropriate parts of the Wicci Schemas for examples of how to extend
-PostgreSQL!
+In the 1980s it would have been impossible to routinely include the
+functionality of an advanced DBMS like Postgres as a standard component of the
+Operating System. But if they had been able to afford to do so, we might have a
+world in which all data was stored in DBMSs and the concept of the Filesystem
+was forgotten.
 
-And link to the Wicci Project overall as part of our motivation.
+Another odd development at the time was the separation of Word Processing from
+Spreadsheets from Databases. In publishing, Tables are Figures which are part of
+Documents. Because of limited resources, Microcomputer-based Office Suites
+unnaturally separated Spreadsheet Processing from Word Processing. The
+capacities of today's smallest personal computers, tablets and smart phones
+would allow complete Documents to live in advanced RDBMSs. Within those
+Documents Tables would be views of Relational Tables, with all of the power of
+Spreadsheet Processing augmented by the power of SQL. As a limited example of
+this integration, Google Sheets supports SQL operations.
+
+Looking further into the future, many of the pioneers of RDBMSs have long
+dispised the clumsy syntax and semantics of SQL, proposing alternatives such as
+D3 and Datalog. Datalog is particularly nice as it bridges Relational Processing
+with Logic Programming - at the heart of traditional Artificial Intelligence
+technology. Recently, the (alas, Proprietary) Datalog and Clojure-based [[https://www.datomic.com][DAtomic
+Database System]] has become popular in the community surrounding the elegant (and
+FLOSS) Clojure Programming Language. has become popular in the Clojure
+programming community. Somewhere mention Datalog and Datomic.
+
+In recent years the computing field is being transformed with new, more powerful
+programming languages. Languages which are actually simpler and often more
+efficient than the languages they replace. This is possible because their
+designers have not compromised their design principles, as earlier designers
+were forced to do. Let Advanced RDBMSs be part of this new world!
