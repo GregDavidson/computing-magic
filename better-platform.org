@@ -1,0 +1,88 @@
+#+title: A Better Platform for Better Software
+* A Better Platform for Better Software - DRAFT
+** Status, Purpose, Audience and Background
+
+*** Status of this Document
+
+This document is written in [[*OrgMode]]
+This document is a /DRAFT/. Please [[*Help Improve This Document][Help Us Improve It]]!
+
+*** Purpose of our Search and This Document
+
+We are creative software designers and developers. We are engaged in creating
+innovative software systems which we hope will be of benefit to humanity. Modern
+software is normally developed on a Platform. Most such Platforms were designed
+to solve the problems of the past and unintentionally inhibit building
+innovative software of high quality today. We want and we need a Better Platform
+for building our software!
+
+We are in the process of assembling our Better Platform from prior research. We
+intend this document to clarify our criteria and guide us in completing this
+project. We intend that this document assist others in evaluating what would
+constitute a Better Platform for them and enroll some of them in joining us!
+
+*** Who do we think you are?
+
+Writers an told to write for their audience. That would be you, dear reader!
+We're assuming that you're someone with a role in using computers creatively to
+solve interesting and challenging problems - problems which matter to you and
+which may make a difference to many others.
+
+We do /not/ assume you have an extensive technical computing background. If you
+do, you can skim much of this document - but try not to miss the good parts! If
+you don't have a strong technical computing background, this document has
+strategic links to internal notes [[*Internal Notes][Like This]] which you can consult for more
+details.
+
+We hope that you find the document Interesting and at least Potentially Useful.
+We hope that some of you will join us in using and improving the Platform which
+we describe here!
+
+** A Case for Finding and/or Creating a Better Platform
+
+*** What's a Platform for Software?
+*** Why might the quality of the Platform matter?
+*** What criteria ought an Excellent Platform Have?
+
+** Assembling a Better Platform
+*** An Extensible Object-Relational Database
+*** Metaprogramming
+*** Monotonicity
+
+** Internal Notes
+
+The subsections here are linked from other parts of the document by NAME - so if
+you change the name of any of these subsections be sure and change the links to
+them as well!
+
+*** Help Improve This Document
+
+Some parts of this document may still relate to an earlier version. Some parts
+of this document are too detailed and either need to be condensed or provided
+with a tl;dr summary. Other parts are too brief or are unclear and require
+expansion. There is missing material needed to bridge some of the parts. There
+is material which is entirely missing! Your assistance can make a difference!
+
+It would be great to begin with a more powerful Case for Action!
+
+Many if not most of the /italicized/ terms in the document should become foreign
+hyperlinks. The acronyms should be glossed, e.g. with hovers, popups or links.
+
+It would be great to begin with a more powerful Case for Action!
+
+Many if not most of the /italicized/ terms in the document should become foreign
+hyperlinks. The acronyms should be glossed, e.g. with hovers, popups or links.
+
+We would love your assistance in making this document better for people like
+you! To that end, please feel free to post issues and especially to fork and
+improve this document and send us pull requests!
+
+*** OrgMode
+
+[[https://orgmode.org][OrgMode]] is a Text Format Markup Language fully supported by [[https://www.gnu.org/software/emacs][Emacs]], partially
+supported by [[https://github.com][Github]] and [[https://gitlab.com][Gitlab]] and some other editors, systems and apps. The
+original author uses and recommends the [[https://www.spacemacs.org][Spacemacs]] version of Emacs. OrgMode is
+extremely easy to write and edit and it can be converted to many other formats
+with [[https://pandoc.org/][Pandoc]] or with [[https://orgmode.org/manual/Exporting.html][Emacs OrgMode Export]].
+
+*** Emacs
