@@ -9,9 +9,9 @@ at the bottom.
 *** Purpose, Who We Are, What We're Up To
 
 The purpose of this document is to (1) evaluate the potential and (2) guide the
-development of [[https://gregdavidson.github.io/wicci-core-S0_lib/][The Wicci System]] as a General-Purpose Platform for Storing and
-Managing Diverse Personal and Shared Information and Collaborative Creative
-Work. See [[*Inspiration and Ideas][Inspiration and Ideas]] and [[*What Kinds of Information]] below.
+development of [[https://gregdavidson.github.io/wicci-core-S0_lib/][The Wicci System]] as a General-Purpose Platform for Empowering the
+Development of computer systems for Intellgient Content Management and Creative
+Collaboration.
 
 We are software designers and developers creating innovative computer-based
 systems which we hope will be of great benefit to humanity. We develop and
