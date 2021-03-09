@@ -121,9 +121,9 @@ Meta-Data for all of the above
 
 The Wicci System is based on the PostgreSQL Object-Relational Database System
 using portable techniques and extensions to increase its flexibility and
-representational power. Although PostgreSQL is an efficient and extensible RDBMSs
+representational power. Although PostgreSQL is an efficient and extensible RDBMS,
 The Wicci System is not intended to extend PostgreSQL's normal storage and
-computational envelops.
+computational envelope.
 
 The Wicci System provides no features for
 - Big Data, i.e. any data where
