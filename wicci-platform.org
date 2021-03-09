@@ -193,6 +193,7 @@ Changes are versioned somewhat like with Git except that
 - Monotonic Changes are explicit subsets of non-monotonic changes
 
 Ted Nelson's ideas for comparison and transclusion are supported.
+- See more in our section on /Inspiration Sources/ below.
 
 *** Wicci Wiki Web
 
@@ -200,6 +201,7 @@ The original application envisioned for the Wicci was as a Wiki system which
 - does not require policing, reverting or freezing
 - allows unrestricted inexpensive forks
 - supports easy intelligent merges of contributed changes
+- and more!
 
 [[https://gregdavidson.github.io/wicci-doc/Diagrams/wicci.png][Wicci WIki Use Case Diagram]]
 
@@ -299,8 +301,8 @@ What are some more ideas and inspirations which would help us imagine what's pos
 
 The Wicci System is designed to create Communities where people Engage-With,
 Share and Improve High-Quality Content and Services. The Wicci System is split
-into two major parts (1) a Graphical User Interface running in a modern Web
-Browser and (2) a back-end running inside a PostgreSQL Relational Database
+into two major parts (1) the Front-End is a Graphical User Interface running in a modern Web
+Browser and (2) the back-end running inside a PostgreSQL Relational Database
 Management Server (RDBMS).
 
 Relational Database Management Systems (RDBMSs) and Relational Programming (via
@@ -373,19 +375,13 @@ Additional Features
 The Wicci System uses a fair amount of SQL (and a little bit of C) code to add
 these valuable features, making it in some ways more complex than an unenhanced
 RDBMS. In another way, however, The Wicci System is simpler than most systems
-using RDBMSs. Most systems based on RDBMSs make frequent use of the
-non-monotonic UPDATE and DELETE operations - equivalent to altering and tearing
-pages out of ledger books. Instead, the architecture of The Wicci System
-supports and encourages monotonicity. Monotonicity protects information from
-being lost or corrupted and makes operations simpler and more scaleable.
+using RDBMSs. Most systems based on RDBMSs make frequent use of non-monotonic
+UPDATE and DELETE operations - equivalent to altering and tearing pages out of
+ledger books. Instead, the architecture of The Wicci System supports and
+encourages monotonicity. Monotonicity protects information from being lost or
+corrupted and makes operations simpler and more scaleable.
 
-** Internal Notes
-
-The subsections here are linked from other parts of the document by NAME - so if
-you change the name of any of these subsections be sure and change the links to
-them as well!
-
-*** Help Improve This Document
+** Help Improve This Document
 
 Some parts of this document may be too detailed and either need to be condensed
 or provided with a tl;dr summary. Other parts may be too brief or are unclear
