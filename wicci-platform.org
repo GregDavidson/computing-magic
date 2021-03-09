@@ -1,0 +1,414 @@
+#+title: The Wicci As A Platform
+* Evaluating The Wicci as a Platform- DRAFT
+** Status, Purpose, Audience and Background
+*** Status of this Document
+
+This document is a /DRAFT/. Please see the section /Help Improve This Document/
+at the bottom.
+
+*** Purpose, Who We Are, What We're Up To
+
+The purpose of this document is to (1) evaluate the potential and (2) guide the
+development of [[https://gregdavidson.github.io/wicci-core-S0_lib/][The Wicci System]] as a General-Purpose Platform for Storing and
+Managing Diverse Personal and Shared Information and Collaborative Creative
+Work. See [[*Inspiration and Ideas][Inspiration and Ideas]] and [[*What Kinds of Information]] below.
+
+We are software designers and developers creating innovative computer-based
+systems which we hope will be of great benefit to humanity. We develop and
+release our software systems using Computing Platforms - collections of
+languages, tools, frameworks and libraries intended to increase the
+productivity, quality and efficiency of computer-based projects. We have used
+many Computing Platforms in our prior projects and have found most of them
+wanting. The design of most contemporary Computing Platforms are not a good
+match for many of the approaches we find most valuable, inhibitiing our
+productivity as well as the success and quality of our work.
+
+[[https://en.wikipedia.org/wiki/Edsger_W._Dijkstra][Edsger Dijkstra]] said that to solve a challenging problem with a computer, we
+should /not/ imagine solving it with the kinds of computers that already exist.
+Instead, we should (1) Imagine a machine [platform] that would be a good fit for
+solving our problem, (2) solve our problem using that machine, and then (3)
+implment that machine. In practice there is iteration between steps (1) and
+(2) - and step (3) invokes Dijkstra's approach recursively!
+
+In addition to doing a good job of supporting a many projects which we think are
+important for humanity, our desired platoform should provide good support for
+its own continued development and havae excellent support for collaborative
+development processes.
+
+The evolution of the design of The Wicci System has been driven by both Top-Down
+and Bottom-Up considerations. The original Top-Down driver was creating a better
+kind of Wiki system - /Wicci/ was intended to be a pun on /Wiki/. See [[*Example
+Facilities and Applications]] for more on that and other Top-Down drivers. The
+Bottom-Up drivers began with mechanisms for mapping hierarchical data structures
+(such as those used for storing Documents) in a Relational Database without
+mutation or with only monotonic mutation. See YYY for more about our Bottom-Up
+drivers.
+
+Although the development of the original Wicci System is not complete, it is now
+clear that The Wicci System has potential to be an excellent and empowering
+platform for many kinds of applications and systems, including many which
+address important human needs.
+
+We are in the process of making The Wicci System sufficient to (1) fufull its
+original goals, (2) be a good platform to support its own further development
+and (3) evolve towards becoming a great platform for many other projects. We
+intend this document to clarify our criteria so as to (1) guide us in our work
+and (2) communicate our goals to others such as yourself, such that they and you
+(a) might advise us and (b) possibly join our project.
+
+*** Who we think /you/ are
+
+This document is written for you, dear reader! We're assuming that you're
+someone with a role in using computers creatively to build interesting and
+powerful systems which matter to you and which may make a difference to many
+others.
+
+Once The Wicci System is a going concern, it will enable participation by people
+of any level of technical or non-technical background.
+
+In this early phase, if you do not have a background in the technical aspects of
+this project you can still help us (1) refine our goals, (2) communicate our
+goals and (3) find suitable others to participate.
+
+If you have an interest in the technologies underlying The Wicci Project we
+invite you to learn more about those details and discover if you'd like to
+participate as a development partner!  See section YYY and ZZZ for more!
+
+** Provding Access to Information
+
+The primary scope of The Wicci System is managing and providing access to
+Human-Scale Information, i.e. the information we human beings deal with in our
+daily lives. This includes Private Personal Information and Information which we
+Share with members of Our Projects and Our Communities.
+
+*** Examples of Human-Scale information
+
+Human-Scale information is wildly open-ended and includes:
+
+Messages and Posts
+- EMail, Voice and Text Messages
+- Social Media and Blog Posts
+ 
+Office Documents
+- Articles, Books
+- Spreadsheets
+- Documents with Figures including
+  - SVG Diagrams
+  - Dynamic Tables
+
+Collections of
+- Bookmarks, Contacts
+- Quotes, Pictures
+- Multimedia Recordings
+
+Scheduling Information
+- Events, Reminders
+- Invitations, Requests, Promises
+
+Creative Documents
+- Source Code of a Software System
+  - including of The Wicci System itself!
+- Media Files of a Movie or art project
+- Diverse materials for a Computer Game
+- Etcetera!
+
+Meta-Data for all of the above
+- Semantic Tags
+- Hierarchical Folders
+- Semantic Stable Hyperlinks
+
+*** What is (mostly) out of scope?
+
+The Wicci System is based on the PostgreSQL Object-Relational Database System
+using portable techniques and extensions to increase its flexibility and
+representational power. Although PostgreSQL is an efficient and extensible RDBMS
+The Wicci System is not intended to extend PostgreSQL's normal storage and
+computational envelops.
+
+The Wicci System provides no features for
+- Big Data, i.e. any data where
+  - the storage requirements would stress an RDBMS
+  - the computational operations don't align with Relational Operations
+- Streaming Data
+- Computation-limited Operations
+  - e.g. requiring GPUs and other special facilities
+
+Filesystems and Database Systems have always been "abused" to hold data which is
+not a great fit for them. We expect The Wicci System to be stretched in this way
+and we require The Wicci System to be resilient - integrity must always be
+maintained and performance should suffer no more than necessary in a system
+build on a Relational Database Management System.
+
+While The Wicci System is not intended to compete with systems designed to store
+and process /Raw Data/, Data Processing often yields structured information of a
+form which might benefit from storage in The Wicci System.
+
+The Wicci System should not be incompatible with extensions from other projects
+which are addressing the scaling issues which are out of scope for our project.
+
+** Example Applications
+
+The Kinds of Information above begin to suggest what kind of facilities and
+applications it might be natural to build using the Wicci as a Platform. Here
+are a few examples chosen to illuminate the extent of that possible design
+space.
+
+*** Scheduling an Event
+
+You create an Event (which internally creates a Global Event Object and you
+Share it with your designated Recipients Chris, Dana and all the members of your
+Outing Group who live within 100 kilometers. As the Owner-Host, you can delegate
+all or some privileges of managing the Event to co-hosts.
+
+You (and your delegates) control changes and policies for the Global Event Object.
+Recipoents can extend the Event Object with additional information which only
+/they/ controlr. Such extended information is (by default) only visible to
+that Recipoent although the Recipient could selectively or globally Share
+any such extended information.
+
+The first use of the Event might be to determine who's interested, the best time
+to meet, and other preliminaries with the initial interested Recipients. The
+Event Status evolves and a sharing policy is established allowing interested
+Recipients to use the Event Object in enrollment conversations, perhaps widening
+the Recipient pool even though some Recipients may Withdraw from the Event.
+
+Discussions and artifacts related to the Event before, during and after it takes
+place are linked to the Event Object. The Event Object can be Tagged and also
+used as a Tag, e.g. in my Contact Object for Robin who I met at that event. Links
+are semantic, so a link to another Event Object in a series is distinguishable
+from a link between the Event and a Participant, etc.
+
+Note that Recipient-Controlled Extended Information can be implemented with the
+Semantic Tag mechanism.
+
+*** Collaborative Editing
+
+A group of users might be collaboratively editing parts of a software system, a
+musical composition, an epic poem or whatever. They should see indications of
+other active users, especially when they overlap on a part of the system. Kind
+of like Google Docs but with many more kinds of "Documents".
+
+Changes are versioned somewhat like with Git except that
+- Changes correspond to tree nodes rather than line diffs
+- Monotonic Changes are explicit subsets of non-monotonic changes
+
+Ted Nelson's ideas for comparison and transclusion are supported.
+
+*** Wicci Wiki Web
+
+The original application envisioned for the Wicci was as a Wiki system which
+- does not require policing, reverting or freezing
+- allows unrestricted inexpensive forks
+- supports easy intelligent merges of contributed changes
+
+[[https://gregdavidson.github.io/wicci-doc/Diagrams/wicci.png][Wicci WIki Use Case Diagram]]
+
+*** Contacts and Connectioos
+
+The following sounds very complicated when I read it. I have a design for how
+using these Connections would appear to the users (the Contacts) which would
+have it all seem simple and natural. I ask for your patience with this
+expression of the model!
+
+I want to have Connections with Contacts which are easy to share, easy to use,
+easy to control and update and which do not reveal any of my (or anyone else's)
+personal information! When a Connection has only one other Contact and vice
+versa, they will seem to be one entity but it's possible to have more than one
+Contact as part of one Connection and/or to have more than one Connection
+reaching the same Contact.
+
+When I Create or Extend a Connection with a Contact I'd like the Connection to
+act as a proxy for any use of it, connecting us without revealing how that
+connection is being achieved. Often connections will be achieved by sharing
+Wicci Documents, but it should be possible for users to specify alternate
+methods such as an EMail address, Signal, etc.
+
+Anyone sharing a Connection should be able to specify policies and constraints
+for how they can be contacted. I might allow some Contacts to send me a priority
+alert or ring my cellphone at any time - without revealing my cellphone number.
+Other contacts might only be able to send me messages and I might or might not
+allow them to assign a priority and/or allow them to track whether I've read
+their message. Messages from some Contacts will go to a human or automated
+assistant rather than directly to me.
+
+Connections Channels should include realtime channels such as alerts, audio and
+audiovisual connections (including conferencing). Most Channels would be
+non-realtime, such as threaded messaging. A possible Channel might be physical
+letter and package delivery. I might allow trusted Contacts to know my postal
+address and to send me things without an OK while other Contacts would have to
+request permission for each item and get a per-item authorization code and the
+address of a remailing service. You can imagine other policies.
+
+Anyone sharing a Connection should be able to change or withdraw any or all of
+their Connection Channels, from specified people, roles, organizations or
+groups, or everyone sharing the Connection. If someone removes all of their
+Channels from a Connection they may still exist as a Tag which is associated
+with their former Contacts' information.
+
+A Connection can connect me with one or more people or organizations. A
+Connection and the Contact(s) within it (more often just the latter) will
+typically have metadata such as a Name, Organization, Job Position, etc.
+associated with it, plus associated information such as notes, pictures, etc.
+Whatever is mutually acceptable when the contact is created, including
+pseudonyms.
+
+I'll typically find Contacts (and associated Connections) using the metadata
+associated with them. They can change any metadata they previously gave me, but
+I can search on the old or new metadata. I can add any other metadata, e.g.
+alternate Names, Tags, Folders (Tags which are part of Hierarchies) as well as
+Notes and Links to a Connection or any Contact within it. Anything I add can be
+kept private to me or it can be shared so as to be available to others. And with
+the Wicci Model, we can collaboratively improve any associated data or metadata.
+
+*** Posting to a Blog 
+
+I can Post to any of my Blogs and control the Visibility and Notification of the Post.  I will often use
+Categories (sets of Tags) to specify who can see a Post and/or who should be Notified of the Post.
+
+The Wicci Model potentially allows everyone with access to a Post to comment on the Post and collaboratively 
+improve the content and associated metadata (notes, tags, etc.) of the Post.  Improvements are non-destructive, 
+always starting with creating (and optionally sharing) alternative Views of Content or Metadata.
+
+*** Inspiration and Ideas
+
+** Inspiration Sources
+
+- [[https://en.wikipedia.org/wiki/Ted_Nelson][Ted Nelson]]
+  - Literary Machines
+  - [[https://en.wikipedia.org/wiki/Computer_Lib/Dream_Machines][Dream Machines]]
+  - [[https://en.wikipedia.org/wiki/Transclusion][Transclusion]]
+  - Fantics
+  - Visual Diffs
+  - Expanding/Contracting Detail Levels
+- [[https://en.wikipedia.org/wiki/Croquet_Project][Open Croquet]] et al 
+- Vanevar Bush
+  - [[https://en.wikipedia.org/wiki/Vannevar_Bush#Memex_concept][Memex Concept]] - 1930's
+  - [[https://en.wikipedia.org/wiki/As_We_May_Think][As We May Think essay]] - 1945
+- [[https://dougengelbart.org][Doug]] [[https://en.wikipedia.org/wiki/Douglas_Engelbart][Englebart]]
+  - Augmentation of Intellect
+  - [[https://en.wikipedia.org/wiki/The_Mother_of_All_Demos][The Mother of All Demos]] - 1968 
+- [[https://en.wikipedia.org/wiki/Sketchpad][SketchPad]] 1963 by Ivan Sutherland
+- [[https://en.wikipedia.org/wiki/ThingLab][ThingLab]] 1976 by Alan Borning
+  - [[http://www.cdglabs.org/thinglab/][Thinglab running in a browser]]
+  - [[http://constraints.cs.washington.edu/ui/thinglab-tr.pdf][ThingLab Tech Report]]
+  - [[http://videosrv14.cs.washington.edu/info/videos/mp4/general/ThingLab_Alan_Borning.mp4][ThingLab Demo Video]]
+
+What are some more ideas and inspirations which would help us imagine what's possible?
+
+** What Makes The Wicci System Special
+
+The Wicci System is designed to create Communities where people Engage-With,
+Share and Improve High-Quality Content and Services. The Wicci System is split
+into two major parts (1) a Graphical User Interface running in a modern Web
+Browser and (2) a back-end running inside a PostgreSQL Relational Database
+Management Server (RDBMS).
+
+Relational Database Management Systems (RDBMSs) and Relational Programming (via
+SQL or other Relational Languages) are extraordinarily flexible, general and
+elegant tools for storing and utilizing information. Most modern General-Purpose
+Computing Platforms encourage developers to make use of RDBMs in very limited
+ways and they encourage developers to not learn SQL but rather to have the
+Platform auto-generate it from a non-Relational source. This aversion to fully
+embracing the power of Relational Systems is result of a myth that Relational
+Systems do not support general (Turing Machine equivalent) computing and have a
+limited set of datatypes and operators - all of which has been false for at
+least 30 years, at least in the better RDBMSs.
+
+By implementing The Wicci System's Back-End /inside/ of PostgreSQL, The Wicci
+System leverages the Relational Model more than any other platform. PostgreSQL
+has a highly extensible architecture and The Wicci System exploits this to allow
+the Relational Model to be used more generally. The Wicci Back-End is at an
+advanced stage of development.
+
+The Wicci Front-End is intended to be lightweight, exploiting the power of the
+Back-End to off-load complexity from the Front-End as much as possible, i.e.
+when funcionality and decent performance does not require adding more code to
+the Front-End. The Wicci Front-End is in the process of a re-design.
+
+the Wicci System Provides
+- Web Browser support for
+  - Multimedia Content
+  - a Graphical User Interface
+- Database Integration for 
+  - Persistence, Integrity, Scaling
+  - Declarative Programming
+  - Command & Control via SQL
+- Database Extensions for
+  - Metaprogramming
+  - Monotonic Storage
+  - Generic Operators
+  - Open-Ended Document Types
+
+And the *Killer feature*:
+- Lightweight revisions called "views"
+- Easily Fork, Share, Merge any content!
+- Better and easier than Git!
+
+Content Owners can 
+- Control all official views
+- Accept all or part of user-contributions
+- Delegate selective authority to administrators
+ 
+Users can
+- Create alternative views
+- Share, merge and contribute their alternative views
+- Limited only by Content Owner Copyright
+
+Views can contain diverse kinds of documents, including
+- Web Pages
+- Office Documents 
+- Multimedia Content
+- Dynamic Content
+- Source Code 
+
+Additional Features
+- Language-Independent Hierarchical Symbols
+- Semantic Tagging
+- Semantic First-Class Links
+  - Broken Links impossible
+- Active DB Views
+  - Table Figures in "Word Processor" Documents 
+  - Spreadsheets in "Spreadsheet" Documents
+
+The Wicci System uses a fair amount of SQL (and a little bit of C) code to add
+these valuable features, making it in some ways more complex than an unenhanced
+RDBMS. In another way, however, The Wicci System is simpler than most systems
+using RDBMSs. Most systems based on RDBMSs make frequent use of the
+non-monotonic UPDATE and DELETE operations - equivalent to altering and tearing
+pages out of ledger books. Instead, the architecture of The Wicci System
+supports and encourages monotonicity. Monotonicity protects information from
+being lost or corrupted and makes operations simpler and more scalable.
+
+** Internal Notes
+
+The subsections here are linked from other parts of the document by NAME - so if
+you change the name of any of these subsections be sure and change the links to
+them as well!
+
+*** Help Improve This Document
+
+Some parts of this document may be too detailed and either need to be condensed
+or provided with a tl;dr summary. Other parts may be too brief or are unclear
+and require expansion. There is may be missing material needed to bridge some of
+the parts. There is material which could be added to make this document better!
+Your assistance can make a difference!
+
+It would be great to sharpen the Case for Action!
+
+The source of this document is an [[https://orgmode.org][OrgMode]] textfile hosted in a [[https://github.com/GregDavidson/new-rfcs][GitHub
+Repository]]. Any other formats have been generated from the OrgMode source with a
+one-way transformation, so please direct improvements to the OrgMode source lest
+they be lost when the secondary documents are regenerated.
+
+OrgMode can be edited by any text editor or directly on GitHub, although its
+full power is only available when using [[https://www.gnu.org/software/emacs/][The Emacs Text Editor]]. Because of their
+complexity and limitations, and despite their extraordinary power, we look
+forward to replacing OrgMode and Emacs with The Wicci System as soon as
+possible!
+
+Many if not most of the /italicized/ terms in the document should become foreign
+hyperlinks. The acronyms should be glossed, e.g. with hovers, popups or links.
+
+We would love your assistance in making this document better for people like
+you! To that end, please feel free to use [[https://github.com/][GitHub]] to post issues, to fork and
+improve this document and to send us those improvements via pull requests!
