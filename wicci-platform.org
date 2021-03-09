@@ -155,7 +155,7 @@ space.
 
 *** Scheduling an Event
 
-You create an Event (which internally creates a Global Event Object and you
+You create an Event (which internally creates a Global Event Object) and you
 Share it with your designated Recipients Chris, Dana and all the members of your
 Outing Group who live within 100 kilometers. As the Owner-Host, you can delegate
 all or some privileges of managing the Event to co-hosts.
