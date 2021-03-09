@@ -137,7 +137,7 @@ Filesystems and Database Systems have always been "abused" to hold data which is
 not a great fit for them. We expect The Wicci System to be stretched in this way
 and we require The Wicci System to be resilient - integrity must always be
 maintained and performance should suffer no more than necessary in a system
-build on a Relational Database Management System.
+built on a Relational Database Management System.
 
 While The Wicci System is not intended to compete with systems designed to store
 and process /Raw Data/, Data Processing often yields structured information of a
