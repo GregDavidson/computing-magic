@@ -37,12 +37,12 @@ development processes.
 
 The evolution of the design of The Wicci System has been driven by both Top-Down
 and Bottom-Up considerations. The original Top-Down driver was creating a better
-kind of Wiki system - /Wicci/ was intended to be a pun on /Wiki/. See [[*Example
-Facilities and Applications]] below for more on that and other Top-Down drivers.
+kind of Wiki system - /Wicci/ was intended to be a pun on /Wiki/. See /Example
+Facilities and Applications/ below for more on that and other Top-Down drivers.
 The Bottom-Up drivers began with mechanisms for mapping hierarchical data
 structures (such as those used for storing Documents) in a Relational Database
-without mutation or with only monotonic mutation. See [[*What Makes The Wicci
-System Special]] below for more about our Bottom-Up drivers.
+without mutation or with only monotonic mutation. See /What Makes The Wicci
+System Special/ below for more about our Bottom-Up drivers.
 
 Although the development of the original Wicci System is not complete, it is now
 clear that The Wicci System has potential to be an excellent and empowering
