@@ -10,7 +10,7 @@ at the bottom.
 
 The purpose of this document is to (1) evaluate the potential and (2) guide the
 development of [[https://gregdavidson.github.io/wicci-core-S0_lib/][The Wicci System]] as a General-Purpose Platform for Empowering the
-Development of computer systems for Intellgient Content Management and Creative
+Development of computer systems for Intelligent Content Management and Creative
 Collaboration.
 
 We are software designers and developers creating innovative computer-based
@@ -20,36 +20,36 @@ languages, tools, frameworks and libraries intended to increase the
 productivity, quality and efficiency of computer-based projects. We have used
 many Computing Platforms in our prior projects and have found most of them
 wanting. The design of most contemporary Computing Platforms are not a good
-match for many of the approaches we find most valuable, inhibitiing our
+match for many of the approaches we find most valuable, inhibiting our
 productivity as well as the success and quality of our work.
 
 [[https://en.wikipedia.org/wiki/Edsger_W._Dijkstra][Edsger Dijkstra]] said that to solve a challenging problem with a computer, we
 should /not/ imagine solving it with the kinds of computers that already exist.
 Instead, we should (1) Imagine a machine [platform] that would be a good fit for
 solving our problem, (2) solve our problem using that machine, and then (3)
-implment that machine. In practice there is iteration between steps (1) and
+implement that machine. In practice there is iteration between steps (1) and
 (2) - and step (3) invokes Dijkstra's approach recursively!
 
 In addition to doing a good job of supporting a many projects which we think are
-important for humanity, our desired platoform should provide good support for
-its own continued development and havae excellent support for collaborative
+important for humanity, our desired platform should provide good support for
+its own continued development and have  excellent support for collaborative
 development processes.
 
 The evolution of the design of The Wicci System has been driven by both Top-Down
 and Bottom-Up considerations. The original Top-Down driver was creating a better
 kind of Wiki system - /Wicci/ was intended to be a pun on /Wiki/. See [[*Example
-Facilities and Applications]] for more on that and other Top-Down drivers. The
-Bottom-Up drivers began with mechanisms for mapping hierarchical data structures
-(such as those used for storing Documents) in a Relational Database without
-mutation or with only monotonic mutation. See YYY for more about our Bottom-Up
-drivers.
+Facilities and Applications]] below for more on that and other Top-Down drivers.
+The Bottom-Up drivers began with mechanisms for mapping hierarchical data
+structures (such as those used for storing Documents) in a Relational Database
+without mutation or with only monotonic mutation. See [[*What Makes The Wicci
+System Special]] below for more about our Bottom-Up drivers.
 
 Although the development of the original Wicci System is not complete, it is now
 clear that The Wicci System has potential to be an excellent and empowering
 platform for many kinds of applications and systems, including many which
 address important human needs.
 
-We are in the process of making The Wicci System sufficient to (1) fufull its
+We are in the process of making The Wicci System sufficient to (1) fulfill its
 original goals, (2) be a good platform to support its own further development
 and (3) evolve towards becoming a great platform for many other projects. We
 intend this document to clarify our criteria so as to (1) guide us in our work
@@ -72,9 +72,9 @@ goals and (3) find suitable others to participate.
 
 If you have an interest in the technologies underlying The Wicci Project we
 invite you to learn more about those details and discover if you'd like to
-participate as a development partner!  See section YYY and ZZZ for more!
+participate as a development partner!
 
-** Provding Access to Information
+** Providing Access to Information
 
 The primary scope of The Wicci System is managing and providing access to
 Human-Scale Information, i.e. the information we human beings deal with in our
@@ -110,7 +110,7 @@ Creative Documents
   - including of The Wicci System itself!
 - Media Files of a Movie or art project
 - Diverse materials for a Computer Game
-- Etcetera!
+- etcetera!
 
 Meta-Data for all of the above
 - Semantic Tags
@@ -121,7 +121,7 @@ Meta-Data for all of the above
 
 The Wicci System is based on the PostgreSQL Object-Relational Database System
 using portable techniques and extensions to increase its flexibility and
-representational power. Although PostgreSQL is an efficient and extensible RDBMS
+representational power. Although PostgreSQL is an efficient and extensible RDBMSs
 The Wicci System is not intended to extend PostgreSQL's normal storage and
 computational envelops.
 
@@ -144,7 +144,7 @@ and process /Raw Data/, Data Processing often yields structured information of a
 form which might benefit from storage in The Wicci System.
 
 The Wicci System should not be incompatible with extensions from other projects
-which are addressing the scaling issues which are out of scope for our project.
+
 
 ** Example Applications
 
@@ -161,9 +161,9 @@ Outing Group who live within 100 kilometers. As the Owner-Host, you can delegate
 all or some privileges of managing the Event to co-hosts.
 
 You (and your delegates) control changes and policies for the Global Event Object.
-Recipoents can extend the Event Object with additional information which only
-/they/ controlr. Such extended information is (by default) only visible to
-that Recipoent although the Recipient could selectively or globally Share
+Recipients can extend the Event Object with additional information which only
+/they/ control. Such extended information is (by default) only visible to
+that Recipient although the Recipient could selectively or globally Share
 any such extended information.
 
 The first use of the Event might be to determine who's interested, the best time
@@ -203,7 +203,7 @@ The original application envisioned for the Wicci was as a Wiki system which
 
 [[https://gregdavidson.github.io/wicci-doc/Diagrams/wicci.png][Wicci WIki Use Case Diagram]]
 
-*** Contacts and Connectioos
+*** Contacts and Connections
 
 The following sounds very complicated when I read it. I have a design for how
 using these Connections would appear to the users (the Contacts) which would
@@ -306,7 +306,7 @@ Management Server (RDBMS).
 Relational Database Management Systems (RDBMSs) and Relational Programming (via
 SQL or other Relational Languages) are extraordinarily flexible, general and
 elegant tools for storing and utilizing information. Most modern General-Purpose
-Computing Platforms encourage developers to make use of RDBMs in very limited
+Computing Platforms encourage developers to make use of RDBMSs in very limited
 ways and they encourage developers to not learn SQL but rather to have the
 Platform auto-generate it from a non-Relational source. This aversion to fully
 embracing the power of Relational Systems is result of a myth that Relational
@@ -377,7 +377,7 @@ using RDBMSs. Most systems based on RDBMSs make frequent use of the
 non-monotonic UPDATE and DELETE operations - equivalent to altering and tearing
 pages out of ledger books. Instead, the architecture of The Wicci System
 supports and encourages monotonicity. Monotonicity protects information from
-being lost or corrupted and makes operations simpler and more scalable.
+being lost or corrupted and makes operations simpler and more scaleable.
 
 ** Internal Notes
 
