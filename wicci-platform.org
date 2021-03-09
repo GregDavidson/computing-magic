@@ -385,7 +385,7 @@ corrupted and makes operations simpler and more scaleable.
 
 Some parts of this document may be too detailed and either need to be condensed
 or provided with a tl;dr summary. Other parts may be too brief or are unclear
-and require expansion. There is may be missing material needed to bridge some of
+and require expansion. There may be missing material needed to bridge some of
 the parts. There is material which could be added to make this document better!
 Your assistance can make a difference!
 
