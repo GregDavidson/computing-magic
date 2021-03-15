@@ -1,0 +1,118 @@
+#+TITLE: The Story of EMail
+
+* The Story of EMail
+
+On the surface, this Story is about EMail. It is also a microcosm of overall
+trends and practices in computing and how design decisions effect how and
+whether computers smooth or complicate our lives. If you want a TL;DR just read
+the last two paragraphs!
+
+** The Rand Message Handler System
+
+Long before /the World Wide Web/ there was EMail. While many EMail systems
+stored all EMail messages in a single file, there was an alternative: [[https://en.wikipedia.org/wiki/MH_Message_Handling_System][the MH
+Message Handler]] developed by programmers at the Rand Corporation in 1979. MH
+kept each individual EMail Message in files named 1, 2, 3, etc. organized in
+regular Folders (Directories) just like any other kind of files. MH provided
+handy programs for receiving, viewing, filtering and otherwise managing Messages
+in Folders but since Messages were simply text files and Folders were just
+ordinary Directories, users could also manage them using the same
+general-purpose programs they use for dealing with any other files or folders.
+Under Unix and similar systems it was also possible to use hard and soft links
+to cross-reference messages and folders.
+
+EMail messages all begin with a section of headers, e.g.
+#+begin_example
+Date: Message-Id: <8312081801.AA09772@sdcsvax.UCSD>
+Received: by sdcsvax.UCSD; Thu, 8 Dec 83 10:01:11 pst
+Date:  8 Dec 1983 1001-PST (Thursday)
+Return-Address: davidson@sdcsvax.UUCP or davidson@nosc.ARPA
+To: logo, sdchema\!bang\!sdhubbs\!ab
+Subject: More on digital audio perception
+#+end_example
+
+Any of these Header/Value pairs could be used for selecting and filtering
+messages and /you could add headers of your imagination/ to further categorize
+your messages!
+
+It was easy to store notes, document fragments and other textual miscellanea in
+the MH Folder Tree, either by sending them as an EMail message to oneself or by
+simply dropping them into a file with suitable headers - over time, many of my
+scripts did just that.
+
+There were a variety of full-screen and graphical front-ends to provide a
+friendly interface to MH, and at the same time the simplicity of the MH system
+allowed trivial shell scripts to automate fancy MH desires!
+
+I gradually acquired multiple email addresses associated with various
+organizations and projects. I used scripts to organize my incoming mail into
+folders to deal with new mail strategically and easily find any email or other
+bits of information I needed for projects. My personal and business information
+flow lived in this system and much content accumulated over 20 years!
+
+At the end of the millennium, EMail Messages were increasingly including
+Multimedia Attachments and message bodies were increasing encoded in subsets of
+HTML. My favorite MH client (Emacs MH-e) did not yet handle those formats well.
+Fortunately another EMail client arrived which could: *Evolution*.
+
+** "Evolution" for EMail
+
+The original Evolution EMail client was part of the GNOME Free Software Suite
+although it could be installed by itself. It was graphical and handled
+multimedia mail smoothly. By default it appended EMail messages to single files
+representing Folders, but it could be told to use the MH filing system. In
+addition, Evolution stored the meta-information (derived from message headers)
+in a (primitive) database allowing a lot of what I'd been doing with shell
+scripts to be expressed with declarative rules through the GUI.
+
+It took some time to convert my scripts and practices to Evolution. Evolution's
+rules were less powerful than my shell scripts and it either ignored or even
+lost my annotations. I persevered and eventually all of my email from all of my
+addresses and domains were getting properly sorted. And I could still use other
+tools to supplement what Evolution could do. And then disaster struck!
+
+Disaster struck in two phases: First evolution abandoned support for storing
+mail a la MH. I condensed my MH folders into traditional EMail files and kept
+using Evolution for a few years, despite some loss of productivity. Then the
+worst happened: Evolution switched to a new database engine which interpreted
+my rules differently and made a complete hash of my EMail automation.
+
+I was not willing to rewrite all of my rules to continue with Evolution when I
+was already unhappy with its folder system and I didn't trust the Evolution
+developers to not break all my work again. I searched for alternatives and some
+of them were promising but not everything I was looking for. I had to do
+something so I did GMail - just temporarily, I thought at the time!
+
+** Using GMail while Looking for Something Better
+
+Many people are happy with GMail because it has a lot of built-in features for
+organizing messages. Compared with Evolution GMail is a moron. Compared with MH,
+Evolution is a moron. I was not happy but what was I going to do?
+
+There seemed to be two fundamental alternatives: (1) find a better graphical
+client for MH or (2) find an alternative EMail system based on a Relational
+Database which was stable and under my control. By this time I'd become enamored
+of PostgreSQL and I started exploring a couple of EMail systems which could
+store messages in PostgreSQL tables.
+
+At the same time, the increasing appearance of web links, new multimedia formats
+and (ugh!) JavaScript in EMail messages meant that the best graphical front end
+for EMail was a web browser, probably the best advantage of GMail.
+
+I would like to store my EMail in PostgreSQL and browse it via Dynamic Web
+Pages. To get back the full functionality of MH I would like to store as much of
+my other personal information in the same system as possible. And I'd like to be
+able to selectively share some of my EMail, along with other content and
+meta-content (e.g. Bookmarks) with my community.
+
+The glory of MH is that it integrates smoothly with existing operating system
+platforms, e.g. Unix, BSD or GNU/Linux, allowing the same tools to manage EMail
+messages as one uses for any other data. Sharing selective EMail or other
+Folders with my community used to be as easy as a right-click on the Folder Icon
+and selecting the individuals or groups I wanted to share it with. The world has
+gotten more complicated but the fundamentals have not changed.
+
+What is needed is a platform that (1) stores everything important in a
+Relational Database with good logical Schemas, (2) allows for flexible Sharing
+and (3) offers a Web Browser /and/ an SQL command interface. I propose to build
+such functionality into [[https://gregdavidson.github.io/wicci-core-S0_lib/][The Wicci]] - would you like to help?
