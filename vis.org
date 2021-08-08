@@ -1,4 +1,8 @@
-* Virtual Infinity Systems
+#+TITLE: Computing Magic
+#+OPTIONS: toc:nil 
+#+OPTIONS: num:nil
+
+* Computing Magic
 
 ** Planning
 
