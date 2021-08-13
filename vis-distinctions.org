@@ -1,10 +1,6 @@
-#+TITLE: Computing Magic
+#+TITLE: Computing Magic Distinctions
 #+OPTIONS: toc:nil 
 #+OPTIONS: num:nil
-
-* Computing Magic
-
-** Planning
 
 *** Computing Distinctions
 
@@ -57,47 +53,3 @@ Regular Expressions, RTNs, Relational Algebra, Horne Clauses
   - Computer Lib / Dream Machines
 - XR, Croquet, Interactive Eyegaze
 - Magic
-**** Quotes
-***** Alan Perlis
- #+BEGIN_QUOTE
-Fools ignore complexity. Pragmatists suffer it. Some can avoid it. Geniuses remove it.
- #+END_QUOTE
- #+BEGIN_QUOTE
-It is better to have 100 functions operate on one data structure than to have 10 functions operate on 10 data structures.
- #+END_QUOTE
- #+BEGIN_QUOTE
-A language that doesn't affect the way you think about programming is not worth knowing.
- #+END_QUOTE
- #+BEGIN_QUOTE
-I think that it's extraordinarily important that we in computer science keep fun
-in computing. When it started out, it was an awful lot of fun. Of course, the
-paying customers got shafted every now and then, and after a while we began to
-take their complaints seriously. We began to feel as if we really were
-responsible for the successful, error-free perfect use of these machines. I
-don't think we are. I think we're responsible for stretching them, setting them
-off in new directions, and keeping fun in the house. I hope the field of
-computer science never loses its sense of fun.
- #+END_QUOTE
- #+BEGIN_QUOTE
-Syntactic sugar causes cancer of the semicolon.
- #+END_QUOTE
- #+BEGIN_QUOTE
-One can’t proceed from the informal to the formal by formal means
- #+END_QUOTE
- #+BEGIN_QUOTE
-The string is a stark data structure and everywhere it is passed there is much duplication of process. It is a perfect vehicle for hiding information.
- #+END_QUOTE
-***** XKCD
-- [[https://xkcd.com/224/][XKCD Lisp]]
-- [[https://xkcd.com/297/][XKCD Lisp Cycles]]
-***** Misc Quotes
- #+BEGIN_QUOTE
- Programming languages should be designed not by piling feature on top of
- feature, but by removing the weaknesses and restrictions that make additional
- features appear necessary. Scheme demonstrates that a very small number of
- rules for forming expressions, with no restrictions on how they are composed,
- suffice to form a practical and efficient programming language that is flexible
- enough to support most of the major programming paradigms in use today.
- #+END_QUOTE
- #+BEGIN_QUOTE
- #+END_QUOTE
