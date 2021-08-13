@@ -17,7 +17,7 @@ Homoiconicity.
 **** Paradigms
 [[https://en.wikipedia.org/wiki/Programming_paradigm][Programming Paradigms]]
 [[https://en.wikipedia.org/wiki/Concepts,_Techniques,_and_Models_of_Computer_Programming][Concepts, Techniques, and Models of Computer Programming]]
-**** Integral Prooving and Programming
+**** Integral Proving and Programming
 **** Metaprogramming
 **** Rule of Least Power
 [[https://en.wikipedia.org/wiki/Rule_of_least_power][Rule of Least Power]]
