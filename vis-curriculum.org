@@ -8,11 +8,11 @@
 ** Summary
 
 Go beyond developing computer programs the hard way, i.e. manually. Learn the
-most powerful [[https://en.wikipedia.org/wiki/Programming_paradigm][programming paradigms]] and how to use meta-programming to generate
+most powerful [[https://en.wikipedia.org/wiki/Programming_paradigm][programming paradigms]] and how to use [[https://en.wikipedia.org/wiki/Metaprogramming][meta-programming]] to generate
 correct-by-construction code from your specifications. Along the way, you will
-Build your own dynamic Web Server with a customizable back-end database. You
+Build a dynamic Web Server with a customizable object-relational database. You
 will wind up with l33t computing skills along with an extensible framework which
-are beyond the current state of the art - all so you can accomplish your
+go well beyond the conventional state of the art - so you can accomplish your
 ambitious goals.
 
 ** Strategy
