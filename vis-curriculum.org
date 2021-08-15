@@ -10,7 +10,7 @@
 Go beyond developing computer programs the hard way, i.e. manually. Learn the
 most powerful [[https://en.wikipedia.org/wiki/Programming_paradigm][programming paradigms]] and how to use [[https://en.wikipedia.org/wiki/Metaprogramming][meta-programming]] to generate
 correct-by-construction code from your specifications. Along the way, you will
-Build a dynamic Web Server with a customizable object-relational database. You
+build a dynamic Web Server with a customizable object-relational database. You
 will wind up with l33t computing skills along with an extensible framework which
 go well beyond the conventional state of the art - so you can accomplish your
 ambitious goals.
@@ -18,23 +18,23 @@ ambitious goals.
 ** Strategy
 
 1. Start from zero - Beginner's Mind
-2. take the least cluttered and most general path, especially
+2. Take the least cluttered and most general path, leveraging
 - https://racket-lang.org/
 - https://www.postgresql.org/
-3. Pull in "computing magic" distinctions
+3. Pull in /Computing Magic/ distinctions
 - [[https://github.com/GregDavidson/new-rfcs/blob/main/vis-distinctions.org][vis-distinctions.org]]
-- along with some other great resources
+- along with other great resources
 
 ** Object-Level Plan
 
-1. Work through the three short Racket tutorials as a mathematician would, i.e.
-making it your own as you go through all of the steps:
+1. Explore the three short Racket tutorials as a mathematician would, i.e.
+making it your own as you go through the steps:
 - https://docs.racket-lang.org/quick/
 - https://docs.racket-lang.org/continue/index.html
 - https://docs.racket-lang.org/more/index.html
-2. Work though the PostgreSQL tutorial:
+2. Absorb the PostgreSQL tutorial:
 - https://www.postgresql.org/docs/devel/tutorial.html
-3. Read and improve the Wicci
+3. Read and improve the Wicci and make it your own:
 https://gregdavidson.github.io/wicci-core-S0_lib/
 
 ** Additional Resources
