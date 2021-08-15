@@ -3,7 +3,7 @@
 #+OPTIONS: toc:nil 
 #+OPTIONS: num:nil
 
-*  The Curriculum
+*  Computing Magic Curriculum
 
 ** Summary
 
