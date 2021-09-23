@@ -1,1 +1,24 @@
-Nothing to see here yet!
+* What is Computing Magic?
+
+This repository is the beginning of a curriculum for learning *Computing Magic*.
+
+Computing Magic is leveraging the power of computers and software to do with
+ease what would be hopelessly difficult in the real world.  With Computing Magic we can 
+design
+- Biological organisms
+- Fabulous machines
+- Interactive games
+- Whole new worlds!
+
+We can explore our creations with /Virtual Reality/, share them with collaborators
+and increasingly we can use /Automated Manufactoring/ (3D Printers, DNA
+sequencers, etc.) to materialize them in the physical world.
+
+One key ingredient is what makes it magic: Instead of creating digital artifacts
+manually, e.g. using graphical user interfaces and/or editors, we make the
+computer do the hard work while we supply only high-level specifications. We say
+/what we want/ and the computer figures out /how to do it/.
+
+Many of the pioneers of computing were computing magicians, few of today's
+/programmers/ and /users/ have learned those /leet skills/. This repository
+contains the beginning of a fast-path curriculum for learning Computing Magic!
