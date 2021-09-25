@@ -22,3 +22,9 @@ computer do the hard work while we supply only high-level specifications. We say
 Many of the pioneers of computing were computing magicians, few of today's
 /programmers/ and /users/ have learned those /leet skills/. This repository
 contains the beginning of a fast-path curriculum for learning Computing Magic!
+
+All of the materials in this repository are in an early stage of development /and/ if you're brave you might want to check out:
+- [[computing-magic-examples.org]]
+- [[vis-curriculum.org]]
+- [[vis-distinctions.org]]
+- [[vis-quotes.org]]
