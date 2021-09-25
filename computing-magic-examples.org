@@ -1,0 +1,120 @@
+* Computing Magic Examples
+
+** Making us Smarter!
+*** Sketchpad
+- https://en.wikipedia.org/wiki/Sketchpad
+*** ThingLab
+- https://en.wikipedia.org/wiki/ThingLab
+*** Expert Systems
+- https://en.wikipedia.org/wiki/Expert_system
+- 
+- [[https://en.wikipedia.org/wiki/Mycin][Mycin]] exceeded human capacity for diagnosing and treating Encephalitis
+- Emycin was an Expert-System Shell derived from Mycin by deleting Mycin's domain knowlege
+- Tiresias was an Emycin Expert System for building Emycin-based Expert Systems!
+How do we tell truths that might hurt?
+
+*** Do What I Mean
+- https://en.wikipedia.org/wiki/DWIM
+
+There's a rich history of software tools which model what a computer
+user/designer/programmer/etc. is trying to do and assist them in doing it.
+Automated software assistants free us to do the creative work by doing
+everything else.
+
+** Collaboration
+
+*** Augment
+- https://en.wikipedia.org/wiki/The_Mother_of_All_Demos
+*** Croquet
+- https://en.wikipedia.org/wiki/Croquet_Project
+
+** Fabulous Machines
+*** Lisp Machines
+- MIT Lisp Machine
+- VLSI Lisp Machine
+
+** 3D Design & Printing
+
+The goal is to create an automated system which can create any designed manufactured product, including another system like itself.  Thus
+- the price of all goods becomes little more than the cost of their raw materials
+- Automated production of equipment to produce raw materials will further depress prices
+- Collaboration in creating and refining digital designs will rapidly improve all goods
+- Patent-free Open source designs will improve the fastest!
+
+3D Printers are just one component of such a system. The whole thing is
+sometimes called a *Fab Lab*
+- https://www.fablabs.io/
+- http://cba.mit.edu/about/
+- https://en.wikipedia.org/wiki/Fab_lab
+
+*** RepRap
+https://reprap.org/wiki/RepRap
+
+*** Digital Sundial
+This video is important because it shows the general idea with such an accessible example:
+- https://www.mojoptix.com/2015/10/25/mojoptix-001-digital-sundial/
+- 
+*** Relativity Space Rockets
+SpaceX prints large parts of their rockets using 3D Printers.  Relativity Space prints their entire rockets with 3D Printers!
+- https://www.relativityspace.com/
+- 
+*** Synthetic Biology
+Did you know that biologists created a synthetic lifeform from scratch more than 10 years ago?
+And that they've been refining it ever since?
+
+- https://redice.tv/news/craig-venter-creates-first-synthetic-life-form
+- 
+- https://en.wikipedia.org/wiki/Artificial_gene_synthesis
+
+*** Automated Chemistry
+
+What kind of 3D Printer could efficiently print a microfluidics-based compact
+chemical analysis and synthesis laboratory? Could you build such a 3D Printer
+using a Fab Lab in your garage?
+
+- Breathless article :: [[https://cen.acs.org/business/informatics/lab-future-ai-automated-synthesis/99/i11][The lab of the future is now]]
+- [[https://duckduckgo.com/?q=microfluidics++chemistry+laboratory&t=lm&atb=v33-1&ia=web][Search: microfluidics chemistry laboratory]]
+  
+Cheap desktop 3D Printers generally only print models using plastic. Yet they
+can print molds which can be used to create components made of metal and other
+materials which can be used to build, for example, more powerful 3D Printers,
+such as the ones which are used to print rockets and jet turbines which are made
+of exotic metal alloys and other materials.
+
+- Bootstrapping :: Using a simple tool or set of tools to produce a more
+  powerful set of tools which are then used to produce a still more powerful set
+  of tools, and so on without limit.
+- [[https://en.wikipedia.org/wiki/Bootstrapping][Bootstrapping]] can be applied to physical tools, software tools and even
+  conceptual tools!
+ 
+** Automating Computing
+*** ProgrammingLanguages
+**** Mid-Level Languages
+***** What Computers Are
+****** TODO get my article back online!!!
+***** C
+- [[https://github.com/GregDavidson/C-By-Example][Crash Course: C By Example]]
+***** Rust
+If you're interested in creating the kinds of programming which have traditionally been
+done in C and C++, e.g. creating Operating Systems, Rust is likely your best
+language!
+**** Higher-Level Languages
+***** Lisps
+***** Ad Hoc Metaprogramming
+***** Scripting
+**** Declarative Programming
+***** Functional Programming
+***** Logic Programming
+***** Constraint Programming
+***** Declarative Metaprogramming
+
+** Misc
+
+- [[https://genius.com/Marc-andreessen-why-software-is-eating-the-world-annotated][Software Is Eating The World]]
+
+*** Clumsy Software Holds us Back!
+- [[http://www.paulgraham.com/avg.html][Paul Graham: Beating The Averages]]
+- [[https://wiki.c2.com/?BlubParadox][C2: Blub Paradox]]
+- https://en.wikipedia.org/wiki/Programming_paradigm
+- [[https://www.cs.utexas.edu/users/EWD/transcriptions/EWD04xx/EWD498.html][Dijkstra: How do we tell truths that might hurt?]]
+  - with nicer formatting: [[https://www.cs.virginia.edu/~evans/cs655/readings/ewd498.html][How do we tell truths that might hurt?]]
