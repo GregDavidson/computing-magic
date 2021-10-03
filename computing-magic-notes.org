@@ -144,26 +144,27 @@ confusing.
 1. I'm using Racket Scheme library functions so you won't see what's going on at
    the level of the machine. To really see what's going on you'll want to see
    the same examples in C. Let me know if you'd like that!
-2. Scheme uses the term *vector* to mean a a 1-dimensional *array* of elements
+2. Scheme uses the term *vector* to mean a a *1-dimensional array of elements*
    which are of the same size and allocated contiguously (one after the other in
-   memory) so that the n'th item is always at a predictable location in memory.
-   This allows for super-fast O(1) random access to the n'th item. Lisp
-   programmers usually prefer lists instead of vectors because lists are more
-   flexible - unless they know they're going to be doing a lot of random access.
-   Lists are more flexible but less efficent because they're /not contiguous/ in
-   memory. Vectors are often faster than lists, but other things can be much
-   faster than vectors! These issues only matter if you have a speed bottleneck
-   (hot spot) involving a particular data collection. If not, write what's
-   simplest and clearest - that will help you if you later need to change it!
+   memory) so that the =n='th item is always at a predictable location in
+   memory. This allows for super-fast =O(1)= random access to the =n='th item.
+   Lisp programmers usually prefer lists instead of vectors because lists are
+   more flexible - unless they know they're going to be doing a lot of random
+   access. Lists are more flexible but less efficent because they're /not
+   contiguous/ in memory. Vectors are often faster than lists, but other things
+   can be much faster than vectors! These issues only matter if you have a speed
+   bottleneck (hot spot) involving a particular data collection. If not, write
+   what's simplest and clearest - that will help you if you later need to change
+   it!
 3. Part of the reason why Python, Javascript and most other /scripting
    languages/ are slower than C or Lisp (by about a factor of 50) is that they
    use *hash tables* for everything where Lisp programmers would usually use
    Lists and C programmers would usually use Arrays. Hash Tables are often (but
-   not always) faster for /large datasets/ but are slower for small datasets, so
-   using them everywhere is buying simplicity at a rather high price. Good
+   not always) faster for large datasets but are slower for small datasets, so
+   using them everywhere is buying uniformity at a rather high price. Good
    programmers write their code in such a way that it's easy to replace any
    algorithm or data structure at need.
-4. The examples use the rackunit testing library. The check functions will
+4. The examples use the /rackunit testing library/. The check functions will
    prevent the program from loading if they fail and they also help document the
    usage of the key functions. Good code is more expressive than comments!
 5. I've made these examples a bit shorter and simpler than I would normally make
@@ -177,7 +178,7 @@ will take time proportional to =n=. If the time it takes to process one piece of
 data plus the cost of navigating to the next piece of data is k then processing
 all =n= pieces will take time proportional to =k * n=. When n is large, we ignore k
 and we just stay that it will take time "of the order of =n=" which we abbreviate
-as O(n).
+as =O(n)=.
 
 #+begin_src scheme
 #lang racket
@@ -206,9 +207,9 @@ as O(n).
 (check-pred false? (color-code-by-name-linear "hello"))
 #+end_src
 
-If n = 1000 and you are trying to find a particular piece of data and you know
-it's in there, on the average you'll need to look at n/2 = 500 of the pieces,
-but this is still proportional to n so we say it still O(n).
+If =n= = 1000 and you are trying to find a particular piece of data and you know
+it's in there, on the average you'll need to look at =n/2= = 500 of the pieces,
+but this is still proportional to n so we say it still =O(n)=.
 
 ***** Sorted Array: O(log n)
 
@@ -244,11 +245,11 @@ possibilities in half.
 #+end_src
 
 Well, that seems to be better!
-| number of items | cost of lookup is O(log n) |
-|-----------------+----------------------------|
-| one thousand    | 10 * k                     |
-| one million     | 20 * k                     |
-| one billion     | 30 * k                     |
+| number of items: n | cost of lookup: O(log n) |
+|--------------------+--------------------------|
+| one thousand       | 10 * k                   |
+| one million        | 20 * k                   |
+| one billion        | 30 * k                   |
 
 Looking good! However, if you've only got a handful of values, or if you can put
 the values that are most frequently wanted at the front, a linear search could be faster!
