@@ -465,16 +465,22 @@ Here is our first complete quine - in Scheme, of course:
 (lambda (f) (f f)) (lambda (f) (f f)))
 #+end_src
 
+which can also be written neatly as
+
+#+begin_src scheme
+(λ (f) (f f)) (λ (f) (f f)))
+#+end_src
+
 Nothing is quoted so the whole thing gets compiled to machine code. But doesn't
-it need to be passed to =eval= to keep running? Nope, it /swallows its own tail/
+it need to be passed to =eval= to keep running?  Nope, it /swallows its own tail/
 creating an infinite chain of generating itself and then executing itself! If we
 had a criterion for when it should be executed, e.g. when the user presses a
 certain button, or at a certain time, or when data arrives on a network socket,
 we could add those external conditions without too much trouble.
 
-The key thing here is that this lovely function f (which is called the /least
-fixedpoint/ in the lambda calculus) can be completely compiled to machine code
-so there's no special overhead at runtime as it regenerates its form and its
+The key thing here is that this lovely function =f= (which is called the [[https://en.wikipedia.org/wiki/Kleene%27s_recursion_theorem][least
+fixedpoint]] in the [[https://en.wikipedia.org/wiki/Lambda_calculus][Lambda Calculus]]) can be completely compiled to machine code so
+there's no special overhead at runtime as it regenerates its form and its
 execution without limit!
 
 So what does this look like in practical metaprogramming code?
