@@ -351,20 +351,20 @@ There are three common kinds of metaprogramming:
    time. This is a similar but somewhat more lightweight version of the first
    method. It still has a lot of overhead as the strings or symbolic expressions
    have to be analyzed, verified and translated before they can be run.
-3. Languages which have lambda functions can do a much more efficient and
-   natural form of metaprogramming. For a long time only Lisps had Lambda
-   Functions, but various kinds of (usually functionally restricted) Lambda
-   Functions have been added in newer versions of popular languages such as
-   Python, Java, Javascript, Microsoft Excel, etc. An ordinary function can
-   simply return a Lambda Function which can then be immediately excuted if
-   suitable prameters are already available, or it can be bound to a name for
-   (re)use later in the program. In Lisp /all Functions are Lambda functions/
-   and in Lisp, Functions are first class objects which can be sent over network
-   channels to be excuted remotely, stored in databases and files, etc. When
-   Lambda Functions are fully integrated into the compiler, as they are in Lisp,
-   they don't require any new parsing or analysis - they are almost instantly
-   available as machine code and they're just as reliable and efficient as any
-   other functions.
+3. Languages which have /lambda functions/ can do a much more efficient and
+   natural form of metaprogramming. For a long time only Lisps had /lambda
+   functions/, but various kinds of (usually functionally restricted)
+   /lambda-ish functions/ have been added in newer versions of popular languages
+   such as Python, Java, Javascript, Microsoft Excel, etc. An ordinary function
+   can simply return a /lambda function/ which can then be immediately executed
+   if suitable parameters are immediately available, or it can be bound to a
+   name for use as needed just like any other function. In Lisp /all functions
+   are lambda functions/ and in Lisp, /all functions are first class objects/
+   which can be sent over network channels to be excuted remotely, stored in
+   databases and files, etc. When /lambda functions/ are fully integrated into
+   the compiler, as they are in Lisp, they don't require any new parsing or
+   analysis - they are almost instantly available as machine code and they're
+   just as reliable and efficient as any other functions.
 
 So how does this show up in Quines?
 
