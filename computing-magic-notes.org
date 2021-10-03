@@ -462,13 +462,13 @@ string!
 Here is our first complete quine - in Scheme, of course:
 
 #+begin_src scheme
-(lambda (f) (f f)) (lambda (f) (f f)))
+((lambda (f) (f f)) (lambda (f) (f f)))
 #+end_src
 
 which can also be written neatly as
 
 #+begin_src scheme
-(λ (f) (f f)) (λ (f) (f f)))
+((λ (f) (f f)) (λ (f) (f f)))
 #+end_src
 
 Nothing is quoted so the whole thing gets compiled to machine code. But doesn't
