@@ -27,30 +27,30 @@
 
 **** Memory Hierarchies
 
-The purpose talking about the /Computer Memory Hierarchy/ is to provide some
-useful intuitions of what's going on at the machine level so that when you're
-writing high-level code, you have enough awareness of the likely cost of what
-you're doing that you'll tend to write better code. We are ignoring a lot of
-details which hardware people love because they rarely matter when we're using
-high level languages which are compiling to diverse machines. Any numbers we
-give are only approximate as they will vary depending on the specific hardware
-and compiler in use, which will both change frequently!
+The purpose here in talking about the /Computer Memory Hierarchy/ is to provide
+you with some useful intuitions of what's going on at the machine level so that
+when you're writing high-level code, you have enough awareness of the likely
+cost of what you're doing that you'll tend to write better code. We are ignoring
+a lot of details which hardware people love because they rarely matter when
+we're using high level languages which are compiling to diverse machines. Any
+numbers we give are only approximate as they will vary depending on the specific
+hardware and compiler in use, which will both change frequently!
 
 We're ordering the various storage mechanisms from fastest (and most expensive)
 to slowest (and much cheaper), thus we get a Hierarchy. We want the computer to
 keep the parts of our large programs that are hotspots (most frequently
 accessed) at the top (fastest) part of the hierarchy. In order to do that, we
 need to push the parts which are accessed less frequently (at least in the near
-future) further down the hierarchy. If we (or our software tools) can do this
-well, our large programs will run almost as fast as if they were entirely stored
-in the fastest memory.
+future) further down the hierarchy. If we (or ideally, our software tools) can
+do this well, our large programs will run almost as fast as if they were
+entirely stored in the fastest memory.
 
 An additional issue is that /purely electronic storage is faster but is also
 volatile/, meaning that data will not survive when the program terminates or
 crashes or the machine is turned off. We want to ensure that our programs and
 data are always secure and uncorrupted, no matter what happens. Transactions are
 not complete until all new data and all changes are on secondary media with
-what's called transactional integrity. In addition, any important data must get
+what's called /transactional integrity/. In addition, any important data must get
 automatically backed up (and be fully encrypted) on tertiary media at multiple
 remote locations.
 
@@ -60,14 +60,14 @@ performance of each kind of memory. An orthogonal consideration is *throughput*
 which applies when one is accessing a chunk of adjacent storage. When programs,
 databases, etc. arrange for data which is often needed together to be adjacent,
 the cost of accessing that storage can be much less than if we were having to
-independently access the same amount of data from lots of random locations. So
+independently access the same amount of data from diverse locations. So
 throughput is very important even though we're mostly ignoring it here.
 
 ***** Primary, Pure Electronic Storage
 
 - Logic gates :: tens to hundreds of picoseconds
-  - Used to implement built-in computer operations, e.g. add, compare, etc.
-    including their intermediate values.
+  - Used to implement built-in machine operations, e.g. add, compare, etc.
+    - including their intermediate values, e.g. arithmetic carries.
 - Registers :: hundreds of picoseconds
   - Used to store parameters and local variables of procedures (functions)
 - Cache (Static SRAM) :: Half a nanosecond to several nanoseconds
@@ -90,17 +90,17 @@ loss.
 ***** Database Storage
 
 - Database Latency :: tens of milliseconds to seconds
-  -  *Not* directly comparable to the other storage levesls.
+  -  /Not/ directly comparable to the other storage levels!
 
-Database storage is "smart storage". Instead of fetching raw data and then
+Database storage is /smart storage/. Instead of fetching raw data and then
 processing it in your program to get the required information, your program asks
-the database for the /information/ it needs and the database (1) finds the
-relevant /data/, (2) does the processing for you (often more efficiently than
-you could do it) and then (3) sends /the meaningful results/ aka /the
-information/ to your program.
+the database directly for the meaningful /information/ it needs and the database
+(1) finds the relevant /data/, (2) does the processing for you (often more
+efficiently than you could do it) and then (3) sends /the meaningful results/
+aka /the information/ to your program.
 
-Sophisticated Programs offload as much their data processing work to databases
-as they can, making those programs simpler and more efficient. Most programmers
+Sophisticated Programs offload as much their data processing work as possible to
+databases, making those programs simpler and more efficient.  Most programmers
 don't understand how to do this!
 
 Databases can be organized to automatically distribute the data to multiple
@@ -127,9 +127,9 @@ especially after any changes in how your data is organized!
 
 **** Big-O Notation
 
-We use "Big-O" notation when we want to know how the time (or space) required to
+We use *Big-O* notation when we want to know how the time (or space) required to
 process (or store) data and information *scales* with the number of /pieces of
-data*. Depending on context, /pieces of data/ might be called /entities/,
+data/. Depending on context, /pieces of data/ might be called /entities/,
 /memory objects/, /elements/, /records/ or /nodes/ - all of which are usually
 stored as some number of contiguous bytes or words of memory. The assumption
 here is that operations on a single /piece of data/ is of modest and predictable
