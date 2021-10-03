@@ -254,14 +254,14 @@ Well, that seems to be better!
 Looking good! However, if you've only got a handful of values, or if you can put
 the values that are most frequently wanted at the front, a linear search could be faster!
 
-And: if new data arrives frequently you'll have to resort the array
+And: if new data arrives frequently you'll have to resort the array!
 
-- cost of sorting an array of size n :: n * log n
-| number of items | cost of sorting the array is |
-|-----------------+------------------------------|
-| one thousand    | 10 * 1000 * k                |
-| one million     | 20 * 1000000 * k             |
-| one billion     | 30 * 1000000000 * k          |
+| size of array | cost of sorting it  |
+| =n=           | =n * log n=         |
+|---------------+---------------------|
+| one thousand  | 10 * 1000 * k       |
+| one million   | 20 * 1000000 * k    |
+| one billion   | 30 * 1000000000 * k |
 
 You need to have exponentially more lookups between resorts to pay for the cost
 of the resorts!
