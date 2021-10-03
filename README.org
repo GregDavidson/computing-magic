@@ -28,3 +28,9 @@ All of the materials in this repository are in an early stage of development /an
 - [[vis-curriculum.org]]
 - [[vis-distinctions.org]]
 - [[vis-quotes.org]]
+
+Notes from previous Zoom Sessions are in the file
+- [[https://github.com/GregDavidson/computing-magic/blob/main/computing-magic-notes.org][Computing Magic Meeting Notes]]
+
+You might also like some of the background material at
+- [[https://github.com/GregDavidson/on-computing][On Computing]]
