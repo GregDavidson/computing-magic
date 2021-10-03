@@ -275,15 +275,16 @@ today.
 ***** Hashing: O(1) but higher k
 
 Finally, the technique used nearly everywhere by Python, Javascript and most
-other "scripting" languages: hashing. Write a hash function which given a key,
-e.g. the name of something, and crunches it down into an integer between 0 an
-2 * n. Allocate an array of size 2 * n. Store each item in the array at location
-hash(item). If you can come up with a hash function which is (1) fast to compute
-and (2) rarely produces the same value for different data, you can (3) get
-*great performance* - but watch out for those two caveats! Most scripting
-languages and even modern Lisps will write a hash function for you, for free! If
-your performance is terrible, it's sometimes the fault of that free hash
-function not doing a good job!
+other "scripting" languages: hashing and *hash tables*. You need a hash function
+which converts a key value, e.g. the name of something, and crunches it down
+into an integer between =0= an =2 * n=. You then create an array of size =2 *
+n=. You store each of your items in the array at location =hash[item]=. If you
+can come up with a hash function which is (1) fast to compute and (2) rarely
+produces the same value for different data, you can (3) get *great
+performance* - but watch out for those two caveats! Most scripting languages and
+even modern Lisps will write a hash function for you, for free! If your
+performance is terrible, it's sometimes the fault of that free hash function not
+doing a good job!
 
 #+begin_src scheme
 ; continuing from last example ...
@@ -319,34 +320,37 @@ code. Modern computer systems consider self-modifying code to be an error and
 are designed to make it impossible! If you would like an expanded discussion of
 this matter, ask!
 
-A fun warmup for metaprogramming is writing quines, but most quines, including the heroic PolyQuines in 
-[[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]] do not demonstrate the kind of metaprogramming you like.
+A fun warmup for metaprogramming is writing [[https://en.m.wikipedia.org/wiki/Quine_(computing)][quines]], but most quines, including
+the heroic PolyQuines in [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]] do not demonstrate very good
+metaprogramming.  They are forced rather than natural.
 
 There are three common kinds of metaprogramming:
 
 1. Writing a script or program which reads in some data and then writes a new
-   script or program which you can run later. Compilers are an example of this
-   kind of metaprogramming. So are the horribly complex but powerful [[https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html][GNU
-   Autotools]] which are used to configure many complex software systems before
-   building and installing them. This technique is /heavyweight/ as it involves
-   (1) running program or script (A) which does I/O reading the specifications
-   (usually form a file) and writes the new script or program (usually to
-   another file) and then arranges for the resulting output file to be set up
-   for execution at the appropriate time. In addition to the I/O overhead, the
-   specifications have to be parsed and verified and the code which is generated
-   will need to be parsed, verified and translated (compiled or interpreted)
-   into machine language. We're talking massive overhead. Even on today's
-   computers this is often something which takes many minutes to run.
-2. All scripting languages and many compiled languages have the ability to dynamically
-   parse and execute code which is in the form of a data structure in memory.  In most
-   languages this will simply be a string, but in homoiconic languages such as Lisp and 
-   Prolog we can use symbolic expressions to more naturally express desired code.
-   This means we can have functions output such strings or symbolic expressions
-   into memory and then tell a built-in compiler or interpreter to immediately
-   parse and translate them into efficient code which can be run immediately or 
-   at a later time.  This is a similar but more lightweight version of the first
-   method.  It still has a lot of overhead as the strings or symbolic expressions 
-   have to be analyzed, verified and translated before they can be run. 
+   script or program which you can run later. Compilers are a spectacular
+   example of this kind of metaprogramming. So are the horribly complex but
+   powerful [[https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html][GNU Autotools]] which are used to configure many complex software
+   systems before building and installing them. This technique is /heavyweight/
+   as it involves (1) running program or script (A) which performs I/O reading
+   the specifications (usually from a file) and writing the new script or
+   program (typically to another file) and then arranges for the resulting
+   output file to be set up for execution at the appropriate time. In addition
+   to the I/O overhead, the specifications have to be parsed and verified and
+   the code which is generated will need to be parsed, verified and translated
+   (compiled or interpreted) into machine language. We're talking massive
+   overhead. Even on today's computers this is something which often takes many
+   minutes to run, or longer.
+2. All scripting languages and many compiled languages have the ability to
+   dynamically parse and execute code which is in the form of a data structure
+   in memory. In most languages this will simply be a string, but in homoiconic
+   languages such as Lisp and Prolog we can use symbolic expressions to more
+   naturally express desired code and reduce syntax errors. This means we can
+   have functions output such strings or symbolic expressions into memory and
+   then tell a built-in compiler or interpreter to immediately parse and
+   translate them into efficient code which can be run immediately or at a later
+   time. This is a similar but somewhat more lightweight version of the first
+   method. It still has a lot of overhead as the strings or symbolic expressions
+   have to be analyzed, verified and translated before they can be run.
 3. Languages which have fully-general lambda functions, originally just Lisps, but 
    recently appearing (not fully-general, but still very powerful) in newer versions
    of Python, Java, Javascript, Microsoft Excel, etc. can do a much more efficient 
@@ -368,7 +372,7 @@ This C example is typical of the lot. It outputs it's source code to the screen.
 But a C program written to the screen cannot be run unless a human redirects the
 output to a file with a suitable name, compiles that file to a suitable
 executable file and arranges it to be run. It also outputs its source as a
-single very long line. It's incomplete.  We are not impressed!
+single very long line. It's clumsy and incomplete.  We are not impressed!
 
 
 #+begin_src C
@@ -408,7 +412,7 @@ while True:
 #+end_src
 
 It successfully writes itself out as a new Python script with suitable
-permissions. Pretty ugly, though!
+permissions. Still pretty clumsy, though!
 
 **** QUines using the Data Structure Method 
 
@@ -425,7 +429,7 @@ including an explicit call to eval!
 ((lambda (a) (list a (list 'quote a)))'(lambda (a) (list a (list 'quote a))))
 #+end_src
 
-This Scheme quine avoids the parsing headache but still needs to be translated
+This Scheme quine reduces the parsing overhead but still needs to be translated
 into intermediate or machine code each time. It also failes to show how that
 would be done since it doesn't generate the required call to eval.
 
@@ -436,7 +440,7 @@ would be done since it doesn't generate the required call to eval.
 #+end_src
 
 Requires JavaScript version EcmaScript 6 or later, but is quite elegant. The
-Lambda syntax is the => operator. There are limitations preventing it from being
+Lambda syntax is the => operator. There are limitations preventing => from being
 used as flexibly as traditional JavaScript functions, though. And I'm thinking
 that what's in the quotes is going to have to be reparsed and reanalyzed every
 time.
@@ -503,6 +507,12 @@ dares simplify anything because the redundance was caused by programmers using
 copy and paste followed by subtle manual edits so none of the almost-identical
 sections of code can be replaced by a single generic function.
 
+It would save companies massive amounts of money they currently spend on
+software maintenance (remember the Y2K problem?) if they were to have most of
+their code autogenerated. They should be particularly interested in using modern
+/SQL Databases/ which can autogenerate most of the data processing code in their
+ancient Cobol programs!
+
 Towards the end of the extraordinary (and now free) book [[https://en.wikipedia.org/wiki/Structure_and_Interpretation_of_Computer_Programs][Structure and
 Interpretation of Computer Programs]] the authors show how to write a Scheme
 program which can generate the hardware design of a computer which can run your
@@ -529,16 +539,16 @@ require any actual understading, e.g. any form of [[https://en.wikipedia.org/wik
 reasoning]]. It is properly at the heart of a number of Artificial Intelligence
 applications which do not need to truly understand their tasks. It can also add
 power when used in combination with other [[https://en.wikipedia.org/wiki/Artificial_intelligence][Artificial Intelligence Technologies]].
-It has also been a disaster for the field as a whole because it has become a
-cult, it is being touted as a panacea. Gullible people are being informed that
-Machine Learning can always substitute for actual understanding or that
-understanding will mysteriously /emerge/ from the neural networks. Alas, it
-doesn't work that way! Machine Learning systems are extremely fragile. For most
-tasks they need to be integrated with more traditional techniques which actually
-model what's going on in the domain and check that the pattern matching
-generated by the neural networks makes sense. If you'd like to learn more about
-this I recommend the easy-to-read popularization [[https://www.goodreads.com/book/show/43999120-rebooting-ai][Rebooting AI: Building
-Artificial Intelligence We Can Trust]].
+It has been a disaster for the field as a whole because it has become a cult and
+is being touted as a panacea. Gullible people are being informed that Machine
+Learning can always substitute for actual understanding or that understanding
+will mysteriously /emerge/ from the neural networks. Alas, it doesn't work that
+way! Machine Learning systems are extremely narrow and very difficult to inspect
+and verify. For most tasks they need to be integrated with more traditional
+techniques which actually model what's going on in the domain and check that the
+pattern matching generated by the neural networks makes sense. If you'd like to
+learn more about this I recommend the easy-to-read popularization [[https://www.goodreads.com/book/show/43999120-rebooting-ai][Rebooting AI:
+Building Artificial Intelligence We Can Trust]].
 
 If you continue with the Computing Magic curriculum you will find yourself able
 to use multiple Artificial Intelligence technologies where they are best suited
