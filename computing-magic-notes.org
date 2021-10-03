@@ -258,7 +258,7 @@ the values that are most frequently wanted at the front, a linear search could b
 And: if new data arrives frequently you'll have to resort the array!
 
 | *size of array* | *cost of sorting it* |
-| =n=             | =n * log n=          |
+| =n=             | =O(n⋅log n)=       |
 |-----------------+----------------------|
 | one thousand    | 10 * 1000 * k        |
 | one million     | 20 * 1000000 * k     |
