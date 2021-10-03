@@ -451,14 +451,15 @@ time.
 print((lambda x:f"{x}{x,})")('print((lambda x:f"{x}{x,})")',))
 #+end_src
 
-Uses Lambda - but then needs to put most of the code in a string and trick the
-Python interpreter to reparse it as code. This is using method 2, not method 3.
-I'd be interested to see if Python can do a decent quine using a Lambda Function
-without putting any of the code in a string!
+This Python quine uses =lambda= - but then needs to put most of the code in a
+string and trick the Python interpreter to reparse it as code. This is really
+still using method 2, not method 3. I'd be interested to see if Python can do a
+decent quine using a /lambda function/ without putting any of the code in a
+string!
 
 **** Quines actually using Lambda Functions!
 
-Here is our first complete quine:
+Here is our first complete quine - in Scheme, of course:
 
 #+begin_src scheme
 (lambda (f) (f f)) (lambda (f) (f f)))
