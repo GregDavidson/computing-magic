@@ -301,3 +301,243 @@ function not doing a good job!
 (check-equal? 15 (color-pair-by-name:hash "white"))
 (check-pred false? (color-pair-by-name:hash "hello"))
 #+end_src
+
+**** Three kinds of metaprogramming
+
+It's easy to miss the power of metaprogramming in this decent but facile defintion:
+#+begin_quote
+Metaprogramming in the large is the technique of writing general programs which
+write (often larger and more complex) specialized programs according to
+specifications. Metaprogramming in the small often invoves small functions which
+return specialized functions according to specifications provided as parameters.
+#+end_quote
+
+Metaprogramming is often confused with the /very bad idea/ of self-modifying
+code. Modern computer systems consider self-modifying code to be an error and
+are designed to make it impossible! If you would like an expanded discussion of
+this matter, ask!
+
+A fun warmup for metaprogramming is writing quines, but most quines, including the heroic PolyQuines in 
+[[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]] do not demonstrate the kind of metaprogramming you like.
+
+There are three common kinds of metaprogramming:
+
+1. Writing a script or program which reads in some data and then writes a new
+   script or program which you can run later. Compilers are an example of this
+   kind of metaprogramming. So are the horribly complex but powerful [[https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html][GNU
+   Autotools]] which are used to configure many complex software systems before
+   building and installing them. This technique is /heavyweight/ as it involves
+   (1) running program or script (A) which does I/O reading the specifications
+   (usually form a file) and writes the new script or program (usually to
+   another file) and then arranges for the resulting output file to be set up
+   for execution at the appropriate time. In addition to the I/O overhead, the
+   specifications have to be parsed and verified and the code which is generated
+   will need to be parsed, verified and translated (compiled or interpreted)
+   into machine language. We're talking massive overhead. Even on today's
+   computers this is often something which takes many minutes to run.
+2. All scripting languages and many compiled languages have the ability to dynamically
+   parse and execute code which is in the form of a data structure in memory.  In most
+   languages this will simply be a string, but in homoiconic languages such as Lisp and 
+   Prolog we can use symbolic expressions to more naturally express desired code.
+   This means we can have functions output such strings or symbolic expressions
+   into memory and then tell a built-in compiler or interpreter to immediately
+   parse and translate them into efficient code which can be run immediately or 
+   at a later time.  This is a similar but more lightweight version of the first
+   method.  It still has a lot of overhead as the strings or symbolic expressions 
+   have to be analyzed, verified and translated before they can be run. 
+3. Languages which have fully-general lambda functions, originally just Lisps, but 
+   recently appearing (not fully-general, but still very powerful) in newer versions
+   of Python, Java, Javascript, Microsoft Excel, etc. can do a much more efficient 
+   and natural form of metaprogramming.  An ordinary function can simply return a
+   Lambda function which can then be immediately excuted if suitable prameters are 
+   already available, or it can be bound to a name for use and reuse later in the 
+   program.  In Lisp /all functions are actually Lambda functions/ and in Lisp 
+   functions are first class data structures which can be sent over network channels
+   to be excuted remotely, stored in databases and files, etc.  When Lambda Functions
+   are fully integrated into the compiler, as they are in Lisp, they don't require 
+   any new parsing or analysis - they are almost instantly available as machine code 
+   and they're just as reliable and efficient as any other functions.
+
+So how does this show up in Quines?
+
+**** QUines using the Heavyweight Method 
+
+This C example is typical of the lot. It outputs it's source code to the screen.
+But a C program written to the screen cannot be run unless a human redirects the
+output to a file with a suitable name, compiles that file to a suitable
+executable file and arranges it to be run. It also outputs its source as a
+single very long line. It's incomplete.  We are not impressed!
+
+
+#+begin_src C
+#include <stdio.h>
+int main(){
+  char*c="#include <stdio.h>%cint main(){char*c=%c%s%c;printf(c,10,34,c,34,10);return 0;}%c";
+  printf(c,10,34,c,34,10);
+  return 0;
+}
+#+end_src
+
+Here's a more complete Quine written in Python:
+
+#+begin_src python
+#!/usr/bin/python
+
+import os, sys, time, uuid
+
+# get self code
+self_content = file(sys.argv[0]).read()
+
+while True:
+    # wait 10 seconds
+    time.sleep(10)
+    
+    # create unique filename
+    dupe = "%s.py" % uuid.uuid4()
+    
+    # open and write to the copy
+    copy = open(dupe, "w")
+    copy.write(self_content)
+    copy.close()    
+    
+    # make the copy executable and execute
+    os.chmod(dupe, 0755)
+    os.system("./%s &" % dupe)
+#+end_src
+
+It successfully writes itself out as a new Python script with suitable
+permissions. Pretty ugly, though!
+
+**** QUines using the Data Structure Method 
+
+#+begin_src python
+var = "print('var = ', repr(var), '\\neval(var)')"
+eval(var)
+#+end_src
+
+This Python quine is create a string which has to be reparsed and translated to
+Python intermediate code on each iteration. It should get credit, though, for
+including an explicit call to eval!
+
+#+begin_src scheme
+((lambda (a) (list a (list 'quote a)))'(lambda (a) (list a (list 'quote a))))
+#+end_src
+
+This Scheme quine avoids the parsing headache but still needs to be translated
+into intermediate or machine code each time. It also failes to show how that
+would be done since it doesn't generate the required call to eval.
+
+**** Quines using Lambda Functions, sort of
+
+#+begin_src javascript
+(f=_=>`(f=${f})()`)()
+#+end_src
+
+Requires JavaScript version EcmaScript 6 or later, but is quite elegant. The
+Lambda syntax is the => operator. There are limitations preventing it from being
+used as flexibly as traditional JavaScript functions, though. And I'm thinking
+that what's in the quotes is going to have to be reparsed and reanalyzed every
+time.
+
+#+begin_src python
+print((lambda x:f"{x}{x,})")('print((lambda x:f"{x}{x,})")',))
+#+end_src
+
+Uses Lambda - but then needs to put most of the code in a string and trick the
+Python interpreter to reparse it as code. This is using method 2, not method 3.
+I'd be interested to see if Python can do a decent quine using a Lambda Function
+without putting any of the code in a string!
+
+**** Quines actually using Lambda Functions!
+
+Here is our first complete quine:
+
+#+begin_src scheme
+(lambda (f) (f f)) (lambda (f) (f f)))
+#+end_src
+
+Nothing is quoted so the whole thing gets compiled to machine code. But doesn't
+it need to be passed to =eval= to keep running? Nope, it /swallows its own tail/
+creating an infinite chain of generating itself and then executing itself! If we
+had a criterion for when it should be executed, e.g. when the user presses a
+certain button, or at a certain time, or when data arrives on a network socket,
+we could add those external conditions without too much trouble.
+
+The key thing here is that this lovely function f (which is called the /least
+fixedpoint/ in the lambda calculus) can be completely compiled to machine code
+so there's no special overhead at runtime as it regenerates its form and its
+execution without limit!
+
+So what does this look like in practical metaprogramming code?
+
+**** Metaprogramming naturally using Lambda Functions!
+
+[[https://docs.racket-lang.org/quick/][Quick: An Introduction to Racket with Pictures]] has a simple but practical
+example of metaprogramming. So simple and natural that you could easily miss its
+vast significance:
+
+#+begin_src racket
+#lang slideshow
+(define (rgb-maker mk)
+  (lambda (sz)
+    (vc-append (colorize (mk sz) "red")
+               (colorize (mk sz) "green")
+               (colorize (mk sz) "blue"))))
+#+end_src
+
+which takes as a parameter any function =mk= which can draw a picture of a
+specified size and returns a new function which given a size =sz= will draw
+three =mk= pictures of size =sz= in a neat verticle stack with colorization.
+
+This shows the secret of extreme modularitly. The =mk= function does not need to
+know how or when or how many times its being called or what fancy things are
+being done the pictures it generates. The =rgb-maker= function has no need to
+know anything about the =mk= function other than that it requires a size and
+will return a picture.
+
+Companies which have been using computers for a long time generally have
+millions of lines of computer code containing massive redundancy, yet no one
+dares simplify anything because the redundance was caused by programmers using
+copy and paste followed by subtle manual edits so none of the almost-identical
+sections of code can be replaced by a single generic function.
+
+Towards the end of the extraordinary (and now free) book [[https://en.wikipedia.org/wiki/Structure_and_Interpretation_of_Computer_Programs][Structure and
+Interpretation of Computer Programs]] the authors show how to write a Scheme
+program which can generate the hardware design of a computer which can run your
+programs. When the authors sent the output of that program to the Mosis Fab in
+San Jose, they got back an IC chip which was as powerful as million-dollar
+computers of that era. And it worked perfectly the first time because it was
+generated by Scheme functions based on the principles of VLSI circuit design. If
+you were to then run that program on that new chip to generate that program to
+generate another such chip - that would be an awesome quine!!!
+
+**** Machine Learning aka Neural Networks
+
+The modern technique that goes by such names as Machine Learning and Neural
+Networks is based on the [[https://en.wikipedia.org/wiki/Backpropagation][Backpropagation]] algorithm which was a breakthrough
+discovery at the Cognitive Science Laboratory at UCSD in 1986 when I was a
+graduate student in that laboratory. It's discovery is credited to my advisor
+Professon David Rumelhart and my colleage Geoffrey Hinton who was doing a
+post-doc in our lab at the time. It was a truly exciting breakthrough. It was
+also a disaster for the field of Artificial Intelligence as whole.
+
+Machine Learning is truly a valuable technique. It is a powerful pattern
+matching engine which can solve many difficult problems, as long as they do not
+require any actual understading, e.g. any form of [[https://en.wikipedia.org/wiki/Knowledge_representation_and_reasoning][Knowledge representation and
+reasoning]]. It is properly at the heart of a number of Artificial Intelligence
+applications which do not need to truly understand their tasks. It can also add
+power when used in combination with other [[https://en.wikipedia.org/wiki/Artificial_intelligence][Artificial Intelligence Technologies]].
+It has also been a disaster for the field as a whole because it has become a
+cult, it is being touted as a panacea. Gullible people are being informed that
+Machine Learning can always substitute for actual understanding or that
+understanding will mysteriously /emerge/ from the neural networks. Alas, it
+doesn't work that way! Machine Learning systems are extremely fragile. For most
+tasks they need to be integrated with more traditional techniques which actually
+model what's going on in the domain and check that the pattern matching
+generated by the neural networks makes sense. If you'd like to learn more about
+this I recommend the easy-to-read popularization [[https://www.goodreads.com/book/show/43999120-rebooting-ai][Rebooting AI: Building
+Artificial Intelligence We Can Trust]].
+
+If you continue with the Computing Magic curriculum you will find yourself able
+to use multiple Artificial Intelligence technologies where they are best suited
+and flexibly combine them for extraordinary power.
