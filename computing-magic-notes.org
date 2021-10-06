@@ -306,7 +306,6 @@ doing a good job!
 (define four-bit-color-pairs-hashed-by-name
   (make-hash (vector->list four-bit-color-pairs-by-code)) )
 
-
 (define (color-pair-by-name:hash name) ; O(1) medium k
   (hash-ref four-bit-color-pairs-hashed-by-name name #f) ) ; return #f on failure
 
