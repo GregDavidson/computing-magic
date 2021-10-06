@@ -35,13 +35,21 @@
 (define four-bit-color-pairs-by-name ; vector of (name . code) pairs
   (vector-sort four-bit-color-pairs-by-code string<? #:key car) )
 
+; Given a procedure (less key1 key2) which orders two keys
+; and a selector (get-key object) which selects a key from
+; a complex value, return a procedure (order-key-obj k o) which
+; will return -1, 0, 1 when k is respectively less than,
+; equal or greater-than (get-key o).
+(define (make-orderer less get-key)
+  (lambda (k1 o)
+    (let ( [k2 (get-key o)] )
+      (if (less k1 k2) -1 (if (less k2 k1) 1 0)) ) ) )
+
 (define (color-pair-by-name:log name) ; O(log n) smallish k
   (let ([index (vector-binary-search
                 four-bit-color-pairs-by-name
                 name
-                (λ (color-code-pair string2)
-                  (let ( [string1 (car color-code-pair)] )
-                    (if (string<? string1 string2) -1 (if (string=? string1 string2) 0 1)) ) ) ) ])
+                (make-orderer string<? car) ) ])
     (and index (vector-ref four-bit-color-pairs-by-name index)) ) )
 
 ;; show examples of color-pair-by-name:log - and check them!
