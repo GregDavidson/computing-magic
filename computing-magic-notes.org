@@ -2,6 +2,8 @@
 
 ** Saturday, 2 October 2021
 
+https://github.com/GregDavidson/computing-magic/blob/main/computing-magic-notes.org
+
 *** Overview of Today's Topics (details below)
 
 1. Measures of Efficiency, Completeness and Elegance
