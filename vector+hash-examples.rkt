@@ -37,20 +37,22 @@
 
 ; Given a procedure (less key1 key2) which orders two keys
 ; and a selector (get-key object) which selects a key from
-; a complex value, return a procedure (order-key-obj k o) which
-; will return -1, 0, 1 when k is respectively less than,
-; equal or greater-than (get-key o).
-(define (make-orderer less get-key)
-  (lambda (k1 o)
-    (let ( [k2 (get-key o)] )
+; a complex value, return a procedure (order o k) which
+; will return -1, 0, 1 when (get-key o) is respectively less than,
+; equal or greater-than k.
+(define (object-key-orderer less get-key)
+  (lambda (o k2)
+    (let ( [k1 (get-key o)] )
       (if (less k1 k2) -1 (if (less k2 k1) 1 0)) ) ) )
 
 (define (color-pair-by-name:log name) ; O(log n) smallish k
+  ; How might you write vector-binary-search?
   (let ([index (vector-binary-search
-                four-bit-color-pairs-by-name
-                name
-                (make-orderer string<? car) ) ])
-    (and index (vector-ref four-bit-color-pairs-by-name index)) ) )
+               four-bit-color-pairs-by-name ; totally sorted array
+               name ; key to search for
+               (object-key-orderer string<? car) ) ])
+  ; index is either #f or it's the index of the found element
+  (and index (vector-ref four-bit-color-pairs-by-name index)) ) )
 
 ;; show examples of color-pair-by-name:log - and check them!
 (check-equal? '("black" . 0) (color-pair-by-name:log "black"))
