@@ -377,7 +377,7 @@ There are three common kinds of metaprogramming:
 
 So how does this show up in Quines?
 
-**** QUines using the Heavyweight Method 
+**** Quines using the Heavyweight Method 
 
 This C example is typical of the lot. It outputs it's source code to the screen.
 But a C program written to the screen cannot be run unless a human redirects the
@@ -425,7 +425,7 @@ while True:
 It successfully writes itself out as a new Python script with suitable
 permissions. Still pretty clumsy, though!
 
-**** QUines using the Data Structure Method 
+**** Quines using the Data Structure Method 
 
 #+begin_src python
 var = "print('var = ', repr(var), '\\neval(var)')"
