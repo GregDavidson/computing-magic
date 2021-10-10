@@ -1,0 +1,358 @@
+* Computing Magic Meeting Notes, Saturday 9 October 2021
+
+** Announcement to the WhatsApp the day before
+
+I'm looking forward to our *Computing Magic discussion tomorrow*!
+I want to hear *what you're discovering* in your explorations
+of the tutorials and other materials.  I will be presenting a
+meta-circular evaluator* which should illuminate some computing
+magic and which you can use as a basis for experimentation.
+Finally, I'll explain *what's next* in the plan!
+- 10:30 US Pacific-Time = 17:30 UTC
+- https://us02web.zoom.us/j/810472918
+- password: abundance
+If you're new to the group, this will be a great time to meet
+one another!
+
+** What should you do between Now and Next Sunday?
+
+This section is intended to be *read last*, after all of the material below. But
+you might not wind up reading all of the material below, so I'm putting it here!
+
+The number one thing between now and our meeting Next Sunday is doing the second 
+Racket Tutorial [[https://docs.racket-lang.org/continue/index.html][Web Applications in Racket]] which is about much more than its title implies: It's about how to create a Domain-Specific Language.
+
+Dijkstra described creative software development as follows:
+1. Specify what you want to create: Your Thing X!
+2. Imagine a system S which would make it easy to create your Thing X
+3. Try to implement your Thing X using System S, even though System S doesn't exist yet!
+4. If you can't do this, iterate on steps 1-3 until you can!
+5. Recursive step: Implement System S using this methodology!
+
+Other good things to do:
+- Explore the Meta-Circular Evaluator
+  - Get familiar with how it works 
+  - Read the comments at the bottom
+  - Try adding some new features!
+- Read some of [[https://docs.racket-lang.org/guide/index.html][The Racket Guide]] and [[https://htdp.org/2021-5-4/Book/index.html][How to Design Programs]].
+- Look over the [[https://docs.racket-lang.org/racket-cheat/index.html][Racket Cheat Sheet]] and follow some of the links.
+- Learn about [[https://docs.racket-lang.org/guide/contract-boundaries.html][Contracts]] - at least to know what they provide.
+- Learn a about typing in [[https://docs.racket-lang.org/ts-guide/index.html][The Typed Racket Guide]].
+
+** Today's Participants
+
+- Nikhil
+- Thiago
+- Laurence
+- Pseudo
+
+** Opening
+
+The idea of Computing Magic is to give access to the maximum power and
+creativity with computing without the cruft (unnecessary and clumsy complexity)
+which has accumulated over the years.
+
+We can learn a lot about the extraordinary successes of some of the pioneers. We
+want to be able to be equally successful, without working as hard as they did!
+
+One of our touchstones will be: Are you building code /by hand/ which you could
+instead have some simple meta-code generate it? Along with the corollary: Are
+you debugging complex hand-written code when you could instead use
+auto-generated code which would be correct by construction?
+
+** Shares
+
+Thiago says that there seems to be a very large amount to learn, despite the
+apparent underlying simplicity.
+
+I shared an excerpt from /Structure and Interpretation of Computer Programs/
+showing an example of the mapping of S-Expressions to Linear Memory.
+
+Nikhil expressed some frustration with creating sufficient time for the course
+and planning his time and the readings, and knowing the flow and connection
+among the readings.
+
+I commented on the irony of how while we know that the institutional top-down
+learning is artificial, we're used to the fear-based motivation. It takes
+practice to create consistent time for non-institutional learning. [ pseudo
+shows up at this time ] Also, this course has the challenges of (1) being a work
+in progress and (2) our disparate timezones. "I'm hoping that as we get deeper
+into the material it will start occurring as more valuable which will make it
+easier to make time for it."
+
+Laurence: Liking the opportunity to revisit some of the awesome software
+technology he surveyed when he was younger.
+
+I lauded Laurence's unusually good initial exposure to advanced computing technology.  Alas that
+the usual languages used to demonstrate those techniques, e.g. C++ and Haskell, are very complex and 
+unless one uses them regularly one will 
+I commented 
+that Scheme/Racket will be easier to remember long-term!
+
+pseudo - referencing his mathematical background.
+
+My response: Validating the usefulness of his special viewpoint.
+
+** Presentation: The Meta-Circular Evaluator. 
+
+Grab yourself a copy of [[https://github.com/GregDavidson/on-lisp/blob/main/vis-mce.rkt][vis-mce.rkt]] and open it with DrRacket. If there's a
+development environment you'd prefer to use instead of DrRacket, e.g. [[https://www.gnu.org/software/emacs/][Emacs]] and
+you already know how to use it for Racket, feel free to use that instead.
+
+Read the initial comments.
+
+The primary entry point into the Evaluator is
+- (=vis-eval= /expression/ /environment/)
+
+We have the convenience function
+- (=vis-env= /list-of-bindings/)
+
+The process of evaluating a normal form will involve
+- =vis-eval= calls
+  - env-form->value which
+    - *recursively* maps =vis-eval= onto the elements of the form
+    - Uses =vis-apply= to apply the /procedure/ onto the /arguments/
+and 5 special forms which have their own evaluation procedures:
+- =quote= 
+- =eval-if=
+- =eval-define-fancy=
+- =eval-begin=
+- =eval-lambda=
+
+There are also a lot of little helper functions, often one-liners.
+They exist to couple low level mechanisms like cons/car/cdr and assoc 
+with higher level intents, like managing bindings and environments.
+
+The low level helper functions abstract what we're doing a bit 
+and make it easier for us to change how things work at a later
+time.  They express our intent, which is clarifying.  But they 
+also interpose an extra layer which takes awhile to get used to.
+
+*** Q & A
+
+A number of questions came up as the code for the Meta-Circular Evaluator was
+presented. I'll condense them here. You can refer to these notes as needed as
+you're working your way through the code. I've tried to sort these in the order
+that you're likely to encounter them.
+
+*Note: There are important sections following this Q & A section!*
+
+**** Dotted Pairs
+
+Procedure =cons= creates /pairs/ aka /cons cells/ which are a pair of words in memory.
+The first word is called the =car= and the second word is called the =cdr=.
+
+A /proper list/ is either
+- the empty list, denoted ()
+- a cons cell whose cdr (tail) is a proper list
+
+Another way of saying this is that a non-empty list begins with a cons cell
+whose =car= is the /first/ element of the list and whose =cdr= is the /rest/ of
+the elements of the list.
+
+But procedure =cons= doesn't have to create a list: It can create a pair of any arbitrary values.
+When the =cdr= of a /pair/ is not a list, we use dotted pair notation:
+
+#+begin_src scheme
+> (cons 'foo 'bar)
+'(foo . bar)
+#+end_src
+
+Spaces are required around the . (dot) since otherwise it would be taken to be
+part of the adjacent element.
+
+We can also nested cons forms to create an /improper list/, i.e. a sequence of
+cons cells connected by their cdrs, but not ending in an empty list:
+#+begin_src scheme
+> (cons 'foo (cons 'bar 'baz))
+'(foo bar . baz)
+#+end_src
+
+We can also create such arbitrary structures with quote (and quasiquote which we cover below):
+#+begin_src scheme
+> '(foo . (bar . baz))
+'(foo bar . baz)
+> '(foo bar . baz)
+'(foo bar . baz)
+#+end_src
+
+**** Flexible Lambda Parameter Pattern Matching
+
+"Pattern matching is key to all kinds of wonderful things in Lisp and AI."
+
+The parameter list in a =lambda= or =define= /implicit lambda/ form doesn't have to be a proper list:
+
+#+begin_src 
+> (define (foo . args) 'whatever)
+; is just syntactic sugar for
+> (define foo (λ args 'whatever))
+; so therefore
+> ( (λ x (cons 'hello x)) 'john 'thomas )
+'(hello john thomas)
+; and
+> ( (λ (x y . z) (list x y 'and z)) 1 2 'buckle 'your 'shoe )
+'(1 2 and (buckle your shoe))
+#+end_src
+
+**** Procedures named x-y->z and x+y->z
+
+Most printable Unicode characters are legal in Racket symbol names.  The exceptions are 
+- You can't start a symbol name with what would look like the beginning of a number
+- You can't use quotes, parentheses, brackets or #
+But pretty much everything else is OK.
+
+It's common to bind procedures to names which express what they do, e.g.
+=string-append-immutable=. Sometimes we give them names which say what they
+require as arguments and what they will then return to us, e.g.
+=env-binding->env= which takes an environment and a binding and returns a new
+environment. Alternative we could have used the name =env+binding->env= although
+the former is more common.
+
+**** Forms have to be non-empty lists
+
+The first element of a /form/ says what to do, so it can't be empty. If it's a
+procedure implementing a function, it will need at least one argument, but not
+all procedures implement functions!
+
+#+begin_src scheme
+> (define (foo) "something from nothing")
+(foo)
+"something from nothing"
+#+end_src
+
+
+**** Quaziquote is syntactic sugar for semi-literal symbolic expressions
+
+We can use quote or ' to express a literal symbolic expression:
+
+#+begin_src scheme
+> '((red green blue) vs (cyan magenta yellow black))
+'((red green blue) vs (cyan magenta yellow black))
+#+end_src
+
+and we can nest =append=, =list= and =cons= forms to express non-literal symbolic expressions
+#+begin_src scheme
+(define light-primaries '(red green blue))
+(define pigment-primaries '(cyan magenta yellow black))
+(list light-primaries 'vs pigment-primaries)
+'((red green blue) vs (cyan magenta yellow black))
+(append light-primaries (cons 'vs pigment-primaries))
+'(red green blue vs cyan magenta yellow black)
+#+end_src
+
+Quaziquote, the backwards quote symbol ` can abbreviate these expressions.
+Everything inside of quaziquote is literal unless it is preceded with , for insert or ,@ for splice:
+
+#+begin_src  scheme
+> `(,light-primaries vs ,pigment-primaries)
+'((red green blue) vs (cyan magenta yellow black))
+> `(,@light-primaries vs ,@pigment-primaries)
+'(red green blue vs cyan magenta yellow black)
+#+end_src
+
+Quaziquote doesn't introduce anything semantically new, it just provides some
+syntactic sugar. Other languages have template syntax which is handy for, e.g.
+html structures. Lisp's quasiquote provides the same expressivity as template
+notations but is actually more general.
+
+**** define forms don't return a value, so what do they do?
+
+Evaluating a =define= form does not return a value, but it extends the
+environment with a new binding which will affect *later* evaluations in the same
+evaluation context!
+
+*VIS-Scheme* doesn't yet have a *REPL* (creating one is one of the suggested
+exercises at the end) so it only has two places where you can enter multiple
+forms:
+
+(begin form1 form2 ... form-n) is the Scheme way of evaluating multiple forms in
+a sequence. The value of a begin form is the value of the last form in the
+sequence. By design, VIS-Scheme does not allow side effects, so the only useful
+begin forms consist of a sequence of define forms ending in a regular form. Each
+form can make use of the bindings introduced by the earlier define forms:
+
+#+begin_src scheme
+ (begin
+   (define light-primaries '(red green blue))
+   (define pigment-primaries '(cyan magenta yellow black))
+   (append light-primaries (cons 'vs pigment-primaries)) )
+'(red green blue vs cyan magenta yellow black)
+
+ (vis-eval '(begin (define light-primaries '(red green blue))
+                     (define pigment-primaries '(cyan magenta yellow black))
+                     (append light-primaries (cons 'vs pigment-primaries)) )
+                     *vis-top-level-environment* )
+'(red green blue vs cyan magenta yellow black)
+#+end_src
+
+In Scheme and VIS-Scheme the body of a procedure is an implicit begin form.
+
+**** Modeling define forms with struct modified-env
+
+We need to capture the new environment after a define form extends it, in case
+the next symbolic expression refers to it. But we don't want to confuse such
+pseudo-values with real values. Fortunately, Racket (and most lisps) provide a
+way to create new types which can't be confused with existing types. In Racket
+this can be done with the special form (=struct= /tag/ /list-of-fields/).
+
+If I say (=struct= person (name favorite-color)) Racket will
+- create a brand new type person
+- create a /constructor/ procedure named =person= which will create persons 
+- create a /predicate/ procedure named *person?* which is only true for persons
+- create a /selector/ procedure for each field, prefaced by =person-=
+
+#+begin_src  scheme
+> (struct person (name favorite-color))
+> (define greg (person "Greg" "green"))
+> greg
+#<person>
+> (person? greg)
+#t
+> (person-name greg)
+"Greg"
+> (person-favorite-color greg)
+"green"
+#+end_src
+
+When we simply want make sure that a special kind of value is not confused with
+any of our existing values, we can just wrap it in a struct:
+
+#+begin_src scheme
+> (struct extended-env (env))
+#+end_src
+
+We can tell if something is an extended-env by using the predicate
+*extended-env?* and we can /unwrap/ it with =extended-env-env=.
+
+**** The Unit Testing Code and the Macros
+
+Finally the Unit Testing code.  A powerful software development strategy
+is called Test Driven Development or TDD.  In TDD we write tests of how 
+each procedure should behave, /before/ we write the procedure!  As soon as 
+we have a candidate implementation of the procedure, we run the tests.
+Each time we change any part of the system, we run the tests again before
+accepting those changes.
+
+When the tests succeed, no output is generated.  When any tests fail,
+the program stops loading and we are given a good error message, including
+a printout of which specific expression failed.  The testing forms are 
+usually implemented as macros to make it easy to pass in an expression 
+once and have it available both to evaluate and also, should it fail,
+to be printed.
+
+Racket has a fairly comprehensive Unit Testing framework called RackUnit.
+Here I'm writing three custom macros instead of using RackUnit.
+
+TDD recommends two kinds of test: Tests for each procedure and tests for 
+the integration of all of those procedures.  In Racket, nearly everything
+is procedures, so these often have the same form.
+
+In addition to serving as tests which help ensure the correctness of our
+system, the Unit Tests give examples of how each procedure is expected
+to behave.  They thus serve as part of the documentation of the procedure 
+and help us understand how to use it, how it works as a black box.
+
+There's an art to writing good tests. There's also a way to use Types to reduce
+the number of required tests. We'll look at both of these subjects more in the
+future. The promise of Computing Magic is that we will /not/ need to spend a
+massive amount of time Debugging and Maintaining the software we create!

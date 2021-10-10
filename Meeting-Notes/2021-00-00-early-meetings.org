@@ -1,0 +1,52 @@
+* Computing Magic, Early Meetings and Getting Started
+
+** How we got here
+
+The current [[file:../cm-curriculum.org][Computing Magic Curriculum]] emerged after a number of presentations
+and discussions of aspects of [[https://github.com/GregDavidson/computing-magic][Computing Magic]] with the wonderful members of the
+[[https://docs.google.com/document/d/1qSUTfoOXDAfoH-OF_7N7kEzlp5-F4nf0JP3BzgppDY0][Limitless Fellowship]] in 2021 and earlier.
+
+The early presentations were too complex, but some people wanted to find a way
+to learn Computing Magic. After some false starts, we settled on the strategy of
+leveraging the [[https://racket-lang.org/][Racket Language]] starting with its excellent [[https://docs.racket-lang.org/quick/][Quick]] tutorial. The
+tutorial is mostly self-guiding and is easy to enrich with
+- variations such as [[file:../after-quick.rkt][after-quick.rkt]]
+- how lambda is hiding under [[https://github.com/GregDavidson/on-lisp/blob/main/lambda-sugar.rkt][lambda-sugar.rkt]]
+- and so on
+
+** Getting Started
+
+If you want to plunge into the [[file:../cm-curriculum.org][Computing Magic Curriculum]], start by doing the
+[[https://docs.racket-lang.org/quick/][Quick]] tutorial as an /exploration:/
+- Download DrRacket for your computer
+- Run DrRacket side-by-side with a browser open on the tutorial
+- Try variations on each example before going on to the next example
+- Write down questions
+- *Discuss things with other folks who started the Curriculum earlier*
+  - and anyone who is at the same level too!
+
+You can look up any Racket procedure in the Reference Manual by putting the
+cursor the procedure name in DrRacket and hitting F1.
+
+Hints when reading Reference Manuals:
+- Try to learn /at most/ two things each time you explore the manuals
+At this initial stage:
+- Don't about the formal language
+- Seriously limit exploration of the links to related topics!
+
+After you've finished Section 8 on Lists in the Quick tutorial, read
+- [[file:../after-quick.rkt][after-quick.rkt]]
+- [[https://github.com/GregDavidson/on-lisp/blob/main/lambda-sugar.rkt][lambda-sugar.rkt]]
+
+If you're ambitious, You might want to lightly explore
+- [[https://docs.racket-lang.org/guide/index.html][The Racket Guide]]
+- [[https://htdp.org/2021-5-4/Book/index.html][How to Design Programs]]
+
+Now you are ready to continue by 
+1. Continuing on with the elements of the [[file:../cm-curriculum.org][Computing Magic Curriculum]]
+2. Reading the notes of the meetings you've missed
+3. Discussing everything with others
+4. Attending the new meetings
+ 
+Also, if the description of the [[https://docs.google.com/document/d/1qSUTfoOXDAfoH-OF_7N7kEzlp5-F4nf0JP3BzgppDY0][Limitless Fellowship]] speaks to you,
+consider joining us!

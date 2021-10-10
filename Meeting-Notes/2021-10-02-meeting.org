@@ -1,0 +1,571 @@
+* Computing Magic Meeting Notes, Saturday 2 October 2021
+
+** Overview of Today's Topics (details below)
+
+1. Measures of Efficiency, Completeness and Elegance
+2. Three kinds of metaprogramming
+   - All three easy, natural and efficient in Scheme/Racket
+   - All three possible but awkward in Java, Python, etc.
+3. Neural networks aka Machine Learning
+   - How it works
+   - Its strengths, weaknesses and best applicability
+
+** Upcoming Topics
+
+1. Web & Network Programming
+  - https://docs.racket-lang.org/continue/index.html
+  - https://docs.racket-lang.org/more/index.html
+  - Show and tell :: Three Lisp meta-circular interpreters in Racket
+2. Intelligent Persistence
+  - https://www.postgresql.org/docs/current/tutorial.html
+3. Pulling it all together
+4. Leveraging the best Paradigms and Distinctions
+
+** Details of Today's Discussion, with some elaboration!
+
+*** Memory Hierarchies
+
+The purpose here in talking about the /Computer Memory Hierarchy/ is to provide
+you with some useful intuitions of what's going on at the machine level so that
+when you're writing high-level code, you have enough awareness of the likely
+cost of what you're doing that you'll tend to write better code. We are ignoring
+a lot of details which hardware people love because they rarely matter when
+we're using high level languages which are compiling to diverse machines. Any
+numbers we give are only approximate as they will vary depending on the specific
+hardware and compiler in use, which will both change frequently!
+
+We're ordering the various storage mechanisms from fastest (and most expensive)
+to slowest (and much cheaper), thus we get a Hierarchy. We want the computer to
+keep the parts of our large programs that are hotspots (most frequently
+accessed) at the top (fastest) part of the hierarchy. In order to do that, we
+need to push the parts which are accessed less frequently (at least in the near
+future) further down the hierarchy. If we (or ideally, our software tools) can
+do this well, our large programs will run almost as fast as if they were
+entirely stored in the fastest memory.
+
+An additional issue is that /purely electronic storage is faster but is also
+volatile/, meaning that data will not survive when the program terminates or
+crashes or the machine is turned off. We want to ensure that our programs and
+data are always secure and uncorrupted, no matter what happens. Transactions are
+not complete until all new data and all changes are on secondary media with
+what's called /transactional integrity/. In addition, any important data must get
+automatically backed up (and be fully encrypted) on tertiary media at multiple
+remote locations.
+
+The numbers below represent *Latencies*, the time it takes to access data at a
+random (unpredictable) location in memory. Latencies show the worst-case
+performance of each kind of memory. An orthogonal consideration is *throughput*
+which applies when one is accessing a chunk of adjacent storage. When programs,
+databases, etc. arrange for data which is often needed together to be adjacent,
+the cost of accessing that storage can be much less than if we were having to
+independently access the same amount of data from diverse locations. So
+throughput is very important even though we're mostly ignoring it here.
+
+**** Primary, Pure Electronic Storage
+
+- Logic gates :: tens to hundreds of picoseconds
+  - Used to implement built-in machine operations, e.g. add, compare, etc.
+    - including their intermediate values, e.g. arithmetic carries.
+- Registers :: hundreds of picoseconds
+  - Used to store parameters and local variables of procedures (functions)
+- Cache (Static SRAM) :: Half a nanosecond to several nanoseconds
+  - Modern computers usually use three levels of cache
+  - L1 = Level 1 Cache: Fastest, smallest, typically not shared
+  - L2 = Level 2 Cache: A bit slower, larger, maybe shared by multiple CPU cores
+  - L3 = Level 3 Cache: A bit slower still, much larger, usually shared by multiple CPUs
+- Main RAM (Dynamic DRAM) :: around 10 to 20 nanoseconds
+  -  Much cheaper than SRAM, but 10 times slower.  Often called "Main Memory".
+
+**** Secondary, Persistent Storage
+
+- SSD aka Solid State Drive aka Flash Memory :: 200 microseconds = 200,000 nanoseconds
+- HDD aka Hard Disk Drive :: 10 - 20 milliseconds = 20,000 microseconds = 20,000,000 nanoseconds
+
+Modern filesystems and databases can exploit multiple SSDs along with multiple
+HDDs to optimize speed while minimizing expense and the possibility of data
+loss.
+
+**** Database Storage
+
+- Database Latency :: tens of milliseconds to seconds
+  -  /Not/ directly comparable to the other storage levels!
+
+Database storage is /smart storage/. Instead of fetching raw data and then
+processing it in your program to get the required information, your program asks
+the database directly for the meaningful /information/ it needs and the database
+(1) finds the relevant /data/, (2) does the processing for you (often more
+efficiently than you could do it) and then (3) sends /the meaningful results/
+aka /the information/ to your program.
+
+Sophisticated Programs offload as much their data processing work as possible to
+databases, making those programs simpler and more efficient.  Most programmers
+don't understand how to do this!
+
+Databases can be organized to automatically distribute the data to multiple
+geographic locations to privide greater efficiency and greater data security.
+
+**** Tertiary, Backup Storage
+
+- On-Line local storage :: tens of milliseconds
+- On-Line remote storage :: hundreds of milliseconds to seconds
+- Off-Line remote storage :: minutes
+
+Backups need to be in multiple distant physical locations in case of a disaster
+in any one location, e.g. power outages, earthquakes, floods, hurricanes, etc.
+The easiest way to do this to to compress and encrypt the data and send it via
+the Internet to a service which will store the data on RAID (Redundant Arrays of
+Inexpensive Disks) and/or Magnetic Tape (still the cheapest storage) at mulitple
+well-separated locations. The data can then be downloaded and decrypted whenever
+and wherever it's needed.
+
+Data stored in distributed database systems /may/ not need this kind of backup
+precaution, because it's providing for the same security in a more efficient
+way. Investigate these matters carefully and skeptically. Review them regularly,
+especially after any changes in how your data is organized!
+
+*** Big-O Notation
+
+We use *Big-O* notation when we want to know how the time (or space) required to
+process (or store) data and information *scales* with the number of /pieces of
+data/. Depending on context, /pieces of data/ might be called /entities/,
+/memory objects/, /elements/, /records/ or /nodes/ - all of which are usually
+stored as some number of contiguous bytes or words of memory. The assumption
+here is that operations on a single /piece of data/ is of modest and predictable
+cost.
+
+**** A few comments about the examples - read later?
+
+The examples are in Racket Scheme to keep them short and sweet. Maybe skip
+these comments for now, but maybe skim it later if you find anything in the code
+confusing.
+
+1. I'm using Racket Scheme library functions so you won't see what's going on at
+   the level of the machine. To really see what's going on you'll want to see
+   the same examples in C. Let me know if you'd like that!
+2. Scheme uses the term *vector* to mean a a *1-dimensional array of elements*
+   which are of the same size and allocated contiguously (one after the other in
+   memory) so that the =n='th item is always at a predictable location in
+   memory. This allows for super-fast =O(1)= random access to the =n='th item.
+   Lisp programmers usually prefer lists instead of vectors because lists are
+   more flexible - unless they know they're going to be doing a lot of random
+   access. Lists are more flexible but less efficent because they're /not
+   contiguous/ in memory. Vectors are often faster than lists, but other things
+   can be much faster than vectors! These issues only matter if you have a speed
+   bottleneck (hot spot) involving a particular data collection. If not, write
+   what's simplest and clearest - that will help you if you later need to change
+   it!
+3. Part of the reason why Python, Javascript and most other /scripting
+   languages/ are slower than C or Lisp (by about a factor of 50) is that they
+   use *hash tables* for everything where Lisp programmers would usually use
+   Lists and C programmers would usually use Arrays. Hash Tables are often (but
+   not always) faster for large datasets but are slower for small datasets, so
+   using them everywhere is buying uniformity at a rather high price. Good
+   programmers write their code in such a way that it's easy to replace any
+   algorithm or data structure at need.
+4. The examples use the /rackunit testing library/. The check functions will
+   prevent the program from loading if they fail and they also help document the
+   usage of the key functions. Good code is more expressive than comments!
+5. I've made these examples a bit shorter and simpler than I would normally make
+   them so they're easier to assimilate. Good production code would be a little
+   more abstract and more modular so that it would be easier to evolve.
+
+**** Constant: O(1) and Linear: O(n)
+
+If you're got =n= pieces of data and you need to do something to all of them, it
+will take time proportional to =n=. If the time it takes to process one piece of
+data plus the cost of navigating to the next piece of data is k then processing
+all =n= pieces will take time proportional to =k * n=. When n is large, we ignore k
+and we just stay that it will take time "of the order of =n=" which we abbreviate
+as =O(n)=.
+
+#+begin_src scheme
+#lang racket
+(require rackunit)
+(require srfi/43) ; scheme extended vector library
+
+(define four-bit-color-names ; a contiguous 1-dimensional vector
+  #("black" "navy" "green" "teal"
+    "maroon" "purple" "olive" "silver"
+    "gray" "blue" "lime" "aqua"
+    "red" "fuchsia" "yellow" "white" ) )
+
+(define (color-name-by-code code) ; O(1) small k -- super cheap!
+  (vector-ref four-bit-color-names code) )
+
+(check-equal? "black" (color-name-by-code 0))
+(check-equal? "white" (color-name-by-code 15))
+(check-exn exn:fail? (λ () (color-name-by-code -1)))
+(check-exn exn:fail? (λ () (color-name-by-code 16)))
+
+(define (color-code-by-name-linear name) ; O(n) small k -- not so cheap!
+  (vector-index (λ (color) (equal? color name)) four-bit-color-names) )
+
+(check-equal? 0 (color-code-by-name-linear "black"))
+(check-equal? 15 (color-code-by-name-linear "white"))
+(check-pred false? (color-code-by-name-linear "hello"))
+#+end_src
+
+If =n= = 1000 and you are trying to find a particular piece of data and you know
+it's in there, on the average you'll need to look at =n/2= = 500 of the pieces,
+but this is still proportional to n so we say it still =O(n)=.
+
+**** Sorted Array: O(log n)
+
+If the data is n a sorted array we can ue binary search to find thing, like when
+you are looking something up in a dictionary. In each step you cut the remaining
+possibilities in half.
+
+#+begin_src scheme
+; continuing from last example ...
+
+;; Now let's create a vector of pairs, sorted by the codes
+
+(define four-bit-color-pairs-by-code ; vector of (name . code) pairs
+   (vector-map (λ (i x) (cons x i)) four-bit-color-names) )
+
+;; Now one with the same pairs but sorted by the names
+
+(define four-bit-color-pairs-by-name ; vector of (name . code) pairs
+  (vector-sort four-bit-color-pairs-by-code string<? #:key car) )
+
+; Given a procedure (less key1 key2) which orders two keys
+; and a selector (get-key object) which selects a key from
+; a complex value, return a procedure (order o k) which
+; will return -1, 0, 1 when (get-key o) is respectively less than,
+; equal or greater-than k.
+(define (object-key-orderer less get-key)
+  (lambda (o k2)
+    (let ( [k1 (get-key o)] )
+      (if (less k1 k2) -1 (if (less k2 k1) 1 0)) ) ) )
+
+(define (color-pair-by-name:log name) ; O(log n) smallish k
+  ; How might you write vector-binary-search?
+  (let ([index (vector-binary-search
+                four-bit-color-pairs-by-name ; totally sorted array
+                name ; key to search for
+                (object-key-orderer string<? car) ) ])
+    ; index is either #f or it's the index of the found element
+    (and index (vector-ref four-bit-color-pairs-by-name index)) ) )
+
+(check-equal? '("black" . 0) (color-pair-by-name:log "black"))
+(check-equal? '("white" . 15) (color-pair-by-name:log "white"))
+(check-pred false? (color-pair-by-name:log "hello"))
+#+end_src
+
+Well, that seems to be better!
+| *number of items* | *cost of lookup* |
+| =n=               | =O(log n)=       |
+|-------------------+------------------|
+| one thousand      | 10 * k           |
+| one million       | 20 * k           |
+| one billion       | 30 * k           |
+
+Looking good! However, if you've only got a handful of values, or if you can put
+the values that are most frequently wanted at the front, a linear search could be faster!
+
+And: if new data arrives frequently you'll have to resort the array!
+
+| *size of array* | *cost of sorting it* |
+| =n=             | =O(n⋅log n)=       |
+|-----------------+----------------------|
+| one thousand    | 10 * 1000 * k        |
+| one million     | 20 * 1000000 * k     |
+| one billion     | 30 * 1000000000 * k  |
+
+You need to have exponentially more lookups between resorts to pay for the cost
+of the resorts!
+
+There is a large family of tree data structures which can help you out if you
+have new data arriving frequently and/or old data which frequently needs to be
+dropped and you want to keep everything O(log n). We didn't get into that family
+today.
+
+**** Hashing: O(1) but higher k
+
+Finally, the technique used nearly everywhere by Python, Javascript and most
+other "scripting" languages: hashing and *hash tables*. You need a hash function
+which converts a key value, e.g. the name of something, and crunches it down
+into an integer between =0= an =2 * n=. You then create an array of size =2 *
+n=. You store each of your items in the array at location =hash[item]=. If you
+can come up with a hash function which is (1) fast to compute and (2) rarely
+produces the same value for different data, you can (3) get *great
+performance* - but watch out for those two caveats! Most scripting languages and
+even modern Lisps will write a hash function for you, for free! If your
+performance is terrible, it's sometimes the fault of that free hash function not
+doing a good job!
+
+#+begin_src scheme
+; continuing from last example ...
+
+;; Finally, let's build a hash table from the same data
+;; make-hash expects the data as a list of pairs
+;; it will store it via a hash based on the car of the pairs
+
+(define four-bit-color-pairs-hashed-by-name
+  (make-hash (vector->list four-bit-color-pairs-by-code)) )
+
+(define (color-pair-by-name:hash name) ; O(1) medium k
+  (hash-ref four-bit-color-pairs-hashed-by-name name #f) ) ; return #f on failure
+
+(check-equal? 0 (color-pair-by-name:hash "black"))
+(check-equal? 15 (color-pair-by-name:hash "white"))
+(check-pred false? (color-pair-by-name:hash "hello"))
+#+end_src
+
+*** Three kinds of metaprogramming
+
+It's easy to miss the power of metaprogramming in this decent but facile defintion:
+#+begin_quote
+Metaprogramming in the large is the technique of writing general programs which
+write (often larger and more complex) specialized programs according to
+specifications. Metaprogramming in the small often invoves small functions which
+return specialized functions according to specifications provided as parameters.
+#+end_quote
+
+Metaprogramming is often confused with the /very bad idea/ of self-modifying
+code. Modern computer systems consider self-modifying code to be an error and
+are designed to make it impossible! If you would like an expanded discussion of
+this matter, ask!
+
+A fun warmup for metaprogramming is writing [[https://en.m.wikipedia.org/wiki/Quine_(computing)][quines]], but most quines, including
+the heroic PolyQuines in [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]] do not demonstrate very good
+metaprogramming.  They are forced rather than natural.
+
+There are three common kinds of metaprogramming:
+
+1. Writing a script or program which reads in some data and then writes a new
+   script or program which you can run later. Compilers are a spectacular
+   example of this kind of metaprogramming. So are the horribly complex but
+   powerful [[https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html][GNU Autotools]] which are used to configure many complex software
+   systems before building and installing them. This technique is /heavyweight/
+   as it involves (1) running program or script (A) which performs I/O reading
+   the specifications (usually from a file) and writing the new script or
+   program (typically to another file) and then arranges for the resulting
+   output file to be set up for execution at the appropriate time. In addition
+   to the I/O overhead, the specifications have to be parsed and verified and
+   the code which is generated will need to be parsed, verified and translated
+   (compiled or interpreted) into machine language. We're talking massive
+   overhead. Even on today's computers this is something which often takes many
+   minutes to run, or longer.
+2. All scripting languages and many compiled languages have the ability to
+   dynamically parse and execute code which is in the form of a data structure
+   in memory. In most languages this will simply be a string, but in homoiconic
+   languages such as Lisp and Prolog we can use symbolic expressions to more
+   naturally express desired code and reduce syntax errors. This means we can
+   have functions output such strings or symbolic expressions into memory and
+   then tell a built-in compiler or interpreter to immediately parse and
+   translate them into efficient code which can be run immediately or at a later
+   time. This is a similar but somewhat more lightweight version of the first
+   method. It still has a lot of overhead as the strings or symbolic expressions
+   have to be analyzed, verified and translated before they can be run.
+3. Languages which have /lambda functions/ can do a much more efficient and
+   natural form of metaprogramming. For a long time only Lisps had /lambda
+   functions/, but various kinds of (usually functionally restricted)
+   /lambda-ish functions/ have been added in newer versions of popular languages
+   such as Python, Java, Javascript, Microsoft Excel, etc. An ordinary function
+   can simply return a /lambda function/ which can then be immediately executed
+   if suitable parameters are immediately available, or it can be bound to a
+   name for use as needed just like any other function. In Lisp /all functions
+   are lambda functions/ and in Lisp, /all functions are first class objects/
+   which can be sent over network channels to be excuted remotely, stored in
+   databases and files, etc. When /lambda functions/ are fully integrated into
+   the compiler, as they are in Lisp, they don't require any new parsing or
+   analysis - they are almost instantly available as machine code and they're
+   just as reliable and efficient as any other functions.
+
+So how does this show up in Quines?
+
+*** Quines using the Heavyweight Method 
+
+This C example is typical of the lot. It outputs it's source code to the screen.
+But a C program written to the screen cannot be run unless a human redirects the
+output to a file with a suitable name, compiles that file to a suitable
+executable file and arranges it to be run. It also outputs its source as a
+single very long line. It's clumsy and incomplete.  We are not impressed!
+
+
+#+begin_src C
+#include <stdio.h>
+int main(){
+  char*c="#include <stdio.h>%cint main(){char*c=%c%s%c;printf(c,10,34,c,34,10);return 0;}%c";
+  printf(c,10,34,c,34,10);
+  return 0;
+}
+#+end_src
+
+Here's a more complete Quine written in Python:
+
+#+begin_src python
+#!/usr/bin/python
+
+import os, sys, time, uuid
+
+# get self code
+self_content = file(sys.argv[0]).read()
+
+while True:
+    # wait 10 seconds
+    time.sleep(10)
+    
+    # create unique filename
+    dupe = "%s.py" % uuid.uuid4()
+    
+    # open and write to the copy
+    copy = open(dupe, "w")
+    copy.write(self_content)
+    copy.close()    
+    
+    # make the copy executable and execute
+    os.chmod(dupe, 0755)
+    os.system("./%s &" % dupe)
+#+end_src
+
+It successfully writes itself out as a new Python script with suitable
+permissions. Still pretty clumsy, though!
+
+*** Quines using the Data Structure Method 
+
+#+begin_src python
+var = "print('var = ', repr(var), '\\neval(var)')"
+eval(var)
+#+end_src
+
+This Python quine is create a string which has to be reparsed and translated to
+Python intermediate code on each iteration. It should get credit, though, for
+including an explicit call to eval!
+
+#+begin_src scheme
+((lambda (a) (list a (list 'quote a)))'(lambda (a) (list a (list 'quote a))))
+#+end_src
+
+This Scheme quine reduces the parsing overhead but still needs to be translated
+into intermediate or machine code each time. It also failes to show how that
+would be done since it doesn't generate the required call to eval.
+
+*** Quines using Lambda Functions, sort of
+
+#+begin_src javascript
+(f=_=>`(f=${f})()`)()
+#+end_src
+
+Requires JavaScript version EcmaScript 6 or later, but is quite elegant. The
+Lambda syntax is the => operator. There are limitations preventing => from being
+used as flexibly as traditional JavaScript functions, though. And I'm thinking
+that what's in the quotes is going to have to be reparsed and reanalyzed every
+time.
+
+#+begin_src python
+print((lambda x:f"{x}{x,})")('print((lambda x:f"{x}{x,})")',))
+#+end_src
+
+This Python quine uses =lambda= - but then needs to put most of the code in a
+string and trick the Python interpreter to reparse it as code. This is really
+still using method 2, not method 3. I'd be interested to see if Python can do a
+decent quine using a /lambda function/ without putting any of the code in a
+string!
+
+*** Quines actually using Lambda Functions!
+
+Here is our first complete quine - in Scheme, of course:
+
+#+begin_src scheme
+((lambda (f) (f f)) (lambda (f) (f f)))
+#+end_src
+
+which can also be written neatly as
+
+#+begin_src scheme
+((λ (f) (f f)) (λ (f) (f f)))
+#+end_src
+
+Nothing is quoted so the whole thing gets compiled to machine code. But doesn't
+it need to be passed to =eval= to keep running?  Nope, it /swallows its own tail/
+creating an infinite chain of generating itself and then executing itself! If we
+had a criterion for when it should be executed, e.g. when the user presses a
+certain button, or at a certain time, or when data arrives on a network socket,
+we could add those external conditions without too much trouble.
+
+The key thing here is that this lovely function =f= (which is called the [[https://en.wikipedia.org/wiki/Kleene%27s_recursion_theorem][least
+fixedpoint]] in the [[https://en.wikipedia.org/wiki/Lambda_calculus][Lambda Calculus]]) can be completely compiled to machine code so
+there's no special overhead at runtime as it regenerates its form and its
+execution without limit!
+
+So what does this look like in practical metaprogramming code?
+
+*** Metaprogramming naturally using Lambda Functions!
+
+[[https://docs.racket-lang.org/quick/][Quick: An Introduction to Racket with Pictures]] has a simple but practical
+example of metaprogramming. So simple and natural that you could easily miss its
+vast significance:
+
+#+begin_src racket
+#lang slideshow
+(define (rgb-maker mk)
+  (lambda (sz)
+    (vc-append (colorize (mk sz) "red")
+               (colorize (mk sz) "green")
+               (colorize (mk sz) "blue"))))
+#+end_src
+
+which takes as a parameter any function =mk= which can draw a picture of a
+specified size and returns a new function which given a size =sz= will draw
+three =mk= pictures of size =sz= in a neat verticle stack with colorization.
+
+This shows the secret of extreme modularitly. The =mk= function does not need to
+know how or when or how many times its being called or what fancy things are
+being done the pictures it generates. The =rgb-maker= function has no need to
+know anything about the =mk= function other than that it requires a size and
+will return a picture.
+
+Companies which have been using computers for a long time generally have
+millions of lines of computer code containing massive redundancy, yet no one
+dares simplify anything because the redundance was caused by programmers using
+copy and paste followed by subtle manual edits so none of the almost-identical
+sections of code can be replaced by a single generic function.
+
+It would save companies massive amounts of money they currently spend on
+software maintenance (remember the Y2K problem?) if they were to have most of
+their code autogenerated. They should be particularly interested in using modern
+/SQL Databases/ which can autogenerate most of the data processing code in their
+ancient Cobol programs!
+
+Towards the end of the extraordinary (and now free) book [[https://en.wikipedia.org/wiki/Structure_and_Interpretation_of_Computer_Programs][Structure and
+Interpretation of Computer Programs]] the authors show how to write a Scheme
+program which can generate the hardware design of a computer which can run your
+programs. When the authors sent the output of that program to the Mosis Fab in
+San Jose, they got back an IC chip which was as powerful as million-dollar
+computers of that era. And it worked perfectly the first time because it was
+generated by Scheme functions based on the principles of VLSI circuit design. If
+you were to then run that program on that new chip to generate that program to
+generate another such chip - that would be an awesome quine!!!
+
+*** Machine Learning aka Neural Networks
+
+The modern technique that goes by such names as Machine Learning and Neural
+Networks is based on the [[https://en.wikipedia.org/wiki/Backpropagation][Backpropagation]] algorithm which was a breakthrough
+discovery at the Cognitive Science Laboratory at UCSD in 1986 when I was a
+graduate student in that laboratory. It's discovery is credited to my advisor
+Professon David Rumelhart and my colleage Geoffrey Hinton who was doing a
+post-doc in our lab at the time. It was a truly exciting breakthrough. It was
+also a disaster for the field of Artificial Intelligence as whole.
+
+Machine Learning is truly a valuable technique. It is a powerful pattern
+matching engine which can solve many difficult problems, as long as they do not
+require any actual understading, e.g. any form of [[https://en.wikipedia.org/wiki/Knowledge_representation_and_reasoning][Knowledge representation and
+reasoning]]. It is properly at the heart of a number of Artificial Intelligence
+applications which do not need to truly understand their tasks. It can also add
+power when used in combination with other [[https://en.wikipedia.org/wiki/Artificial_intelligence][Artificial Intelligence Technologies]].
+It has been a disaster for the field as a whole because it has become a cult and
+is being touted as a panacea. Gullible people are being informed that Machine
+Learning can always substitute for actual understanding or that understanding
+will mysteriously /emerge/ from the neural networks. Alas, it doesn't work that
+way! Machine Learning systems are extremely narrow and very difficult to inspect
+and verify. For most tasks they need to be integrated with more traditional
+techniques which actually model what's going on in the domain and check that the
+pattern matching generated by the neural networks makes sense. If you'd like to
+learn more about this I recommend the easy-to-read popularization [[https://www.goodreads.com/book/show/43999120-rebooting-ai][Rebooting AI:
+Building Artificial Intelligence We Can Trust]].
+
+If you continue with the Computing Magic curriculum you will find yourself able
+to use multiple Artificial Intelligence technologies where they are best suited
+and flexibly combine them for extraordinary power.
