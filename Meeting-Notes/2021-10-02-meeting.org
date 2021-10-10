@@ -1,5 +1,7 @@
 * Computing Magic Meeting Notes, Saturday 2 October 2021
 
+Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Meeting.
+ 
 ** Overview of Today's Topics (details below)
 
 1. Measures of Efficiency, Completeness and Elegance
