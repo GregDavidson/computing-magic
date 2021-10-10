@@ -1,4 +1,6 @@
-* Computing Magic Notes
+* Computing Magic Meeting Notes
+
+Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Meetings
 
 *** Meeting Notes
 
