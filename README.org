@@ -34,3 +34,4 @@ Notes from previous Zoom Sessions are in the file
 
 You might also like some of the background material at
 - [[https://github.com/GregDavidson/on-computing][On Computing]]
+- [[https://github.com/GregDavidson/on-lisp][On Lisp]]
