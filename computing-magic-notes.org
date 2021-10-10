@@ -2,5 +2,6 @@
 
 *** Meeting Notes
 
+- [[file:Meeting-Notes/2021-00-00-early-meetings.org][Early meetings and Getting Started]]
 - [[file:Meeting-Notes/2021-10-02-meeting.org][Saturday 2 October 2021]]
 - [[file:Meeting-Notes/2021-10-09-meeting.org][Saturday 9 October 2021]]
