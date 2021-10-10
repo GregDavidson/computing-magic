@@ -26,12 +26,12 @@ If you want to plunge into the [[file:../cm-curriculum.org][Computing Magic Curr
   - and anyone who is at the same level too!
 
 You can look up any Racket procedure in the Reference Manual by putting the
-cursor the procedure name in DrRacket and hitting F1.
+cursor on the procedure name in DrRacket and hitting F1.
 
 Hints when reading Reference Manuals:
 - Try to learn /at most/ two things each time you explore the manuals
 At this initial stage:
-- Don't about the formal language
+- Don't worry about the formal language - skim over it!
 - Seriously limit exploration of the links to related topics!
 
 After you've finished Section 8 on Lists in the Quick tutorial, read
@@ -45,7 +45,7 @@ If you're ambitious, You might want to lightly explore
 Now you are ready to continue by 
 1. Continuing on with the elements of the [[file:../cm-curriculum.org][Computing Magic Curriculum]]
 2. Reading the notes of the meetings you've missed
-3. Discussing everything with others
+3. Discussing it all with others
 4. Attending the new meetings
  
 Also, if the description of the [[https://docs.google.com/document/d/1qSUTfoOXDAfoH-OF_7N7kEzlp5-F4nf0JP3BzgppDY0][Limitless Fellowship]] speaks to you,
