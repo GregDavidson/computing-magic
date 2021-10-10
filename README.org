@@ -23,11 +23,12 @@ Many of the pioneers of computing were computing magicians, few of today's
 /programmers/ and /users/ have learned those /leet skills/. This repository
 contains the beginning of a fast-path curriculum for learning Computing Magic!
 
-All of the materials in this repository are in an early stage of development /and/ if you're brave you might want to check out:
-- [[computing-magic-examples.org]]
-- [[vis-curriculum.org]]
-- [[vis-distinctions.org]]
-- [[vis-quotes.org]]
+All of the materials in this repository are in an early stage of development
+/and/ if you're curious you might want to check out:
+- [[cm-examples.org]]
+- [[cm-curriculum.org]]
+- [[cm-distinctions.org]]
+- [[cm-quotes.org]]
 
 Notes from previous Zoom Sessions are in the file
 - [[https://github.com/GregDavidson/computing-magic/blob/main/computing-magic-notes.org][Computing Magic Meeting Notes]]
