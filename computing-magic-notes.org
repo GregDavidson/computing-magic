@@ -137,7 +137,7 @@ cost.
 
 ***** A few comments about the examples - read later?
 
-The examples are in Racket Scheme to keep[ them short and sweet. Maybe skip
+The examples are in Racket Scheme to keep them short and sweet. Maybe skip
 these comments for now, but maybe skim it later if you find anything in the code
 confusing.
 
