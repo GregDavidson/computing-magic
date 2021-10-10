@@ -102,7 +102,7 @@ databases, making those programs simpler and more efficient.  Most programmers
 don't understand how to do this!
 
 Databases can be organized to automatically distribute the data to multiple
-geographic locations to privide greater efficiency and greater data security.
+geographic locations to provide greater efficiency and greater data security.
 
 **** Tertiary, Backup Storage
 
@@ -114,7 +114,7 @@ Backups need to be in multiple distant physical locations in case of a disaster
 in any one location, e.g. power outages, earthquakes, floods, hurricanes, etc.
 The easiest way to do this to to compress and encrypt the data and send it via
 the Internet to a service which will store the data on RAID (Redundant Arrays of
-Inexpensive Disks) and/or Magnetic Tape (still the cheapest storage) at mulitple
+Inexpensive Disks) and/or Magnetic Tape (still the cheapest storage) at multiple
 well-separated locations. The data can then be downloaded and decrypted whenever
 and wherever it's needed.
 
@@ -148,7 +148,7 @@ confusing.
    memory. This allows for super-fast =O(1)= random access to the =n='th item.
    Lisp programmers usually prefer lists instead of vectors because lists are
    more flexible - unless they know they're going to be doing a lot of random
-   access. Lists are more flexible but less efficent because they're /not
+   access. Lists are more flexible but less efficient because they're /not
    contiguous/ in memory. Vectors are often faster than lists, but other things
    can be much faster than vectors! These issues only matter if you have a speed
    bottleneck (hot spot) involving a particular data collection. If not, write
@@ -162,7 +162,7 @@ confusing.
    using them everywhere is buying uniformity at a rather high price. Good
    programmers write their code in such a way that it's easy to replace any
    algorithm or data structure at need.
-4. The examples use the /rackunit testing library/. The check functions will
+4. The examples use the /RackUnit testing library/. The check functions will
    prevent the program from loading if they fail and they also help document the
    usage of the key functions. Good code is more expressive than comments!
 5. I've made these examples a bit shorter and simpler than I would normally make
@@ -211,7 +211,7 @@ but this is still proportional to n so we say it still =O(n)=.
 
 **** Sorted Array: O(log n)
 
-If the data is n a sorted array we can ue binary search to find thing, like when
+If the data is n a sorted array we can use binary search to find thing, like when
 you are looking something up in a dictionary. In each step you cut the remaining
 possibilities in half.
 
@@ -314,11 +314,11 @@ doing a good job!
 
 *** Three kinds of metaprogramming
 
-It's easy to miss the power of metaprogramming in this decent but facile defintion:
+It's easy to miss the power of metaprogramming in this decent but facile definition:
 #+begin_quote
 Metaprogramming in the large is the technique of writing general programs which
 write (often larger and more complex) specialized programs according to
-specifications. Metaprogramming in the small often invoves small functions which
+specifications. Metaprogramming in the small often involves small functions which
 return specialized functions according to specifications provided as parameters.
 #+end_quote
 
@@ -367,7 +367,7 @@ There are three common kinds of metaprogramming:
    if suitable parameters are immediately available, or it can be bound to a
    name for use as needed just like any other function. In Lisp /all functions
    are lambda functions/ and in Lisp, /all functions are first class objects/
-   which can be sent over network channels to be excuted remotely, stored in
+   which can be sent over network channels to be executed remotely, stored in
    databases and files, etc. When /lambda functions/ are fully integrated into
    the compiler, as they are in Lisp, they don't require any new parsing or
    analysis - they are almost instantly available as machine code and they're
@@ -439,7 +439,7 @@ including an explicit call to eval!
 #+end_src
 
 This Scheme quine reduces the parsing overhead but still needs to be translated
-into intermediate or machine code each time. It also failes to show how that
+into intermediate or machine code each time. It also fails to show how that
 would be done since it doesn't generate the required call to eval.
 
 *** Quines using Lambda Functions, sort of
@@ -509,9 +509,9 @@ vast significance:
 
 which takes as a parameter any function =mk= which can draw a picture of a
 specified size and returns a new function which given a size =sz= will draw
-three =mk= pictures of size =sz= in a neat verticle stack with colorization.
+three =mk= pictures of size =sz= in a neat vertical stack with colorization.
 
-This shows the secret of extreme modularitly. The =mk= function does not need to
+This shows the secret of extreme modularity. The =mk= function does not need to
 know how or when or how many times its being called or what fancy things are
 being done the pictures it generates. The =rgb-maker= function has no need to
 know anything about the =mk= function other than that it requires a size and
@@ -519,7 +519,7 @@ will return a picture.
 
 Companies which have been using computers for a long time generally have
 millions of lines of computer code containing massive redundancy, yet no one
-dares simplify anything because the redundance was caused by programmers using
+dares simplify anything because the redundancy was caused by programmers using
 copy and paste followed by subtle manual edits so none of the almost-identical
 sections of code can be replaced by a single generic function.
 
@@ -545,13 +545,13 @@ The modern technique that goes by such names as Machine Learning and Neural
 Networks is based on the [[https://en.wikipedia.org/wiki/Backpropagation][Backpropagation]] algorithm which was a breakthrough
 discovery at the Cognitive Science Laboratory at UCSD in 1986 when I was a
 graduate student in that laboratory. It's discovery is credited to my advisor
-Professon David Rumelhart and my colleage Geoffrey Hinton who was doing a
+Professor David Rumelhart and my colleague Geoffrey Hinton who was doing a
 post-doc in our lab at the time. It was a truly exciting breakthrough. It was
 also a disaster for the field of Artificial Intelligence as whole.
 
 Machine Learning is truly a valuable technique. It is a powerful pattern
 matching engine which can solve many difficult problems, as long as they do not
-require any actual understading, e.g. any form of [[https://en.wikipedia.org/wiki/Knowledge_representation_and_reasoning][Knowledge representation and
+require any actual understanding, e.g. any form of [[https://en.wikipedia.org/wiki/Knowledge_representation_and_reasoning][Knowledge representation and
 reasoning]]. It is properly at the heart of a number of Artificial Intelligence
 applications which do not need to truly understand their tasks. It can also add
 power when used in combination with other [[https://en.wikipedia.org/wiki/Artificial_intelligence][Artificial Intelligence Technologies]].
