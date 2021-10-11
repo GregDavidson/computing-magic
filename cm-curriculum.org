@@ -72,7 +72,7 @@ also modular, e.g. multiple such can be combined.
 - Freedom Box
 - Containers & VMs
 - Qubes
-- 
+
 ***  Systems Programming
 
 - Systems Programming Distinctions
