@@ -19,8 +19,8 @@ ambitious goals.
 
 1. Start from zero - Beginner's Mind
 2. Take the least cluttered and most general path, leveraging
-   - https://racket-lang.org/
-   - https://www.postgresql.org/
+    - https://racket-lang.org/
+    - https://www.postgresql.org/
 3. Pull in additional resources
 4. Architecture - putting it all together!
 
@@ -31,23 +31,23 @@ Here is a rough outline.
 
 1. Explore the three short Racket tutorials as a mathematician would, i.e.
 making it your own as you go through the steps:
-  - https://docs.racket-lang.org/quick/
-  - https://docs.racket-lang.org/continue/index.html
-  - https://docs.racket-lang.org/more/index.html
+    - https://docs.racket-lang.org/quick/
+    - https://docs.racket-lang.org/continue/index.html
+    - https://docs.racket-lang.org/more/index.html
 2. Absorb Additional Resources
-  - [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]]
-  - [[https://github.com/GregDavidson/computing-magic/blob/main/cm-distinctions.org][Computing Magic Distinctions]]
-  - [[https://github.com/GregDavidson/computing-magic/blob/main/cm-examples.org][Computing Magic Examples]]
-  - https://github.com/GregDavidson/on-computing
-  - https://github.com/GregDavidson/on-lisp
-  - and some others!
+    - [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]]
+    - [[https://github.com/GregDavidson/computing-magic/blob/main/cm-distinctions.org][Computing Magic Distinctions]]
+    - [[https://github.com/GregDavidson/computing-magic/blob/main/cm-examples.org][Computing Magic Examples]]
+    - https://github.com/GregDavidson/on-computing
+    - https://github.com/GregDavidson/on-lisp
+    - and some others!
 3. Learn PostgreSQL
-  - https://www.postgresql.org/docs/devel/tutorial.html
+    - https://www.postgresql.org/docs/devel/tutorial.html
 4. Learn Meta-PostgreSQL
-  - https://gregdavidson.github.io/wicci-core-S0_lib/
+    - https://gregdavidson.github.io/wicci-core-S0_lib/
 5. Putting it all together
-  - Separation of Concerns
-  - Systems Architecture
+    - Separation of Concerns
+    - Systems Architecture
 
 ** Optional Extension Modules
 
@@ -62,11 +62,11 @@ also modular, e.g. multiple such can be combined.
 - AI Distinctions
 - Automated Reasoning
 - Combining multiple sources of knowledge
-- 
+
 ***  Unix/Linux/BSD System Administration & Security
 
 - Shell Wizardry
-  - Text Tools
+    - Text Tools
 - Systems Distinctions
 - Transparent Firewalls
 - Freedom Box
@@ -77,21 +77,21 @@ also modular, e.g. multiple such can be combined.
 
 - Systems Programming Distinctions
 - C & Rust
-  - https://github.com/GregDavidson/C-By-Example
+    - https://github.com/GregDavidson/C-By-Example
 
 ** Additional Resources
 
 - Software Tools
-  - Bash
-  - Git
-  - Emacs
-  - OrgMode
+    - Bash
+    - Git
+    - Emacs
+    - OrgMode
 - Programming Paradigms 
-  - https://en.wikipedia.org/wiki/Programming_paradigm
-  - Array Paradigm
-    - [[https://www.youtube.com/watch?v=a9xAKttWgP4][Life in APL]]
-    - https://xpqz.github.io/learnapl/intro.html
-  - Object Oriented Paradigm
-    - https://pharo.org/
-  - Functional Paradigm 
-  - Logic and Constraint Paradigms
+    - https://en.wikipedia.org/wiki/Programming_paradigm
+    - Array Paradigm
+        - [[https://www.youtube.com/watch?v=a9xAKttWgP4][Life in APL]]
+        - https://xpqz.github.io/learnapl/intro.html
+    - Object Oriented Paradigm
+        - https://pharo.org/
+    - Functional Paradigm 
+    - Logic and Constraint Paradigms
