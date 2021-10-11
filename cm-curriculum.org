@@ -30,7 +30,7 @@ Note: The detailed Object-Level Plan is emerging in the [[https://github.com/Gre
 Here is a rough outline.
 
 1. Explore the three short Racket tutorials as a mathematician would, i.e.
-making it your own as you go through the steps:
+  making it your own as you go through the steps:
     - https://docs.racket-lang.org/quick/
     - https://docs.racket-lang.org/continue/index.html
     - https://docs.racket-lang.org/more/index.html
