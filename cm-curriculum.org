@@ -31,21 +31,32 @@ Here is a rough outline.
 
 1. Explore the three short Racket tutorials as a mathematician would, i.e.
   making it your own as you go through the steps:
-    - https://docs.racket-lang.org/quick/
-    - https://docs.racket-lang.org/continue/index.html
-    - https://docs.racket-lang.org/more/index.html
-2. Absorb Additional Resources
-    - [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]]
+    - First Tutorial ::  [[https://docs.racket-lang.org/quick/][Quick: An Introduction to Racket with Pictures]]
+    - After Section 7 on Lexical Scope
+        - [[https://github.com/GregDavidson/computing-magic/blob/main/after-quick.rkt][Some Variations]]
+        - [[https://github.com/GregDavidson/on-lisp/blob/main/lambda-sugar.rkt][Lambda Sugar]]
+        - [[https://github.com/GregDavidson/on-lisp/blob/main/wierd-closures.rkt][Wierd Closures]]
+        - [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]]
+        - Try writing a Quine in Racket!
+    - Intermezzo :: Exploring a Meta-Circular Evaluator
+        - [[https://github.com/GregDavidson/on-lisp/blob/main/lisp-systems.org][Lisp Systems]]
+        - [[https://github.com/GregDavidson/on-lisp/blob/main/vis-mce.rkt][VIS Meta-Circular Evaluator]]
+2. Second Tutorial ::  https://docs.racket-lang.org/continue/index.html
+    - Intermezzo :: Emacs, OrgMode, Git, GitHub, Magit
+        - [[https://orgmode.org/index.html][OrgMode]]
+            - [[http://doc.norang.ca/org-mode.html][Organize Your Life In Plain Text!]]
+    - Third Tutorial ::  https://docs.racket-lang.org/more/index.html
+3. Absorb Additional Resources
     - [[https://github.com/GregDavidson/computing-magic/blob/main/cm-distinctions.org][Computing Magic Distinctions]]
     - [[https://github.com/GregDavidson/computing-magic/blob/main/cm-examples.org][Computing Magic Examples]]
     - https://github.com/GregDavidson/on-computing
     - https://github.com/GregDavidson/on-lisp
     - and some others!
-3. Learn PostgreSQL
+4. Learn PostgreSQL
     - https://www.postgresql.org/docs/devel/tutorial.html
-4. Learn Meta-PostgreSQL
+5. Learn Meta-PostgreSQL
     - https://gregdavidson.github.io/wicci-core-S0_lib/
-5. Putting it all together
+6. Putting it all together
     - Separation of Concerns
     - Systems Architecture
 
@@ -82,16 +93,16 @@ also modular, e.g. multiple such can be combined.
 ** Additional Resources
 
 - Software Tools
-    - Bash
-    - Git
-    - Emacs
-    - OrgMode
+   - Regular Expressions
+   - Bash
+   - Gnu Make
 - Programming Paradigms 
-    - https://en.wikipedia.org/wiki/Programming_paradigm
-    - Array Paradigm
-        - [[https://www.youtube.com/watch?v=a9xAKttWgP4][Life in APL]]
-        - https://xpqz.github.io/learnapl/intro.html
-    - Object Oriented Paradigm
-        - https://pharo.org/
-    - Functional Paradigm 
-    - Logic and Constraint Paradigms
+   - https://en.wikipedia.org/wiki/Programming_paradigm
+   - Array Paradigm
+      - [[https://www.youtube.com/watch?v=a9xAKttWgP4][Life in APL]]
+      - https://xpqz.github.io/learnapl/intro.html
+      - [[https://www.jsoftware.com/#/README][The J Programming Language]]
+   - Object Oriented Paradigm
+      - https://pharo.org/
+   - Functional Paradigm 
+- Logic and Constraint Paradigms
