@@ -16,7 +16,7 @@ Continue exploring the [[https://github.com/GregDavidson/on-lisp/blob/main/vis-m
 ** What's coming up next?
 
 After we finish the Web tutorial - which covers much more than mere Web
-Appplications, of course! - we're going to start moving to a complete computing
+Applications, of course! - we're going to start moving to a complete computing
 environment. Racket will be our front-end language but we'll shift away from
 DrRacket towards a more complete development environment.  We'll learn an
 extensible, object-relational database and we'll start to put everything we've
@@ -63,7 +63,7 @@ Racket program which makes things a bit more explicit: [[https://github.com/Greg
 **** xexpr, contracts and all that
 
 Hopefully the use of the /xexpr/ notation in the tutorial is clear by example,
-i.e. that we work with /html/ and /xml/ using expresions like
+i.e. that we work with /html/ and /xml/ using expressions like
 #+begin_src racket
 '(div ((class "post")) "First post!" (p "This is a first post."))
 #+end_src
@@ -116,7 +116,7 @@ specifies the computational steps the program will perform to solve some
 specified problem. High-Level Languages make Procedural Programming much easier
 than it used to be. However, the resulting program is often very complex, needs
 commentary for humans to understand its intent and often contains bugs which
-cause it to fail to work as intended. In Procedural Programing, programmers
+cause it to fail to work as intended. In Procedural Programming, programmers
 spend much more time testing their program trying to find bugs and then
 debugging their program than they spend writing the program in the first case.
 
@@ -172,7 +172,7 @@ stating the specification can produce very differently performing programs!
 /Imperative Programs/ view memory as consisting of modifiable variables and
 modifiable data structures. Imperative programs consist of a series of
 statements which
-1. Read in input data into memory in some convenient arrangment
+1. Read in input data into memory in some convenient arrangement
 2. Modify memory until desired results appear
 3. Write out the results to a desired output device 
 
@@ -222,7 +222,7 @@ a composite object which will have a brand new and distinct datatype.
 > (post? a-post) ; is a-post bound to a post?
 #t
 ; and #f = false for anything not created by procedure post
-> (post? "Anything other th")
+> (post? "Anything else")
 #f ; #f = false
 
 ; Posts can be deconstructed by selectors
@@ -277,7 +277,7 @@ of each pair is a list element and the =cdr= each pair is the /rest of the
 list/.
 
 Lists can be created either by =list= or nested =cons= forms. Literal lists can
-be with list or pair syntax. Lists can be arbitarily nested.
+be with list or pair syntax. Lists can be arbitrarily nested.
 
 #+begin_src racket
 > (list 'one 'two 'three)
