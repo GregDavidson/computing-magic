@@ -202,6 +202,8 @@ Programs but also allow programmers to write /Imperative Code/. Great Lisp
 programmers are careful to keep their programs mostly Functional and to
 carefully document and justify any imperative code in their programs.
 
+If you're feeling ambitious, study this example of [[https://github.com/GregDavidson/on-lisp/blob/main/wierd-closures.rkt][wierd-closures.rkt]].
+
 *** Review of struct
 
 The simplest use of =struct= is to wrap up one or more values into
