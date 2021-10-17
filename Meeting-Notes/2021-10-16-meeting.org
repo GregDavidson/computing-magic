@@ -352,7 +352,7 @@ splice computed values into an otherwise literal list structure.
 '(bread 2 liters milk fruit)
 #+end_src
 
-It's just syntactic sugar performed by the Racket Reader. Without we could write
+It's just syntactic sugar performed by the Racket Reader. Without it we could write
 
 #+begin_src racket
 (define milk '(2 liters milk))
