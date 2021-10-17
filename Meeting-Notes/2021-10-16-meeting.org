@@ -1,0 +1,352 @@
+* Computing Magic Meeting Notes, Saturday 9 October 2021
+
+Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+
+** What should you do between Now and Next Saturday?
+
+Continue exploring the tutorial [[https://docs.racket-lang.org/continue/index.html][Web Applications in Racket]]!
+- If you run into a roadblock, share on our Discord's #computing-magic channel
+- The goal is to finish the tutorial this week, but we'll see!
+
+Continue exploring the [[https://github.com/GregDavidson/on-lisp/blob/main/vis-mce.rkt][Meta-Circular Evaluator]].
+- Is it giving you insight into how Lisps work?
+- Can you make it do any new tricks?
+- Share what you're discovering on our #computing-magic channel
+
+** What's coming up next?
+
+After we finish the Web tutorial - which covers much more than mere Web
+Appplications, of course! - we're going to start moving to a complete computing
+environment. Racket will be our front-end language but we'll shift away from
+DrRacket towards a more complete development environment.  We'll learn an
+extensible, object-relational database and we'll start to put everything we've
+learned and everything we will be learning into an integrated framework.
+
+** Notes from Today's Session
+
+Various things came up from attempts to work through the Web tutorial which led
+to some interesting mini-presentations and discussions which will be captured
+here.
+
+*** Support for the Tutorial
+
+The tutorial uses the special racket language
+#+begin_src racket
+#lang web-server/insta
+#+end_src
+which automagically pulls in a number of racket packages
+and sets things up so that when you define a procedure named =start=, it will
+1. Create a simple Web Server in Racket
+2. Fire up your default browser connected to the Racket Web Server
+3. Call the procedure you named =start= with the browser's =request=
+4. Send a response to your browser
+ 
+The purpose of all of this is so that the tutorial can start you out with a
+working web server in only this much code:
+#+begin_src racket
+#lang web-server/insta
+(define (start request)
+  (response/xexpr
+   '(html
+     (head (title "My Blog"))
+     (body (h1 "Under construction")))))
+#+end_src
+and then incrementally refine it.
+
+The problem is that so much is being hidden that it can be hard to know what's
+going on!
+
+I recommend following the tutorial as written, but I provide you with a companion
+Racket program which makes things a bit more explicit: [[https://github.com/GregDavidson/computing-magic/blob/main/web-play.rkt][web-play.rkt]]
+- Download it, run it, and play with it a bit!
+
+**** xexpr, contracts and all that
+
+Hopefully the use of the /xexpr/ notation in the tutorial is clear by example,
+i.e. that we work with /html/ and /xml/ using expresions like
+#+begin_src racket
+'(div ((class "post")) "First post!" (p "This is a first post."))
+#+end_src
+which will be converted automagically to regular /html/ or /xml/ like this
+#+begin_src html
+<div class="post">First post!<p>This is a first post.</p></div>
+#+end_src
+
+The precise definition of the xexpr notation is given by the recursive contract 
+#+begin_src racket
+(define xexpr/c
+  (flat-rec-contract
+   xexpr
+   (or/c string?
+         (cons/c symbol? (listof xexpr))
+         (cons/c symbol?
+                 (cons/c (listof (list/c symbol? string?))
+                         (listof xexpr))))))
+#+end_src
+
+which is automatically brought in by the framework: you aren't supposed to put
+this in your program and you don't have to fully understand it!
+
+*** Declarative vs. Procedural 
+
+Computers are wired to perform computation by executing large numbers of very
+simple operations (computational steps) very fast. Machine-code programs consist
+of sequences of instructions which correspond to these hard-wired operations.
+Assembly Language gives symbolic names to the bit-patterns of machine code,
+allowing human beings to better understand them.
+
+Example from x86/IA-32 machine code:
+- intention :: put the value 97 (hexadecimal 61) into register AL
+- instruction in binary :: 10110000 01100001
+- same instruction in hexadecimal :: B0 61
+- same instruction in assembly language :: MV AL, 61h
+
+Higher-level procedural languages can specify these operations in larger
+computational steps. These steps can then either be incrementally decoded and
+performed by an /interpreter/ program or translated by a /compiler/ program into
+machine code which can then be executed directly by the machine. Programs run by
+an interpreter usually run 10 to 100 times slower than programs translated into
+machine code - we don't usually count the time it takes the compiler to do the
+translation though, since that can be amortized over many executions of the
+program.
+
+In *Procedural Programming*, the human programmer writes a program in either a
+high-level or low-level procedural language. In other words, the programmer
+specifies the computational steps the program will perform to solve some
+specified problem. High-Level Languages make Procedural Programming much easier
+than it used to be. However, the resulting program is often very complex, needs
+commentary for humans to understand its intent and often contains bugs which
+cause it to fail to work as intended. In Procedural Programing, programmers
+spend much more time testing their program trying to find bugs and then
+debugging their program than they spent writing the program in the first case.
+
+In *Declarative Programming*, the human programmer writes a specification of
+what they want the program to do, but without saying how the program should
+accomplish it. An automatic programming system then synthesizes a procedure for
+carrying out the programmer's intent.
+
+Declarative programming systems include:
+- Formulas in Spreadsheets
+- SQL in Relational Databases
+- Pattern matching with Regular expressions
+- etc.
+
+-- Given table weather with these rows:
+
+| city          | temp_lo | temp_hi | prcp |       date |
+|---------------+---------+---------+------+------------|
+| San Francisco |      46 |      50 | 0.25 | 1994-11-27 |
+| San Francisco |      43 |      57 |    0 | 1994-11-29 |
+| Hayward       |      37 |      54 |      | 1994-11-29 |
+
+#+begin_src sql
+-- get the maximum low temperature observed in each city
+SELECT city, max(temp_lo)
+    FROM weather
+    GROUP BY city;
+#+end_src
+
+returns
+
+| city          | max |
+|---------------+-----|
+| Hayward       |  37 |
+| San Francisco |  46 |
+
+
+Exercise to the reader: Try writing a procedural program to do this in your
+favorite language. What are the pros and cons?
+
+When a Declarative Programming Language matches a problem domain well it can be
+enormously more productive for programmers. The program specification is short
+and closely related to the domain. The automatically generated program is
+guaranteed to be correct - although the specification might be wrong, so some
+testing might still be a good idea.
+
+The biggest potential drawback of Declarative Programming is if the
+automatically generated procedural program is inefficient. Declarative
+programmers have to understand the limitations of their tools. Different ways of
+stating the specification can produce very differently performing programs!
+
+*** Imperative vs. Functional
+
+/Imperative Programs/ view memory as consisting of modifiable variables and
+modifiable data structures. Imperative programs consist of a series of
+statements which
+1. Read in input data into memory in some convenient arrangment
+2. Modify memory until desired results appear
+3. Write out the results to a desired output device 
+
+/Functional Programs/ consist of /Functional Procedures/. Each Functional
+Procedure computes 1 or more output values from 1 or more input arguments. As in
+a mathematical function, the same result(s) will always be produced given the
+same arguments.  Functional Procedures have no /side-effect/.
+
+/Side-Effects/ of running an Imperative Procedure include
+1. Modification of memory outside of the Procedure
+2. Reading data from an Input Device 
+3. Writing data to an Output Device
+
+The order in which Statements and Procedures are called in /Imperative
+Procedures/ will typically change the result of the program.
+
+The order in which Procedures are called in a purely Functional Program may
+affect the efficiency of the program, but will not change its results.
+
+Some programming languages, such as /Haskell/ and /Agda/, only allow expressing
+Functional Programs. Programming in such languages is very good training in
+learning how to write short, clear, efficient programs which need little to no
+debugging.
+
+Lisps are hybrid languages. Lisps are very good at expressing Functional
+Programs but also allow programmers to write /Imperative Code/. Great Lisp
+programmers are careful to keep their programs mostly Functional and to
+carefully document and justify any imperative code in their programs.
+
+*** Review of struct
+
+The simplest use of =struct= is to wrap up one or more values into
+a composite object which will have a brand new and distinct datatype.
+
+#+begin_src racket
+(struct post (title body)
+; Creates a new type, distinct from all others
+; Creates functions post, post?, post-title, post-body
+
+; procedure post is the constructor,
+; the only procedure that can create posts
+(define a-post (post "Some Title" "Something about it"))
+> a-post
+#<post> ; an opaque object
+
+; post? is a type predicate, returning #t = true for posts
+> (post? a-post) ; is a-post bound to a post?
+#t
+; and #f = false for anything not created by procedure post
+> (post? "Anything other th")
+#f ; #f = false
+
+; Posts can be deconstructed by selectors
+; struct creates a selector for each named field:
+> (post-title a-post)
+"Some Title"
+> (post-body a-post)
+"Something about it"
+#+end_src
+
+*** Review of Cons, Lists, Quasiquotes
+
+**** Pairs aka Cons Cells
+
+In a more modern languages, pairs (representing a pair of values) and lists
+(representing a sequence of values) would be distinct types. In Lisp these two
+concepts overlap.
+
+Procedure =cons= creates pairs
+#+begin_src racket
+; the pair constructor is function cons
+> (cons 'this 'that)
+'(this . that)
+> (define a-pair (cons 'this 'that))
+> a-pair
+'(this . that)
+> (pair? a-pair)
+#t
+> (pair? "hello world")
+#f
+; the destructors are car and cdr
+> (car a-pair)
+'this
+> (cdr a-pair)
+'that
+#+end_src
+
+Notice that pairs have a syntax similar to a list, except with a dot between the
+two components.
+
+Pairs are also called "cons cells".  If pairs didn't exist in Racket we could create almost the same thing by saying 
+#+begin_src racket
+(struct pair (car cdr)
+#+end_src
+- How would these pairs be different?
+- Could we fix it up to make them behave identically to cons cells?
+
+**** Lists
+
+A /list/ is either the empty list =()= or a sequence of /pairs/ where the /car/
+of each pair is a list element and the =cdr= each pair is the /rest of the
+list/.
+
+Lists can be created either by =list= or nested =cons= forms. Literal lists can
+be with list or pair syntax. Lists can be arbitarily nested.
+
+#+begin_src racket
+> (list 'one 'two 'three)
+'(one two three)
+> (cons 'one (cons 'two (cons 'three '())))
+'(one two three)
+> '(one two three) ; a list literal
+'(one two three)
+> '(one . (two . (three . ()))) ; three nested pair literals
+'(one two three) ; produces the same result!
+#+end_src
+
+Since Lists are really just a sequence of pairs, they can be deconstructed with
+=car= and =cons=.
+
+#+begin_src racket
+> (define shopping '(bread (1 gallon milk) (some fruit))
+> shopping
+'(bread (1 gallon milk) (some fruit))
+> (pair? shopping)
+#t
+> (car shopping)
+bread
+> (cdr shopping)
+'((1 gallon milk) (some fruit))
+> (car (cdr shopping))
+'(1 gallon milk)
+> (cons 'grapes shopping)
+'(grapes bread (1 gallon milk) (some fruit))
+> shopping
+'(bread (1 gallon milk) (some fruit))
+#+end_src
+
+There's a special predicate for empty lists
+#+begin_src racket
+> (null? '())
+#t
+> (null? '(1 2 3))
+#f
+#+end_src
+
+And a variety of other handy procedures
+#+begin_src racket
+> (define a-list '(1 2 3))
+> (length a-list)
+3
+> (append a-list '(a b c))
+'(1 2 3 a b c)
+; which doesn't change a-list, of course
+> a-list
+'(1 2 3)
+#+end_src
+
+**** Quasiquotes
+
+Everything inside of a quoted list is also quoted.  Quasiquotes let us
+splice computed values into an otherwise literal list structure.
+
+#+begin_src racket
+; quasiquotes use the backwards quote symbol 
+(define milk '(2 liters milk))
+; quasiquote seems to work just like regular quote
+> `(bread milk fruit)
+'(bread milk fruit)
+; but we can selectively evaluate elements
+> `(bread ,milk fruit)
+'(bread (2 liters milk) fruit)
+; and even splice in a sublist
+> `(bread ,@milk fruit)
+'(bread 2 liters milk fruit)
+#+end_src
