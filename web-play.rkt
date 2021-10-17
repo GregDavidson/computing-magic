@@ -7,7 +7,7 @@
 (struct post (title body))
 ; creates four functional procedures:
 ; (: post (-> string? string? post?)) ; constructor
-; (: post? (or/c (-> post? #true) (-> (not/c post? #false)))
+; (: post? (or/c (-> post? #true) (-> ((not/c post?) #false)))
 ; (: post-title (-> post? string?)) ; selector: returns the title field
 ; (: post-body (-> post? string?))  ; selector: returns the body field
 
