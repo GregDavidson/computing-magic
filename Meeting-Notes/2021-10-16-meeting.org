@@ -225,9 +225,9 @@ a composite object which will have a brand new and distinct datatype.
 #t
 ; and #f = false for anything not created by procedure post
 > (post? "Anything else")
-#f ; #f = false
+#f
 
-; Posts can be deconstructed by selectors
+; Posts can be destructured by selectors
 ; struct creates a selector for each named field:
 > (post-title a-post)
 "Some Title"
@@ -275,11 +275,11 @@ Pairs are also called "cons cells".  If pairs didn't exist in Racket we could cr
 **** Lists
 
 A /list/ is either the empty list =()= or a sequence of /pairs/ where the /car/
-of each pair is a list element and the =cdr= each pair is the /rest of the
+of each pair is a list element and the =cdr= of each pair is the /rest of the
 list/.
 
 Lists can be created either by =list= or nested =cons= forms. Literal lists can
-be with list or pair syntax. Lists can be arbitrarily nested.
+be entered using ' (quote) with list or pair syntax. Lists can be arbitrarily nested.
 
 #+begin_src racket
 > (list 'one 'two 'three)
@@ -292,7 +292,7 @@ be with list or pair syntax. Lists can be arbitrarily nested.
 '(one two three) ; produces the same result!
 #+end_src
 
-Since Lists are really just a sequence of pairs, they can be deconstructed with
+Since Lists are really just a sequence of pairs, they can be destructured with
 =car= and =cons=.
 
 #+begin_src racket
@@ -340,8 +340,8 @@ splice computed values into an otherwise literal list structure.
 
 #+begin_src racket
 ; quasiquotes use the backwards quote symbol 
-(define milk '(2 liters milk))
 ; quasiquote seems to work just like regular quote
+(define milk `(2 liters milk))
 > `(bread milk fruit)
 '(bread milk fruit)
 ; but we can selectively evaluate elements
@@ -349,5 +349,15 @@ splice computed values into an otherwise literal list structure.
 '(bread (2 liters milk) fruit)
 ; and even splice in a sublist
 > `(bread ,@milk fruit)
+'(bread 2 liters milk fruit)
+#+end_src
+
+It's just syntactic sugar performed by the Racket Reader. Without we could write
+
+#+begin_src racket
+(define milk '(2 liters milk))
+> (list 'bread milk 'fruit)
+'(bread (2 liters milk) fruit)
+> (cons 'bread (append milk '(fruit)))
 '(bread 2 liters milk fruit)
 #+end_src
