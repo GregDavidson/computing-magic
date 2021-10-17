@@ -118,7 +118,7 @@ than it used to be. However, the resulting program is often very complex, needs
 commentary for humans to understand its intent and often contains bugs which
 cause it to fail to work as intended. In Procedural Programing, programmers
 spend much more time testing their program trying to find bugs and then
-debugging their program than they spent writing the program in the first case.
+debugging their program than they spend writing the program in the first case.
 
 In *Declarative Programming*, the human programmer writes a specification of
 what they want the program to do, but without saying how the program should
@@ -131,7 +131,7 @@ Declarative programming systems include:
 - Pattern matching with Regular expressions
 - etc.
 
--- Given table weather with these rows:
+-- Given table =weather= with these rows:
 
 | city          | temp_lo | temp_hi | prcp |       date |
 |---------------+---------+---------+------+------------|
@@ -152,7 +152,6 @@ returns
 |---------------+-----|
 | Hayward       |  37 |
 | San Francisco |  46 |
-
 
 Exercise to the reader: Try writing a procedural program to do this in your
 favorite language. What are the pros and cons?
