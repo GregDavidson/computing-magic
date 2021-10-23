@@ -33,7 +33,7 @@ Here is a rough outline.
   making it your own as you go through the steps:
     - First Tutorial ::  [[https://docs.racket-lang.org/quick/][Quick: An Introduction to Racket with Pictures]]
     - After Section 7 on Lexical Scope
-        - [[https://github.com/GregDavidson/computing-magic/blob/main/after-quick.rkt][Some Variations]]
+        - [[https://github.com/GregDavidson/computing-magic/blob/main/Racket/Tutorial-1-Pictures/after-quick.rkt][Some Variations]]
         - [[https://github.com/GregDavidson/on-lisp/blob/main/lambda-sugar.rkt][Lambda Sugar]]
         - [[https://github.com/GregDavidson/on-lisp/blob/main/wierd-closures.rkt][Wierd Closures]]
         - [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]]
