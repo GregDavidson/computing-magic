@@ -7,6 +7,8 @@
 **** Representation and Search
 [[https://duckduckgo.com/?t=lm&q=representation+and+search][DDG: Representation and Search]]
 **** Early vs. Late Binding
+**** Lazy vs. Strict Evaluation
+**** Multiple Notations, Multiple Languages, Customizable Views
 **** Text vs. Database vs. Persistent Virtual Store
 Homoiconicity.
 **** Intentional vs. Implementation Typing
