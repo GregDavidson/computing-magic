@@ -1,0 +1,57 @@
+* 10:00am, Saturday, 23 October 2021
+
+Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+
+** What should you do between Now and Next Saturday?
+
+Continue exploring the tutorial [[https://docs.racket-lang.org/continue/index.html][Web Applications in Racket]]!
+- If you run into a roadblock, share on our Discord's #computing-magic channel
+- We're going to be moving on to new material next week!
+
+If the [[https://github.com/GregDavidson/on-lisp/blob/main/vis-mce.rkt][Meta-Circular Evaluator]] has caught your interest, share about your
+explorations of it on the Discord!
+
+*** Further Support for the Tutorial
+
+The Tutorial sneaks in a big piece of black magic starting with Section /6
+Advanced Control Flow/. The black magic is hidden in =send/suspend/dispatch=
+which mysteriously allows the web server to catch subsequent web requests
+without terminating. This is used to create a limited form of persistence in our
+blog server. There are two problems with this:
+
+Problem 1: Procedure =send/suspend/dispatch= is based on advanced magic which
+you're not likely to be able to figure out without an understanding of [[https://en.wikipedia.org/wiki/Delimited_continuation][Delimited
+Continuations]] which are an evolution of [[https://en.wikipedia.org/wiki/Continuation][First Class Continuation]] - a theoretical
+idea first made practical in [[ https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]] and its descendents, including Racket.
+
+Problem 2: Procedure =send/suspend/dispatch= fails to protect the blog server
+from data loss when it eventually has to terminate. The only way to protect the
+blog data is to get it out of the volatile memory of the computer and into
+secondary storage, e.g. appending new information to a file or inserting it into
+a database table.
+
+Shame on the tutorial authors! 
+
+My advice is to (1) finish working through the tutorial, running and observing
+each version without worrying about how =send/suspend/dispatch= does its magic
+(2) get clear about the flow of control and the various challenges which the
+blog server has to overcome including (3) what will happen to our blog data if
+the blog server is terminated!
+
+Pay close attention to the refactoring in section /13 Abstracting the Model/ and
+/15 Using an SQL database/. These are our pathways to the future. You can
+actually skip or just skim section /16 Using Formlets/.
+
+Follow the instructions in section /17 Leaving DrRacket/ to create a version of
+our blog server which uses the regular /racket/ language and no longer needs the
+special magic of the /DrRacket/ program. Our subsequent projects will be using a
+much more powerful development environment.
+
+Read the last two short sections and you've accomplished a lot: This tutorial
+was very challenging, perhaps excessively so! I think that for the next version
+of /Computing Magic/ we're going to want to rewrite this one to get rid of
+interesting but unnecessary complexity.
+
+Bonus: Learn about Continuations from
+- [[https://docs.racket-lang.org/guide/conts.html][Continuations in the Racket Guide]]
+Understanding continuations will pay off in many ways!
