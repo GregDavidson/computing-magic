@@ -3,4 +3,7 @@
 #*#
 foo.*
 foo-*
+*.tex
+*.pdf
+*.odt
 Limbo/
