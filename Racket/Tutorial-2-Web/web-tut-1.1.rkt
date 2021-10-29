@@ -24,7 +24,9 @@
 
 #;(define (render-post a-post)
   (list 'div
-        '((class "post"))
+        #;'((class "post")) ; aka
+        #; (list (list 'class "post")) ; aka
+        (cons (cons 'class (cons "post" '())) '())
         (post-title a-post)
         (list 'p (post-body a-post)) ) )
 
@@ -56,6 +58,6 @@
 ; BLOG: blog
 ; The static blog.
 (define BLOG
-  (list (post "Second Post" "This is a slight acheivment")
+  (list (post "Second Post" "This is a slight achievement")
         (post "First Post" "This is hopefully working")
         (post "Self made post" "Why not")))
