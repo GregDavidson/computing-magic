@@ -1,0 +1,119 @@
+* 10:00am, Saturday, 23 October 2021
+
+Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+
+** What should you do between Now and Next Saturday?
+
+** The Key Tools
+
+*** Emacs + StarterKit + Orgmode
+**** Some Background
+- Keyboards and Modifier Keys
+   - [[https://en.wikipedia.org/wiki/Space-cadet_keyboard][The Space-Cadet Keyboard]]
+   - Control :: for character-level operations
+   - Meta ::  (usually Alt) for operations on larger syntactic units
+   - Control-X Prefix :: for system operations, e.g. files
+   - Control-C Prefix :: for local mode operations
+   - Control-H Prefix :: for Help functions
+- You can customize and extend your keyboard's modifier keys
+    - [[https://irreal.org/blog/?p=6645][Adding Hyper and Super Keys for Emacs]]
+        - Read if on a Mac or if you have typing issues
+**** Gestures call Lisp Functions
+Emacs is a big bag of Lisp Functions.
+- Meta-x :: Call a Lisp Function by name (with completion)
+Keymaps bind shortcuts to functions
+- Control-F :: =forward-char= move /point/ forward by =n= characters
+- Meta-F :: =forward-word= move /point/ forward by =n= words
+- Control-Meta-F :: move /point/ forward by =n= symbolic expressions
+You can add your own /lisp functions, /keymaps/ and /shortcuts/!
+
+**** Emacs terminology is archaic but precise
+
+- Buffers :: Hold your Bytes - /usually/ Text
+   - /Buffers/ can be associated with /Files/ or /Processes/
+   - Files and Processes can be /local/ or /remote/!
+- Windows :: Display buffer contents for users
+- Frames :: Hold /Windows/ on /Window Systems/
+    -  /Frames/ are what most people would now call /Windows/
+    -  /Windows/ are what some people would now call /Window Panes/
+
+**** Emacs Starter Kits
+
+You don't have to build a nice Emacs environment from scratch!
+- [[https://www.emacswiki.org/emacs/StarterKits][Emacs Starter Kits]]
+- [[https://github.com/bbatsov/prelude][Prelude: Powerful but modest]]
+- [[https://github.com/hlissner/doom-emacs][Doom: Somewhat modest and possibly Evil]]
+- [[https://www.spacemacs.org][Spacemacs: Ambitious and possibly Evil]]
+
+**** Emacs OrgMode
+
+/OrgMode/ is unbelievably awesome.
+- Really, you won't believe it,
+- until you've discovered it for yourself!
+
+There are /lots/ of good tutorials and videos for the many, many things you can
+do with OrgMode.
+
+-[[https://orgmode.org/][ Org Mode: Your life in plain text]]
+
+*** The Unix/BSD/Linux/Posix Command Environment
+
+**** Getting the Tools
+
+If you have Unix, Linux or BSD you have the tools!
+
+If you have a Mac you can install the latest tools using [[https://brew.sh/][Homebrew]].
+
+If you have an older μSoft Windows machine, you can install everything using
+[[https://cygwin.com/][Cygwin]]. For a newer μSoft Windows system, you can install μSoft's [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows
+Subsystem for Linux]] free of charge.
+ 
+***** Exploring the Posix Command Environment
+
+Here's a great way to start:
+
+- [[https://github.com/mks22-dw/bashcrawl][BASH Crawl - a shell adventure!]]
+- [[https://marlborough-college.gitbook.io/attic-lab/the-terminal/games/level-1-bashcrawl][BASH Crawl Intro]]
+
+Once you can run simple commands from a shell, you can move on. However, it will
+be worth your while to intentionally explore the Unix Philosophy, especially in
+regards to creative use of the Unix Tools.
+
+An great beginning is to read chapters 1 - 6 of /The Unix Programming
+Environment/ by Brian W. Kernigan and Rob Pike. Everything Unix-like since this
+book was written builds on the foundation it describes, adding incremental power
+and convenience but nothing radical.
+- CONS:  It's somewhat out of date, although nearly everything still works.
+- PROS:  It reveals the power and simplicity really well.
+It would be great to bring it up to date
+- without the massive feature creep since that time!
+
+Tutorials and Guides
+- [[http://www.linux-tutorial.info/][The Linux Tutorial]]
+
+More links
+- [[https://en.wikipedia.org/wiki/Unix_philosophy][Wikipedia: Unix Philosophy]]
+
+*** Git and Magit
+
+Everyone is using Git!
+
+- [[https://nfarina.com/post/9868516270/git-is-simpler][Git Is Simpler Than You Think]]
+- [[https://marklodato.github.io/visual-git-guide/index-en.html][A Visual Git Reference]]
+- [[https://www.youtube.com/playlist?list=PLgyU3jNA6VjSUZPhZ7WtoBUnxzChBwKuw][Git - YouTube Series]]
+- [[https://git-scm.com/book/en/v2][The Git Book]]
+
+Magit makes magic with Git within Emacs
+
+- [[https://magit.vc/][It's Magit!]]
+- [[http://ergoemacs.org/emacs/emacs_magit-mode_tutorial.html][Xah Magit Tutorial]]
+
+I recommend that you have a GitHub account and create a private repository named
+Notes which you clone on all of your devices!
+
+** Announcement
+
+Please join us tomorrow for our next discussion of Computing Magic. We will be beginning the transition from DrRacket to a more sophisticated development environment!
+- Saturday 30 October 2021, 10:30am US Pacific Time
+- https://us02web.zoom.us/j/810472918
+- password: abundance
