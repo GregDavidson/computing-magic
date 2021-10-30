@@ -25,7 +25,7 @@ Keymaps bind shortcuts to functions
 - Control-F :: =forward-char= move /point/ forward by =n= characters
 - Meta-F :: =forward-word= move /point/ forward by =n= words
 - Control-Meta-F :: move /point/ forward by =n= symbolic expressions
-You can add your own /lisp functions, /keymaps/ and /shortcuts/!
+You can add your own /lisp functions/, /keymaps/ and /shortcuts/!
 
 **** Emacs terminology is archaic but precise
 
