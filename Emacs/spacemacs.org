@@ -1,0 +1,17 @@
+* Spacemacs Notes
+
+| *Evil*          | *Emacs*       | *Description*           |
+| SP aka Spacebar | M-m aka Alt-m | Begin Spacemacs Binding |
+
+** Handy Commands to Learn
+
+| *Evil* | *Emacs* | *Spacemacs Function*   | *Notes*    |
+| SP T n | M-m T n | cycle-spacemacs-theme  |                       |
+| SP T s | M-m T s | helm-themes            |                       |
+| SP t S | M-m t s | toggle-syntax-checking | toggles spellchecking |
+
+** Temporary Font Scaling
+   
+| *Evil* | *Emacs* | *Description*                                       |
+| SP z f | M-m z f | Zoom all buffers in current frame including pop-ups |
+| SP z x | M-m z x | Scale the font of only the current buffer           |
