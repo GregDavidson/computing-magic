@@ -8,24 +8,55 @@ Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magi
 
 *** Emacs + StarterKit + Orgmode
 **** Some Background
-- Keyboards and Modifier Keys
-   - [[https://en.wikipedia.org/wiki/Space-cadet_keyboard][The Space-Cadet Keyboard]]
+***** Keyboards and Modifier Keys
+
+Emacs was invented to be the Editor for [[https://en.wikipedia.org/wiki/MIT_Computer_Science_and_Artificial_Intelligence_Laboratory#Project_MAC][Project MAC]] (Machine Aided Cognition) at
+the [[https://en.wikipedia.org/wiki/MIT_Computer_Science_and_Artificial_Intelligence_Laboratory][MIT AI Lab]]. They were /all about/ Computing Magic, i.e. smart machines
+running on (for the time) advanced computers assisting humans with demanding
+cognitive tasks (such as programming) by automating the boring parts. Their
+computers and workstations were really cool, including their keyboards.
+
+Check out [[https://en.wikipedia.org/wiki/Space-cadet_keyboard][The Space-Cadet Keyboard]]: bring up the full-sized picture and look at
+the modifier keys at the bottom. The Space-Cadet Keyboard has 5 modifier keys:
+Shift, Control, Meta, Super, Hyper.
+
+The idea of modifier keys is that you can use them in conjuction with a mnemonic
+letter key to carry out operations, e.g. *Meta-F* for =forward-word=.
+
+Modern keyboards have *Shift* and *Control* but don't have *Meta*, *Super* or
+*Hyper*. How can we adapt Emacs to modern keyboards?
+
+1. We can map *Meta* to *Alt*.
+2. We can use /prefix keys/ to compensate for missing dedicated modifier keys
+
+Here are the conventions for Gnu Emacs on a typical PC Keyboard:
+
    - Control :: for character-level operations
    - Meta ::  (usually Alt) for operations on larger syntactic units
    - Control-X Prefix :: for system operations, e.g. files
    - Control-C Prefix :: for local mode operations
    - Control-H Prefix :: for Help functions
-- You can customize and extend your keyboard's modifier keys
-    - [[https://irreal.org/blog/?p=6645][Adding Hyper and Super Keys for Emacs]]
-        - Read if on a Mac or if you have typing issues
+
+There are some examples below.
+
+Note that you can use multiple modifier keys together, including SPACEBAR, so
+you could use, e.g. C-M-S-k (Control + Meta + Space + k) as a shortcut for
+=kill-with-nuclear-missile=!
+
+You can also customize and extend your keyboard's modifier keys
+- [[https://irreal.org/blog/?p=6645][Adding Hyper and Super Keys for Emacs]]
+   - Read if on a Mac or if you have typing issues
+ 
 **** Gestures call Lisp Functions
 Emacs is a big bag of Lisp Functions.
 - Meta-x :: Call a Lisp Function by name (with completion)
 Keymaps bind shortcuts to functions
 - Control-F :: =forward-char= move /point/ forward by =n= characters
 - Meta-F :: =forward-word= move /point/ forward by =n= words
-- Control-Meta-F :: move /point/ forward by =n= symbolic expressions
-You can add your own /lisp functions/, /keymaps/ and /shortcuts/!
+- Control-Meta-F :: =forward-sexp= move /point/ forward by =n= symbolic expressions
+
+You can add your own /lisp functions/, /keymaps/ and /shortcuts/! I'll add some
+examples of that later.
 
 **** Emacs terminology is archaic but precise
 
@@ -37,9 +68,14 @@ You can add your own /lisp functions/, /keymaps/ and /shortcuts/!
     -  /Frames/ are what most people would now call /Windows/
     -  /Windows/ are what some people would now call /Window Panes/
 
+Part of why we don't just use the "modern" terms is because Emacs is perfectly
+happy to run without a graphics display, yet it still will provide us with
+windows!
+
 **** Emacs Starter Kits
 
 You don't have to build a nice Emacs environment from scratch!
+- [[http://www.gnu.org/software/emacs/][Standard GNU Emacs]]
 - [[https://www.emacswiki.org/emacs/StarterKits][Emacs Starter Kits]]
 - [[https://github.com/bbatsov/prelude][Prelude: Powerful but modest]]
 - [[https://github.com/hlissner/doom-emacs][Doom: Somewhat modest and possibly Evil]]
@@ -127,4 +163,30 @@ Please join us tomorrow for our next discussion of Computing Magic. We will be b
 - Marina K. (auditing)
 
 ** Raw Notes from session
+
+*** Concepts for a better markup syntax
+
+Use a settable escape character, defaulting to \
+Followed by a tag
+Followed by any choice of bracket characters, e.g.
+
+\b(this is bold)
+\b[this is bold]
+\b{this is bold}
+
+Allow use of something like CSS Selector Notation as desired.  Extreme example:
+
+\span#foo.special.nuclear,deliver=chemical{some text}
+
+would be equivalent to
+
+#+begin_src html
+<span id="foo" class="special nuclear" deliver="chemical">  .... </span>
+#+end_src
+
+#+begin_src css
+span#foo.special.nuclear[deliver=chemical]
+#+end_src
+
+
 
