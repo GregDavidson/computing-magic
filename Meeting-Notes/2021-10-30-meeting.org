@@ -4,6 +4,17 @@ Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magi
 
 ** What should you do between Now and Next Saturday?
 
+
+Get used to Emacs and OrgMode:
+- Take notes using Emacs OrgMode.
+    - Computing Magic Notes and Other Notes!
+    - Consider making a private Git repository for miscellaneous OrgMode Notes
+- Figure out how to use Racket with Emacs
+    - Opening a file ending in .rkt should put you in /Racket Mode/
+    - If it doesn't, get help!
+- Do other writing projects with Emacs!
+    - Check out OrgMode Export!
+
 ** The Key Tools
 
 *** Emacs + StarterKit + Orgmode
@@ -31,11 +42,11 @@ Modern keyboards have *Shift* and *Control* but don't have *Meta*, *Super* or
 
 Here are the conventions for Gnu Emacs on a typical PC Keyboard:
 
-   - Control :: for character-level operations
-   - Meta ::  (usually Alt) for operations on larger syntactic units
-   - Control-X Prefix :: for system operations, e.g. files
-   - Control-C Prefix :: for local mode operations
-   - Control-H Prefix :: for Help functions
+    - Control :: for character-level operations
+    - Meta ::  (usually Alt) for operations on larger syntactic units
+    - Control-X Prefix :: for system operations, e.g. files
+    - Control-C Prefix :: for local mode operations
+    - Control-H Prefix :: for Help functions
 
 There are some examples below.
 
@@ -45,7 +56,7 @@ you could use, e.g. C-M-S-k (Control + Meta + Space + k) as a shortcut for
 
 You can also customize and extend your keyboard's modifier keys
 - [[https://irreal.org/blog/?p=6645][Adding Hyper and Super Keys for Emacs]]
-   - Read if on a Mac or if you have typing issues
+    - Read if on a Mac or if you have typing issues
  
 **** Gestures call Lisp Functions
 Emacs is a big bag of Lisp Functions.
@@ -61,8 +72,8 @@ examples of that later.
 **** Emacs terminology is archaic but precise
 
 - Buffers :: Hold your Bytes - /usually/ Text
-   - /Buffers/ can be associated with /Files/ or /Processes/
-   - Files and Processes can be /local/ or /remote/!
+    - /Buffers/ can be associated with /Files/ or /Processes/
+    - Files and Processes can be /local/ or /remote/!
 - Windows :: Display buffer contents for users
 - Frames :: Hold /Windows/ on /Window Systems/
     -  /Frames/ are what most people would now call /Windows/
