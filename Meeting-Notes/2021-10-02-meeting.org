@@ -23,7 +23,7 @@ Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic 
 3. Pulling it all together
 4. Leveraging the best Paradigms and Distinctions
 
-** Details of Today's Discussion, with some elaboration!
+** Details of This Saturday's Discussion, with some elaboration!
 
 *** Memory Hierarchies
 
