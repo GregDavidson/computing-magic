@@ -1,0 +1,316 @@
+* Emacs Lisp coming from Scheme or Racket
+
+Please help make this and all other documents in this repository better. Feel
+free to post issues and/or fork this repository and send me pull requests with
+your improved versions of these files! Let's pool our intelligence for ultimate
+awesomeness!
+  
+The purpose of this document is to assist you in becoming comfortable with Emacs
+Lisp if you're already somewhat (or a lot) already familiar with Scheme or
+Racket.
+
+Both Scheme and Emacs Lisp are members of the Lisp Family and have more
+similarities than differences. Hopefully this document will keep the differences
+from being confusing and lead to /*Happy Hacking!*/
+
+** Background on Emacs Lisp
+
+The purpose of this background section is to give you a context for making sense
+of the Emacs Lisp differences presented below.
+
+Richard Stallman created the first Emacs in 1976, founded the modern Free
+Software Movement and the Gnu Project in 1983 and started creating Gnu Emacs
+in 1984. Richard intended Gnu Emacs to serve as the customizable editor and
+programmable development tool for the Gnu Project. Richard was immersed in the
+rich Lisp Culture of the MIT AI Lab, but the Lisp systems used there were not
+suitable for the Gnu Project. Richard therefore created Emacs Lisp as a modest
+Lisp-Family language sufficient to serve as an extension language for Gnu Emacs.
+
+At that time the only efficient and portable GNU /systems programming language/
+was /C/. Emacs features that required low-level systems access or which needed
+to be very efficient had to be written in C. This included all of the primitives
+for Emacs input-output, process, buffer and window management.
+
+Two key parts of Gnu Emacs written in C are
+- an interpreter for directly evaluating Emacs Lisp S-Expressions
+- a faster interpreter for a machine-independent efficient byte-code
+
+Higher-level Emacs features, including extension packages are written more
+elegantly in Emacs Lisp.
+
+A key facility written in Emacs Lisp is the byte-compiler, a function which can
+translate Emacs-Lisp S-Expressions into Emacs Byte Code. Interpreting Emacs Byte
+Code is faster than directly interpreting Emacs Lisp S-Expressions, but still
+slower (and bulkier) than the native code produced by C compilers.
+
+BTW, Richard also wrote the original Gnu Project C Compiler, /gcc/ which evolved
+to become one of the most capable and important compilers to this day. Gcc has
+been renamed the /Gnu Compiler Collective/ as it can now compile many languages
+(not just C) to efficient native code. Alas, compiling Emacs Lisp to efficient
+native code seems to be beyond GCC's design.
+
+Early Emacs Lisp (and its usage) resembled early lisps, without the influence of
+the /Scheme/ and /Common Lisp/ dialects and the /Functional Programming/
+movement. Early Emacs Lisp was also rather feature-poor compared to other major
+lisp dialects, except for the built-in procedures (written in C) specific to the
+special domain of implementing a text editor, e.g. managing large sequences of
+bytes (usually text data) in dynamic memory (RAM) /Buffers/.
+
+Early Emacs Lisp was especially designed to be sparing of the limited resources
+of early microprocessor-based computers. Even so, Emacs was criticized for
+requiring far more resources than alternatives such as /ex/ and /vi/. Emacs
+aficionados argued that the increased functionality was worth investing in more
+RAM.
+
+For these (and some other) reasons, early Emacs Lisp is often written in a
+convoluted archaic style. And this style has often been carried forward by
+new programmers influenced by the older code.
+
+Over time Emacs Lisp has acquired a more generous pool of built-in procedures -
+aka functions - allowing new code to be more concise. The original Emacs Lisp
+used dynamic variable binding instead of the more modern Lexical Binding. New
+code is encouraged to use the recently added Lexical Binding feature. Alas, old
+code can't automatically be converted to use Lexical Binding, so we have to
+understand and support a mixture of the two approaches. See below for more on
+this important issue.
+
+There have been a number of attempts to create a new Emacs based on a more
+modern and efficient Lisp as well as Emacs-Inspired systems written in languages
+which are not part of the Lisp Family.
+
+While some of these alternatives have some advantages over Gnu Emacs and Emacs
+Lisp, none of them yet support the breadth and depth of powerful features to
+challenge Gnu Emacs in its niche. Emacs Lisp continues to be worth learning well
+because of the enormous amount of extension code written over the years
+
+Since Emacs Lisp was invented, the speed and memory capacity of inexpensive
+computers has increased by more than a factor of 1000. There is no longer a
+pressing need for Emacs and Emacs Lisp to become more efficient. Many newer
+popular alternatives use far more resources. Yet higher performance would allow
+us to write more ambitious features in Emacs Lisp allowing Emacs to become even
+more powerful. Emacs can also be improved by improving the quality of Emacs Lisp
+code so it can be more easily and correctly understood, maintained, adapted and
+built on.
+
+*** Future evolution of Emacs and Emacs Lisp
+
+Emacs and Emacs Lisp are constantly evolving and improving. There are multiple
+websites tracking this progress. My favorite at the moment is [[https://sachachua.com/blog/category/emacs/][Emacs News]].
+
+There are also some possible revolutionary changes coming to Emacs and Emacs
+Lisp, including /Guile Emacs/ and an /Emacs Lisp JIT/.
+
+GNU Guile has added Emacs Lisp as an alternative to Scheme
+- Guile is Project GNU's equivalent to Racket
+    - Guile's core is mostly written in Guile, not C
+    - Guile can support other dynamic languages as well
+    - Guile's implementation is much more efficient than that of Emacs Lisp
+- Attempts to port Gnu Emacs over to GNU Guile have stalled
+    - Completing such a port would be very good for Gnu Emacs
+  
+An experimental Emacs-Lisp JIT is now available
+- a JIT compiles a higher-level language to faster code /Just In Time/
+    - i.e. incrementally while the system is running, based on usage
+    - (regular compilers compile the whole program in advance of running it)
+
+** Let Emacs teach you Emacs Lisp
+
+Emacs has a lot of great ways to help you learn Emacs Lisp.
+
+Any file with the extension =.el= will open in Emacs Lisp Mode. You can enter
+any Emacs Lisp expression and then evaluate it. When you're in an Emacs Mode
+buffer, you can use the Emacs Menubar to show you handy bindings for Emacs Lisp.
+If your Emacs Menu Bar isn't showing, use =F10= to bring it up and select the
+Emacs-List pulldown.
+
+The command =C-h f= will prompt you for a function name and then bring up a
+window on documentation for that function. As usual, Emacs provides
+autocompletion, so you shouldn't have to type very many characters of the
+function name.
+
+The command =C-h i= will take you to the Emacs Info documentation tree. You
+should find an Emacs Lisp tutorial there as well as the Emacs Lisp reference
+manual. If you don't find them, you'll want to install them.
+
+If you're familiar with Org-Babel, you can evaluate any Emacs Lisp inside of an
+elisp src block. There are some examples below.
+
+There are two Emacs Lisp debuggers. The old and simple =debug= and the extended
+=edebug= which should be described in the Emacs Lisp *info* manuals.
+
+** Differences between Emacs Lisp and Scheme
+
+You might want to keep this part as the beginning of your Emacs Lisp notes file.
+As you discover features which you want to remember, you can simply add them to
+these sections and tables. As things become obvious, you can remove them. Be
+sure and use Git so that you can pass on the most suitable version of these
+notes to the next person.
+   
+*** Terminology and Conventions
+
+| Emacs Lisp | Scheme      | Notes                                              |
+|------------+-------------+----------------------------------------------------|
+| Function   | Procedure   | any procedure                                      |
+| Function   | Function    | any procedure which models a mathematical function |
+| lambda     | lambda or λ | creates an anonymous procedure                     |
+| =nil=      | =#f=        | false (=nil= is also /empty list/ in Emacs Lisp)   |
+| =t=        | =#t=        | canonical true - but anything not false is true    |
+
+*** Special Form Vocabulary
+
+| Emacs Lisp                                   | Scheme                            | Notes                                               |
+|----------------------------------------------+-----------------------------------+-----------------------------------------------------|
+| (defvar symbol value "comment")              | (define symbol value)             | bind symbol to value in global environment          |
+| (defun symbol (parameters) "comment" body) ) | (define (symbol parameters) body) | procedure stored in symbol's global /function cell/ |
+| (setq symbol value)                          | (set! symbol value)               | change an existing binding                          |
+    
+
+*** Built-In Predicate Functions
+    
+Predicate Functions are procedures which return either /true/ or /false/.
+
+In Emacs Lisp Predicate Function names /tend/ to end in =p= for predicate.
+
+In Scheme Predicate Function names tend to end in =?=.
+
+| Emacs Lisp | Scheme | Notes                                       |
+|------------+--------+---------------------------------------------|
+| consp      | pair?  | tests if argument is a cons-cell aka a pair |
+| null       | null?  | tests if argument is an empty list          |
+
+  
+*** Built-In Procedures (Functions)
+    
+| Emacs Lisp | Scheme        | Notes |
+|------------+---------------+-------|
+| concat     | string-append |       |
+
+*** Mutable (modifiable) vs. Immutable (not modifiable)
+
+In Emacs Lisp, composite objects, e.g. strings, arrays, cons-cells aka pairs,
+etc. are modifiable and traditional Emacs Lisp code is not shy about using that
+ability. Modern programmers have discovered that it is best to modify objects as
+little as possible. Especially in languages with efficient garbage collection,
+it's better to create new objects instead of modifying existing ones. This is
+also part of /functional style/. Alas, Emacs Lisp doesn't have the features
+newer lisps provide to support immutability and functional style, it's all up
+the discipline of the programmer/designer.
+
+In contrast, most structured objects in Racket, e.g. strings, lists,
+structures, etc. are available in mutable or immutable versions. For example,
+pairs created by =cons= are immutable; pairs created by =mcons= are mutable.
+Good practice is to avoid the mutable versions as much as possible! Bindings can
+be changed with =set!= and again, the less you do that the better. Procedures
+which modify objects (rather than just creating a new object) are normally
+spelled with a trailing =!=, e.g. =set!=, =set-car!=, =set-cdr!=, =append!=,
+etc. But despite these guard rails, best practices are still up to the
+programmer/designer!
+    
+*** nil vs. #f and '()
+
+In Emacs Lisp the symbol =nil= is used for many purposes
+- It is the only value which is /false/
+- It is the value of the =cdr= of the last =cons-cell= in a list.
+- It is widely used to mean things like /no such value/, /tbd/, /not-applicable/, etc.
+Purists consider these multiple roles for =nil= to confuse understanding of the code.
+
+In Scheme, =#f= is used for /false/ and nothing else. ='()= is used for the
+/empty list/ and nothing else. For other special purposes one can either pick a
+symbol or create a struct. The ideal is for any one entity to have only one
+purpose.
+
+*** One Environment or Two
+ 
+Scheme has one environment which maps symbols to values. Emacs Lisp has two: A
+special global environment for naming functions and a scoped environment for
+naming everything else.
+
+For example, in the Scheme form =(* (+ x y) z))= all five symbols =*=, =*=, =x=,
+=y=, =z= are looked up in the current environment, i.e. the /scope/ enclosing
+the /form/. Any or all of them can be changed, as shown here:
+
+#+begin_src racket
+  #lang racket
+  (let ( [* string-append] [+ (λ (x y) (string-append x " " y))] [x "Hello"] [y "world"] [z "!"] )
+    (* (+ x y) z) )
+#+end_src
+
+#+RESULTS:
+: Hello world!
+
+While this is pretty drastic and it's not recommended that you change the
+bindings of familiar functions, it's manageable in a small scope where
+everything is lexical, i.e. the scope of each symbol is obvious to any one
+reading the code.
+
+In Emacs Lisp the =let= would only affect the bindings of =x=, =y=, =z= because
+the bindings of function names in the first position of a form are looked up in
+the /function cells/ of the symbols, i.e. they are globally bound.
+
+#+begin_src elisp
+(cl-flet ( (* (symbol-function 'concat)) (+ (lambda (s1 s2) (concat s1 " " s2))) )
+  (let ( (x "Hello") (y "world") (z "!") )
+  (* (+ x y) z) ) )
+#+end_src
+
+#+RESULTS:
+: Hello world!
+
+Note:
+1. =cl-flet= is one of the borrowings from the /Common Lisp/ dialect, which also
+   has a separate global environment for /function cell/ bindings.
+2. =cl-flet= and the traditional Emacs Lisp =let= forms use /dynamic binding/,
+   which means that they save the old value of the symbol before evaluating the
+   body of the expression. The old value is restored when evaluation of the
+   expression is complete. *This can lead to /horrible/ bugs* when some other
+   function /not/ in the lexical scope (visible to the reader) happens to use
+   the same symbol for an unrelated binding and is now getting your value. See
+   [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html][Lexical Binding]] in the Emacs Lisp reference for how to make sure that your
+   code doesn't have this vulnerability!
+
+Like Emacs Lisp, /Common Lisp/ also stores keeps function values in the
+/function cells/ of the symbol naming the function. Comm Lisp provides the
+syntax =#'= to access the value of a symbol's /function cell/ so you can treat
+the function value like any other value, e.g. pass it as an argument to another
+function, call it with suitable arguments, etc.
+
+In /Emacs Lisp/ =#'= is equivalent to an ordinary quote. In Emacs Lisp one is
+simply passing around the symbol bound to the function instead of passing around
+an actual function value. When =apply= goes to call such a "function", =apply=
+notices that all it has is a /symbol/ so it fetches the function stored in the
+symbol's function cell. This works, but it is not as reliable as directly using
+function values. You may find out unexpectedly that that was the wrong symbol
+and it doesn't have anything in its function cell! This sloppiness also slows
+execution. Oh well, this is just how Emacs Lisp does it.
+
+#+begin_src racket
+#lang racket
+(define (sqr x) (* x x))
+(define (reduce f g alist) (apply f (map g alist)))
+(define mylist (list 1 2 3 4))
+(reduce + sqr mylist)
+#+end_src
+
+#+RESULTS:
+: 30
+
+- Note :: In scheme, using =list= as a name for a /list/ would shadow the =list=
+  function, making it unavailable in this scope. Here that wouldn't matter, but
+  shadowing the name of a popular function looks weird to a Scheme programmer
+  but not to an Emacs Lisp or Common Lisp programmer!
+   
+#+begin_src elisp
+(defun sqr (x) (* x x))
+(defun reduce (f g list) (apply f (mapcar g list)))
+(defvar list (list 1 2 3 4))
+(reduce '+ 'sqr list)
+#+end_src
+
+#+RESULTS:
+: 30
+
+Notes
+1. =defun= creates a new function value and stores it into the /function cell/ of the provided symbol.
+2. =defvar= is usually used to create a global binding for an arbitrary value.
+3. =setq= (not shown) would be used to /change/ a binding established earlier by =setq= or parameter passing.
+    - Good design minimizes use of =setq=!
