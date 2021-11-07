@@ -2,19 +2,15 @@
 
 ** For all Emacs Hackers
    
-Getting comfortable with elisp
-- [[file:elisp-vs-scheme.org][elisp-vs-scheme.org]]
+- [[file:elisp-vs-scheme.org][elisp-vs-scheme.org]] :: getting comfortable with Emacs-Lisp
 
-Modify to create your own custom org-capture setup
-- [[file:org-capture.el][org-capture.el]]
+- [[file:org-capture.el][org-capture.el]] :: Modify to create your own custom org-capture setup
 
 ** For those using Spacemacs  
 
 - Don't use spacemacs unless you have =vi= in your fingerbones.
 - But if you do, use these files for *evil*!
    
-Modify to create your own custom org-capture setup
-- [[file:.spacemacs][.spacemacs]]
+- [[file:.spacemacs][.spacemacs]] :: Modify to create your own custom org-capture setup
 
-A good start for your ~/Notes/SW/spacemacs.org file!
-- [[file:spacemacs.org][spacemacs.org]]
+- [[file:spacemacs.org][spacemacs.org]] :: A good start for your ~/Notes/SW/spacemacs.org file!
