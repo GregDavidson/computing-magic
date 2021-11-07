@@ -1,12 +1,12 @@
-* Emacs Notes for the Computing Magic Curriculum
+* Emacs materials for the Computing Magic Curriculum
 
 ** For all Emacs Hackers
    
 Getting comfortable with elisp
-- [[file::elisp-vs-scheme.org][elisp-vs-scheme.org]]
+- [[file:elisp-vs-scheme.org][elisp-vs-scheme.org]]
 
 Modify to create your own custom org-capture setup
-- [[file::org-capture.el][org-capture.el]]
+- [[file:org-capture.el][org-capture.el]]
 
 ** For those using Spacemacs  
 
@@ -14,7 +14,7 @@ Modify to create your own custom org-capture setup
 - But if you do, use these files for *evil*!
    
 Modify to create your own custom org-capture setup
-- [[file::.spacemacs][.spacemacs]]
+- [[file:.spacemacs][.spacemacs]]
 
 A good start for your ~/Notes/SW/spacemacs.org file!
-- [[file::spacemacs.org][spacemacs.org]]
+- [[file:spacemacs.org][spacemacs.org]]
