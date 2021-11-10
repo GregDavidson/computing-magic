@@ -1,0 +1,226 @@
+* 10:30am Saturday 6 November 2021
+
+This is a rough draft - check back later for something better!
+
+Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+
+** What should you do between Now and our Next Meeting?
+
+*** Integrate Emacs, OrgMode, Git, etc. your daily workflow and projects
+
+**** Share on the Discord
+     - Insights, comments, etc. on #computing-magic
+     - Where you've gotten stuck, confused, etc. on #computing-magic-help
+           - Like StackOverflow: help one another out!
+ 
+**** Make your Notes hierarchy a thing of beauty
+
+Anything you want to remember or track belongs in some /OrgMode/ file!
+ 
+Under ~/Notes (the /directory/ *Notes* under my /Home Directory/) I have
+- Folders for miscellaneous projects that might not have separate repositories
+      - Filled with /OrgMode/ files giving status, agenda, documentation, etc.
+- Folders for different communities I'm involved with
+      - an /OrgMode/ file with sections for people, etc. in those communities
+      - separate /OrgMode/ files and/or subfolders for some people, etc.
+      - ==> /OrgMode/ can cross-link these folders and files across communities
+- A Folder for Programming Languages
+      - /OrgMode/ files on features, tips, insights, etc. on each
+- A Folder for Software Tools
+      - with /OrgMode/ files on features, tips, insights, etc. on such
+- A GTD (Getting Things Done Folder)            
+      - managed by Org-Capture
+ 
+**** - More OrgMode Features to gradually learn
+
+- Tables & Spreadsheets
+- Org-Babel Notebooks
+- Links
+- Agendas & Calendar
+- integration with phone apps
+
+**** - More Emacs awesomeness
+     
+Magit
+
+REPLs in live buffers
+    - Shell buffers
+    - Racket buffers
+    - SQL buffers to come
+      
+Tramp mode for remote files and processes
+    
+*** Explore /Shell-Based/ Computing
+      - see Bash Crawl from last week's notes
+
+** Agenda and Session
+
+*** TODO Emacs Show & Tell 
+
+*** Emacs Humor
+    
+- [[https://xkcd.com/378/][xkcd Real Programmers]]
+- M-x butterfly
+ 
+- M-x doctor
+      - remember to hit enter twice after each thing you tell the doctor
+
+- M-x hanoi
+      - The numeric prefix determines the number of disks
+      - In standard emacs
+            - While holding down =Alt= aka =Meta=
+            - type a number, e.g. *10*
+            - type =x=
+            - release =Alt=
+            - type *hanoi* =ENTER=
+      - Alternatively:
+            - type =Control-u=
+            - type a number, e.g. *10*
+            - type =Alt-x= *hanoi* =ENTER=
+              
+*** Side discussion on Truthiness & Falsiness   
+
+Control logic in programming depends on a particular language or system's
+concept of /true/ and /false/. In a lot of languages and systems the rules are
+Byzantine!
+    
+**** C Family Languages
+
+- =Falsy=
+     - Numeric 0 for all Integer and Floating-Point types
+     - NULL Pointers - which can be written 0
+- Everything else is =truthy=
+
+The =&&= and =||= operators are short-circuit Boolean control structures
+- i.e. =doit1() && doit2()= doesn't evaluate =doit2()= unless =doit1()= is =truthy=
+
+Idiomatic C to print a string in upper case:
+#+begin_src C
+  p = "Hello world!\n";
+  while (*p++)
+    putchar(toupper(*p));
+#+end_src
+
+Pascal-ish non-idiomatic C:
+#+begin_src C
+    for (p = "Hello world!\n"; *p != '\n'; p++)
+      putchar(toupper(*p));
+#+end_src
+
+BTW: =toupper= and =putchar= are macros in C
+    - This makes the code much faster
+    - C macros are much less powerful than Lisp macros
+
+**** Java
+ 
+Java is somewhat in the C Family. It has a primitive Boolean /false/ value. It
+also has a standard /Boolean Class/. Unfortunately, the /False Instance/ of the
+/Class Boolean/ is /true/, not /false/!
+
+One of the design flaws of Java is that not all values are instances of classes.
+Values of /Primitive Types/ are idiosyncratic.
+     
+**** Traditional Lisp, including Emacs Lisp
+
+- The symbol =nil= is /false/
+- /Everything else/ is /true/
+
+ The =and= and =or= /special forms/ are short-circuit Boolean control structures.
+ 
+#+begin_src elisp
+  (if (and some-list (/= 0 some-number))
+      (or (fancy some-list some-number) (/ (car some-list) some-number))
+    "some-list is empty or some-number is 0!")
+#+end_src
+
+**** Scheme - and therefore Racket
+
+The Boolean value (written =#f= as a literal) is /false/
+- Everything else counts as true!
+
+ The =and= and =or= /special forms/ are short-circuit Boolean control structures.
+
+#+begin_src scheme
+  (if (and (pair? some-list) (postive? some-number))
+      (or (fancy some-list some-number) (/ (car some-list) some-number))
+    "some-list is empty or some-number is 0!")
+#+end_src
+
+**** Python
+     
+https://www.freecodecamp.org/news/truthy-and-falsy-values-in-python/
+
+**** JavaScript
+
+https://www.sitepoint.com/javascript-truthy-falsy/
+     
+**** SQL
+
+Any SQL expression can produce NO VALUE. This is often thought of as a special
+value named =NULL= but in fact =NULL= is not a value.
+
+#+begin_src sql
+  -- given two boolean SQL functions, test1, test2
+  SELECT test1(this,that) and test2(this,that)
+#+end_src
+
+#+begin_src sql
+    -- given expressions e1 and e2 and operator function OP
+    SELECT e1 OP e2
+    -- if either expression produces no value, the whole expression produces no value
+  SELECT x * (y + z) ^*^ foo(a, COALESCE(foo, bar))           
+      -- if any sub-expression expression fails to produce a value, it contaminates
+      -- the rest of the expression, except when when explicitly dealing with -it
+      -- such as by use of COALESCE
+      -- If you're trying to trace the computation imperatively,
+      -- you'll have difficulty as it hard to know where things went NULL!
+#+end_src
+
+Dijkstra advised against tracing and conventional debugging.
+
+Tracing, testing and debugging can sometimes show a situation where the
+computation goes awry, i.e. it can reveal a bug.
+
+Correctness proofs reveal that there can be no bugs.
+
+Engaging in the kind of arguments that are involved in proving code correct is
+engaging in the actual specification and semantics, which is what you really
+care about.
+
+Engaging in tracing is exploring particular micro-strategies.  It doesn't give
+much global insight.
+
+When tracing /finds/ the bug, the programmer might add a /patch/ to fix it.
+
+#+begin_src sql
+  SELECT COALESCE( expression1, expression2, ... , expression-n)
+  -- returns the first value found
+  -- short circuits!
+#+end_src
+
+A great sin in SQL: treating NULL as a value,
+e.g. using it to mean "does not apply" or some other special semantic value.
+- this sin in rampant
+
+| test1 | test2 | SELECT result |
+| F     | F     | F             |
+| F     | T     | F             |
+| T     | F     | F             |
+| T     | T     | T             |
+| NULL | F     | NULL         |
+| NULL | T     | NULL         |
+| NULL | F     | NULL         |
+| NULL | T     | NULL         |
+| F     | NULL | NULL         |
+| F     | NULL | NULL         |
+| T     | NULL | NULL         |
+| T     | NULL | NULL         |
+** Announcement
+
+Please join us tomorrow for our next discussion of Computing Magic. We will be beginning the transition from DrRacket to a more sophisticated development environment!
+- Saturday 6 November 2021, 10:30am US Pacific Time
+- https://us02web.zoom.us/j/810472918
+- password: abundance
+
+** Raw Miscellaneous Notes
+
