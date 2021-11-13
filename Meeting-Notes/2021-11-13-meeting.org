@@ -1,0 +1,65 @@
+* 10:30am, Saturday, 13 November 2021
+
+Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+
+** What we covered today
+
+Today was a clinic and discussion aimed at becoming more productive with the new
+tools.
+ 
+** What should you do between Now and our Next Meeting?
+
+Find meaningful ways to practice and integrate into your life, some of:
+- Posix shell basics
+- Git
+- Emacs
+      - OrgMode
+            - Org-Babel
+      - Org-Capture
+      - Magit
+- Create your own useful ~/Notes tree
+ 
+Some helpful materials are linked from [[file:2021-11-06-meeting.org][last week's notes]].
+
+Find things you like by going through the notes of previous meetings and the
+resources which they link to.
+- Capture key things in your ~/Notes tree
+- Share your favorites of them on the Discord!
+
+Get in the habit of capturing /everything/ in your ~/Notes tree
+- which syncs to your private repository on GitHub or somewhere similar
+- which you clone onto all of your devices, including your phone
+
+More things for your ~/Notes and the Discord:
+- Cool resources you've found, e.g. videos, tutorials, etc.
+- Questions and Confusions and Suggestions
+- Answers to other people's questions
+- etc.
+
+If you want to get ahead for next week: 
+- Install [[https://www.postgresql.org/][PostgreSQL]]
+- Get SQL-Mode working with PostgreSQL
+  - See the advice [[https://truongtx.me/2014/08/23/setup-emacs-as-an-sql-database-client][here]] and [[https://emacsredux.com/blog/2013/06/13/using-emacs-as-a-database-client/][here]]
+- Begin the [[https://www.postgresql.org/docs/14/tutorial.html][PostgreSQL tutorial]]
+
+Note: We will be coming back to Racket once we know SQL
+- Racket integrates beautifully with SQL and the Web
+- Racket can connect the Web Browser Front-End with the Database Back-End!
+
+** Announcement 
+
+Tomorrow's Computing Magic Meeting will be a clinic to support our power-up with
+our Posix and Emacs based tools. This will be an opportunity to ask all of your
+questions and get assistance with any roadblocks you've encountered. We'll also
+discuss /The Road Ahead/.
+- Saturday 13 November 2021, 10:30am US Pacific Time
+- https://us02web.zoom.us/j/810472918
+- password: abundance
+
+
+** Participants
+   
+- Pseudo
+- Thiago
+- Nikhil
+- Touch   
