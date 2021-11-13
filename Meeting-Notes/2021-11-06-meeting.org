@@ -211,14 +211,14 @@ e.g. using it to mean "does not apply" or some other special semantic value.
 | F     | T     | F             |
 | T     | F     | F             |
 | T     | T     | T             |
-| NULL | F     | NULL         |
-| NULL | T     | NULL         |
-| NULL | F     | NULL         |
-| NULL | T     | NULL         |
-| F     | NULL | NULL         |
-| F     | NULL | NULL         |
-| T     | NULL | NULL         |
-| T     | NULL | NULL         |
+| NULL  | F     | NULL          |
+| NULL  | T     | NULL          |
+| NULL  | F     | NULL          |
+| NULL  | T     | NULL          |
+| F     | NULL  | NULL          |
+| F     | NULL  | NULL          |
+| T     | NULL  | NULL          |
+| T     | NULL  | NULL          |
 ** Announcement
 
 Please join us tomorrow for our next discussion of Computing Magic. We will be beginning the transition from DrRacket to a more sophisticated development environment!
