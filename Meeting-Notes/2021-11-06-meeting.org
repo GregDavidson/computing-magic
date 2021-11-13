@@ -54,11 +54,12 @@ REPLs in live buffers
 Tramp mode for remote files and processes
     
 *** Explore /Shell-Based/ Computing
-      - see Bash Crawl from last week's notes
+      - see [[https://marlborough-college.gitbook.io/attic-lab/the-terminal/games/level-1-bashcrawl][BASH Crawl]], etc. from [[file:2021-10-30-meeting.org][last week's notes]]
 
 ** Agenda and Session
 
-*** TODO Emacs Show & Tell 
+*** DONE Emacs Show & Tell 
+    CLOSED: [2021-11-06 Sat 13:31]
 
 *** Emacs Humor
     
