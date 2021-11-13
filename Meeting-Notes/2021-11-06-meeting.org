@@ -30,7 +30,10 @@ Under ~/Notes (the /directory/ *Notes* under my /Home Directory/) I have
       - with /OrgMode/ files on features, tips, insights, etc. on such
 - A GTD (Getting Things Done Folder)            
       - managed by Org-Capture
- 
+
+There are some possibly helpful materials under [[file:../Emacs/emacs-materials.org][emacs-materials.org]]
+- especially [[file:../Emacs/org-capture.el][org-capture.el]]
+
 **** - More OrgMode Features to gradually learn
 
 - Tables & Spreadsheets
