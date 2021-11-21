@@ -1,0 +1,303 @@
+* 10:30am, Saturday, 20 November 2021
+
+Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+
+** What should you do between Now and our Next Meeting?
+ 
+*** Install Postgres on your favorite OS platforms
+
+Consult the instructions for your operating system at
+- https://www.postgresql.org/download/
+
+The prepacked PostgreSQL distributions are fine for now. Later we'll be building
+a custom PostgreSQL from source.
+
+*** Get Postgres ready for use
+
+**** Create a Role (user account) and a Database
+
+From shell or command prompt:
+
+#+begin_src sh
+createuser -s greg
+createdb greg
+psql greg
+#+end_src
+
+From psql aka /the SQL shell/
+- connected as role /postgres/
+- /postgres/ is the administrator role
+
+#+begin_src SQL
+CREATE ROLE greg WITH PASSWORD 'clever but memorable';
+CREATE DATABASE greg;
+GRANT ALL PRIVILEGES ON DATABASE greg TO greg;
+ALTER ROLE greg WITH SUPERUSER;
+#+end_src
+
+Notes
+- PostgreSQL doesn't care whether keywords are in UPPER CASE or lower case.
+- The database name doesn't have to be the same as the role name
+      - that's just a convention for your first database
+- The SQL commands are incomplete without a semicolon at the end 
+
+You can use PostgreSQL from
+- PgAdmin4 -- a nice but limited GUI
+- psql -- which you run in a command shell
+- Emacs -- the more flexible solution
+      - some fiddling may be required to get this to work well
+      - it's worth it, please believe me! ;-)
+
+*** Explore the Postgres Tutorial
+
+There are lots of them.  Start with the one in the manual
+- https://www.postgresql.org/docs/current/tutorial.html
+      - Work your way through it interactively
+      - Try variations
+      - Look things up in the manual
+
+*** Explore some of the other tutorials and materials
+    
+- https://www.postgresql.org/docs/online-resources/
+ 
+** Some Postgres /Pointers/
+
+Please post in the #computing-magic channel when you
+- get into trouble
+- discover something worth sharing
+
+We'll mine the above for useful pointers to put here!
+   
+** Some Background Distinctions
+
+*** RDBMS Advantages
+
+**** RDBMSs can outperform Files
+    
+Unlike main memory which is stored in [[https://en.wikipedia.org/wiki/Volatile_memory][RAM]], Files and Databases store data
+persistently, usually on flash drives aka Solid State Drives or on magnetic hard
+disk drives. Files faithfully preserve the byte sequence of your data and try to
+minimize I/O time. Databases, especially [[https://en.wikipedia.org/wiki/Relational_database][RDBMS]] - Relational Database Management
+Systems, promise a lot more!
+    
+Transferring data between RAM and persistent storage is one of the most expensive
+operations of a modern computer, easily taking 1,000 times more time than the actual 
+processing of the data once its available in RAM.  We'd like to
+- minimize I/O time
+- minimize the complexity of our applications
+- ensure the integrity of our data and results
+
+If you have a lot of data in RAM It's much faster to write it to a file than
+send it to a database. If you want to read specified bytes from a file it is,
+once again, much faster than getting those bytes back from a database.
+
+Suppose you have some data on, say, a large number of coffee houses in a given
+region which you're driving through. The information on each coffee house is a record
+with data including
+- address
+- location as latitude & longitude
+- opening hours
+- quality ratings
+- ownership
+
+Suppose you're driving through that region and you'd like to stop at a nice
+- independent coffee house
+- highly rated for the quality of its espresso drinks
+- close to your route
+- sooner rather than later
+
+If the data's in a file you're going to have to read a lot of coffee house
+records. This is true even if the data is already sorted, as you want to
+optimize several metrics.
+
+If the data's in a database supporting modern multi-factor indices, e.g.
+r-trees, then you can
+- select only the coffee houses along your forward route
+- ordered by closeness to all of your desired criteria
+- to be delivered lazily to your application
+
+You application can then fetch enough of the hits to fill a list for you to
+examine, fetching more if you want to see more, all in decreasing order
+according to your criteria.
+
+An excellent RDBMS such as [[https://www.postgresql.org][PostgreSQL]] can easily outperform file storage by
+using intelligent
+- indexing
+- caching
+- query optimization
+- [[https://en.wikipedia.org/wiki/Parallel_computing][parallelization]]
+  - multiple CPU cores, distributed data, etc.
+greatly reducing the I/O overhead.
+
+While in principle it would be possible to write code in your application to
+provide similar functionality, it is far better to leverage the investment in
+the development of the RDBMS and keep your application simple.
+
+For situations where the sophistication of a full RDBMS running as a service is
+overkill, an alternative is to for your application to use a simple RDBMS
+implemented as a library which stores all of its records in a single file.  A popular example of such is
+[[https://sqlite.org][SQLite]].
+
+
+**** Data storage is efficient, portable and human readable
+
+We would like to store data in a format which is
+- compact (to minimize I/O overhead)
+- efficient to process with the host computer's particular architecture
+      - word size, cache resources, vector processors, etc.
+- portable (can be transferred to a different computer)
+- human readable
+
+There is no single format which directly satisfies all of these criteria.
+Fortunately, an excellent RDBMS can transparently translate data among a variety
+of formats to provide all of these desired criteria and do so strategically and
+automatically so that the translation overhead is minimized.
+
+
+**** RDBMS protect data integrity
+ 
+While database systems generally allow unstructured data, RDBMS provide
+extensive features for specifying
+      - the type of the data, which determines
+            - the best storage format
+            - the allowed and meaningful operations you can apply to it
+It's impossible to corrupt typed data, i.e. render it invalid.
+
+Constraints can be added to any field or record and even to relationships
+between records in different tables. The RDBMS will ensure that all operations
+respect all constraints. The integrity of the data is ensured.
+
+***** Transactional Integrity
+
+Multiple operations are typically grouped inside of [[https://en.wikipedia.org/wiki/Database_transaction][Transactions]] which isolate those operations from any other
+operations going on at the same time.  When all operations within a transaction are complete, the database will
+check that the result is consistent with all constraints and commit the transaction, making those result appear
+in the database in a single instant of time (although still isolated from any other transactions which are not yet complete).
+
+It's possible that while a particular transaction was being processed, the
+completion of another transaction may have changed the database so that it would
+now violate a constraint to commit this transaction. In such a case this
+transaction will safely fail without having any effect, although the application
+requesting it will be notified and can retry the same transaction or issue an
+alternative transaction. This all-or-nothing transactional principle is key to
+maintaining the integrity of the database.
+      
+**** RDBMS data can be simultaneously accessed by multiple applications
+
+It is very dangerous for multiple applications to open the same file and
+simultaneously modify it, or try reading it while even one other application is
+modifying it. Applications rarely do anything to guard against this kind of
+problem.
+
+RDBMS allow any number of applications (database clients) to simultaneously
+access and modify a database safely All modifications are done inside of
+transactions which either commit or rollback atomically.
+
+Unlike file formats which are typically optimized for the use of one
+application, e.g. by sorting the data in a particular way, RDBMSs can store data
+in an application neutral normalized format. Multiple indexes, views and stored
+procedures can be added alongside the data as needed to make particular access
+and update patterns more efficient without any change in the data format.
+
+*** Functions vs. Relations
+
+RDBMSs are primarily organized around /Relations/, although advanced RDBMSs also
+support /Procedural Functions/.
+
+**** Functions and Functional Procedures
+ 
+Mathematically a /function/ is just a /set of pairs/ which associate /elements/ in
+some /domain type/ with elements in some /range (or co-domain) type/. In
+Typed Racket we'd say that a function was a =(Setof (Pairof domain-type
+range-type))=  There is a restriction: the domain elements must be unique, i.e.
+there can only be one pair in the set with a given domain value.
+
+In computing, a /procedural function/ takes a /value of a parameter type/ and
+returns a /value of a result type/. The procedural function constructs the
+function on demand.
+
+Alternatively, we can simply construct a set of pairs to explicitly represent
+the function. The latter would seem to only be able to represent functions which
+are finite sets, but many computer languages allow infinite data structures,
+although not all parts of those data structures can be materialized at once!
+
+Here's an example in /Typed Racket/:
+
+#+begin_src racket
+   #lang typed/racket
+  
+  ;; The fibonacci function is a mapping from Integers to Integers 
+  ;; The Range values can get uncomfortably large.  So we can
+  ;; approximate the function with a mapping from Integers to FLonums
+  ;; where FLonums are Floating Point approximatations.
+  
+   ;; A the approximate fibionacci function as a procedure
+   (: fib (-> Integer Flonum))
+   (define (fib n)
+     (: fib (-> Integer Flonum Flonum Flonum))
+     (define (fib n a b)
+       (cond [(= 0 n) a]
+             [(= 1 n) b]
+             [else (fib (sub1 n) b (+ a b))] ) )
+     (if (negative? n) 0.0 (fib n 0.0 1.0)) )
+  
+   ;; A the approximate fibionacci function as a set
+   ;; specifically as an an infinite (Lazy) Sequence of Pairs
+  ;; (in-naturals) returns the sequence of Integers starting with 0
+   (: fib-seq (Sequenceof (Pairof Integer Flonum)))
+   (define fib-seq (sequence-map (λ ([n : Integer]) (cons n (fib n))) (in-naturals)))
+  
+   ;; if a function is a set of pairs, here are some of them:
+   (map (λ ([n : Integer]) (sequence-ref fib-seq n)) '(1 10 20))
+#+end_src
+
+#+RESULTS:
+: ((1 . 1.0) (10 . 55.0) (20 . 6765.0))
+
+*** A note on Multiple Inputs and Outputs
+
+A functional procedure =fancy-func= in Scheme with *#i* input parameters and
+*#o* output values can always be replaced by a procedure =simple-func= which
+takes a single input parameter =i= which is a list of *#i* elements and produces
+a single output value =o= which is a list of *#o* elements. Thus we can always
+think of a functional procedure as mapping a single input to a single output.
+Similarly we can always think of a function as a set of (=i= . =o=) pairs but
+=i= and =o= could always be lists.
+    
+**** Relations
+
+Mathematically a /relation/ is a /set of tuples/ where tuples are ordered sets where
+- the tuples within a relation have the same number of elements
+- the type of each element in a given position in each tuple is the same
+
+In database jargon tuples are also called /records/. A database /table/ is
+simply a stored relation. We refer to the records comprising a table as /rows/
+so really the terms /tuple/, /record/ and /row/ are equivalent.
+
+The important thing to remember is that what's going on with RDBMSs and SQL is
+really very simple.
+
+Relations are just sets of tuples which can be
+- stored in tables
+- generated on-demand by procedures
+- generated by SQL relational operations
+      - select, join, etc.
+- read from input streams
+      - perhaps connected to a file
+      - perhaps connected to a network socket
+ 
+RDBMS queries /always/ return Relations
+- Relations are just sets of Tuples
+- Tuples are just ordered sets of Values
+
+Values are either
+- Scalars, e.g. numbers, dates, text
+- Tuples containing a fixed number of Values of fixed types
+- Arrays containing a variable number of Values of the same type
+
+Relational Databases are based on the theory of [[https://en.wikipedia.org/wiki/Relational_algebra][Relational Algebra]] but with some
+liberties taken. For now you can ignore the theory.
+
+SQL has a more verbose and somewhat ad hoc syntax and semantics than the
+elegance of Relational Algebra theory. After gaining significant experience with
+SQL it can be valuable to learn more about the theory.
