@@ -1,0 +1,61 @@
+* 10:30am, Saturday, 20 November 2021
+
+Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+
+** What should you do between Now and our Next Meeting?
+ 
+As you explore: 
+- Share your insights to #computing-magic
+- Share any challenges to #computing-magic-help
+ 
+*** Move through the main [[https://www.postgresql.org/docs/current/tutorial.html][PostgreSQL Tutorial]]
+- Try variations of every example
+- Look up the features you just used in the [[https://www.postgresql.org/docs/current/][Postgres Reference Manual]]
+
+When looking something up in the Reference Manual
+- E.g. a command, type, operator, etc.
+- Get a high-level overview of the item
+- Learn only one or two specific features of the item
+
+*** Explore the deeper material in [[file://2021-11-20-meeting.org][last weeks notes]]
+- What are Functions and Relations in Computing?
+- How can these and other Meeting Notes be improved?
+      - easier to understand
+      - more useful
+      - what's missing?
+
+*** Explore some of the other tutorials and materials
+- https://www.postgresql.org/docs/online-resources/
+ 
+*** Explore the [[https://www.postgresql.org/docs/current/][Postgres Reference Manual]]
+ 
+Remember the advice above to avoid getting bogged down
+- Ignore the details
+- What are the fundamental concepts?
+- How is the manual organized?
+- What's especially interesting or surprising?
+      - Share on the Discord!
+ 
+*** Do some web searches
+
+Find and explore some PostgreSQL-related resources.
+- Share the ones you find especially cool!
+
+*** Survey some PostgreSQL extensions
+ 
+- https://dzone.com/articles/spatial-analytics-with-postgis-plr-and-r
+- https://postgis.net/
+  https://www.postgresql.org/docs/current/external-pl.html
+ 
+Maybe of more interest to me than you ;-)
+- https://pgxn.org/
+      - https://pgxn.org/dist/pgmp/
+- https://www.postgresql.org/docs/current/contrib.html
+      - https://www.postgresql.org/docs/current/xml2.html#id-1.11.7.56.4
+
+*** Learn how to connect to PostgreSQL from applications
+
+This is where we'll be going next and feel free to start getting into it now!
+    
+- [[https://docs.racket-lang.org/db][Racket Database Connectivity]]
+- Connecting from other languages you know

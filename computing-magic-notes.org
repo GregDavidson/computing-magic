@@ -13,3 +13,4 @@ Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magi
 - [[file:Meeting-Notes/2021-11-06-meeting.org][Saturday 6 November 2021]]
 - [[file:Meeting-Notes/2021-11-13-meeting.org][Saturday 13 November 2021]]
 - [[file:Meeting-Notes/2021-11-20-meeting.org][Saturday 20 November 2021]]
+- [[file:Meeting-Notes/2021-11-27-meeting.org][Saturday 27 November 2021]]
