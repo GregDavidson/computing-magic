@@ -1,0 +1,110 @@
+* /DRAFT/ Computing Magic Meeting - Saturday, 5 December 2021
+
+Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+
+** How can you /Give Back/ to this project?
+   
+As you explore, you can produce an immediate win-win if you: 
+- Share your insights to #computing-magic
+- Share any challenges to #computing-magic-help
+ 
+Please consider forking some of the repositories
+- make improvements
+      - from simple typo fixes and comments
+      - to major improvements /after discussion/
+- contribute your changes by sending a pull request
+
+Share the project with others
+
+** Exciting developments
+
+*** Open Source /osquery/ project from -Facebook-/Meta/
+    
+- [[https://engineering.fb.com/2014/10/29/security/introducing-osquery/][Osquery Introduction]]
+- https://github.com/osquery/osquery
+
+*** Github integrates μsoft Visual Studio
+
+I guess this is what comes of μsoft buying Github and using it for their development projects.
+    
+You can activate this amazing feature either by changing the url of your
+repository from =.com= to =.devv= or simply by typing a =.= (period aka full
+stop) on a regular github display.
+
+More information at https://github.com/github/dev
+
+BTW, Visual Studio is one of the few μsoft products I respect. It greatly
+resembles the interface to the Smalltalk environment from Xerox PARC.
+
+*** ThingLab Rises Again!
+
+Speaking of Smalltalk, all modern Smalltalks derive from Smalltalk-80 (1980).
+The major changes from Smalltalk-76 to Smalltalk-80 left some extraordinary
+innovation behind, such as /ThingLab/. Some wonderfully crazy folks have ported
+Smalltalk-76 to JavaScript in your browser, allowing you to experience its
+glory!
+
+**** Historical Background
+     
+With /Sketchpad/, Ivan Sutherland invented
+- Interactive Computer Graphics
+- Object-Oriented Constraint Computing
+      - similar to JavaScript but better
+- Computer-aided Drafting and Design
+- In 1063 in 2K bytes and no GPU!
+- Video: [[https://www.youtube.com/watch?v=57wj8diYpgY][2D Constraint Drawing]]
+- the million-dollar custom computer is drawing each pixel!
+- Video: [[https://www.youtube.com/watch?v=t3ZsiBMnGSg][3D Design and Graphical Computing]]
+
+The researchers at Xerox PARC invented
+- The personal computer
+- Ethernet
+- The modern GUI Desktop
+      - Based on Englebart's earlier work
+- /and much more!/
+
+Douglas Englebart invented
+- Interactive Collaborative Computing
+- Computer Augmentation of Human Intellect
+- Windowing and The Mouse
+- Chording Keyboards
+- Video: [[https://www.youtube.com/watch?v=2nm47PFALc8][The Mother of all Demos - 1968]]
+
+**** ThingLab in Smalltalk-76 in your browser
+
+Check out https://github.com/cdglabs/ThingLab
+- Perhaps start with the Xerox PARC tech report?
+- (I find the video uninspiring!)
+- Then try it out in your browser!
+
+**** What's Next?
+     
+The brilliant mind of Alan Borning created /ThingLab/ as a (more) modern
+reimagining of Ivan Sutherland's radically revolutionary /Sketchpad/ system. How
+would you reimagine them into today's world?
+
+*** Croquet Rises again
+ 
+The best 3D Immersive VR System ever invented was /Croquet/, a Smalltalk-based
+system which was abandoned by its original developers. After a few developers
+tried to resurrect it and failed it lay fallow for many years. Recently, the
+principle original developer has brought it back to life - in /JavaScript/
+running directly in your browser. Alas, it seems to be proprietary, but I'm
+still excited!
+- [[https://en.wikipedia.org/wiki/Croquet_Project][Original Croquet Project]]
+- [[https://en.wikipedia.org/wiki/Open_Cobalt][Open Cobalt successor to Croquet]]
+- Video: [[https://www.youtube.com/watch?v=1s9ldlqhVkM][Open Cobalt Alpha- 2009]]
+ 
+The best of the Croquet demos I saw back in the day do not seem to be online,
+but here are two simple ones:
+- Video: [[https://www.youtube.com/watch?v=cXGLOiZUZ2U][Croquet Demo - 2003]]
+- Video: [[https://www.youtube.com/watch?v=rrevDmuj8bA][Croquet Demo with Fish - 2003]]
+The original Croquet supported very advanced collaborative development. 
+
+The new Croquet system does not yet have as much built-in capability as the
+original Croquet. It seems to be designed as a platform for building such
+things - and maybe more?
+- [[https://croquet.studio/origin/][Origin Story]]
+- [[https://croquet.studio/][The New Croquet Website]]
+ 
+** Suggestions before our Next Meeting
