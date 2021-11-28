@@ -36,6 +36,16 @@ More information at https://github.com/github/dev
 BTW, Visual Studio is one of the few μsoft products I respect. It greatly
 resembles the interface to the Smalltalk environment from Xerox PARC.
 
+*** Once and future thing: [[https://www.linuxjournal.com/article/1383][Pgfs: The PostGres File System - 1997]]]
+
+Filesystems tend to accumulate features. As they do so, they start to resemble
+Relational Databases. But wait, we did that 25 years ago!
+
+At the time, Pgfs was too much too soon - certainly too much for the PCs of the
+day. Now that we're layering all of the complexity of /git/ onto the POSIX
+Filesystem and now that we have more efficient Relational Engines it's time to
+revisit this concept!
+
 *** ThingLab Rises Again!
 
 Speaking of Smalltalk, all modern Smalltalks derive from Smalltalk-80 (1980).
