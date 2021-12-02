@@ -16,6 +16,47 @@ Please consider forking some of the repositories
 
 Share the project with others
 
+** Key Points
+
+As you go through the PostgreSQL Tutorial and other tutorial and reference
+material, here are some of the key points:
+- Fundamentally you're always dealing with sets of Tuples
+      - or values that can be stored in Tuples
+- Tuples and Values always have a Type
+- Schemas determine Types and Constraints
+- All /change/ occurs atomically (instantly) when a Transaction commits
+- SQL is a full programming language!
+- Queries are /compiled/ by the /Query Optimizer/
+- The Data Representation should be /independent of any use case/
+- Indexes, views and functions can assist with specific use cases
+
+** Suggestions before our Next Meeting
+   
+Create at least one database related to an interest you have.
+- List your use cases
+      - Identify queries for each one
+      - What should your Schema look like
+- Iteratively improve your schema and queries 
+
+Keep the underlying simplicity in mind while exploring the features.
+- What do you see that you can use for databases you are considering building?
+- What do you see that can expand the scope of what you can do?
+
+*Share on the Discord:*
+- What features do you see that you find useful?
+- What questions do you have?
+
+** Things coming soon!
+
+We want to be able to access our database from web pages and programs, e.g. apps.
+Two good approaches:
+
+- https://postgrest.org
+[[https://github.com/GregDavidson/Wicci-Shim-Racket][- The Racket Shim]]
+
+Advanced SQL Programming and MetaProgramming
+- https://github.com/GregDavidson/wicci-core-S0_lib
+   
 ** Exciting developments
 
 *** https://postgrest.org is chasing me!
@@ -129,5 +170,3 @@ things - and maybe more?
 *** Is Scheme the future of System Administration?
 
 -  https://guix.gnu.org/
-
-** Suggestions before our Next Meeting
