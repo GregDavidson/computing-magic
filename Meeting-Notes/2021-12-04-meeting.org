@@ -18,6 +18,15 @@ Share the project with others
 
 ** Exciting developments
 
+*** https://postgrest.org is chasing me!
+ 
+The PostgREST project has a Web Server implemented inside of PostgreSQL and
+they're building sophisticated websites with all of the business logic
+implemented in the databaese.
+
+I started down this road with my Wicci project before they started, but they're
+now ahead of me!
+   
 *** Open Source /osquery/ project from -Facebook-/Meta/
     
 - [[https://engineering.fb.com/2014/10/29/security/introducing-osquery/][Osquery Introduction]]
@@ -116,5 +125,9 @@ original Croquet. It seems to be designed as a platform for building such
 things - and maybe more?
 - [[https://croquet.studio/origin/][Origin Story]]
 - [[https://croquet.studio/][The New Croquet Website]]
- 
+
+*** Is Scheme the future of System Administration?
+
+-  https://guix.gnu.org/
+
 ** Suggestions before our Next Meeting
