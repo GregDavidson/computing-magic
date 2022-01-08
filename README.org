@@ -30,6 +30,10 @@ All of the materials in this repository are in an early stage of development
 - [[cm-distinctions.org]]
 - [[cm-quotes.org]]
 
+We'll be trying to keep the Computer Programming Languages which we use to a
+practical minimum.
+- See [[file:languages-which-matter.org][Which Computer Languages Matter?]]
+
 Notes from the Alpha Course are in the file
 - [file:Alpha-Course/computing-magic-notes.org][Alpha Course Meeting Notes]]
 
