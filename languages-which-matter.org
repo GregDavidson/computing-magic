@@ -1,0 +1,95 @@
+* Which Computer Languages Matter?
+
+** Why Some Languages Matter More Than Others
+  
+Let's use *hack* in the /MIT/ sense, of an ability to bend something to your
+will through informed programming. See
+- [[http://www.catb.org/esr/jargon/html/H/hacker.html][Jargon: Hacker]]
+- [[https://web.archive.org/web/20210812150702/https://hack.org/faq-hacker.html][FAQ: Hacker]]
+  
+There at least two important reasons to learn a computer language  
+- Pragmatic :: It's useful for /hacking/ on important things
+- Pedagogical :: Learning it and using it will make you a better /hacker/
+
+In this era of hundreds of useful and interesting languages, we must be even
+more discriminating. The languages truly worth our time must be
+- Useful :: practically /and/ pedagogically
+- Elegant :: minimum complexity and cognitive burden for maximum utility
+
+We can immediately dismiss the [[http://www.paulgraham.com/avg.html][blub languages]] because they lack power and don't
+teach us much - indeed, [[https://www.cs.virginia.edu/~evans/cs655/readings/ewd498.html][they can even harm us]] or [[https://nibblestew.blogspot.com/2020/03/its-not-what-programming-languages-do.htmlquality][lead us astray]]! These essays
+are old and I'll avoid the mistake of listing today's /blub/ or harmful
+languages - they might be languages you currently like! You'll be able to form
+your own opinions after gaining experience with some unquestionably excellent
+languages.
+
+Can you trust /anyone's/ opinions on the of programming languages? Only when
+they have significant experience using it
+- the way it was designed to be used
+- in ways unanticipated by its designers
+Opinions of such experienced experts are well worth listening to!
+
+** Some Languages which Matter, and Why
+
+*** TL;DR
+
+For the why of it, see the following /Inventory/.
+ 
+- Scheme, inside of Racket
+      - beginning with /graphic arts/ computing
+- Elisp, inside of Emacs
+      - focused on customizing your tool stack
+- SQL, inside of PostgreSQL
+      - maximally leveraging the Database
+- Shell, inside of Gnu/Linux or Mac or Windows Subsystem for Linux
+      - focused on customizing your tool stack
+- Web Languages
+      - TypeScript or ClojureScript
+      - XSLT
+      - focused on creating rich and /thin/ front ends
+- Logic Languages
+      - focused on Knowledge-Based and Hybrid AI
+ 
+*** Key Language Inventory
+
+Computer Languages belong to Computer Language Families and are usually
+organized around [[https://en.wikipedia.org/wiki/Programming_paradigm][Programming Paradigms]]. Unless there's a pragmatic reason, you
+don't need to waste time learning languages which will teach you nothing new.
+With experience, you can pick up a language in a familiar family and be
+productive in a few hours and masterful in a few days - I stopped counting
+languages after I'd used 60 languages for significant projects.
+
+Currently just a list of important languages. More content coming!
+ 
+**** Lisps
+- Scheme 
+      - Racket
+      - Guile
+- Clojure
+      - ClojureScript
+- Common Lisp
+- Emacs Lisp
+**** Logic Programming
+- Knowledge-Based Logic Programming
+      - Knowledge-Based Expert Systems
+      - Flora
+- Constraint Logic Programming 
+**** Systems Programming Languages
+- C
+- Rust 
+**** SQL 
+- Relational Programming 
+**** Amazing Languages
+- APL, J
+- Smalltalk
+**** Hard but excellent Languages
+- Haskell 
+**** Web and XML Languages
+- JavaScript, TypeScript
+    - ClojureScript
+    - XSLT
+**** Shells and /Little Languages/
+    - =sh=, =bash=, =zsh=
+    - Regular Expressions
+        - =grep= and much more!
+    - =make=, =ed=, =sed=, =awk=
