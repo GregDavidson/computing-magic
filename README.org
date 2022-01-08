@@ -30,8 +30,10 @@ All of the materials in this repository are in an early stage of development
 - [[cm-distinctions.org]]
 - [[cm-quotes.org]]
 
-Notes from previous Zoom Sessions are in the file
-- [[https://github.com/GregDavidson/computing-magic/blob/main/computing-magic-notes.org][Computing Magic Meeting Notes]]
+Notes from the Alpha Course are in the file
+- [file:Alpha-Course/computing-magic-notes.org][Alpha Course Meeting Notes]]
+
+The Beta Course is being prepared for delivery at Mars College!
 
 You might also like some of the background material at
 - [[https://github.com/GregDavidson/on-computing][On Computing]]
