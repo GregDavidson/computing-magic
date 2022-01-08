@@ -1,4 +1,4 @@
-* /DRAFT/ Computing Magic Meeting - Saturday, 5 December 2021
+* /DRAFT/ Computing Magic Meeting - Saturday, 4 December 2021
 
 Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
 
