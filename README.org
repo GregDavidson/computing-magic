@@ -11,7 +11,7 @@ design
 - Whole new worlds!
 
 We can explore our creations with /Virtual Reality/, share them with collaborators
-and increasingly we can use /Automated Manufactoring/ (3D Printers, DNA
+and increasingly we can use /Automated Manufacturing/ (3D Printers, DNA
 sequencers, etc.) to materialize them in the physical world.
 
 One key ingredient is what makes it magic: Instead of creating digital artifacts
