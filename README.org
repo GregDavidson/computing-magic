@@ -35,7 +35,7 @@ practical minimum.
 - See [[file:languages-which-matter.org][Which Computer Languages Matter?]]
 
 Notes from the Alpha Course are in the file
-- [file:Alpha-Course/computing-magic-notes.org][Alpha Course Meeting Notes]]
+- [[Alpha-Course/computing-magic-notes.org][Alpha Course Meeting Notes]]
 
 The Beta Course is being prepared for delivery at Mars College!
 
