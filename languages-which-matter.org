@@ -33,7 +33,7 @@ Opinions of such experienced experts are well worth listening to!
 
 *** TL;DR
 
-For the why of it, see the following /Inventory/.
+For the more complete list and explanation, see /Key Language Inventory/ below.
  
 - Scheme, inside of Racket
       - beginning with /graphic arts/ computing
@@ -62,28 +62,32 @@ languages after I'd used 60 languages for significant projects.
 Currently just a list of important languages. More content coming!
  
 **** Lisps
-- Scheme 
-      - Racket
-      - Guile
-- Clojure
-      - ClojureScript
-- Common Lisp
-- Emacs Lisp
-**** Logic Programming
+- [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]]
+      - [[https://racket-lang.org][Racket]]
+      - [[https://www.gnu.org/software/guile][Guile]]
+- [[https://clojure.org][Clojure]]
+      - [[https://clojurescript.org][ClojureScript]]
+- [[https://en.wikipedia.org/wiki/Common_Lisp][Common Lisp]]
+- [[Emacs/elisp-vs-scheme.org][Emacs Lisp]]
+**** [[https://en.wikipedia.org/wiki/Logic_programming][Logic Programming]]
 - Knowledge-Based Logic Programming
-      - Knowledge-Based Expert Systems
-      - Flora
-- Constraint Logic Programming 
+- Knowledge-Based Expert Systems
+- [[http://flora.sourceforge.net][Flora]]
+- [[https://en.wikipedia.org/wiki/Constraint_logic_programming][Constraint Logic Programming]]
 **** Systems Programming Languages
-- C
-- Rust 
-**** SQL 
-- Relational Programming 
+- [[https://github.com/GregDavidson/C-By-Example][C]]
+- [[https://www.rust-lang.org][Rust]]
+**** Relational Programming
+- [[SQL/SQL-README.org][SQL]]
 **** Amazing Languages
-- APL, J
-- Smalltalk
+***** Array-Oriented Languages
+- APL
+- [[https://www.jsoftware.com][J]]
+***** Smalltalks
+- [[https://squeak.org][Squeak Smalltalk]]
+- [[https://pharo.org][Pharo Smalltalk]]
 **** Hard but excellent Languages
-- Haskell 
+- [[https://www.haskell.org][Haskell]]
 **** Web and XML Languages
 - JavaScript, TypeScript
     - ClojureScript
