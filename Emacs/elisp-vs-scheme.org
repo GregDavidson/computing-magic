@@ -13,6 +13,11 @@ Both Scheme and Emacs Lisp are members of the Lisp Family and have more
 similarities than differences. Hopefully this document will keep the differences
 from being confusing and lead to /*Happy Hacking!*/
 
+TL;DR
+- [[https://en.wikipedia.org/wiki/Emacs_Lisp][Wikipedia: Emacs Lisp]]
+- [[https://www.gnu.org/software/emacs/manual/html_node/elisp/index.html][Emacs Lisp Manual]]
+  - better read using Info within Emacs
+
 ** Background on Emacs Lisp
 
 The purpose of this background section is to give you a context for making sense
