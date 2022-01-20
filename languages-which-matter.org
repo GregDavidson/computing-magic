@@ -35,19 +35,19 @@ Opinions of such experienced experts are well worth listening to!
 
 For the more complete list and explanation, see /Key Language Inventory/ below.
  
-- Scheme, inside of Racket
-      - beginning with /graphic arts/ computing
-- Elisp, inside of Emacs
+- [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]], inside of [[https://racket-lang.org][Racket]]
+      - beginning with [[https://docs.racket-lang.org/quick][graphic arts computing]]
+- [[Emacs/elisp-vs-scheme.org][Emacs Lisp]], inside of [[https://www.gnu.org/software/emacs][Emacs]]
       - focused on customizing your tool stack
-- SQL, inside of PostgreSQL
+- [[SQL/SQL-README.org][SQL]], inside of [[https://www.gnu.org/software/emacs][PostgreSQL]]
       - maximally leveraging the Database
-- Shell, inside of Gnu/Linux or Mac or Windows Subsystem for Linux
+- [[https://duckduckgo.com/?t=ffab&q=posix+shell][Shell]], inside of [[https://www.gnu.org][Gnu/Linux]] or [[https://duckduckgo.com/?t=ffab&q=macintosh+command+line][Mac]] or [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows Subsystem for Linux]]
       - focused on customizing your tool stack
 - Web Languages
-      - TypeScript or ClojureScript
+      - [[https://www.typescriptlang.org][TypeScript]] or [[https://clojurescript.org][ClojureScript]]
       - XSLT
       - focused on creating rich and /thin/ front ends
-- Logic Languages
+- [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic Languages]]
       - focused on Knowledge-Based and Hybrid AI
  
 *** Key Language Inventory
@@ -90,8 +90,8 @@ Currently just a list of important languages. More content coming!
 - [[https://www.haskell.org][Haskell]]
 **** Web and XML Languages
 - JavaScript, TypeScript
-    - ClojureScript
-    - XSLT
+      - [[https://clojurescript.org][ClojureScript]]
+- XSLT
 **** Shells and /Little Languages/
     - =sh=, =bash=, =zsh=
     - Regular Expressions
