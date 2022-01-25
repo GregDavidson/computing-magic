@@ -12,7 +12,7 @@ The early presentations were too complex, but some people wanted to find a way
 to learn Computing Magic. After some false starts, we settled on the strategy of
 leveraging the [[https://racket-lang.org/][Racket Language]] starting with its excellent [[https://docs.racket-lang.org/quick/][Quick]] tutorial. The
 tutorial is mostly self-guiding and is easy to enrich with
-- variations such as [[file:../after-quick.rkt][after-quick.rkt]]
+- variations such as [[file:../../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]]
 - how lambda is hiding under [[https://github.com/GregDavidson/on-lisp/blob/main/lambda-sugar.rkt][lambda-sugar.rkt]]
 - and so on
 
