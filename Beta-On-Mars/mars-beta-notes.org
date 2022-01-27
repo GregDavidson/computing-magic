@@ -1,0 +1,10 @@
+* Computing Magic Beta Notes
+
+Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Beta Course
+- Held at https://mars.college
+- Q1 2022
+
+*** Meeting Notes
+- [[file:2022-01-24-meeting-1.org][Meeting #1, Monday 24 January 2022]]
+- [[file:2022-01-31-meeting-2.org][Meeting #2, Monday 31 January 2022]]
+- [[file:2022-02-07-meeting-3.org][Meeting #3, Monday 7 February 2022]]

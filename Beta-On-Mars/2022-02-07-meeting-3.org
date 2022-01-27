@@ -1,0 +1,13 @@
+* Computing Magic Beta Meeting 3
+  
+/Acquiring a Lisp/
+  
+/Mars, Monday 24 January 2022/
+
+Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Meeting.
+
+** Systems Programming
+
+How to write any possible program, including advanced Web Servers
+
+Start exploring [[https://docs.racket-lang.org/more/index.html][Systems Programming with Racket]]
