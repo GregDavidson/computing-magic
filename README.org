@@ -37,7 +37,8 @@ practical minimum.
 Notes from the Alpha Course are in the file
 - [[Alpha-Course/computing-magic-notes.org][Alpha Course Meeting Notes]]
 
-The Beta Course is being prepared for delivery at Mars College!
+The Beta Course is ongoing at [[https://mars.college][Mars College]]!
+- [[Beta-On-Mars/mars-beta-notes.org][Beta Course Meeting Notes]]
 
 You might also like some of the background material at
 - [[https://github.com/GregDavidson/on-computing][On Computing]]

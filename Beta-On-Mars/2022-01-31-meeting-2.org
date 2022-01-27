@@ -1,6 +1,6 @@
 * Computing Magic Beta Meeting 2, Monday 24 January 2022, on Mars
 
-Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Meeting.
+Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
 /Tooling Up/
 

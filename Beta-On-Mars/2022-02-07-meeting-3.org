@@ -4,7 +4,7 @@
   
 /Mars, Monday 24 January 2022/
 
-Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Meeting.
+Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
 ** Systems Programming
 
