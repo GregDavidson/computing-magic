@@ -1,6 +1,8 @@
-* Computing Magic Meeting Notes
+* Computing Magic Alpha Notes
 
-Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Alpha Course.
+- Held via Zoom
+- Throughout 2021
 
 *** Meeting Notes
 
