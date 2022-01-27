@@ -1,7 +1,9 @@
-* Computing Magic Beta Meeting 1, Monday 24 January 2022, on Mars
+* Computing Magic Beta Meeting 1
 
 /Acquiring a Lisp/
-  
+
+Mars, Monday 24 January 2022
+
 Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Meeting.
 
 ** What to do before our next meeting
