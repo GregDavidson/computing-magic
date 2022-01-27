@@ -19,6 +19,7 @@ Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Ste
 ** What else might you do?
 
 Explore [[https://docs.racket-lang.org/turtles/index.html][Turtle Graphics]]
+- =pseudo= is a great resource for this!
 
 Explore [[http://www.htdp.org/][How to Design Programs]]
 
