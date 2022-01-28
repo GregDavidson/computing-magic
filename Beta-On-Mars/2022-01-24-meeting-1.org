@@ -18,10 +18,11 @@ Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Ste
 
 ** What else might you do?
 
-Create more art with 2D Functional Pictures
-  - [https://docs.racket-lang.org/pict][2D Pictures in Slideshow]]
+Create more art with 2D Functional Pictures in Slideshow
+  - [[https://docs.racket-lang.org/pict][2D Functional Pictures]]
+        - Lots more Shapes, Options and Combinators
         - Animation and Interactive Features
-        - Export to other media
+        - Exports to other media
           
 Explore [[https://docs.racket-lang.org/pict3d/quick.html][3D Functional Pictures]]
 
