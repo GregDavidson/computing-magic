@@ -8,9 +8,10 @@
 (define c (circle 10))
 (define r (rectangle 10 20))
 
-;; (define (square n) (filled-rectangle n n))
+;; Would 'size" be more clear than 'n ?
+(define (square n) (filled-rectangle n n))
 ;; λ is lambda, Racket takes either
-(define square (λ (n) (filled-rectangle n n)))
+; (define square (λ (n) (filled-rectangle n n)))
 
 (define hc-append-three (λ (c) (hc-append 22 c c c)))
 
