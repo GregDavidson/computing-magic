@@ -6,8 +6,51 @@
 
 Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
+*** Computing, Bottomm Upcoming
+
+Explore [[https://gregdavidson.github.io/on-computing/what-computers-are/][What Computers Are]]
+
+Strategies for building larger, more interesting objects
+- Larger objects with adjacent components
+      - arrays and structures
+- Graph structures connected by pointers
+      - Lists, Trees and much more!
+- Hash structures - much like crypto!
+      - Dictionaries, Indexes
+- Functional interfaces
+      - Dynamic computing
+      - Metaprogramming
+      - Functions are also Data!
+- Byte sequences are the interchange format
+      - Files, Streams
+      - (De)Serialization
+- Alignment and chunking
+      - Ideally invisible, sometimes leaks into APIs
+      - Pages, Sectors, Blocks, Cylinders
+      - Cache lines, Word alignment
+      - Can impact efficiency
+      - Strive for simplicity, with later optimization possible
+
 ** Systems Programming
 
 How to write any possible program, including advanced Web Servers
 
 Start exploring [[https://docs.racket-lang.org/more/index.html][Systems Programming with Racket]]
+
+*** System Abstractions
+
+- Tasks :: Heavyweight Processes
+      - Program :: instructions + static data + starting point
+      - Memory Immage :: chunk of virtual memory
+            - Stack :: Area of memory for function activations
+            - Heap :: Area of memory for shared objects
+      - "File" Descriptors :: represent kernel I/O resources
+      - Thread :: Sequences through program instructions
+- Threads :: Lightweight Processes
+      - Possibility of concurrent independent sequences through program
+      - Often have their own Stacks
+      - Concurrent access to shared storage can be disastrous!
+- Files :: Growable byte sequences
+- Packets :: Datagrams, like postcards bearing a hunk of bytes
+- Streams :: one or two-way byte I/O
+- Sockets :: Endpoints for network Datagram I/O and Stream connections
