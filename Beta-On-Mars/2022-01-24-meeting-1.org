@@ -34,6 +34,7 @@ Explore [[https://docs.racket-lang.org/turtles/index.html][Turtle Graphics]]
 
 Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
 - Many of which are graphics related
+- There are also some APIs for sound
 
 Explore Game Programming with  
 - [[http://realmofracket.com/][Realm of Racket]]
