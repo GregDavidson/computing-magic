@@ -6,6 +6,61 @@ Mars, Monday 24 January 2022
 
 Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
+** Lisp uses Nested Lists!
+   
+- Lisp :: Lots of Irritating Silly Parentheses
+
+Instead of
+- a + b + c + d
+- Lisp says (+ a b c d)
+- Lisp says (+ 1 (* 3 4) 5)
+- Eval each element: ({the addition procedure} 1 12 5)
+- Apply {the addition procedure} to (1 12 5)
+- Return 18
+- '(+ 1 (* 3 4) 5)
+- (quote (+ 1 (* 3 4) 5))
+- returns (+ 1 (* 3 4) 5)
+- (apply + '(1 2 3 4 5 6))
+
+Instead of
+- f(a,b,c) or f(a,g(b,c),d)
+- Lisp says (f a b c) or (f a (g b c) d)
+
+Silly? Irritating?
+
+** 3-Minute Review
+
+*** Lisp Syntax
+   
+- Atom :: Anything /NOT/ a /List/
+      - Atoms can have structure, e.g. /string/, /array/, /struct/, /picture/, etc.
+- Symbolic Expression :: An s-exp is /either/
+      - An /Atom/
+      - A /List/ of /Symbolic Expressions/
+   
+*** Lisp Semantics: Eval, Apply
+
+Evaluation takes place within an environment
+- Symbol :: Atoms which can serve as /identifiers/, i.e. names for things
+- Value :: An /S-Exp/ which can be returned from a /procedure/
+- Binding :: A /symbol/ and a /value/
+- An environment is like a dictionary
+
+- Evaluation :: =eval= maps S-Exprs to Values
+- Symbols :: evaluate to their values in the environment /or error/
+- All other atoms :: Evaluate to themselves
+- Lists :: Evaluable Lists are called Forms
+      - Evaluate each element of the List (recursively)
+            - The first element must evaluate to a procedure (or error)
+      - =apply=  the procedure to the other elements as arguments
+            - The other elements must be suitable values for the procedure's parameters
+- Special Forms :: Handled specially by =eval= and =apply=
+- quote :: suppresses evaluation of its argument
+- (if /test/ /exp-if-true/ /exp-if-false) :: evaluates only 1 of its arguments
+- (lambda parameters body) :: creates a procedure
+- (define (sum-squares x y) (+ (* x x) (* y y)))
+  (sum-squares 3 4 )
+
 ** Key Materials
 
 Consult the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Github, Emacs and Orgmode]]!
@@ -65,3 +120,4 @@ Clone those repositories onto your working computers
       - Custom Web Servers
       - Database Magic
       - The skils to realize any idea, elegantly!
+        
