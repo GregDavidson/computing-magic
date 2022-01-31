@@ -6,7 +6,18 @@ Mars, Monday 24 January 2022
 
 Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
-** Lisp & Scheme Enrichment
+** Key Materials
+
+Consult the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Github, Emacs and Orgmode]]!
+
+When you've finished the Quick Tutorial
+- study [[file:../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]]
+- read the materials in the [[https://github.com/GregDavidson/on-lisp][On Lisp]] repository
+
+Lisp evolves while preserving its essence. 
+- It's a language which can serve you forever!
+
+** Lisp & Scheme Enrichment (Summary)
 
 Lambda is all you need!
 - Well, and a few /Special Forms/
@@ -16,25 +27,27 @@ Macros give syntactic sugar
 - Form Macros
 
 ** Git, Github
+   
+Git is eating the world, /resistance is futile!/
 
 If you don't yet have a GitHub account
 - [[https://github.com/join][Create a GitHub Account]]
 
 Create some GitHub repositories
-- A private repository, suggested name: Notes
+- A private repository, suggested name: =Notes=
 - A public repository for Computing Magic
-- Any other repositories for your other projects
+- More repositories for your other projects
 
-Clone those repositories onto your working computer 
-        
+Clone those repositories onto your working computers 
+
 ** Emacs: Lisp as a Platform 
 
 - Installing Emacs
-      - Preludes
+      - Preludes (see alpha course notes)
 - Getting Started with Emacs
       - Pick something you'd like to write up
       - Read up a bit on [[https://orgmode.org][OrgMode]]
-      - Do the Emacs Tutorial
+      - Do the Emacs Tutorial (COntrol-H t)
       - Create your document using OrgMode in one of your repositories
 - Commit your file
       - Try it with basic git commands
@@ -42,10 +55,13 @@ Clone those repositories onto your working computer
 - Make changes and
       - lather, rinse, repeat!
 
-** Followup: Consolidating this Awesomeness
+** Where do you want to go?            -
 
-Read the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Github and Orgmode]]!
-
-When you've finished the Quick Tutorial
-- study [[file:../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]]
-- read the materials in the [[https://github.com/GregDavidson/on-lisp][On Lisp]] repository
+- Direct to Visual Art, Multimedia, Games, etc.?
+      - See [[file:2022-01-24-meeting-1.org][last week's notes]]!
+      - What support would you like?
+- More Computing Magic?
+      - Systems Programming
+      - Custom Web Servers
+      - Database Magic
+      - The skils to realize any idea, elegantly!
