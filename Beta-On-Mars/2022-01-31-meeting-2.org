@@ -39,3 +39,11 @@ Clone those repositories onto your working computer
       - Try it with =magit= within Emacs
 - Make changes and
       - lather, rinse, repeat!
+
+** Followup: Consolidating this Awesomeness
+
+Read the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Github and Orgmode]]!
+
+When you've finished the Quick Tutorial
+- study [[file:../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]]
+- read the materials in the [[https://github.com/GregDavidson/on-lisp][On Lisp]] repository
