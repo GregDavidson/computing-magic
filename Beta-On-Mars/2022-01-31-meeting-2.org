@@ -6,7 +6,15 @@ Mars, Monday 24 January 2022
 
 Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
-** Lisp uses Nested Lists!
+Today we did a partial review of what we've learned from last week's session and
+the Quick tutorial. Then we began to discuss the key elements of the software
+stack for supporting ambitious projects.
+
+** 3-Minute Review
+
+Sigh: It took over 30 minutes! :-)
+   
+*** Lisp uses Nested Lists!
    
 - Lisp :: Lots of Irritating Silly Parentheses
 
@@ -27,8 +35,6 @@ Instead of
 - Lisp says (f a b c) or (f a (g b c) d)
 
 Silly? Irritating?
-
-** 3-Minute Review
 
 *** Lisp Syntax
    
@@ -58,21 +64,21 @@ Evaluation takes place within an environment
 - quote :: suppresses evaluation of its argument
 - (if /test/ /exp-if-true/ /exp-if-false) :: evaluates only 1 of its arguments
 - (lambda parameters body) :: creates a procedure
-- (define (sum-squares x y) (+ (* x x) (* y y)))
-  (sum-squares 3 4 )
+- 
 
-** Key Materials
-
-Consult the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Github, Emacs and Orgmode]]!
+  
+** After the Quick Tutorial
 
 When you've finished the Quick Tutorial
 - study [[file:../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]]
 - read the materials in the [[https://github.com/GregDavidson/on-lisp][On Lisp]] repository
+- Read the notes from [[2022-01-24-meeting-1.org][our last session]]
+  - you'll find a lot of new material there!
 
 Lisp evolves while preserving its essence. 
 - It's a language which can serve you forever!
 
-** Lisp & Scheme Enrichment (Summary)
+*** Lisp & Scheme Enrichment (Summary)
 
 Lambda is all you need!
 - Well, and a few /Special Forms/
@@ -81,7 +87,11 @@ Macros give syntactic sugar
 - Reader Macros
 - Form Macros
 
-** Git, Github
+** Key Development Tools
+   
+Consult the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Github, Emacs and Orgmode]]!
+
+*** Git, Github
    
 Git is eating the world, /resistance is futile!/
 
@@ -95,7 +105,7 @@ Create some GitHub repositories
 
 Clone those repositories onto your working computers 
 
-** Emacs: Lisp as a Platform 
+*** Emacs: Lisp as a Platform 
 
 - Installing Emacs
       - Preludes (see alpha course notes)
@@ -110,6 +120,7 @@ Clone those repositories onto your working computers
 - Make changes and
       - lather, rinse, repeat!
 
+        
 ** Where do you want to go?            -
 
 - Direct to Visual Art, Multimedia, Games, etc.?
@@ -119,5 +130,4 @@ Clone those repositories onto your working computers
       - Systems Programming
       - Custom Web Servers
       - Database Magic
-      - The skils to realize any idea, elegantly!
-        
+      - The skills to realize any idea, elegantly!
