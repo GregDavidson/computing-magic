@@ -10,6 +10,9 @@ Today we did a partial review of what we've learned from last week's session and
 the Quick tutorial. Then we began to discuss the key elements of the software
 stack for supporting ambitious projects.
 
+Learning more about appropriate pacing, our [[2022-02-07-meeting-3.org][our next session]] will be a
+/creativity lab/.
+
 ** 3-Minute Review
 
 Sigh: It took over 30 minutes! :-)
