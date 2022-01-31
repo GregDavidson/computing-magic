@@ -21,15 +21,6 @@ Sigh: It took over 30 minutes! :-)
 Instead of
 - a + b + c + d
 - Lisp says (+ a b c d)
-- Lisp says (+ 1 (* 3 4) 5)
-- Eval each element: ({the addition procedure} 1 12 5)
-- Apply {the addition procedure} to (1 12 5)
-- Return 18
-- '(+ 1 (* 3 4) 5)
-- (quote (+ 1 (* 3 4) 5))
-- returns (+ 1 (* 3 4) 5)
-- (apply + '(1 2 3 4 5 6))
-
 Instead of
 - f(a,b,c) or f(a,g(b,c),d)
 - Lisp says (f a b c) or (f a (g b c) d)
@@ -64,8 +55,17 @@ Evaluation takes place within an environment
 - quote :: suppresses evaluation of its argument
 - (if /test/ /exp-if-true/ /exp-if-false) :: evaluates only 1 of its arguments
 - (lambda parameters body) :: creates a procedure
-- 
 
+- (P)REPL :: (Prompt) Read Eval Print Loop session
+- You enter :: (+ 1 (* 3 4) 5)
+- =eval= each element :: returns: ({the addition procedure} 1 12 5)
+- =apply= {the addition procedure} to (1 12 5) :: returns: 18
+
+(P)REPL Session
+- =(quote (+ 1 (* 3 4) 5))= --> (+ 1 (* 3 4) 5)
+- ='(+ 1 (* 3 4) 5)= --> (+ 1 (* 3 4) 5)
+- =(apply + '(1 2 3 4 5 6))= --> 21
+- =(map eval '(+ 1 (* 3 4) 5))= --> ({the addition procedure} 1 12 5)
   
 ** After the Quick Tutorial
 
