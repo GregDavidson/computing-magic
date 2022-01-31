@@ -5,6 +5,20 @@ Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magi
 - Q1 2022
 
 *** Meeting Notes
-- [[2022-01-24-meeting-1.org][Meeting #1, Monday 24 January 2022]]
-- [[2022-01-31-meeting-2.org][Meeting #2, Monday 31 January 2022]]
-- [[2022-02-07-meeting-3.org][Meeting #3, Monday 7 February 2022]]
+- [[file:2022-01-24-meeting-1.org][Meeting #1, Monday 24 January 2022]]
+An Open Lab in which we began a Tutorial learning Lisp / Scheme / Racket by
+writing functions which compute pictures. There were interruptions with
+enrichment pieces.
+  
+- [[file:2022-01-31-meeting-2.org][Meeting #2, Monday 31 January 2022]]
+A top-down review and presentation of key software development tools to come.
+
+- [[file:2022-02-07-meeting-3.org][Meeting #3, Monday 7 February 2022]]
+An Open Lab in which we will variously be working on Computational Art and
+learning Software Development Tools. There will be interruptions with enrichment
+pieces and a teaser for the next session.
+
+- [[file:2022-02-14-meeting-3.org][Meeting #4, Monday 14 February 2022]]
+An Open Lab in which we some of us begin a Tutorial learning Systems and Network
+Programming by writing a Web Server using the Software Tools learned so far,
+while others work on Computational Art.
