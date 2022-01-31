@@ -2,8 +2,7 @@
 
 Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
 
-** What should you do between Now and Next Saturday?
-
+** Following up on this Awesomeness
 
 Get used to Emacs and OrgMode:
 - Take notes using Emacs OrgMode.
