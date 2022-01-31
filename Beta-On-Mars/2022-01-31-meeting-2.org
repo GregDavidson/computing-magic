@@ -121,7 +121,7 @@ Clone those repositories onto your working computers
       - lather, rinse, repeat!
 
         
-** Where do you want to go?            -
+** Where do you want to go?
 
 - Direct to Visual Art, Multimedia, Games, etc.?
       - See [[file:2022-01-24-meeting-1.org][last week's notes]]!

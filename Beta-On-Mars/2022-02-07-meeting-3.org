@@ -1,56 +1,29 @@
 * Computing Magic Beta Meeting 3
   
-/Acquiring a Lisp/
+/Practicing the Art/
   
-/Mars, Monday 24 January 2022/
+/Mars, Monday 7 February 2022/
 
 Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
-*** Computing, Bottomm Upcoming
+** Open Lab
 
-Explore [[https://gregdavidson.github.io/on-computing/what-computers-are/][What Computers Are]]
+Using the support of our Computing Magic Community,
+move forward in the projects which interest you.
 
-Strategies for building larger, more interesting objects
-- Larger objects with adjacent components
-      - arrays and structures
-- Graph structures connected by pointers
-      - Lists, Trees and much more!
-- Hash structures - much like crypto!
-      - Dictionaries, Indexes
-- Functional interfaces
-      - Dynamic computing
-      - Metaprogramming
-      - Functions are also Data!
-- Byte sequences are the interchange format
-      - Files, Streams
-      - (De)Serialization
-- Alignment and chunking
-      - Ideally invisible, sometimes leaks into APIs
-      - Pages, Sectors, Blocks, Cylinders
-      - Cache lines, Word alignment
-      - Can impact efficiency
-      - Strive for simplicity, with later optimization possible
+Touch will occasionally ask for our attention to present an enrichment piece or
+address a common question.
 
-** Systems Programming
+Strategic things to work on are in the following sections
 
-How to write any possible program, including advanced Web Servers
+*** Git Repositories
 
-Start exploring [[https://docs.racket-lang.org/more/index.html][Systems Programming with Racket]]
+Consult the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Github, Emacs and Orgmode]]!
+    
+*** Emacs and OrgMode
 
-*** System Abstractions
+Consult the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Github, Emacs and Orgmode]]!
 
-- Tasks :: Heavyweight Processes
-      - Program :: instructions + static data + starting point
-      - Memory Immage :: chunk of virtual memory
-            - Stack :: Area of memory for function activations
-            - Heap :: Area of memory for shared objects
-      - "File" Descriptors :: represent kernel I/O resources
-      - Thread :: Sequences through program instructions
-- Threads :: Lightweight Processes
-      - Possibility of concurrent independent sequences through program
-      - Often have their own Stacks
-      - Concurrent access to shared storage can be disastrous!
-- Files :: Growable byte sequences
-- Packets :: Datagrams, like postcards bearing a hunk of bytes
-- Streams :: one or two-way byte I/O
-- Sockets :: Endpoints for network Datagram I/O and Stream connections
+*** Computational Art
+    
+See the [[file:2022-01-24-meeting-1.org][Notes from our first meeting]]!
