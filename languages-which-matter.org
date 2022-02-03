@@ -45,10 +45,9 @@ For the more complete list and explanation, see /Key Language Inventory/ below.
       - focused on customizing your tool stack
 - Web Languages
       - [[https://www.typescriptlang.org][TypeScript]] or [[https://clojurescript.org][ClojureScript]]
-      - XSLT
-      - focused on creating rich and /thin/ front ends
-- [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic Languages]]
-      - focused on Knowledge-Based and Hybrid AI
+      - creating rich and /thin/ front ends
+- [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic]] [[https://en.wikipedia.org/wiki/Constraint_logic_programming][and]] [[https://en.wikipedia.org/wiki/Constraint_programming][Constraint]] Programming
+[[https://en.wikipedia.org/wiki/Knowledge-based_systems][- Knowledge-Based]] Programming
  
 *** Key Language Inventory
 
@@ -69,11 +68,17 @@ Currently just a list of important languages. More content coming!
       - [[https://clojurescript.org][ClojureScript]]
 - [[https://en.wikipedia.org/wiki/Common_Lisp][Common Lisp]]
 - [[Emacs/elisp-vs-scheme.org][Emacs Lisp]]
-**** [[https://en.wikipedia.org/wiki/Logic_programming][Logic Programming]]
+**** [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic]] [[https://en.wikipedia.org/wiki/Constraint_logic_programming][and]] [[https://en.wikipedia.org/wiki/Constraint_programming][Constraint]] Programming
+      - [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Many Logic-Programming Languages]]
+      - [[https://en.wikipedia.org/wiki/SWI-Prolog][SWI-Prolog]] - very popular
+      - [[https://en.wikipedia.org/wiki/Ciao_(programming_language)][Ciao Prolog]] - also great for constraint logic programming
+      - [[https://en.wikipedia.org/wiki/XSB][XSB Prolog]] - the host of Flora-2
+**** [[https://en.wikipedia.org/wiki/Knowledge-based_systems][- Knowledge-Based]] Programming
 - Knowledge-Based Logic Programming
 - Knowledge-Based Expert Systems
-- [[http://flora.sourceforge.net][Flora]]
-- [[https://en.wikipedia.org/wiki/Constraint_logic_programming][Constraint Logic Programming]]
+- Great for Hybrid AI
+- Combines well with Constraint Logic Programming
+- [[https://en.wikipedia.org/wiki/Flora-2][Wikipedia: Flora-2]], [[http://flora.sourceforge.net/][Flora-2 Website]]
 **** Systems Programming Languages
 - [[https://github.com/GregDavidson/C-By-Example][C]]
 - [[https://www.rust-lang.org][Rust]]
@@ -86,13 +91,18 @@ Currently just a list of important languages. More content coming!
 ***** Smalltalks
 - [[https://squeak.org][Squeak Smalltalk]]
 - [[https://pharo.org][Pharo Smalltalk]]
-**** Hard but excellent Languages
+***** Typed Functional Languages
 - [[https://www.haskell.org][Haskell]]
 **** Web and XML Languages
 - JavaScript, TypeScript
       - [[https://clojurescript.org][ClojureScript]]
-- XSLT
-**** Shells and /Little Languages/
+**** Web and Document Languages
+- [[https://en.wikipedia.org/wiki/HTML5][HTML5]] and [[https://html.spec.whatwg.org/multipage/][Related Features]]
+- [[https://en.wikipedia.org/wiki/XML][XML]]
+      - [[https://en.wikipedia.org/wiki/XHTML][XHTML]]
+      - [[https://en.wikipedia.org/wiki/XSLT][XSLT]]
+- [[https://orgmode.org][OrgMode]]
+**** Shells and [[https://en.wikipedia.org/wiki/Domain-specific_language][DSLs]]
     - =sh=, =bash=, =zsh=
     - Regular Expressions
         - =grep= and much more!
