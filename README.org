@@ -2,6 +2,11 @@
 
 This repository is the beginning of a curriculum for learning *Computing Magic*.
 
+/This repository is intended to be a gateway to a lot of important materials,
+linked by the documents here. If you explore these materials, please share your
+experience, through direct communication, by posting Issues, or etc. Please
+suggest improvements!/
+
 Computing Magic is leveraging the power of computers and software to do with
 ease what would be hopelessly difficult in the real world.  With Computing Magic we can 
 design
