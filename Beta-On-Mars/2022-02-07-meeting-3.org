@@ -8,8 +8,8 @@ Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]
 
 ** Open Lab
 
-Using the support of our Computing Magic Community,
-move forward in the projects which interest you.
+Using the support of our Computing Magic Community, move forward in the projects
+which interest you.
 
 Touch will occasionally ask for our attention to present an enrichment piece or
 address a common question.
@@ -20,14 +20,13 @@ Strategic things to work on are in the following sections
 
 *** Git Repositories
 
-Consult the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Github]]!
-Consult [[file:2022-01-31-meeting-2.org][Last Week's Notes on Git]]!
+Use [[file:../../Software-Tools/git-readme.org][Git README]] to install and learn how to exploit Git for your projects
     
 *** Emacs and OrgMode
 
-Consult the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Emacs and Orgmode]]!
-Consult [[file:2022-01-31-meeting-2.org][Last Week's Notes on Emacs and OrgMode]]!
+Use [[file:../../Software-Tools/Emacs/emacs-readme.org][Emacs README]] to install and learn a nice Emacs and Emacs environment.
 
 *** Computational Art
     
-See the [[file:2022-01-24-meeting-1.org][Notes from our first meeting]]!
+See the [[file:2022-01-24-meeting-1.org][Notes from our first meeting]]!  Racket provides multiple toolkits for
+doing computational art!

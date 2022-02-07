@@ -1,0 +1,57 @@
+* Scripting Notes for Computing Magic
+  
+/Scripts/ are short, simple, easily understood and easily modified programs
+written in languages which avoid most of the complexity (and lack the full
+power) of general purpose languages.
+    
+/Scriptable tools/ are tools (software or hardware) which can easily be
+controlled by /scripts/.
+
+/Scripting tools/ are software tools intended to control other tools using
+scripts.
+
+Modern scripting emerged from the Unix Programming Environment and is a key part
+of the power and productivity of Unix, BSD and Linux. Posix is a standard for
+Unix-derived scriptable and scripting tools.
+    
+**** Getting the Tools
+
+If you have Unix, Linux or BSD you already have the tools or they're available
+from a standard package with a simple command.
+
+If you have a Mac you can install the latest tools using [[https://brew.sh/][Homebrew]].
+
+If you have an older μSoft Windows machine, you can install everything using
+[[https://cygwin.com/][Cygwin]]. For a newer μSoft Windows system, you can install μSoft's [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows
+Subsystem for Linux]] free of charge.
+ 
+***** Exploring the Posix Command Environment
+
+The first tool you should get is a good /shell/. Apple Macintoshes come with an
+out-of-date version of =bash= and are moving to =zsh=. I recommend getting the
+latest =bash=. You might or might not want to learn =zsh= later - it's more
+powerful but it's also a lot more complicated.
+      
+Once you have the basic tools, here's a great way to get used to using them:
+
+- [[https://github.com/mks22-dw/bashcrawl][BASH Crawl - a shell adventure!]]
+- [[https://marlborough-college.gitbook.io/attic-lab/the-terminal/games/level-1-bashcrawl][BASH Crawl Intro]]
+
+Once you can run simple commands from a shell, you can move on. However, it will
+be worth your while to intentionally explore the Unix Philosophy, especially in
+regards to creative use of the Unix Tools.
+
+An great beginning is to read chapters 1 - 6 of /The Unix Programming
+Environment/ by Brian W. Kernigan and Rob Pike. Everything Unix-like since this
+book was written builds on the foundation it describes, adding incremental power
+and convenience but nothing radical.
+- CONS:  It's somewhat out of date, although nearly everything still works.
+- PROS:  It reveals the power and simplicity really well.
+It would be great to bring it up to date
+- without the massive feature creep since that time!
+
+Tutorials and Guides
+- [[http://www.linux-tutorial.info/][The Linux Tutorial]]
+
+More links
+- [[https://en.wikipedia.org/wiki/Unix_philosophy][Wikipedia: Unix Philosophy]]
