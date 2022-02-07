@@ -20,11 +20,11 @@ Strategic things to work on are in the following sections
 
 *** Git Repositories
 
-Use [[file:../../Software-Tools/git-readme.org][Git README]] to install and learn how to exploit Git for your projects
+Use [[https://github.com/GregDavidson/computing-magic/blob/main/Software-Tools/git-readme.org][Git README]] to install and learn how to exploit Git for your projects
     
 *** Emacs and OrgMode
 
-Use [[file:../../Software-Tools/Emacs/emacs-readme.org][Emacs README]] to install and learn a nice Emacs and Emacs environment.
+Use [[https://github.com/GregDavidson/computing-magic/blob/main/Software-Tools/Emacs/emacs-readme.org][Emacs README]] to install and learn a nice Emacs and Emacs environment.
 
 *** Computational Art
     
