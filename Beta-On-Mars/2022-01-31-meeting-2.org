@@ -28,19 +28,8 @@ When you've finished the Quick Tutorial
 Lisp evolves while preserving its essence. 
 - It's a language which can serve you forever!
 
-*** Lisp & Scheme Enrichment (Summary)
-
-Lambda is all you need!
-- Well, and a few /Special Forms/
-
-Macros give syntactic sugar
-- Reader Macros
-- Form Macros
-
 ** Key Development Tools
    
-Consult the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Github, Emacs and Orgmode]]!
-
 *** Git, Github
    
 Git is eating the world, /resistance is futile!/
@@ -70,14 +59,16 @@ Clone those repositories onto your working computers
 - Make changes and
       - lather, rinse, repeat!
 
+Consult the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Github, Emacs and Orgmode]]!
         
 ** Where do you want to go?
 
 - Direct to Visual Art, Multimedia, Games, etc.?
       - See [[file:2022-01-24-meeting-1.org][last week's notes]]!
       - What support would you like?
-- More Computing Magic?
+
+- More Computing Magic coming:
       - Systems Programming
       - Custom Web Servers
-      - Database Magic
+      - SQL & Database Magic
       - The skills to realize any idea, elegantly!
