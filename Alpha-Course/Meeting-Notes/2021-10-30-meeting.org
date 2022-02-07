@@ -144,7 +144,10 @@ More links
 
 Everyone is using Git!
 
+- [[https://www.freecodecamp.org/news/learn-the-basics-of-git-in-under-10-minutes-da548267cc91/][Learn the Basics of Git in under 10 Minutes]]
+- [[https://juristr.com/blog/2013/04/git-explained/][Git Explained: For Beginners]]
 - [[https://nfarina.com/post/9868516270/git-is-simpler][Git Is Simpler Than You Think]]
+- [[https://xosh.org/explain-git-in-simple-words/][How to explain git in simple words?]]
 - [[https://marklodato.github.io/visual-git-guide/index-en.html][A Visual Git Reference]]
 - [[https://www.youtube.com/playlist?list=PLgyU3jNA6VjSUZPhZ7WtoBUnxzChBwKuw][Git - YouTube Series]]
 - [[https://git-scm.com/book/en/v2][The Git Book]]
