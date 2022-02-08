@@ -14,8 +14,10 @@ Because Text formats include
 - EMail formats
 - Document Markup Languages
 - and /much more!/
-=git= can be used for most creative projects. It sometimes seems that everyone
-is using Git!
+=git= can be used for most creative projects.
+It sometimes seems that everyone is using Git!
+
+You can install git from [[https://git-scm.com/download][git-scm]].
 
 Suggestion: Study one of the following tutorials and then use =git= for awhile.
 Then study another tutorial. Eventually you will want to read the /Git Book/ to
