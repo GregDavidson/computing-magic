@@ -58,7 +58,7 @@ sync anything you've committed in your local repository with the /GitHub/ clone
 using the command
 - =git push origin master=
 - Note :: some git systems use the branch name =main= instead of =master=
-  - =git status= will tell your your branch name, and much more!
+  - =git status= will tell you your branch name, and much more!
  
 If you do any work on /GitHub/ directly, or there's work there pushed from other
 devices, you can pull that work into your current local repository with the
@@ -68,28 +68,29 @@ Note: You can only pull or push when all of your work has been /committed/ with
 - =git commit=.
 
 As soon as you have a /Notes/ repository, start taking notes on the languages,
-tools and other things you're learning. If you're using /Emacs/, use OrgMode
+tools and other things you're learning. If you're using /Emacs/, use /OrgMode/
 files, e.g.
-- =git-notes.org= -- notes on Git, GitHub, etc.
-- =emacs-notes.org= -- notes on Emacs, OrgMode, etc.
-- =racket-notes.org= -- notes on Racket and maybe Scheme too
+- =git-notes.org= /notes on Git, GitHub, etc./
+- =emacs-notes.org= /notes on Emacs, OrgMode, etc./
+- =racket-notes.org= /notes on Racket and maybe Scheme too/
 - etc.
 
 After any change in any of these files you can do
 - =git add .= to stage all changed files
       - or =git add specific-file...=
-- =git commit=
+- =git commit= /pops up an editor to capture your 1-line comment/
+      - =git commit -m 'your commit comment'= /comment is given in command/
 - =git push origin master=
 
-Once you learn =magit= this workflow will become much faster!
+Once you learn =magit= this workflow will become much faster - see next section!
 
-Maintaining your notes in this manner will be super-convenient while giving you
-great practice with =git=, =emacs= and /OrgMode/!
+Maintaining your notes in this manner will be a valuable mnemonic and will also
+give you great practice with =git=, =emacs= and /OrgMode/!
 
 ** Magit makes magic with Git within Emacs
 
-While the full power of =git= is only available from a command shell, most of
-the regular =git= workflow can be controlled with great ease using the Emacs
+While the full power of =git= is only available from a /Command Shell/, most of
+the regular =git= workflow can be controlled with great ease using the /Emacs/
 =magit= function, part of the =magit= package.
  
 - [[https://magit.vc/][It's Magit!]]
