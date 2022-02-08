@@ -3,10 +3,10 @@
 Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Beta Course
 - [[https://mars.college][Mars College]], Q1 2022
 
-Notes in the future are partly planning and partly materials use during the
-meeting. The notes are edited after each meeting to reflect lessons learned. The
-goal is to have a complete set of materials suitable for self or group learning
-by the end of the quarter.
+Notes in the future are partly planning and partly materials that may be useful
+during the meeting. The notes are edited after each meeting to reflect lessons
+learned. The goal is to have a complete set of materials suitable for self or
+group learning by the end of the quarter.
 
 *** Meeting Notes
     
