@@ -79,7 +79,7 @@ After any change in any of these files you can do
 - =git add .= to stage all changed files
       - or =git add specific-file...=
 - =git commit= /pops up an editor to capture your 1-line comment/
-      - =git commit -m 'your commit comment'= /comment is given in command/
+      - git commit -m 'your commit comment' /comment is given in command/
 - =git push origin master=
 
 Once you learn =magit= this workflow will become much faster - see next section!
