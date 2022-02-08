@@ -1,17 +1,24 @@
 * Computing Magic Beta Notes
 
 Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Beta Course
-- Held at https://mars.college
-- Q1 2022
+- [[https://mars.college][Mars College]], Q1 2022
+
+Notes in the future are partly planning and partly materials use during the
+meeting. The notes are edited after each meeting to reflect lessons learned. The
+goal is to have a complete set of materials suitable for self or group learning
+by the end of the quarter.
 
 *** Meeting Notes
+    
 - [[file:2022-01-24-meeting-1.org][Meeting #1, Monday 24 January 2022]]
 An Open Lab in which we began a Tutorial learning Lisp / Scheme / Racket by
 writing functions which compute pictures. There were interruptions with
 enrichment pieces.
   
 - [[file:2022-01-31-meeting-2.org][Meeting #2, Monday 31 January 2022]]
-A top-down review and presentation of key software development tools to come.
+A top-down review and presentation of key software development tools to come. It
+became clear that the top-down format was inferior to the Open Lab format so
+we're not going to do top-down any more!
 
 - [[file:2022-02-07-meeting-3.org][Meeting #3, Monday 7 February 2022]]
 An Open Lab in which we will variously be working on Computational Art and
