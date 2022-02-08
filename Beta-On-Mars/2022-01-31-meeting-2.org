@@ -10,10 +10,10 @@ Today we did a partial review of what we've learned from last week's session and
 the Quick tutorial. Then we began to discuss the key elements of the software
 stack for supporting ambitious projects.
 
-Learning more about appropriate pacing, our [[2022-02-07-meeting-3.org][our next session]] will be a
+Learning more about appropriate pacing, [[2022-02-07-meeting-3.org][our next session]] will be a
 /creativity lab/.
 
-** 3-Minute Review
+** Lisp Review and Enrichment
 
 Moved to [[https://github.com/GregDavidson/on-lisp/lisp-simplicity.org][Lisp Simplicity]]
 
@@ -28,7 +28,44 @@ When you've finished the Quick Tutorial
 Lisp evolves while preserving its essence. 
 - It's a language which can serve you forever!
 
-** Key Development Tools
+** Would you like to do more Art with Racket?
+
+Create more art with 2D Functional Pictures in Slideshow
+- [[https://docs.racket-lang.org/pict][2D Functional Pictures]]
+      - Lots more Shapes, Options and Combinators
+      - Animation and Interactive Features
+      - Exports to other media
+- [[https://docs.racket-lang.org/pict3d/quick.html][3D Functional Pictures]]
+- [[https://docs.racket-lang.org/turtles/index.html][Turtle Graphics]]
+      - =pseudo= is a great resource for this!
+      - The source code for the examples is at
+            - [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/turtle-examples.rkt][turtle-examples.rkt]]
+            - [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/value-turtles-examples.rkt][value-turtles-examples.rkt]]
+
+Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
+- Many of which are graphics related
+- There are also some APIs for sound
+
+Explore Game Programming with  
+- [[http://realmofracket.com/][Realm of Racket]]
+- /I have a copy you can borrow/
+
+Read more of the resources on my website, starting with
+- [[https://github.com/GregDavidson/computing-magic][Computing Magic README]]
+- And explore the links!
+  
+When you want to get serious with Racket
+- Explore [[http://www.htdp.org/][How to Design Programs]]
+- Try ideas from [[https://docs.racket-lang.org/guide/index.html][The Racket Guide]]
+
+What support would you like?
+- Please share your ideas!
+- And would you like to do any group projects?
+
+** Next Week: Development Tools
+
+Next week we'll be concentrating on Software Tools, especially =git= and
+=emacs=.  If you want to get started with them early, here's some guidance.
    
 *** Git, Github
    
@@ -42,12 +79,15 @@ Create some GitHub repositories
 - A public repository for Computing Magic
 - More repositories for your other projects
 
-Clone those repositories onto your working computers 
+Use [[file:../Software-Tools/git-readme.org][Git README]] to install and learn how to exploit Git for your projects
+
+Clone your GitHub repositories onto your working computers 
 
 *** Emacs: Lisp as a Platform 
 
-- Installing Emacs
-      - Preludes (see alpha course notes)
+See the [[file:../Software-Tools/Emacs/emacs-readme.org][Emacs README]] to install and begin to learn a nice Emacs and Emacs
+environment.
+
 - Getting Started with Emacs
       - Pick something you'd like to write up
       - Read up a bit on [[https://orgmode.org][OrgMode]]
@@ -58,17 +98,3 @@ Clone those repositories onto your working computers
       - Try it with =magit= within Emacs
 - Make changes and
       - lather, rinse, repeat!
-
-Consult the notes from the [[https://github.com/GregDavidson/computing-magic/blob/main/Alpha-Course/Meeting-Notes/2021-10-30-meeting.org][Alpha Course Session on Github, Emacs and Orgmode]]!
-        
-** Where do you want to go?
-
-- Direct to Visual Art, Multimedia, Games, etc.?
-      - See [[file:2022-01-24-meeting-1.org][last week's notes]]!
-      - What support would you like?
-
-- More Computing Magic coming:
-      - Systems Programming
-      - Custom Web Servers
-      - SQL & Database Magic
-      - The skills to realize any idea, elegantly!

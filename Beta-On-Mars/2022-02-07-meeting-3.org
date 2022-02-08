@@ -30,3 +30,9 @@ Use [[file:../Software-Tools/Emacs/emacs-readme.org][Emacs README]] to install a
     
 See the [[file:2022-01-24-meeting-1.org][Notes from our first meeting]]!  Racket provides multiple toolkits for
 doing computational art!
+
+** Where we're headed in future sessions
+      - Systems Programming
+      - Custom Web Servers
+      - SQL & Database Magic
+      - The skills to realize any idea, elegantly!
