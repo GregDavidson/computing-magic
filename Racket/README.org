@@ -1,0 +1,20 @@
+* Racket and Racket Resources
+
+** What is Racket
+   
+** What's a good way to learn Racket?
+   
+Do these tutorials in this order:
+- https://docs.racket-lang.org/quick
+- https://docs.racket-lang.org/more
+
+Maybe explore
+- [[https://htdp.org/2022-2-9/Book/index.html][How to Design Programs]]
+
+** What Resources exist for Racket?
+
+- https://racket-lang.org/
+- https://docs.racket-lang.org/
+  - Includes friendly Guides along with comprehensive References!
+- https://pkgs.racket-lang.org/
+- https://awesome-racket.com/
