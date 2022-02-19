@@ -1,8 +1,6 @@
 * Computing Magic Beta Meeting 1
 
-/Acquiring a Lisp/
-
-Mars, Monday 24 January 2022
+/Functional Art/
 
 Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
@@ -16,7 +14,7 @@ Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Ste
       - =Touch=, =Alejandro=, =pseudo= or another enthusiast
       - and allow us to assist you!
 
-** What else might you do?
+** 2d Functional Art
 
 Create more art with 2D Functional Pictures in Slideshow
   - [[https://docs.racket-lang.org/pict][2D Functional Pictures]]
@@ -24,21 +22,15 @@ Create more art with 2D Functional Pictures in Slideshow
         - Animation and Interactive Features
         - Exports to other media
           
+** 3d Functional Art
+   
 Explore [[https://docs.racket-lang.org/pict3d/quick.html][3D Functional Pictures]]
 
-Explore [[https://docs.racket-lang.org/turtles/index.html][Turtle Graphics]]
-- =pseudo= is a great resource for this!
-- The source code for the examples is at
-      - [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/turtle-examples.rkt][turtle-examples.rkt]]
-      - [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/value-turtles-examples.rkt][value-turtles-examples.rkt]]
+** Learning More Racket / Lisp / Programming
 
 Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
 - Many of which are graphics related
 - There are also some APIs for sound
-
-Explore Game Programming with  
-- [[http://realmofracket.com/][Realm of Racket]]
-- /I have a copy you can borrow/
 
 Do, please, read more of the resources on my website, starting with
 - [[https://github.com/GregDavidson/computing-magic][Computing Magic README]]
