@@ -11,7 +11,7 @@ group learning by the end of the quarter.
 *** Session Notes
 
 - [[file:meeting-1.org][Session 1, Monday 24 January 2022]]
-An Open Lab in which we began a Tutorial *learning Lisp / Scheme / Racket by
+We begin an Open Lab with a Tutorial for *learning Lisp / Scheme / Racket by
 writing functions which compute pictures*. There will be interruptions with
 enrichment pieces.
   
