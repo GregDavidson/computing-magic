@@ -4,7 +4,7 @@
 
 Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
-** What to do before our next meeting
+** What to do before the meeting
 
 Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.
 - As you try each example
