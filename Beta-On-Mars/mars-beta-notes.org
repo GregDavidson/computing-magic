@@ -25,7 +25,7 @@ Visual Art* with the =pict= and =pict3d= packages
 After a brief presentation, this will be an Open Lab for *Creating Visual Art
 using Imperative Turtle Graphics!*
   
-- [[file:meeting-1c.org][Module 1c: Animation and Game Design]]
+- [[file:meeting-1c.org][Future Module 1c: Animation and Game Design]]
 An Open Lab exploring *Animation & Interactive Graphics & Game Design!*
   
 - [[file:meeting-2.org][Module 2: Software Development Power Tools]]
