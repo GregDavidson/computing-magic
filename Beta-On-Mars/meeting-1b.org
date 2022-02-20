@@ -1,4 +1,4 @@
-* Computing Magic Beta Meeting 1
+* Computing Magic Beta Module 1b
 
 /Imperative Art/
 
@@ -8,26 +8,32 @@ Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]
 
 Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:meeting-1.org][Session 1]].
 
-Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
-- Many of which are graphics related
-- There are also some APIs for sound
-
-Do, please, read more of the resources on my website, starting with
-- [[https://github.com/GregDavidson/computing-magic][Computing Magic README]]
-- And explore the links!
-  
-When you want to get serious with Racket
-- Explore [[http://www.htdp.org/][How to Design Programs]]
-- Try ideas from [[https://docs.racket-lang.org/guide/index.html][The Racket Guide]]
-
-** Imperative [[https://docs.racket-lang.org/turtles/index.html][Turtle Graphics]]
- 
+** 2D Imperative Art
+   
+Explore [[https://docs.racket-lang.org/turtles/Traditional_Turtles.html][Turtle Graphics]]
+- =pseudo= is a great resource for this!
 - The source code for the examples is at
       - [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/turtle-examples.rkt][turtle-examples.rkt]]
 
-- =pseudo= is a great resource for this!
+Focus on the two key turtle commands
+- =(move distance)=
+- =(turn angle)=
 
-** Functional [[https://docs.racket-lang.org/turtles/index.html][Turtle Graphics]]
+Why is this called /Imperative/?
+- Each function is a /Command/, i.e. an /Imperative/ to something outside of itself
+      - Specifically, a command to a /Turtle/ living in a /Canvas/
+- Turtle commands change the /state/ of the Turtle and the Canvas
+      - Repeating a function doesn't do the same thing!
+
+Most graphics programming models and libraries are /Imperative/.
+ 
+** How can this be made /Functional?/
    
-- The source code for the examples is at
-      - [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/value-turtles-examples.rkt][value-turtles-examples.rkt]]
+The hip geeks say that Functional Programming is better, but what is it?
+- [[https://www.cs.nott.ac.uk/~pszgmh//faq.html#functional-languages][Functional Programming FAQ]]
+
+If you'd like to explore /Functional Turtles/ 
+- see [[https://docs.racket-lang.org/turtles/Value_Turtles.html][Value Turtles]]
+- [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/value-turtles-examples.rkt][value-turtles-examples.rkt]]
+- Do Value Turtles seem weird?
+      - What's going on?

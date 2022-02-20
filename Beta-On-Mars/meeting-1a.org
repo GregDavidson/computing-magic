@@ -1,20 +1,14 @@
-* Computing Magic Beta Meeting 1
+* Computing Magic Beta Module 1a
 
 /Functional Art/
 
 Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
-** What to do before the meeting
+** Good things to before this meeting
 
-Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.
-- As you try each example
-      - Try variations
-      - Play and Explore
-- If you would like some support, please seek out any of
-      - =Touch=, =Alejandro=, =pseudo= or another enthusiast
-      - and allow us to assist you!
+Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:meeting-1.org][Session 1]].
 
-** 2d Functional Art
+** 2D Functional Art
 
 Create more art with 2D Functional Pictures in Slideshow
   - [[https://docs.racket-lang.org/pict][2D Functional Pictures]]
@@ -32,6 +26,12 @@ Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
 - Many of which are graphics related
 - There are also some APIs for sound
 
+Here are two more wonderful Racket Graphics packages
+- [[http://soegaard.github.io/docs/metapict/metapict.html][MetaPict]] -- look at the examples at the end for motivation!
+- [[https://github.com/rodrigosetti/stamps][Stamps]] -- Do you like the examples?
+      - Here's the [[https://github.com/rodrigosetti/stamps/tree/master/tutorial][Beginnings of a Stamps Tutorial]]
+      - It's based on [[https://contextfreeart.org/gallery/search.php?t=new&num=25][Context Free]]
+
 Do, please, read more of the resources on my website, starting with
 - [[https://github.com/GregDavidson/computing-magic][Computing Magic README]]
 - And explore the links!
@@ -39,4 +39,3 @@ Do, please, read more of the resources on my website, starting with
 When you want to get serious with Racket
 - Explore [[http://www.htdp.org/][How to Design Programs]]
 - Try ideas from [[https://docs.racket-lang.org/guide/index.html][The Racket Guide]]
-
