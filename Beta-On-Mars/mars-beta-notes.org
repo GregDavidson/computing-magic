@@ -12,31 +12,31 @@ Group Session.
 
 *** Session Notes
 
-- [[file:meeting-1.org][Session 1, Monday 24 January 2022]]
+- [[file:meeting-1.org][Session 1: Monday 24 January 2022]]
 We begin an Open Lab with a Tutorial for *learning Lisp / Scheme / Racket by
 writing functions which compute pictures*. There will be interruptions with
 enrichment pieces.
   
-- [[file:meeting-1a.org][Session 1a, 2D and 3D Functional Art]]
+- [[file:meeting-1a.org][Session 1a: 2D and 3D Functional Art]]
 After a brief presentation, this will be an Open Lab for *Making Functional
 Visual Art* with the =pict= and =pict3d= packages
   
-- [[file:meeting-1b.org][Session 1b, Imperative 2D Art]]
+- [[file:meeting-1b.org][Session 1b: Imperative 2D Art]]
 After a brief presentation, this will be an Open Lab for *Creating Visual Art
 using Imperative Turtle Graphics!*
   
-- [[file:meeting-1c.org][Session 1c, Animation and Game Design]]
+- [[file:meeting-1c.org][Session 1c: Animation and Game Design]]
 An Open Lab exploring *Animation & Interactive Graphics & Game Design!*
   
-- [[file:meeting-2.org][Session 2, Software Development Power Tools]]
+- [[file:meeting-2.org][Session 2: Software Development Power Tools]]
 Exploring more powerful software development tools.  *Installing and setting
 up a more powerful development environment!*
 
-- [[file:meeting-3.org][Session 3, Using the Power Tools with Your Projects]]
+- [[file:meeting-3.org][Session 3: Using the Power Tools with Your Projects]]
 Using either DrRacket or the New Tools for your Art or other projects. There
 will be interruptions with enrichment pieces and a teaser for the next session.
 
-- [[file:meeting-4.org][Session 4, Web and Network Programming]]
+- [[file:meeting-4.org][Session 4: Web and Network Programming]]
 An Open Lab in which we some of us begin a Tutorial learning *Systems and
 Network Programming* in Lisp by writing a Web Server using the Software Tools
 learned so far, while others work on Computational Art.
