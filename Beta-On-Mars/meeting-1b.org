@@ -15,9 +15,17 @@ Explore [[https://docs.racket-lang.org/turtles/Traditional_Turtles.html][Turtle 
 - The source code for the examples is at
       - [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/turtle-examples.rkt][turtle-examples.rkt]]
 
-Focus on the two key turtle commands
+Focus on the three key turtle commands
 - =(move distance)=
+- =(draw distance)=
 - =(turn angle)=
+
+Create your own fancy functions to
+- Draw Polygons
+- Draw Mars
+  - Build it up from parameterized pieces
+- Draw /wild things!/
+
 
 Why is this called /Imperative/?
 - Each function is a /Command/, i.e. an /Imperative/ to something outside of itself
