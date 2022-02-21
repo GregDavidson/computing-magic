@@ -1,0 +1,31 @@
+* Learning More & Better Racket
+
+** What is Racket and Why is Racket Special?
+  
+Racket is one of the most /elegant/ modern programming languages and environments,
+It is one of a very small number of truly modern Lisps, but it is more than just a language
+- Racket started out as a fleshed-out variant of Scheme
+- Racket is became a system for creating new languages
+- Racket is now a family of computer languages
+- Racket provides a multi-language development platform
+- Racket provides a large set of libraries and frameworks
+- Racket is all /Open Source Free Software!/
+
+** What's A Good Way To Learn More Racket?
+
+Racket is best learned by Exploring, that is to say
+1. Read a bit about it, e.g. from a Tutorial or other Guidebook
+2. Replicate the examples or similar examples
+3. Experiment a bit beyond the examples
+4. Look up a few things in the Reference Manual
+5. Repeat with step 1!
+
+Here's a good Tutorial Path
+1. Explore the [[https://docs.racket-lang.org/quick/][Quick Tutorial]]
+2. Explore the [[Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]] program
+3. Read and Explore [[https://github.com/GregDavidson/on-lisp/lisp-simplicity.org][Lisp Simplicity]]
+4. Possibly explore more materials in the [[https://github.com/GregDavidson/on-lisp][On Lisp]] repository
+5. Explore [[http://www.htdp.org/][How to Design Programs]]
+6. Explore the other Racket Tutorials
+7. Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
+8. Pull ideas from [[https://docs.racket-lang.org/guide/index.html][The Racket Guide]]
