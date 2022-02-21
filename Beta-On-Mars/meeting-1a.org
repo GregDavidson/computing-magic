@@ -2,9 +2,9 @@
 
 /Functional Art/
 
-Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
+Based on notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
-** Good things to before this meeting
+** What to do before this module
 
 Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:meeting-1.org][Session 1]].
 
@@ -12,22 +12,23 @@ Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Ste
 
 Create more art with 2D Functional Pictures in Slideshow
   - [[https://docs.racket-lang.org/pict][2D Functional Pictures]]
-        - Lots more Shapes, Options and Combinators
+        - Explore more Shapes, Options and Combinators
         - Animation and Interactive Features
         - Exports to other media
-          
-** 3d Functional Art
+ 
+** 3D Functional Art
    
 Explore [[https://docs.racket-lang.org/pict3d/quick.html][3D Functional Pictures]]
 
-** Learning More Racket / Lisp / Programming
-
-Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
-- Many of which are graphics related
-- There are also some APIs for sound
+** What else might you do?
 
 Here are two more wonderful Racket Graphics packages
 - [[http://soegaard.github.io/docs/metapict/metapict.html][MetaPict]] -- look at the examples at the end for motivation!
 - [[https://github.com/rodrigosetti/stamps][Stamps]] -- Do you like the examples?
       - Here's the [[https://github.com/rodrigosetti/stamps/tree/master/tutorial][Beginnings of a Stamps Tutorial]]
       - It's based on [[https://contextfreeart.org/gallery/search.php?t=new&num=25][Context Free]]
+
+This course is self-paced, so feel free to continue on to later modules in
+the [[file:mars-beta-notes.org][Beta Course]] notes.
+
+You might also want to learn [[file:../Racket/more-racket.org][More Racket]]!

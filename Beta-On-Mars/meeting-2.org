@@ -1,75 +1,24 @@
-* Computing Magic Beta Meeting 2
+* Computing Magic Beta Module 2
   
 /Tooling Up/
 
-Mars, Monday 24 January 2022
+Based on notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
-Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
+** Software Development Power Tools
 
-Today we did a partial review of what we've learned from last week's session and
-the Quick tutorial. Then we began to discuss the key elements of the software
-stack for supporting ambitious projects.
+This module and the next are focused on setting up and learning some major
+productivity tools.
 
-Learning more about appropriate pacing, [[2022-02-07-meeting-3.org][our next session]] will be a
-/creativity lab/.
-
-** Lisp Review and Enrichment
-
-Moved to [[https://github.com/GregDavidson/on-lisp/lisp-simplicity.org][Lisp Simplicity]]
-
-** After the Quick Tutorial
-
-When you've finished the Quick Tutorial
-- study [[file:../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]]
-- read the materials in the [[https://github.com/GregDavidson/on-lisp][On Lisp]] repository
-- Read the notes from [[2022-01-24-meeting-1.org][our last session]]
-  - you'll find a lot of new material there!
-
-Lisp evolves while preserving its essence. 
-- It's a language which can serve you forever!
-
-** Would you like to do more Art with Racket?
-
-Create more art with 2D Functional Pictures in Slideshow
-- [[https://docs.racket-lang.org/pict][2D Functional Pictures]]
-      - Lots more Shapes, Options and Combinators
-      - Animation and Interactive Features
-      - Exports to other media
-- [[https://docs.racket-lang.org/pict3d/quick.html][3D Functional Pictures]]
-- [[https://docs.racket-lang.org/turtles/index.html][Turtle Graphics]]
-      - =pseudo= is a great resource for this!
-      - The source code for the examples is at
-            - [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/turtle-examples.rkt][turtle-examples.rkt]]
-            - [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/value-turtles-examples.rkt][value-turtles-examples.rkt]]
-
-Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
-- Many of which are graphics related
-- There are also some APIs for sound
-
-Explore Game Programming with  
-- [[http://realmofracket.com/][Realm of Racket]]
-- /I have a copy you can borrow/
-
-Read more of the resources on my website, starting with
-- [[https://github.com/GregDavidson/computing-magic][Computing Magic README]]
-- And explore the links!
-  
-When you want to get serious with Racket
-- Explore [[http://www.htdp.org/][How to Design Programs]]
-- Try ideas from [[https://docs.racket-lang.org/guide/index.html][The Racket Guide]]
-
-What support would you like?
-- Please share your ideas!
-- And would you like to do any group projects?
-
-** Next Week: Development Tools
-
-Next week we'll be concentrating on Software Tools, especially =git= and
-=emacs=.  If you want to get started with them early, here's some guidance.
+Let's start with =git=, /GitHub/ and =emacs=.
    
 *** Git, Github
    
-Git is eating the world, /resistance is futile!/
+- Software is eating the world
+- Git is eating software-development
+- GitHub is the main /watering-hole/ for sharing Git Projects
+- /resistance is futile!/
+      - not really, there are alternatives
+      - it's still a very good idea to learn these popular tools!
 
 If you don't yet have a GitHub account
 - [[https://github.com/join][Create a GitHub Account]]
@@ -91,10 +40,21 @@ environment.
 - Getting Started with Emacs
       - Pick something you'd like to write up
       - Read up a bit on [[https://orgmode.org][OrgMode]]
-      - Do the Emacs Tutorial (COntrol-H t)
+      - Do the Emacs Tutorial (Control-H Capitol-T)
       - Create your document using OrgMode in one of your repositories
 - Commit your file
       - Try it with basic git commands
       - Try it with =magit= within Emacs
 - Make changes and
       - lather, rinse, repeat!
+
+** What else might you do?
+        
+Read more of the resources on my website, starting with
+- [[https://github.com/GregDavidson/computing-magic][Computing Magic README]]
+- And explore the links!
+  
+Let's collaborate!
+- What support would you like?
+- Please share your ideas and help improve these materials!
+- Would you like to do any group projects?

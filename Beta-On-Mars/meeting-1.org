@@ -1,12 +1,17 @@
-* Computing Magic Beta Meeting 1
+* Computing Magic Beta Module 1
 
 /Acquiring a Lisp/
 
-Mars, Monday 24 January 2022
-
-Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
+Based on a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
 
 ** Programming with Pictures
+
+Programming is best learned by Exploring, that is to say
+1. Read a bit, e.g. from a Tutorial
+2. Replicate the examples
+3. Experiment a bit beyond the examples
+4. Look up a few things in the Reference Manual
+5. Repeat with step 1!
 
 Explore the [[https://docs.racket-lang.org/quick/][Quick Tutorial]]
 - As you try each example
@@ -19,5 +24,10 @@ Explore the [[https://docs.racket-lang.org/quick/][Quick Tutorial]]
  
 ** What else might you do?
 
-This course is self-paced, so feel free to start the next module in
+The program [[file:../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]] shows some variations on the code you explored with
+the /Quick Tutorial/.
+
+This course is self-paced, so feel free to continue on to later modules in
 the [[file:mars-beta-notes.org][Beta Course]] notes.
+
+You might also want to learn [[file:../Racket/more-racket.org][More Racket]]!
