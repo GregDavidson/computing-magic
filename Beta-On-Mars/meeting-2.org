@@ -49,6 +49,8 @@ environment.
       - lather, rinse, repeat!
 
 ** What else might you do?
+
+Use [[file:../Software-Tools/scripting-readme.org][Scripting README]] to install and learn powerful scripting tools
         
 Read more of the resources on my website, starting with
 - [[https://github.com/GregDavidson/computing-magic][Computing Magic README]]

@@ -26,6 +26,10 @@ Use [[file:../Software-Tools/git-readme.org][Git README]] to install and learn h
 
 Use [[file:../Software-Tools/Emacs/emacs-readme.org][Emacs README]] to install and learn a nice Emacs and Emacs environment.
 
+*** Scripting Tools
+
+Use [[file:../Software-Tools/scripting-readme.org][Scripting README]] to install and learn powerful scripting tools
+        
 *** Computational Art
     
 See the [[file:2022-01-24-meeting-1.org][Notes from our first meeting]]!  Racket provides multiple toolkits for

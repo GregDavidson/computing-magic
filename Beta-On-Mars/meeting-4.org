@@ -1,12 +1,12 @@
-* Computing Magic Beta Meeting 3
+* Computing Magic Beta Meeting 4
   
-/Acquiring a Lisp/
+/Meeting the System/
   
 /Mars, Monday 14 February 2022/
 
 Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
-*** Computing, Bottomm Upcoming
+*** Computing, Bottom Up
 
 Explore [[https://gregdavidson.github.io/on-computing/what-computers-are/][What Computers Are]]
 
