@@ -8,7 +8,7 @@ Based on notes from a [[https://github.com/GregDavidson/computing-magic][Computi
 
 Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:meeting-1.org][Session 1]].
 
-** 2D Functional Art
+** 2D Exploring Functional Art
 
 Create more art with 2D Functional Pictures in Slideshow
   - [[https://docs.racket-lang.org/pict][2D Functional Pictures]]
