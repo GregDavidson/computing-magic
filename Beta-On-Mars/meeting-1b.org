@@ -26,7 +26,6 @@ Create your own fancy functions to
   - Build it up from parameterized pieces
 - Draw /wild things!/
 
-
 Why is this called /Imperative/?
 - Each function is a /Command/, i.e. an /Imperative/ to something outside of itself
       - Specifically, a command to a /Turtle/ living in a /Canvas/
