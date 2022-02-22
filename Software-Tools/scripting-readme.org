@@ -66,11 +66,19 @@ The Unix Philosophy encourages creating a toolkit small simple programs, each of
 which has a small functional scope. Problems are solved by combining such
 component programs as needed.
 
+The /C Language/ was created to encourage writing this kind of small program. In
+fact, when Dennis Ritchie, the main designer of =C= was asked /What's the best
+way to write large programs in C?/ his reply was /Don't!/
+
+Most of the popular scripting languages such as Python, Ruby, Perl, JavaScript,
+etc. are written primarily in =C=.  =C= is written in =C=.
+
 The Lisp Philosophy encourages creating small simple Procedures (ideally,
 Functional Procedures), each of which has a small functional scope. Problems are
-solved by combining such component procedures as needed.
+solved by combining such component procedures as needed. The major Lisps are
+written in Lisp.
 
-The similarities should be obvious. In practice, how are these two approaches
+The similarities should be obvious. In practice, how do these two approaches
 differ?
 
 There have also been a number of Unix-like Toolkits, including shells created in
