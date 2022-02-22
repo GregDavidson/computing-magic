@@ -61,3 +61,19 @@ Tutorials and Guides
 
 More links
 - [[https://en.wikipedia.org/wiki/Unix_philosophy][Wikipedia: Unix Philosophy]]
+
+The Unix Philosophy encourages creating a toolkit small simple programs, each of
+which has a small functional scope. Problems are solved by combining such
+component programs as needed.
+
+The Lisp Philosophy encourages creating small simple Procedures (ideally,
+Functional Procedures), each of which has a small functional scope. Problems are
+solved by combining such component procedures as needed.
+
+The similarities should be obvious. In practice, how are these two approaches
+differ?
+
+There have also been a number of Unix-like Toolkits, including shells created in
+Lisp. So far, none of them have sufficiently adopted POSIX syntax to allow them
+to be used as drop-in replacements for the more common POSIX programs. Some of
+them are worth learning and using, e.g. [[https://scsh.net/][scsh - the Scheme Shell]]
