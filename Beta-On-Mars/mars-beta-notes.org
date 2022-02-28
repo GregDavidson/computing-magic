@@ -36,12 +36,12 @@ up a more powerful development environment!*
 Using either DrRacket or the New Tools for your Art or other projects. There
 will be interruptions with enrichment pieces and a teaser for the next session.
 
-- [[file:meeting-4.org][Future Module 4: Web and Network Programming]]
+- [[file:meeting-4.org][New Module 4: Web and Network Programming]]
 An Open Lab in which we some of us begin a Tutorial learning *Systems and
 Network Programming* in Lisp by writing a Web Server using the Software Tools
 learned so far, while others work on Computational Art.
 
-- [[file:meeting-5.org][Future Module 5, SQL and Relational Design]]
+- [[file:meeting-5.org][New Module 5, SQL and Relational Design]]
 An Open Lab in which we began a *SQL Tutorial*. We will learn the power of the
 Relational Model for Programming and Persistence! There will be interruptions
 with enrichment pieces.
