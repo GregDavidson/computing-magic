@@ -1,0 +1,55 @@
+* Computing Magic Beta Module 6
+
+/Putting it all together!/
+
+Based on a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
+
+** Designing Software Systems
+
+Read and explore [[http://www.htdp.org/][How to Design Programs]], an excellent text by the principal
+designer of Racket.
+
+The Dijkstra approach:
+1. Imagine an /Implementation System/ (machine, library, language, etc.) which
+   would make /solving your problem/, e.g. creating your desired system
+   straightforward.
+2. Specify the /Implementation System/ well enough to understand how to use it
+3. Try /solving your problem/ with your imagined /Implementation System/
+4. Iterate Steps 1-3 until you've got something which works
+5. Apply this approach to implement the /Implementation System/
+
+This is a /Recursive/ approach! In practice, as you apply this kind of approach
+you stand back and look how the overall approach is going. When you're imagining
+your /Implementation System/ you pick one which you believe will be easier to
+implement that it would be to directly solve your /desired problem/.
+
+** What is your desired project?
+
+Does it involve
+- Creating art (visual art, music, etc.) to show to humans?
+- Interacting with humans?  E.g. a game or simulation
+- Empowering humans? Helping them do something more easily
+- Automating a tedious task
+- Other things?
+
+Will it need a
+- graphical user interface
+- web interface
+- command or scripting interface
+- database for persistence
+- client/server architecture
+      - with network connections?
+
+Can it be solved with 
+  - well-known algorithms and data structures?
+    - /I can tell you/
+      
+Might it need some form of /Intelligence/?
+    - /I can tell you that, too!/
+
+** What else might you do?
+
+This course is self-paced, so feel free to continue on to later modules in
+the [[file:mars-beta-notes.org][Beta Course]] notes.
+
+You might also want to learn [[file:../Racket/more-racket.org][More Racket]]!
