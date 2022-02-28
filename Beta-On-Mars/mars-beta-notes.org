@@ -43,7 +43,7 @@ Software Tools learned so far.
 Learning the power of *SQL* and the /Relational Model/ for Programming and
 Persistence!
 
-- [[file:6.org][Future Module 6, Putting it All Together]]
+- [[file:meeting-6.org][Future Module 6, Putting it All Together]]
 Creating an ambitious Project to use Web, Graphics, Lisp and SQL.
 An opening for *Creativity and Software Design*.
 
