@@ -16,18 +16,18 @@ enrichment pieces and feel free to ignore such if you're on a roll!
 - [[file:meeting-1.org][Module 1: Monday 24 January 2022]]
 We begin an Open Lab with a Tutorial for *learning Lisp / Scheme / Racket by
 writing functions which compute pictures*.
-  
+
 - [[file:meeting-1a.org][Module 1a: 2D and 3D Functional Art]]
 After a brief presentation, this will be an Open Lab for *Making Functional
 Visual Art* with the =pict= and =pict3d= packages
-  
+
 - [[file:meeting-1b.org][Module 1b: Imperative 2D Art]]
 After a brief presentation, this will be an Open Lab for *Creating Visual Art
 using Imperative Turtle Graphics!*
-  
-- [[file:meeting-1c.org][Future Module 1c: Animation and Game Design]]
+
+- [[file:meeting-1c.org][New Module 1c: Animation and Game Design]]
 An Open Lab exploring *Animation & Interactive Graphics & Game Design!*
-  
+
 - [[file:meeting-2.org][Module 2: Software Development Power Tools]]
 Exploring more powerful software development tools.  *Installing and setting
 up a more powerful development environment!*
