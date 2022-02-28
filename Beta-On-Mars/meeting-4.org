@@ -1,35 +1,10 @@
 * Computing Magic Beta Meeting 4
   
-/Meeting the System/
+/Meeting the Computer and its Operating System/
   
 /Mars, Monday 14 February 2022/
 
 Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
-
-*** Computing, Bottom Up
-
-Explore [[https://gregdavidson.github.io/on-computing/what-computers-are/][What Computers Are]]
-
-Strategies for building larger, more interesting objects
-- Larger objects with adjacent components
-      - arrays and structures
-- Graph structures connected by pointers
-      - Lists, Trees and much more!
-- Hash structures - much like crypto!
-      - Dictionaries, Indexes
-- Functional interfaces
-      - Dynamic computing
-      - Metaprogramming
-      - Functions are also Data!
-- Byte sequences are the interchange format
-      - Files, Streams
-      - (De)Serialization
-- Alignment and chunking
-      - Ideally invisible, sometimes leaks into APIs
-      - Pages, Sectors, Blocks, Cylinders
-      - Cache lines, Word alignment
-      - Can impact efficiency
-      - Strive for simplicity, with later optimization possible
 
 ** Systems Programming
 
@@ -37,20 +12,43 @@ How to write any possible program, including advanced Web Servers
 
 Start exploring [[https://docs.racket-lang.org/more/index.html][Systems Programming with Racket]]
 
-*** System Abstractions
+Interleave your explorations with some of the reading below!
 
-- Tasks :: Heavyweight Processes
-      - Program :: instructions + static data + starting point
-      - Memory Immage :: chunk of virtual memory
+*** Computing, Small to Large
+ 
+Computing operates on many scales:
+
+Explore [[https://gregdavidson.github.io/on-computing/what-computers-are/][What Computers Are]]
+
+[[https://github.com/GregDavidson/on-computing/blob/main/composites.org][Applications work with Larger, Custom Structures]]
+
+*** Systems Programs Exploit Systems Resources
+
+Applications have no direct way to connect with the external world, they can't
+read or write data, they can't interact with users or networks or any kind of
+device, all of that has to be delegated to the Operating System's Kernel.
+
+The first
+- Kennel Resources :: The abstract resources provided by the Kernel
+      - The kernel manages all system resources
+- System Call :: An Application request for some kernel service
+      - Applications are generally frozen during a System Call, making them very expensive!
+
+Some Key Kernel Resources, aka Kernel Abstractions 
+- Tasks :: aka Heavyweight Processes, consisting of:
+      - Program :: an application's code + static data + starting point
+      - Memory Immage :: volatile main memory - virtualized
             - Stack :: Area of memory for function activations
-            - Heap :: Area of memory for shared objects
-      - "File" Descriptors :: represent kernel I/O resources
-      - Thread :: Sequences through program instructions
-- Threads :: Lightweight Processes
-      - Possibility of concurrent independent sequences through program
-      - Often have their own Stacks
+            - Heap :: Area of memory for shared data objects
+      - "File" Descriptors :: indexes to kernel I/O resources
+      - Main Thread :: a sequence of execution through program code
+- Additional Threads :: aka Lightweight Processes
+      - Possibly concurrent, independent sequences through program
+      - Often have their own Stack memory
+      - Share the same main memory with other threads in their task
       - Concurrent access to shared storage can be disastrous!
-- Files :: Growable byte sequences
+- Files :: Growable byte sequences, persistent but easily changed or deleted
+      - Typically given names by /Directory Files/ aka /Folders/
 - Packets :: Datagrams, like postcards bearing a hunk of bytes
 - Streams :: one or two-way byte I/O
 - Sockets :: Endpoints for network Datagram I/O and Stream connections
