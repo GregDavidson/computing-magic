@@ -5,17 +5,17 @@ Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magi
 
 Notes on future sessions are partly a plan for that session and partly materials
 that may be useful during the meeting. *The notes are edited after each meeting*
-to reflect lessons learned so be sure and read them a few days later! The goal
-is to have *a complete set of self-paced modules suitable for self or group
+to reflect lessons learned so be sure and re-read them a few days later! The
+goal is to have *a complete set of self-paced modules suitable for self or group
 learning* by the end of the quarter. We will be exploring each module with a
-Group Session.
+Group Session. In the Group Sessions there will be occasional interruptions with
+enrichment pieces and feel free to ignore such if you're on a roll!
 
-*** Session Notes
+*** Module and Session Notes
 
 - [[file:meeting-1.org][Module 1: Monday 24 January 2022]]
 We begin an Open Lab with a Tutorial for *learning Lisp / Scheme / Racket by
-writing functions which compute pictures*. There will be interruptions with
-enrichment pieces.
+writing functions which compute pictures*.
   
 - [[file:meeting-1a.org][Module 1a: 2D and 3D Functional Art]]
 After a brief presentation, this will be an Open Lab for *Making Functional
@@ -33,22 +33,19 @@ Exploring more powerful software development tools.  *Installing and setting
 up a more powerful development environment!*
 
 - [[file:meeting-3.org][Module 3: Using the Power Tools with Your Projects]]
-Using either DrRacket or the New Tools for your Art or other projects. There
-will be interruptions with enrichment pieces and a teaser for the next session.
+Incorporating the New Tools for your Art or other projects.
 
 - [[file:meeting-4.org][New Module 4: Web, Systems and Network Programming]]
-An Open Lab in which we some of us begin a Tutorial learning *Systems and
-Network Programming* in Lisp by writing a Web Server using the Software Tools
-learned so far, while others work on Computational Art.
+Learning *Systems and Network Programming* by writing a Web Server using the
+Software Tools learned so far.
 
 - [[file:meeting-5.org][New Module 5, SQL and Relational Design]]
-An Open Lab in which we began a *SQL Tutorial*. We will learn the power of the
-Relational Model for Programming and Persistence! There will be interruptions
-with enrichment pieces.
+Learning the power of *SQL* and the /Relational Model/ for Programming and
+Persistence!
 
 - [[file:6.org][Future Module 6, Putting it All Together]]
-Creating an ambitious Project to use Web, Graphics, Lisp and SQL. An
-opening for *Creativity and Software Design*.
+Creating an ambitious Project to use Web, Graphics, Lisp and SQL.
+An opening for *Creativity and Software Design*.
 
 - [[file:meeting-7.org][Future Module 7, Knowledge-Based AI Technology]]
 *Getting your computer to understand your domain*: Major magical AI technologies
