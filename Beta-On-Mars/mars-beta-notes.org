@@ -13,7 +13,7 @@ enrichment pieces and feel free to ignore such if you're on a roll!
 
 *** Module and Session Notes
 
-- [[file:meeting-1.org][Module 1: Monday 24 January 2022]]
+- [[file:meeting-1.org][Module 1: Functional Programming]]
 We begin an Open Lab with a Tutorial for *learning Lisp / Scheme / Racket by
 writing functions which compute pictures*.
 
