@@ -26,7 +26,7 @@ After a brief presentation, this will be an Open Lab for *Creating Visual Art
 using Imperative Turtle Graphics!*
 
 - [[file:meeting-1c.org][New Module 1c: Animation and Game Design]]
-An Open Lab exploring *Animation & Interactive Graphics & Game Design!*
+Exploring techniques for *Animation & Interactive Graphics & Game Design!*
 
 - [[file:meeting-2.org][Module 2: Software Development Power Tools]]
 Exploring more powerful software development tools.  *Installing and setting
