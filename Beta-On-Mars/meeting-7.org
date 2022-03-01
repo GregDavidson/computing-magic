@@ -17,14 +17,13 @@ Two of my favorite areas are
 Artificial Intelligence employs many powerful computing techniques. There has
 been an historical pattern in AI where a particular technique has been seen as
 the primary technology for AI, leading people to confuse that technique with the
-whole field. This has previously led to a collapse of confidence when the
-limitations of that technique have become clear. We're in the middle of just
-such a cycle today with the powerful but limited technology of [[https://en.wikipedia.org/wiki/Machine_learning][Machine_learning]].
+whole field. 
 
-Some techniques which have historically been over-hyped
+Some AI techniques which have at times been confused with the field itself
 - [[https://en.wikipedia.org/wiki/Symbolic_artificial_intelligence#Logic-based][Symbolic Logic]]
 - [[https://en.wikipedia.org/wiki/Production_system_(computer_science)][Production Systems]]
 - [[https://en.wikipedia.org/wiki/Expert_system][Expert Systems]]
+- [[https://en.wikipedia.org/wiki/Machine_learning][Machine_learning]]
 
 A system which combines multiple Artificial Intelligence technologies,
 especially explicit domain knowledge representation along with machine-learning
