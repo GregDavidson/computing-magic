@@ -4,7 +4,7 @@
   
 These materials are primarily organized as a set of Modules which, after the
 first module, can be explored in almost any order.
-- [[file:Modules/README.org][Modules README]]
+- [[file:Modules/README.org][Browse the Modules README]]
 
 ** Context and More Content
 
@@ -12,12 +12,13 @@ This repository is the beginning of a curriculum for learning *Computing Magic*.
 
 /This repository is intended to be a gateway to a lot of important materials,
 linked by the documents here. If you explore these materials, please share your
-experience, through direct communication, by Posting Issues, etc. Please
-suggest improvements!/
+experience, through direct communication, by Posting Issues, etc. *Please suggest
+improvements!* Feel free to Clone This Repository, Make Changes and submit Pull
+Requests!/
 
 Computing Magic is leveraging the power of computers and software to do with
-ease what would be hopelessly difficult in the real world.  With Computing Magic we can 
-design
+ease what would be hopelessly difficult in the real world. With Computing Magic
+we can design
 - Biological organisms
 - Fabulous machines
 - Interactive games
@@ -31,9 +32,11 @@ manually, e.g. using graphical user interfaces and/or editors, we make the
 computer do the hard work while we supply only high-level specifications. We say
 /what we want/ and the computer figures out /how to do it/.
 
-Many of the pioneers of computing were computing magicians, few of today's
-/programmers/ and /users/ have learned those /leet skills/. This repository
-contains the beginning of a fast-path curriculum for learning Computing Magic!
+Many of the pioneers of computing were computing magicians. With the surfeit of
+ready-made solutions and the mind-numbing unnecessary complexity of most current
+software, few of today's /programmers/ and /users/ can see the possibility such
+mastery. This repository contains the beginning of a fast-path curriculum for
+learning Computing Magic!
 
 All of the materials in this repository are in the process of development /and/
 if you're curious you might want to check out:
@@ -49,3 +52,6 @@ practical minimum.
 You might also like some of the background material at
 - [[https://github.com/GregDavidson/on-computing][On Computing]]
 - [[https://github.com/GregDavidson/on-lisp][On Lisp]]
+
+To start your journey with /this curriculum/
+- [[file:Modules/README.org][Browse the Modules README]]
