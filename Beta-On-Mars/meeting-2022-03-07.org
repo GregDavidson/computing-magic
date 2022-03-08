@@ -1,0 +1,38 @@
+* Computing Magic Meeting, Mars, Monday, 7 March 2022
+
+Today we talked about Computing Magic Fundamentals
+
+Complexity is the Enemy of Magic
+
+Powerful Unifying Ideas
+
+Allowing for a diversity of interests in those following the course
+
+#+BEGIN_QUOTE
+It is better to have 100 functions operate on one data structure than to have 10 functions operate on 10 data structures.
+-- Alan Perlis
+#+END_QUOTE
+Sets and Sequences which have minimal visible structure
+- In Traditional Lisps this generally means using Lists as much as possible.
+- In Modern Lisps this means using a generic sequence abstraction
+- In SQL this means writing simple normalized code
+
+Keeping things simple with
+- Functional Programming
+- Relational Programming
+
+Having things magical with
+- Compositionality 
+- Metaprogrammability
+- Refactoring rather than editing syntax
+
+- Smart and elegant development tools which assist in developing
+      - Code from Type
+      - Type from Code
+      - Type, Code, Proofs (Invariants) and Tests together
+- And also with
+      - hiding unnecessary complexity
+      - individual developer flexibility
+            - Language and brevity control
+            - Underlying functional syntax plus lightweight intuitive sugar
+      - Easy refactoring of early-binding constructs
