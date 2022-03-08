@@ -52,3 +52,9 @@ Some Key Kernel Resources, aka Kernel Abstractions
 - Packets :: Datagrams, like postcards bearing a hunk of bytes
 - Streams :: one or two-way byte I/O
 - Sockets :: Endpoints for network Datagram I/O and Stream connections
+
+** What else might you do?
+
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
+
+You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!

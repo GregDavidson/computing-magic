@@ -1,10 +1,18 @@
-* What is Computing Magic?
+* Computing Magic
+
+** TL;DR
+  
+These materials are primarily organized as a set of Modules which, after the
+first module, can be explored in almost any order.
+- [[file:Modules/README.org][Modules README]]
+
+** Context and More Content
 
 This repository is the beginning of a curriculum for learning *Computing Magic*.
 
 /This repository is intended to be a gateway to a lot of important materials,
 linked by the documents here. If you explore these materials, please share your
-experience, through direct communication, by posting Issues, or etc. Please
+experience, through direct communication, by Posting Issues, etc. Please
 suggest improvements!/
 
 Computing Magic is leveraging the power of computers and software to do with
@@ -13,7 +21,6 @@ design
 - Biological organisms
 - Fabulous machines
 - Interactive games
-- Whole new worlds!
 
 We can explore our creations with /Virtual Reality/, share them with collaborators
 and increasingly we can use /Automated Manufacturing/ (3D Printers, DNA
@@ -28,8 +35,8 @@ Many of the pioneers of computing were computing magicians, few of today's
 /programmers/ and /users/ have learned those /leet skills/. This repository
 contains the beginning of a fast-path curriculum for learning Computing Magic!
 
-All of the materials in this repository are in an early stage of development
-/and/ if you're curious you might want to check out:
+All of the materials in this repository are in the process of development /and/
+if you're curious you might want to check out:
 - [[cm-examples.org]]
 - [[cm-curriculum.org]]
 - [[cm-distinctions.org]]
@@ -38,12 +45,6 @@ All of the materials in this repository are in an early stage of development
 We'll be trying to keep the Computer Programming Languages which we use to a
 practical minimum.
 - See [[file:languages-which-matter.org][Which Computer Languages Matter?]]
-
-Notes from the Alpha Course are in the file
-- [[Alpha-Course/computing-magic-notes.org][Alpha Course Meeting Notes]]
-
-The Beta Course is ongoing at [[https://mars.college][Mars College]]!
-- [[Beta-On-Mars/mars-beta-notes.org][Beta Course Meeting Notes]]
 
 You might also like some of the background material at
 - [[https://github.com/GregDavidson/on-computing][On Computing]]

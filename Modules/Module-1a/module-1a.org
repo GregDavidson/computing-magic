@@ -6,7 +6,7 @@ Based on notes from a [[https://github.com/GregDavidson/computing-magic][Computi
 
 ** What to do before this module
 
-Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:meeting-1.org][Session 1]].
+Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:../Module-1/module-1.org][Module 1]].
 
 ** 2D Exploring Functional Art
 
@@ -28,7 +28,6 @@ Here are two more wonderful Racket Graphics packages
       - Here's the [[https://github.com/rodrigosetti/stamps/tree/master/tutorial][Beginnings of a Stamps Tutorial]]
       - It's based on [[https://contextfreeart.org/gallery/search.php?t=new&num=25][Context Free]]
 
-This course is self-paced, so feel free to continue on to later modules in
-the [[file:mars-beta-notes.org][Beta Course]] notes.
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
 
-You might also want to learn [[file:../Racket/more-racket.org][More Racket]]!
+You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!

@@ -49,7 +49,6 @@ Might it need some form of /Intelligence/?
 
 ** What else might you do?
 
-This course is self-paced, so feel free to continue on to later modules in
-the [[file:mars-beta-notes.org][Beta Course]] notes.
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
 
-You might also want to learn [[file:../Racket/more-racket.org][More Racket]]!
+You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!

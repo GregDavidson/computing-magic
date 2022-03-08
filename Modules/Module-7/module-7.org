@@ -93,3 +93,8 @@ question of whether a submarine can swim.
 	― Edsger W. Dijkstra 
 #+end_quote
 
+** What else might you do?
+
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
+
+You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!

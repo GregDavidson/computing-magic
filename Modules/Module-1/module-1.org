@@ -24,10 +24,9 @@ Explore the [[https://docs.racket-lang.org/quick/][Quick Tutorial]]
  
 ** What else might you do?
 
-The program [[file:../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]] shows some variations on the code you explored with
+The program [[file:../../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]] shows some variations on the code you explored with
 the /Quick Tutorial/.
 
-This course is self-paced, so feel free to continue on to later modules in
-the [[file:mars-beta-notes.org][Beta Course]] notes.
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
 
-You might also want to learn [[file:../Racket/more-racket.org][More Racket]]!
+You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!

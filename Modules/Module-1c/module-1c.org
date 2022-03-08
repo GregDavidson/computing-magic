@@ -8,7 +8,7 @@ Based on notes from a [[https://github.com/GregDavidson/computing-magic][Computi
 
 ** What to do before this module
 
-Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:meeting-1.org][Session 1]].
+Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:../Module-1/module-1.org][Module 1]].
 
 ** What else might you do?
 
@@ -20,7 +20,8 @@ Explore Game Programming with
 - [[http://realmofracket.com/][Realm of Racket]]
 - /I have a copy you can borrow/
 
-This course is self-paced, so feel free to continue on to later modules in
-the [[file:mars-beta-notes.org][Beta Course]] notes.
+** What else might you do?
 
-You might also want to learn [[file:../Racket/more-racket.org][More Racket]]!
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
+
+You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!

@@ -6,7 +6,7 @@ Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]
 
 ** Good things to before this meeting
 
-Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:meeting-1.org][Session 1]].
+Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:../Module-1/module-1.org][Module 1]].
 
 ** 2D Imperative Art
    
@@ -44,3 +44,9 @@ If you'd like to explore /Functional Turtles/
 - [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/value-turtles-examples.rkt][value-turtles-examples.rkt]]
 - Do Value Turtles seem weird?
       - What's going on?
+
+** What else might you do?
+
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
+
+You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!

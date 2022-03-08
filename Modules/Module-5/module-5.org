@@ -20,3 +20,9 @@ Here are two PostgreSQL Tutorials:
       - Ideal if this is not your first Rodeo
 - [[https://www.postgresqltutorial.com/][A More Extensive Tutorial]]
       - With [[https://www.postgresqltutorial.com/postgresql-getting-started/][Handy Installation Instructions for Windows, Linux and MacOS]]
+
+** What else might you do?
+
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
+
+You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!

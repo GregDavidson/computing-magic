@@ -28,13 +28,13 @@ Create some GitHub repositories
 - A public repository for Computing Magic
 - More repositories for your other projects
 
-Use [[file:../Software-Tools/git-readme.org][Git README]] to install and learn how to exploit Git for your projects
+Use [[file:../../Software-Tools/git-readme.org][Git README]] to install and learn how to exploit Git for your projects
 
 Clone your GitHub repositories onto your working computers 
 
 *** Emacs: Lisp as a Platform 
 
-See the [[file:../Software-Tools/Emacs/emacs-readme.org][Emacs README]] to install and begin to learn a nice Emacs and Emacs
+See the [[file:../../Software-Tools/Emacs/emacs-readme.org][Emacs README]] to install and begin to learn a nice Emacs and Emacs
 environment.
 
 - Getting Started with Emacs
@@ -50,7 +50,7 @@ environment.
 
 ** What else might you do?
 
-Use [[file:../Software-Tools/scripting-readme.org][Scripting README]] to install and learn powerful scripting tools
+Use [[file:../../Software-Tools/scripting-readme.org][Scripting README]] to install and learn powerful scripting tools
         
 Read more of the resources on my website, starting with
 - [[https://github.com/GregDavidson/computing-magic][Computing Magic README]]
@@ -60,3 +60,7 @@ Let's collaborate!
 - What support would you like?
 - Please share your ideas and help improve these materials!
 - Would you like to do any group projects?
+
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
+
+You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!

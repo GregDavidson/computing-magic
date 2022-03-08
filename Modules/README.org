@@ -13,40 +13,40 @@ enrichment pieces and feel free to ignore such if you're on a roll!
 
 *** Module and Session Notes
 
-- [[file:meeting-1.org][Module 1: Functional Programming]]
+- [[file:Module-1/module-1.org][Module 1: Functional Programming]]
 We begin an Open Lab with a Tutorial for *learning Lisp / Scheme / Racket by
 writing functions which compute pictures*.
 
-- [[file:meeting-1a.org][Module 1a: 2D and 3D Functional Art]]
+- [[file:Module-1a/module-1a.org][Module 1a: 2D and 3D Functional Art]]
 After a brief presentation, this will be an Open Lab for *Making Functional
 Visual Art* with the =pict= and =pict3d= packages
 
-- [[file:meeting-1b.org][Module 1b: Imperative 2D Art]]
+- [[file:Module-1b/module-1b.org][Module 1b: Imperative 2D Art]]
 After a brief presentation, this will be an Open Lab for *Creating Visual Art
 using Imperative Turtle Graphics!*
 
-- [[file:meeting-1c.org][New Module 1c: Animation and Game Design]]
+- [[file:Module-1c/module-1c.org][New Module 1c: Animation and Game Design]]
 Exploring techniques for *Animation & Interactive Graphics & Game Design!*
 
-- [[file:meeting-2.org][Module 2: Software Development Power Tools]]
+- [[file:Module-2/module-2.org][Module 2: Software Development Power Tools]]
 Exploring more powerful software development tools.  *Installing and setting
 up a more powerful development environment!*
 
-- [[file:meeting-3.org][Module 3: Using the Power Tools with Your Projects]]
+- [[file:Module-3/module-3.org][Module 3: Using the Power Tools with Your Projects]]
 Incorporating the New Tools for your Art or other projects.
 
-- [[file:meeting-4.org][New Module 4: Web, Systems and Network Programming]]
+- [[file:Module-4/module-4.org][New Module 4: Web, Systems and Network Programming]]
 Learning *Systems and Network Programming* by writing a Web Server using the
 Software Tools learned so far.
 
-- [[file:meeting-5.org][New Module 5, SQL and Relational Design]]
+- [[file:Module-5/module-5.org][New Module 5, SQL and Relational Design]]
 Learning the power of *SQL* and the /Relational Model/ for Programming and
 Persistence!
 
-- [[file:meeting-6.org][Future Module 6, Putting it All Together]]
+- [[file:Module-6/module-6.org][Future Module 6, Putting it All Together]]
 Creating an ambitious Project to use Web, Graphics, Lisp and SQL.
 An opening for *Creativity and Software Design*.
 
-- [[file:meeting-7.org][Future Module 7, Knowledge-Based AI Technology]]
+- [[file:Module-7/module-7.org][Future Module 7, Knowledge-Based AI Technology]]
 *Getting your computer to understand your domain*: Major magical AI technologies
 with learning avenues. Where Machine Learning fits in with Knowledge-Based AI.
