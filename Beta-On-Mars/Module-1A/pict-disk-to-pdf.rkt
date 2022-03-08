@@ -4,7 +4,7 @@
 (require racket/draw)
 (define the-dc (new pdf-dc% [output "a-disk.pdf"]))
 
-(define a-disk
+(define the-picture
   (disk 40
         #:color "Chartreuse"
         #:border-color "Medium Aquamarine"
