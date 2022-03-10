@@ -16,11 +16,11 @@ Beta participants from [[https://mars.college][Mars College]] in 2022 who have i
 this project. Hopefully this project will never be truly finished and /you can
 help make it better!/
 
-/This repository is intended to be a gateway to a lot of important materials,
+This repository is intended to be a gateway to a lot of important materials,
 linked by the documents here. If you explore these materials, please share your
 experience, through direct communication, by Posting Issues, etc. *Please suggest
 improvements!* Feel free to Clone This Repository, Make Changes and submit Pull
-Requests!/
+Requests!
 
 Computing Magic is leveraging the power of computers and software to do with
 ease what would be hopelessly difficult in the real world. With Computing Magic
@@ -40,12 +40,12 @@ computer do the hard work while we supply only high-level specifications. We say
 
 Many of the pioneers of computing were computing magicians. With the surfeit of
 ready-made solutions and the mind-numbing unnecessary complexity of most current
-software, few of today's /programmers/ and /users/ can see the possibility such
+software, few of today's /programmers/ and /users/ can see the possibility of such
 mastery. This repository contains the beginning of a fast-path curriculum for
 learning Computing Magic!
 
-All of the materials in this repository are in the process of development /and/
-if you're curious you might want to check out:
+All of the materials in this repository are in the process of development /and
+if you're curious/ you might want to check out:
 - [[cm-examples.org]]
 - [[cm-curriculum.org]]
 - [[cm-distinctions.org]]
