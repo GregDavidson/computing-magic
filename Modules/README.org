@@ -22,7 +22,8 @@ of the enrichment pieces that were a part of those meetings.
 
 - [[file:Module-1/module-1.org][Module 1: Functional Programming]]
 We begin an Open Lab with a Tutorial for *learning Lisp / Scheme / Racket by
-writing functions which compute pictures*.
+writing functions which compute pictures*.  You should do this module before any
+others, regardless of your current level of computing skills.
 
 - [[file:Module-1a/module-1a.org][Module 1a: 2D and 3D Functional Art]]
 After a brief presentation, this will be an Open Lab for *Making Functional
@@ -36,24 +37,33 @@ using Imperative Turtle Graphics!*
 Exploring techniques for *Animation & Interactive Graphics & Game Design!*
 
 - [[file:Module-2/module-2.org][Module 2: Software Development Power Tools]]
-Exploring more powerful software development tools.  *Installing and setting
-up a more powerful development environment!*
+Exploring more powerful software development tools. *Installing and setting up a
+more powerful development environment!* The material here has a longer learning
+curve than much of the rest before it pays off.  *It will pay off in a big
+way if you start doing larger and more complex projects!*
 
 - [[file:Module-3/module-3.org][Module 3: Using the Power Tools with Your Projects]]
-Incorporating the New Tools for your Art or other projects.
+Incorporating the New Tools for your Art or other projects. This is a
+continuation of Module 2.
 
 - [[file:Module-4/module-4.org][NEW Module 4: Web, Systems and Network Programming]]
 Learning *Systems and Network Programming* by writing a Web Server using the
-Software Tools learned so far.
+Software Tools learned so far. /Uncovering the secrets behind being able to
+write advanced computer programs!/
 
 - [[file:Module-5/module-5.org][NEW Module 5, SQL and Relational Design]]
 Learning the power of *SQL* and the /Relational Model/ for Programming and
-Persistence!
+Persistence! This will greatly simplify any of your programs which need to work
+with large amounts of data!
 
 - [[file:Module-6/module-6.org][FUTURE Module 6, Putting it All Together]]
-Creating an ambitious Project to use Web, Graphics, Lisp and SQL.
-An opening for *Creativity and Software Design*.
+Creating an ambitious Project to use Web, Graphics, Lisp and SQL. An opening for
+*Creativity and Software Design*. This is very much a /build your own adventure/
+module. Consider doing this module with a group or with partners.
 
 - [[file:Module-7/module-7.org][FUTURE Module 7, Knowledge-Based AI Technology]]
-*Getting your computer to understand your domain*: Major magical AI technologies
-with learning avenues. Where Machine Learning fits in with Knowledge-Based AI.
+*Getting your computer to understand your domain* AI has always been one of the most
+magical areas of computing. AI has grown into a large field with a lot of diverse and
+powerful technologies. This module aims to give you experience with some of the
+most central and powerful AI technologies and leans towards Hybrid AI, i.e. combining
+explicit knowledge and strategies with Heuristics.
