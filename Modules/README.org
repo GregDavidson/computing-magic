@@ -1,15 +1,22 @@
-* Computing Magic Beta Notes
+* Computing Magic -- A Modular Curriculum
+  
+A [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Curriculum.
 
-Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Beta Course
-- [[https://mars.college][Mars College]], Q1 2022
+Think of this as a Montessori-style classroom for learning. The material is
+broken up into Modules which contain projects along with opportunities to create
+your own projects. After the first module you can do the others in any order
+that makes sense to you. There are many links to additional enriching content.
 
-Notes on future sessions are partly a plan for that session and partly materials
-that may be useful during the meeting. *The notes are edited after each meeting*
-to reflect lessons learned so be sure and re-read them a few days later! The
-goal is to have *a complete set of self-paced modules suitable for self or group
-learning* by the end of the quarter. We will be exploring each module with a
-Group Session. In the Group Sessions there will be occasional interruptions with
-enrichment pieces and feel free to ignore such if you're on a roll!
+Modules marked with FUTURE contain the plans for that module's eventual form.
+They are currently heavy on information and light on activities. If you choose
+to explore them you'll need to fill in your own ways to practice and/or ask for
+suggestions. You would thereby be helping in that module's development.
+
+When a module changes status, e.g. from FUTURE to NEW to unmarked you should
+expect major improvements. *If you read one of the earlier versions, check back
+to see those improvements!* These modules were in conjunction with Group
+Sessions. At some point I intend to create some short videos to replicate some
+of the enrichment pieces that were a part of those meetings.
 
 *** Module and Session Notes
 
@@ -35,18 +42,18 @@ up a more powerful development environment!*
 - [[file:Module-3/module-3.org][Module 3: Using the Power Tools with Your Projects]]
 Incorporating the New Tools for your Art or other projects.
 
-- [[file:Module-4/module-4.org][New Module 4: Web, Systems and Network Programming]]
+- [[file:Module-4/module-4.org][NEW Module 4: Web, Systems and Network Programming]]
 Learning *Systems and Network Programming* by writing a Web Server using the
 Software Tools learned so far.
 
-- [[file:Module-5/module-5.org][New Module 5, SQL and Relational Design]]
+- [[file:Module-5/module-5.org][NEW Module 5, SQL and Relational Design]]
 Learning the power of *SQL* and the /Relational Model/ for Programming and
 Persistence!
 
-- [[file:Module-6/module-6.org][Future Module 6, Putting it All Together]]
+- [[file:Module-6/module-6.org][FUTURE Module 6, Putting it All Together]]
 Creating an ambitious Project to use Web, Graphics, Lisp and SQL.
 An opening for *Creativity and Software Design*.
 
-- [[file:Module-7/module-7.org][Future Module 7, Knowledge-Based AI Technology]]
+- [[file:Module-7/module-7.org][FUTURE Module 7, Knowledge-Based AI Technology]]
 *Getting your computer to understand your domain*: Major magical AI technologies
 with learning avenues. Where Machine Learning fits in with Knowledge-Based AI.
