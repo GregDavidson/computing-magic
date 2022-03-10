@@ -3,9 +3,10 @@
 A [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Curriculum.
 
 Think of this as a Montessori-style classroom for learning. The material is
-broken up into Modules which contain projects along with opportunities to create
-your own projects. After the first module you can do the others in any order
-that makes sense to you. There are many links to additional enriching content.
+broken up into Modules which contain activities along with opportunities to
+create your own projects. After the first module you can do the others in any
+order that makes sense to you. There are many links to additional enriching
+content.
 
 Modules marked with FUTURE contain the plans for that module's eventual form.
 They are currently heavy on information and light on activities. If you choose
@@ -51,19 +52,19 @@ Learning *Systems and Network Programming* by writing a Web Server using the
 Software Tools learned so far. /Uncovering the secrets behind being able to
 write advanced computer programs!/
 
-**** [[file:Module-5/module-5.org][NEW Module 5, SQL and Relational Design]]
+**** [[file:Module-5/module-5.org][NEW Module 5: SQL and Relational Design]]
 Learning the power of *SQL* and the /Relational Model/ for Programming and
 Persistence! This will greatly simplify any of your programs which need to work
 with large amounts of data!
 
-**** [[file:Module-6/module-6.org][FUTURE Module 6, Putting it All Together]]
+**** [[file:Module-6/module-6.org][FUTURE Module 6: Putting it All Together]]
 Creating an ambitious Project to use Web, Graphics, Lisp and SQL. An opening for
 *Creativity and Software Design*. This is very much a /build your own adventure/
 module. Consider doing this module with a group or with partners.
 
-**** [[file:Module-7/module-7.org][FUTURE Module 7, Knowledge-Based AI Technology]]
-*Getting your computer to understand your domain* AI has always been one of the most
-magical areas of computing. AI has grown into a large field with a lot of diverse and
-powerful technologies. This module aims to give you experience with some of the
-most central and powerful AI technologies and leans towards Hybrid AI, i.e. combining
-explicit knowledge and strategies with Heuristics.
+**** [[file:Module-7/module-7.org][FUTURE Module 7: Artificial Intelligence Programming Techniques]]
+*Getting computers to understand your domain:* AI is one of the most magical
+areas of computing with many diverse and powerful technologies to offer. This
+module aims to give you experience with some of the most central and powerful AI
+technologies and leans towards Hybrid AI, i.e. combining Explicit Knowledge and
+Strategies with Heuristics.
