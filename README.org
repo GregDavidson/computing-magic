@@ -10,11 +10,11 @@ first module, can be explored in almost any order.
 
 This repository is the beginning of a curriculum for learning *Computing Magic*.
 
-I am very grateful for the participation of the been informed by the brave and
-hardy Alpha participants from [[https://docs.google.com/document/d/1qSUTfoOXDAfoH-OF_7N7kEzlp5-F4nf0JP3BzgppDY0/edit][The Limitless Fellowship]] in 2021 and the similarly
-intrepid Beta participants from [[https://mars.college][Mars College]] in 2022 which have inspired and
-contributed to this project. Hopefully this project will never be truly finished
-and /you can help make it better!/
+I am very grateful for the participation of the brave and hardy Alpha
+participants from [[https://docs.google.com/document/d/1qSUTfoOXDAfoH-OF_7N7kEzlp5-F4nf0JP3BzgppDY0/edit][The Limitless Fellowship]] in 2021 and the similarly intrepid
+Beta participants from [[https://mars.college][Mars College]] in 2022 who have inspired and contributed to
+this project. Hopefully this project will never be truly finished and /you can
+help make it better!/
 
 /This repository is intended to be a gateway to a lot of important materials,
 linked by the documents here. If you explore these materials, please share your
