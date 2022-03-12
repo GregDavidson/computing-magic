@@ -4,8 +4,36 @@
 
 Based on a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
 
-** Designing Software Systems
+** What Would You Like To Build?
 
+The activity for this module is to conceive of something which you'd love to
+build. And then to Plan it and Design it. If those go well, you'll be well on
+your way towards implementing your idea!
+   
+** Planning your desired project
+Does it involve
+- Creating art (visual art, music, etc.) to show to humans?
+- Interacting with humans?  E.g. a game or simulation
+- Empowering humans? Helping them do something more easily
+- Automating a tedious task?
+- Other things?
+
+Will it need a
+- graphical user interface?
+- web interface?
+- command or scripting interface?
+- database for persistence?
+- client/server architecture?
+      - with network connections?
+
+Can it be solved with 
+  - well-known algorithms and data structures?
+    - /I can assist you with figuring that out!/
+      
+Might it need some form of /Intelligence/?
+    - /I can assist you with that, too!/
+
+** Designing Software Systems
 Read and explore [[http://www.htdp.org/][How to Design Programs]], an excellent text by the principal
 designer of Racket.
 
@@ -22,30 +50,6 @@ This is a /Recursive/ approach! In practice, as you apply this kind of approach
 you stand back and look how the overall approach is going. When you're imagining
 your /Implementation System/ you pick one which you believe will be easier to
 implement that it would be to directly solve your /desired problem/.
-
-** What is your desired project?
-
-Does it involve
-- Creating art (visual art, music, etc.) to show to humans?
-- Interacting with humans?  E.g. a game or simulation
-- Empowering humans? Helping them do something more easily
-- Automating a tedious task
-- Other things?
-
-Will it need a
-- graphical user interface
-- web interface
-- command or scripting interface
-- database for persistence
-- client/server architecture
-      - with network connections?
-
-Can it be solved with 
-  - well-known algorithms and data structures?
-    - /I can tell you/
-      
-Might it need some form of /Intelligence/?
-    - /I can tell you that, too!/
 
 ** What else might you do?
 

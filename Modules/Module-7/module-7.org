@@ -15,21 +15,23 @@ recommend reading it as you explore the activities, interleaving the two!
 
 ** Activities for Learning AI Programming
 
-   Ambitious AI systems combine many techniques and often use complex
-   optimizations which obscure what's going on. The best learning path is to
-   utilize one technique at a time with problems that are not too challenging.
+Ambitious AI systems combine many techniques and often use complex
+optimizations which obscure what's going on. The best learning path is to
+utilize one technique at a time with problems that are not too challenging.
 
-   Exploring these techniques with most programming languages would require
-   complex frameworks which would have to be learned before understanding the
-   approach.
-
-   An alternative is to use Prolog. The Prolog language is actually simpler than
-   the combination of most languages along with their sophisticated AI
-   programming frameworks. Prolog makes it easier to get started, easier to see
-   what's going on, so I recommend it!
+[[file:Problems/README.org][Here]] are some graduated [[file:Problems/README.org][Problems to Learn AI Techniques From]]!
    
-   Read the first two links in [[file:../../Prolog/README.org][More Prolog]] and the solutions to the first three
-   problems. Then try your hand at solving the other problems!
+Exploring these techniques with most programming languages would require
+complex frameworks which would have to be learned before understanding the
+approach.
+
+An alternative is to use Prolog. The Prolog language is actually simpler than
+the combination of most languages along with their sophisticated AI
+programming frameworks. Prolog makes it easier to get started, easier to see
+what's going on, so I recommend it!
+   
+Read the first two links in [[file:../../Prolog/README.org][More Prolog]] and the solutions to the first three
+problems. Then try your hand at solving the other problems!
    
 ** What else might you do?
 

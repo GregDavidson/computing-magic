@@ -8,16 +8,16 @@ create your own projects. After the first module you can do the others in any
 order that makes sense to you. There are many links to additional enriching
 content.
 
-Modules marked with FUTURE contain the plans for that module's eventual form.
-They are currently heavy on information and light on activities. If you choose
-to explore them you'll need to fill in your own ways to practice and/or ask for
-suggestions. You would thereby be helping in that module's development.
+Modules marked with NEW have had less testing by learners - they are the /less
+trodden path!/ if you choose to explore them be prepared to get stuck and please
+readily ask for assistance - you will thereby be helping in that module's
+development!
 
-When a module changes status, e.g. from FUTURE to NEW to unmarked you should
-expect major improvements. *If you read one of the earlier versions, check back
-to see those improvements!* These modules were in conjunction with Group
-Sessions. At some point I intend to create some short videos to replicate some
-of the enrichment pieces that were a part of those meetings.
+All of these modules are undergoing revision and (hopefully) improvements -
+especially the ones marked NEW. *If you explored one of the modules some time
+ago, check back to see the improvements!* At some point I intend to create
+some short videos to replicate some of the enrichment pieces that were a part of
+the meetings which led to these modules.
 
 *** Module and Session Notes
 
@@ -57,12 +57,12 @@ Learning the power of *SQL* and the /Relational Model/ for Programming and
 Persistence! This will greatly simplify any of your programs which need to work
 with large amounts of data!
 
-**** [[file:Module-6/module-6.org][FUTURE Module 6: Putting it All Together]]
+**** [[file:Module-6/module-6.org][NEW Module 6: Putting it All Together]]
 Creating an ambitious Project to use Web, Graphics, Lisp and SQL. An opening for
 *Creativity and Software Design*. This is very much a /build your own adventure/
 module. Consider doing this module with a group or with partners.
 
-**** [[file:Module-7/module-7.org][FUTURE Module 7: Artificial Intelligence Programming Techniques]]
+**** [[file:Module-7/module-7.org][NEW Module 7: Artificial Intelligence Programming Techniques]]
 *Getting computers to understand your domain:* AI is one of the most magical
 areas of computing with many diverse and powerful technologies to offer. This
 module aims to give you experience with some of the most central and powerful AI
