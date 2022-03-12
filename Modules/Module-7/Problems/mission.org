@@ -1,0 +1,7 @@
+* The Classic Missionaries and Cannibals Problem
+
+Three missionaries and three cannibals need to cross a river.
+- They have a boat which will hold at most two.
+- The missionaries must avoid tempting the cannibals by ever being outnumbered by the cannibals.
+
+How can we get them all across without the cannibals getting tempted?

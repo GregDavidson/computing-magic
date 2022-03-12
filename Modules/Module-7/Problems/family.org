@@ -1,0 +1,16 @@
+* A Family Tree and Family Relationships
+
+How can we capture a Family Tree?
+
+How can we capture a Family Tree?
+
+If 'John Doe' is in the tree, how can we find
+- John's siblings?
+- John's cousins?
+- John's ancestors?
+- John's descendants?
+
+If 'John Doe' and 'Mary Singh' are in the tree, how can we
+- Find the shortest connection between John and Mary?
+- Find the closest common ancestors?
+- Find any mutual descendants?

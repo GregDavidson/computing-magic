@@ -1,0 +1,20 @@
+* Problems to Learn AI Techniques From
+
+These are a sequence of toy problems which gradually increase in difficulty.
+
+Each is designed to build intuitions and skills that are useful when building
+artificially intelligent systems.
+
+** [[append.org][Two Sequences Append To Become A Third]]
+
+** [[family.org][A Family Tree and Family Relationships]]
+
+** [[jugs.org][The Water Jug Problem]]
+
+** [[fwgc.org][The Farmer, Wolf, Goat and Cabbage Safely Cross The River]]
+
+** [[mission.org][The Missionaries and Cannibals Problem]]
+
+** [[eight.org][The Eight Tiles Puzzle]]
+
+** [[utterances.org][Grammatical Utterances of a Natural Human Language]]

@@ -1,0 +1,16 @@
+* The Farmer, Wolf, Goat and Cabbage Safely Cross The River
+
+A Farmer, along with
+- a Wolf
+- a Goat
+- a Cabbage
+are on the East bank of a river.
+- They all want to get to the West bank.
+
+There's a boat which the Farmer can row across, but it only has room for 1 of the other entities at a time.
+
+Without the Farmer present
+- The Wolf will eat the Goat
+- The Goat will eat the Cabbagae
+
+The Farmer wants them all to get across the river with nothing getting eaten.

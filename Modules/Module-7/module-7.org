@@ -10,91 +10,29 @@ Based on a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] 
 beings. I recommend reading [[https://en.wikipedia.org/wiki/Artificial_intelligence][Wikipedia on Artificial Intelligence]] and exploring
 some of the links there to get an overall map of the field.
 
-Two of my favorite areas are
-- [[https://en.wikipedia.org/wiki/Natural-language_understanding][Natural Language Understanding]]
-- [[https://en.wikipedia.org/wiki/Knowledge_representation_and_reasoning][Knowledge Representation and Reasoning]]
+This material got a bit long, so I've moved it into [[file:ai-overview.org][a separate document]]. I
+recommend reading it as you explore the activities, interleaving the two!
 
-Artificial Intelligence employs many powerful computing techniques. There has
-been an historical pattern in AI where a particular technique has been seen as
-the primary technology for AI, leading people to confuse that technique with the
-whole field. 
+** Activities for Learning AI Programming
 
-Some AI techniques which have at times been confused with the field itself
-- [[https://en.wikipedia.org/wiki/Symbolic_artificial_intelligence#Logic-based][Symbolic Logic]]
-- [[https://en.wikipedia.org/wiki/Production_system_(computer_science)][Production Systems]]
-- [[https://en.wikipedia.org/wiki/Expert_system][Expert Systems]]
-- [[https://en.wikipedia.org/wiki/Machine_learning][Machine_learning]]
+   Ambitious AI systems combine many techniques and often use complex
+   optimizations which obscure what's going on. The best learning path is to
+   utilize one technique at a time with problems that are not too challenging.
 
-A system which combines multiple Artificial Intelligence technologies,
-especially explicit domain knowledge representation along with machine-learning
-techniques is referred to as a [[https://bdtechtalks.com/2020/03/04/gary-marcus-hybrid-ai/][Hybrid AI System]].
+   Exploring these techniques with most programming languages would require
+   complex frameworks which would have to be learned before understanding the
+   approach.
 
-** Classic AI Paradigms
-
-*** Generate and Test
-
-- Use some non-intelligent mechanism, e.g. machine learning, to generate
-  hypotheses
-- Apply systematic reasoning to judge the validity and/or value of the
-  hypotheses
-
-*** Representation and Search
-
-(1) Design /data structures/ which efficiently represent
-- the information available to solve the problem aka /the givens/
-- an acceptable solution aka /a goal/
-- any intermediate states along the way aka /problem states/
- 
-Examples
-- Lists of roads in [[https://en.wikipedia.org/wiki/Journey_planner][Journey Planners]], e.g. /Google Maps/
-- Pieces laid out on a /game board/
-- Fragments of [[https://en.wikipedia.org/wiki/Phrase_structure_rules][Phrase structure]] [[https://en.wikipedia.org/wiki/Tree_structure][trees]] in [[https://en.wikipedia.org/wiki/Natural-language_understanding][Natural Language Understanding]]
-
-(2) Design a [[https://en.wikipedia.org/wiki/Search_algorithm][search strategy]] which can
-- find an acceptable path
-- from /the givens/
-- to /a goal/
-
-Examples
-- [[https://en.wikipedia.org/wiki/A*_search_algorithm][A* Search]] for [[https://en.wikipedia.org/wiki/Journey_planner][Journey Planners]]
-- [[https://en.wikipedia.org/wiki/Minimax][Minimax]] with [[https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning][Alpha-Beta Pruning]] in /board games/
-- [[https://en.wikipedia.org/wiki/Blackboard_(design_pattern)][Blackboard Architecture]] in [[https://en.wikipedia.org/wiki/Natural-language_understanding][Natural Language Understanding]]
-
-The possible paths from /the givens/ to /a goal/ constitute /the search space/.
-Problems with a small search space, such as /Tic Tac Toe/ (American) aka Naughts
-& Crosses (British) do not require intelligence as an [[https://en.wikipedia.org/wiki/Algorithm][algorithm]] can simply
-search all paths in the space and choose the best.
-
-Intelligence can be seen as the ability to effectively navigate through search
-spaces which are too large to search exhaustively, e.g. the search spaces of
-/Chess/ or /Go/ or the possible meanings of a sentence. In such situations, we
-use [[https://en.wikipedia.org/wiki/Heuristic][heuristics]] instead of [[https://en.wikipedia.org/wiki/Algorithm][algorithms]] to /prune the search space/. Machine
-Learning is often a great heuristic!
-
-** AI Quotes
-
-#+begin_quote
-A computer system can be called Intelligent when it is able to competently
-perform some task which we consider to require intelligence when a human being
-performs that task.
-#+end_quote
-
-The Sherlock Holmes problem:
-#+begin_quote
-As soon as a computer system successfully accomplishes something which we've
-previously thought required intelligence, we conclude that the task does not
-require intelligence after all and that therefore the computer system is still
-not intelligent.
-#+end_quote
-
-#+begin_quote
-The question of whether a computer can think is no more interesting than the
-question of whether a submarine can swim.
-	― Edsger W. Dijkstra 
-#+end_quote
-
+   An alternative is to use Prolog. The Prolog language is actually simpler than
+   the combination of most languages along with their sophisticated AI
+   programming frameworks. Prolog makes it easier to get started, easier to see
+   what's going on, so I recommend it!
+   
+   Read the first two links in [[file:../../Prolog/README.org][More Prolog]] and the solutions to the first three
+   problems. Then try your hand at solving the other problems!
+   
 ** What else might you do?
 
 This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
 
-You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!
+You might also want to learn [[file:../../Prolog/README.org][More Prolog]]

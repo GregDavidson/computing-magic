@@ -1,0 +1,24 @@
+* Two Sequences Append To Become A Third
+
+There are some interesting problems when two sequences, (Lists, Arrays, etc.) can append to become a third sequence.
+
+There are some interesting problems here:
+1. Given three sequences, can you tell if they satisfy this relationship?
+2. If two of the three sequences are instantiated, can you compute the third?
+3. If only one of the three sequences are instantiated, can you compute possible values for the other two?
+4. If none of the sequences are instantiated, can you compute a constraint on three variables which will constrain their values in other computations?
+
+Solve some of these problems in a language of your choice.  Do not use any existing procedure which directly solves any of these problems.
+
+Can you solve any or all of these problems without mutating any memory?
+
+In Lisp one of the procedures for part 2 might look like:
+
+my-append(first-part-of-the-list, rest-of-the-list) --> the-whole-list
+- If it avoided mutating any list cells it could be a functional procedure
+
+A single Prolog predicate could implement all 8 function procedures for part 2.  It would be declared like this:
+
+my_append(first-part-of-the-list, rest-of-the-list, the-whole-list)
+
+5. In the my-append function, how might you select only some of the elements of the first list and/or only parts of those elements to append to the second list?

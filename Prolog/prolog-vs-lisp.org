@@ -1,0 +1,52 @@
+* Comparing Prologs with Lisps
+
+** Similarities
+  
+Traditional Prologs share many characteristics with Traditional Lisps
+- Simplicity
+- Homoiconicity
+- Generous support for
+      - Symbolic Computing
+      - Constraint-Based Computing
+      - Metaprogramming
+- And just like Modern Lisps
+      - *Prolog is easy to learn*
+      - *Prolog is FUN!*
+
+** Pros and Cons
+   
+Prolog excels at solving complex and subtle problems and is an especially good
+language to use for understanding and learning most Artificial Intelligence
+programming techniques. The latter is what we use it for in the Computing Magic
+curriculum.
+
+The better Prolog systems usually have superior support for and good integration
+of Constraint-Based Programming. Logic Programming and Constraint-Based
+Programming are two of the most powerful and magical of computing paradigms, so
+getting both in one nice package is very wonderful!
+
+Few if any Prolog implementations have the maturity of the best Lisp Systems,
+yet there are a few Prolog Compilers that can produce decent native code along
+with some decent if not great development tools. While Prolog has better support
+for Logic and Constraint Programming than Lisp, it does not support most other
+paradigms as well as Lisp does.
+
+Prolog is the best language to use for learning the techniques of Logic and
+Constraint Programming. The better Lisps usually provide support for Logic
+Programming, so after learning how to do something in Prolog it's usually
+straightforward to port it to Lisp. And some Lisp systems allow you to write
+parts of your application using Prolog syntax as well as Prolog semantics.
+
+- Greenspun's tenth rule of programming :: Any sufficiently complicated C or
+  Fortran program contains an ad hoc, informally-specified, bug-ridden, slow
+  implementation of half of Common Lisp.
+
+- Davidson's tenth rule of programming :: Any mature Lisp system is likely to
+  contain an ad hoc, informally-specified, bug-ridden, slow implementation of
+  half of Prolog and an even worse and poorly integrated constraint-satisfaction
+  system.
+
+** Prolog is WILD, but Simple
+
+- [[file:prolog-is-wild.org][Prolog Is Wild!]]
+- [[file:prolog-is-simple.org][Prolog Is Simple!]]

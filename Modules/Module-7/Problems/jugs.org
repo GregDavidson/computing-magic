@@ -1,0 +1,13 @@
+* The Water Jug Problem
+
+We have a 3-liter jug and a 5-liter jug.
+
+Our possible actions are
+
+1. Completely fill either jug from the tap.
+2. Completely empty either jug.
+3. Completely fill one jug from the other, when there's enough to do that,
+4. Pour all of one jug into the other, when the other can hold it all.
+
+How can we get a desired amount of water in one of our jugs?
+- e.g. How can we get exactly 4 gallons of water in the big jug?

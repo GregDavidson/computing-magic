@@ -1,0 +1,6 @@
+* Grammatical Utterances of a Natural Human Language
+
+How can you generate and/or recognize grammatical utterances, e.g. grammatical sentences in a human language of your choice?
+
+Extra credit
+- How can you translate utterances in your language to and from Esperanto or some other regular intermediary language?

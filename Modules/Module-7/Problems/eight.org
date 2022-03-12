@@ -1,0 +1,21 @@
+* The Classic Eight Puzzle
+
+There are eight tiles within a 3x3 grid. One grid
+position is empty. Any tile adjacent to the empty position can be slid into
+it. Can you rearrange all of the tiles into a desired configuration with a
+sequence of slidings?
+
+Simple notions:
+- index :: We can number the places for the tiles, 1...9
+- tiles :: We can number the tiles, 1..8
+- configuration :: A mapping between the index numbers and the tile numbers
+
+You can think of action in this world in two ways:
+- A tile adjacent to the empty space moves into it
+- The empty space moves up/down/right/left as long as that would not take it off of the board
+You can also associate possible movements with index positions
+
+% 1 2 3  1 2 3  2 8 3  2 8 1  1 2 6
+% 4 5 6  8   4  1 6 4  1 6 4  4   8
+% 7 8 9  7 6 5  7   5  7   5  7 5 3
+% index  goal   b_5    b_9    b_18

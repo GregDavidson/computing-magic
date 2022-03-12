@@ -1,0 +1,131 @@
+* Prolog Is Simple
+
+I suggest you read [[file:prolog-is-wild.org][Prolog Is Wild!]] before continuing with this article.  It will pique your
+curiosity and motivate you to read this very closely!
+
+An alternative to reading this article is to read the excellent document
+- [[http://link.springer.com/content/pdf/bbm%3A978-3-642-41464-0%2F1.pdf][An Introduction to Prolog]]
+
+** Prolog Syntax 
+
+A Prolog program consists of a sequence of /Terms/, each ending in a "." (period
+or full-stop character).
+
+A Term is
+- an identifier, i.e. a name
+- with 0 or more /arguments/ separated by commas
+
+Prolog data consists of /Terms/.
+
+Term /arguments/ can be filled with either
+- a Variable
+- Prolog Data
+
+Prolog /Data/ can be
+- a Number
+- a Term
+
+Terms can thus be /nested/ to any desired degree!
+
+Variables are identifiers beginning with a CapitalLetter.
+
+Unusually-spelled term identifiers can be 'put in single quotes!'.
+
+Example Terms
+- hello(world)
+- 'put in single quotes!'
+- married(mother_of(john), father_of(john), time_of(birth_of(john)))
+- meeting(location('back porch'), time(hour(15), minutes(30)))
+- '+'(2,2)
+  
+*** Syntactic Sugar for "Operators"
+
+The Prolog reader allows users to declare an algebraic /syntactic sugar/ for
+terms intended to represent algebraic expressions. The standard profile includes
+the usual arithmetic symbols, therefore one can say
+- 3+4*5
+      - instead of '+'(3,'*'(4, 5))
+- (3+4)*5
+      - instead of '*'('+'(3,4),5)
+
+Even though these terms look like arithmetic expressions, they will not be
+automatically evaluated. They are symbolic expressions.
+
+*** A few key "Operators"
+
+The symbol ':-', pronounced /if/ is used to connect terms representing logical implication:
+
+Here's a Prolog program:
+#+begin_src prolog
+  mortal(X) :- human(X).
+  human(socrates).
+#+end_src
+    
+*** Syntactic Sugar for Lists
+
+Lists are nested terms, usually expressed by listing their elements in square brackets
+separated by commas.  This is another example of syntactic sugar.
+- The list =[red, green, blue]=
+- is actually the term ='|'(red, '|'(green, '|'(blue, [])))=
+- where
+      - The empty list is the term :: =[]=
+      - The list with an unknown Head and Tail be written as
+            - without syntactic sugar :: ='|'(Head, Tail)=
+            - with syntactic sugar :: =[Head|Tail]=
+
+The list =[red, X, blue | MoreColors]= represents a list with at least three elements.
+- X refers to the unknown second element
+- MoreColors refers to the list of any elements after the third.
+
+*** Syntactic Sugar for Strings
+
+Character strings are an important data structure which are usually written as
+"characters within double quotes". Underlying any syntax of provided by program
+languages or display devices, characters are represented by non-negative
+numbers, e.g. 'a' is the character code 97 in ASCII or Unicode.
+
+In Standard Prolog, "Hello World!" is simply syntactic sugar for
+- [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100, 33]
+- which is itself syntactic sugar for a nested term using the identifier '|'.
+
+Note: Some Prologs deviate from the Standard and represent /character strings/
+in a more compact format. SWI-Prolog does this and they provide the predicate
+=string_codes(String, ListOfCodes)= to convert, 108, 100, 33] between the two representations.
+
+** Prolog Semantics 
+
+You can read Prolog code either
+- logically :: what it means in your domain
+- procedurally :: what will happen in response to a given query
+
+Prolog code:
+#+begin_src prolog
+  mortal(X) :- human(X).
+  human(socrates).
+#+end_src
+
+Logical reading in the domain of human life:
+1. All things X are mortal if they are humans.
+2. Socrates is a human.
+
+Procedural reading given the query =?- mortal(socrates).=
+- The first rule means: To prove something is mortal, prove that it is human
+- Try letting X be 'socrates'.
+- We now have =mortal(socrates) :- human(socrates)
+- And rule 2 tells us human(socrates)
+- Conclusion: mortal(socrates)
+
+The three mechanisms Prolog uses to do its magic are
+- A pattern matching algorithm called /Unification/
+      - Two terms unify if they become identical with suitable choices for variables
+- Resolution
+      - We follow the rules
+      - Rules with no =:-= are automagically treated as true
+      - Rules with a =:-= require proving the terms on the right hand side
+- Backtracking
+  - Anytime an attempt fails, Prolog will undo some variable bindings and try
+    different variable substitutions and/or different rules.
+
+We can imagine that the rules are always followed sequentially top-down,
+left-to-right as written. In reality, compilers often speed things up, as long
+as the program /behaves as if/ everything is sequential.

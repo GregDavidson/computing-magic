@@ -1,0 +1,163 @@
+* Prolog is Wild and Super-Powerful
+
+* An N-argument Relation is equivalent to 2^N Functions!*
+
+What does this mean?  Read on!  And concrete examples are coming soon!
+
+Suppose you wanted to combine some information from multiple data collections. A
+very simple example would be combining the elements of two lists. A solution to
+this problem is part of every Lisp and Prolog Standard Library, but let's
+pretend that we have to write such a thing. (We'll follow this example with
+another less trivial example which would not be covered by a Standard
+Library.)
+
+Here's a solution in Racket, a Scheme-based Lisp:
+#+begin_src racket
+  #lang racket
+  (define (list-append l1 l2)
+    (if (null? l1) l2 (cons (car l1) (list-append (cdr l1) l2))) )
+  (list-append '(black white) '(red green blue))
+#+end_src
+
+#+RESULTS:
+| black | white | red | green | blue |
+
+Now here's a solution in Prolog:
+
+#+begin_src prolog
+  append([], L, L).
+  append([First|Rest], L2, [First|L3]) :- append(Rest, L2, L3).
+#+end_src
+
+You can read these statements as simply saying two truths about lists:
+- append([], L, L). ::
+  When appending two lists where the first one is empty, the result is simply the second one.
+- append([First|Rest], L2, [First|L3]) :- append(Rest, L2, L3). ::
+  When the first list is NOT empty,
+      - its First element will be the first element of the result
+      - the append of the Rest with the second list is the rest of the third list
+
+Here's an example showing some of the possible uses (modes) of =append=:
+
+#+begin_example
+% "%" is the Prolog comment character
+
+% Let's append two lists:
+?- append([black, white], [red, green, blue], L).
+L = [black, white, red, green, blue].
+
+% Let's find the right suffix:
+?- append([black, white], L, [black, white, red, green, blue]).
+L = [red, green, blue].
+
+% Let's find the right prefix:
+?- append(L, [red, green, blue], [black, white, red, green, blue]).
+L = [black, white] 
+
+% Let's split a list in all possible ways:
+% - between terms, ";" means "or"
+% - the ";" was typed interactively to ask for another result
+?- append(L1, L2, [red, green, blue]).
+L1 = [],
+L2 = [red, green, blue] ;
+L1 = [red],
+L2 = [green, blue] ;
+L1 = [red, green],
+L2 = [blue] ;
+L1 = [red, green, blue],
+L2 = [] ;
+false. % false means there are no more results
+
+% Do these lists satisfy the append relationship?
+?- append([black, white], [red, green, blue], [black, white, red, green, blue]).
+true. % true means YES!
+
+% Do these lists satisfy the append relationship?
+?- append([black, white], [red, green, blue], [white green]).
+ERROR: Syntax error: Operator expected
+ERROR: append([black, white], [red, green, blue], [white
+ERROR: ** here **
+ERROR:  green]) . 
+?- append([black, white], [red, green, blue], [white, green, orange]).
+false. % false means NO!
+
+% We can combine terms with "," meaning "and"
+?- append(L1, L2, [red, green, blue]), length(L2, 1).
+L1 = [red, green],
+L2 = [blue] 
+% this time there was only 1 example
+#+end_example
+
+There are some more things we can learn from this example, but first, syntax:
+- a term is a symbol with optional arguments
+      - arguments are enclosed in parentheses and separated by commas
+      - terms can be arbitrarily nested
+- separate terms can be combined with
+      - "," meaning "and"
+      - ";" meaning "or" (not used much)
+      - and you can use parentheses for precedence if needed
+- Variables are symbols beginning with a CapitolLetter
+      - Their scope is the individual statement they appear in
+      - A variable "X" in one statement is unrelated to an "X" anywhere else!
+
+OK, let's learn some wild things, things which would shock programmers using
+conventional languages:
+- Each statement is individually
+      - simply a statement of what is true in the application domain
+      - independently of any other statements
+- Statements can be given in any order!
+- Compound statements can be given in any order!
+- Order can effect efficiency but never correctness!
+- Removing a statement won't create a bug!
+      - it will just reduce what the program "knows'
+            - although it will now fail some queries
+            - *any answers it gives will still be correct!*
+ 
++begin_example
+  my_append([First|Rest], L2, [First|L3]) :- append(Rest, L2, L3).
+  my_append([], L, L).
+  ?- length(L1, 2), my_append(L1, L2, [a, b, c, d, e]).
+  L1 = [a, b],to 
+  L2 = [c, d, e].
+#+end_example
+
+In Standard Prolog both statements and queries end with a "." but queries begin
+with a "?-". I think this is weird. The first prolog I used, /unsw prolog/
+seemed more natural, with queries simply being statements which ended in "?" --
+and non-logical statements (yes, there are some) ended in "!". Alas, Standard
+Prolog did not adopt this simple system!
+
+** The less trivial example promised earlier
+   Pr
+This is from a path-search algorithm I was working on yesterday:
+#+begin_src prolog
+% append_heads(ListOfLists, List2, Append of Heads of ListOfLists with List2)
+append_heads([], L, L).
+append_heads([[H|_] | L1], L2, [H|L3]) :- append_heads(L1, L2, L3).
+#+end_src
+
+Can you figure it out? The first argument is a list of lists. We want to gather
+the head (first element) of each of those lists and append them to the elements
+of the second list to get the combined result in the third list. The special
+variable "_" means "I don't care about this value".
+
+** One more Wild Thing
+   
+You can't modify anything in Prolog! Here's an attempt to do /Imperative
+Programming/ in Prolog:
+#+begin_src prolog
+  ?- X = X + 1.
+  false.
+  % because it isn't!
+#+end_src
+
+This is not a problem. In fact, in modern /declarative programming/ circles - of
+which /function programming/, /relational programming/ and /logical programming/
+are important subsets, this is considered correct and desirable!
+
+But then how do we do loops? We do them with recursion. But isn't recursion
+inefficient? No, any recursion which is equivalent to a loop will be compiled to
+the same code and is just as efficient (this uses a technique called /tail call
+optimization/ which the owners of the Java franchise have been promising for
+more than 20 years, and Java still doesn't have it! But /Scheme/ and /Racket/
+do!)
