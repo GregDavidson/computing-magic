@@ -8,7 +8,7 @@ A few or many good choices
 - [[https://ciao-lang.org/][Ciao]] Sophisticated, multi-paradigm
 
 Our examples are written for SWI-Prolog. We use Emacs in Prolog-Mode but any
-editor will do and there's also a special editor included with SWI.
+editor will do and it even has its [[https://www.swi-prolog.org/pldoc/man?section=pceemacs][own special editor]].
 
 Start with these two quick reads:
 - [[file:prolog-is-simple.org][Prolog Is Simple]]
