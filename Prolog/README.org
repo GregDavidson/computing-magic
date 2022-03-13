@@ -16,11 +16,25 @@ Start with these two quick reads:
 
 Then let's solve a couple of the [[../Modules/Module-7/Problems/README.org][Module 7 AI Problems]]
 - Solving the [[../Modules/Module-7/Problems/jugs.org][The Water Jug Problem]]
-  - [[file:Solutions/Jugs-Problem/jugs-complete.pl][jugs-complete.pl]]
+      - Study and run [[file:Activities/Jugs-Problem/jugs-complete.pl][jugs-complete.pl]]
+      - Study and run [[file:Activities/Jugs-Problem/jugs-complete-plus.pl][jugs-complete-plus.pl]]
+- How could you simplify /jugs-complete.pl/ to use one of the Shells such as
+      - [[file:Activities/Shells/edepth.pl][edepth.pl]] -- domain-independent depth-first search shell
+- Study the other solutions
+      - [[file:Activities/Jugs-Problem/Solutions/jugs1.pl][jugs1.pl]]
+      - [[file:Activities/Jugs-Problem/Solutions/jugs2.pl][jugs2.pl]]
 
 Hints and some solutions for the remaining problems are available in the
-subdirectory /Activities/. Try your hand at finding your own solutions!
+subdirectory /Activities/.
+- Try your hand at finding your own solutions!
+- You might start with
+      - [[file:Activities/FWGC/fwgc-hints.pl][fwgc-hints.pl]]
+      - [[file:Activities/Missionaries/mission-hints.pl][mission-hints.pl]]
 
+- Study and try using the other Shells
+      - [[file:Activities/Shells/ebreadth.pl][ebreadth.pl]] -- domain-independent breadth-first search shell
+      - [[file:Activities/Shells/ebest.pl][ebest.pl]] -- domain-independent best-first (heuristic) search shell
+ 
 ** Deeper Reads
 - [[file:prolog-resources.org][Resources for Learning Prolog for AI]]
 
@@ -28,7 +42,7 @@ subdirectory /Activities/. Try your hand at finding your own solutions!
  
 - [[file:prolog-vs-lisp.org][Prolog vs Lisp]]
 - Activities :: Solutions to the [[../Modules/Module-7/Problems/README.org][Module 7 AI Activities Problems]]
-- Shells :: Domain-independent search code
+- Activities/Shells :: Domain-independent search code
 
 ** What Else?
 
