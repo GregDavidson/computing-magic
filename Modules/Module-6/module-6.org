@@ -53,8 +53,8 @@ implement that it would be to directly solve your /desired problem/.
 
 ** Examples to Get You Started
 
-Here are a few - let's add to them:
-[[file:Projects/README.org][- Example Projects]]   
+Here are a few to possibly stimulate ideas:
+- [[file:Projects/README.org][Example Projects]]   
 
 ** What else might you do?
 

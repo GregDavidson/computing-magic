@@ -29,3 +29,7 @@ for you when there's something you'd like to learn.  It needs to
       - Custom Database?
       - Existing Resource Lists?
       - Custom Web Searches?
+
+** Teaching Game
+Create a fun game which immerses Learners in some Domain which you'd like to
+Learn or which you'd like to help others learn.
