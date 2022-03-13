@@ -29,3 +29,7 @@ subdirectory /Activities/. Try your hand at finding your own solutions!
 - [[file:prolog-vs-lisp.org][Prolog vs Lisp]]
 - Activities :: Solutions to the [[../Modules/Module-7/Problems/README.org][Module 7 AI Activities Problems]]
 - Shells :: Domain-independent search code
+
+** What Else?
+
+You might want to learn [[file:prolog-resources.org][More Prolog]] -- especially with an AI focus!
