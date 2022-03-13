@@ -14,9 +14,12 @@ Start with these two quick reads:
 - [[file:prolog-is-simple.org][Prolog Is Simple]]
 - [[file:prolog-is-wild.org][Prolog Is Wild]]
 
-Then let's solve a couple of the [[../Modules/Module-7/Problems/README.org][Module 7 AI Activities Problems]]
+Then let's solve a couple of the [[../Modules/Module-7/Problems/README.org][Module 7 AI Problems]]
 - Solving the [[../Modules/Module-7/Problems/jugs.org][The Water Jug Problem]]
   - [[file:Solutions/Jugs-Problem/jugs-complete.pl][jugs-complete.pl]]
+
+Hints and some solutions for the remaining problems are available in the
+subdirectory /Activities/. Try your hand at finding your own solutions!
 
 ** Deeper Reads
 - [[file:prolog-resources.org][Resources for Learning Prolog for AI]]
@@ -24,5 +27,5 @@ Then let's solve a couple of the [[../Modules/Module-7/Problems/README.org][Modu
 ** This directory also contains
  
 - [[file:prolog-vs-lisp.org][Prolog vs Lisp]]
-- Solutions :: Solutions to the [[../Modules/Module-7/Problems/README.org][Module 7 AI Activities Problems]]
+- Activities :: Solutions to the [[../Modules/Module-7/Problems/README.org][Module 7 AI Activities Problems]]
 - Shells :: Domain-independent search code
