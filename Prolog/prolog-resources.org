@@ -1,0 +1,27 @@
+* Prolog Resources
+
+[[/home/greg/Keep/Books/Comp/Lang/Prolog/Good-Short-Prolog-Primers/Link to AnIntroductionToProlog.pdf][Appendix A: An Introduction To Prolog (pdf)]]
+- Good Points
+      - Nice and short
+      - Very approachable beginning.
+      - Covers Prolog deep structure well
+            - Unification, Resolution
+      - Covers box debugging model
+      - ISO Standard Prolog
+      - Free on SWI-Prolog Website
+      - From /Language Processing with Perl and Prolog/ by Pierre Nugues
+            - which covers language understanding, translation and more!
+- Challenges
+      - Examples are a bit dry
+      - A bit too technical at times
+
+/Prolog Programming for Artificial Intelligence/ by Ivan Bratko
+- Good Points
+      - Covers nearly everything!
+      - Most pieces are self-contained.
+- Challenges
+      - There's a lot to cover!
+- Where to get it
+      [[https://www.amazon.com/Programming-Artificial-Intelligence-International-Computer/dp/0321417461][- 4th Edition from Amazon]]
+      [[https://archive.org/details/prologprogrammin0000brat/mode/2up][- 3rd Editon on the Internet Archive]]
+      - Or hit me up for a copy!
