@@ -17,3 +17,15 @@ Create a smart phone app which
 Create a browser app which you can use to
 - Organize your Browser Bookmarks in Folders on a Custom Web Page
 - Selectively Share your Bookmark Folders with Your Contacts and Groups
+
+** Curriculum Advisor
+Create a smart (AI) system which can assist you in designing a custom curriculum
+for you when there's something you'd like to learn.  It needs to
+- Learn
+      - what you already know
+      - your desired scope
+      - your preferred learning style
+- Find available resources
+      - Custom Database?
+      - Existing Resource Lists?
+      - Custom Web Searches?
