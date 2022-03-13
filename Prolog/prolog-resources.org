@@ -1,5 +1,10 @@
 * Prolog Resources
 
+These are some excellent materials for Learning Prolog. The last one is the most
+comprehensive resource for learning AI Programming via Prolog.
+  
+** Short Reads
+  
 [[/home/greg/Keep/Books/Comp/Lang/Prolog/Good-Short-Prolog-Primers/Link to AnIntroductionToProlog.pdf][Appendix A: An Introduction To Prolog (pdf)]]
 - Good Points
       - Nice and short
@@ -15,12 +20,19 @@
       - Examples are a bit dry
       - A bit too technical at times
 
+** Short Tutorials
+ 
+- [[http://lpn.swi-prolog.org/][Learn Prolog Now!]]
+
+** More Comprehensive
+   
 /Prolog Programming for Artificial Intelligence/ by Ivan Bratko
 - Good Points
       - Covers nearly everything!
+      - Everything is much easier - because it's in Prolog!
       - Most pieces are self-contained.
 - Challenges
-      - There's a lot to cover!
+      - There's a lot of material here! /That's a good thing, right?/
 - Where to get it
       [[https://www.amazon.com/Programming-Artificial-Intelligence-International-Computer/dp/0321417461][- 4th Edition from Amazon]]
       [[https://archive.org/details/prologprogrammin0000brat/mode/2up][- 3rd Editon on the Internet Archive]]
