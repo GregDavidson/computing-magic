@@ -21,8 +21,11 @@ comprehensive resource for learning AI Programming via Prolog.
       - A bit too technical at times
 
 ** Short Tutorials
- 
-- [[http://lpn.swi-prolog.org/][Learn Prolog Now!]]
+
+Learn Prolog Now is an excellent free online Prolog tutorial. The version
+integrated with [[https://swish.swi-prolog.org/][SWISH]] is especially nice but seems broken at the moment.
+- Without SWISH :: [[http://www.let.rug.nl/bos/lpn/lpnpage.php?pageid=online][Learn Prolog Now!]]
+- With SWISH (broken) :: [[http://lpn.swi-prolog.org/][Learn Prolog Now!]]
 
 ** More Comprehensive
    
