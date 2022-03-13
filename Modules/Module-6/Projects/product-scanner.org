@@ -1,0 +1,18 @@
+* Custom Product Scanner
+Create an app which
+- you can use to scan products at the grocery store
+- to determine if they meet /your/ criteria
+      - e.g. health, problematic ingredients, ethical sourcing, etc.
+- Each scan responds with Yes, No, Maybe, Unknown
+- You can enter
+      - Your personal criteria
+      - Information on new products
+      - Corrections to existing information
+** Components
+    - Client Side :: An App with
+          - Scanner Interface
+          - Database Network Query Feature
+          - Editor for your custom criteria
+                - Probably also templates to start with!
+          - Editor for entry and corrections
+    - Server Side :: A suitable database
