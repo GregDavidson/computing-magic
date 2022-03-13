@@ -1,10 +1,20 @@
 * Prolog!
 
+** Move Fast and Break Things!
+
+Start with these two quick reads:
 - [[file:prolog-is-simple.org][Prolog Is Simple]]
 - [[file:prolog-is-wild.org][Prolog Is Wild]]
-- prolog-resources.org -- needs stable links!
-- [[file:prolog-vs-lisp.org][Prolog vs Lisp]]
 
-This directory also contains
+Then let's solve a couple of the [[../Modules/Module-7/Problems/README.org][Module 7 AI Activities Problems]]
+- Solving the [[../Modules/Module-7/Problems/jugs.org][The Water Jug Problem]]
+  - [[file:Solutions/Jugs-Problem/jugs-complete.pl][jugs-complete.pl]]
+
+** Deeper Reads
+- [[file:prolog-resources.org][Resources for Learning Prolog for AI]]
+
+** This directory also contains
+ 
+- [[file:prolog-vs-lisp.org][Prolog vs Lisp]]
 - Solutions :: Solutions to the [[../Modules/Module-7/Problems/README.org][Module 7 AI Activities Problems]]
 - Shells :: Domain-independent search code

@@ -11,8 +11,8 @@
 %% ** Asking for solutions
 
 % jugs1, jugs2: test problems
-jugs1 :- jugs_goal_path( little_big(_,4), _ ).
-jugs2 :- jugs_goal_path( little_big(4,_), _ ).
+jugs1 :- jugs_goal_path( little_big(0,4), _ ). % the big jug containing 4
+jugs2 :- jugs_goal_path( little_big(4,0), _ ). % the little jug containing 4
 
 % jugs_goal_path(Goal, Path from empty jugs to Goal)
 jugs_goal_path(Goal,Path) :- Start = little_big(0,0), path(Start,Goal,[Start],Path).
@@ -21,11 +21,11 @@ jugs_goal_path(Goal,Path) :- Start = little_big(0,0), path(Start,Goal,[Start],Pa
 
 % action( State before action, State after action)
 % Empty either jug.
-action( little_big(_, Big), little_big(0, Big) ).
-action( little_big(Little, _), little_big(Little, 0) ).
+action( little_big(_, Big), little_big(0, Big) ).       % empty little
+action( little_big(Little, _), little_big(Little, 0) ). % empty big
 % Fill either jug full from the tap.
-action( little_big(_, Big), little_big(3, Big) ).
-action( little_big(Little, _), little_big(Little, 5) ).
+action( little_big(_, Big), little_big(3, Big) ).       % fill little
+action( little_big(Little, _), little_big(Little, 5) ). % fill big
 % Empty one jug into the other, if there's room
 action( little_big(Little, Big), little_big(0, NewBig) ) :-
     add(Little, Big, NewBig), NewBig =< 5.
@@ -66,8 +66,13 @@ add(X, Y, XplusY) :- ad(Y, X, XplusY).
 
 % path( Path from beginning, Goal we want )
 % It is possible to complete the Path to the Goal
+
+% We're done if the Goal is at the front of our search path!
 path([Goal | PathTail], Goal) :-
     write('Solution with (reversed) path = '), write([Goal|PathTail]), nl.
+
+% Otherwise, we have to extend the path with a NewState
+% and try to complete the path from there!
 path(Path, Goal) :-
     Path = [State|_],
     State \= Goal,
