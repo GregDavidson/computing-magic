@@ -2,6 +2,14 @@
 
 ** Move Fast and Break Things!
 
+A few or many good choices
+- [[https://www.swi-prolog.org/][SWI-Prolog]] Popular, easy to install or [[https://swish.swi-prolog.org/][use online]]
+- [[http://xsb.sourceforge.net/][XSB]] Integrated with Flora2 Knowledge Representation System
+- [[https://ciao-lang.org/][Ciao]] Sophisticated, multi-paradigm
+
+Our examples are written for SWI-Prolog. We use Emacs in Prolog-Mode but any
+editor will do and there's also a special editor included with SWI.
+
 Start with these two quick reads:
 - [[file:prolog-is-simple.org][Prolog Is Simple]]
 - [[file:prolog-is-wild.org][Prolog Is Wild]]
