@@ -10,7 +10,7 @@
 
 * Files for the PostgreSQL Tutorial
 
-These archives are for you convenience when working through the
+These archives are for your convenience when working through the
 - [[https://www.postgresql.org/docs/current/tutorial-sql-intro.html][PostgreSQL Tutorial SQL intro]]
 They're part of the freely downloadable PostgreSQL source archive.
 
