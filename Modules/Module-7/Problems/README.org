@@ -1,7 +1,7 @@
 * Problems to Solve for Learning AI Techniques
 
 #+begin_quote
-Problems worth of attack
+Problems worth of attack,
 prove their worth by hitting back!
 -- Piet Hein
 #+end_quote
