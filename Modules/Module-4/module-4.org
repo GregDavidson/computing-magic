@@ -1,4 +1,4 @@
-* Computing Magic Beta Meeting 4
+* Computing Magic Beta Module 4
   
 /Meeting the Computer and its Operating System/
   
@@ -57,4 +57,7 @@ Some Key Kernel Resources, aka Kernel Abstractions
 
 This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
 
-You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!
+If you want to do serious Systems Programming, you might want to learn
+- The C Programming Language -- regular C, not C++
+      - You might start with
+- The Rust Programming Language -- it's much better than C++

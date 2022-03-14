@@ -25,4 +25,4 @@ Here are two PostgreSQL Tutorials:
 
 This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
 
-You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!
+You might also want to learn how to [[https://docs.racket-lang.org/db/using-db.html][connect to a database from Racket]]

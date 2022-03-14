@@ -58,6 +58,4 @@ Here are a few to possibly stimulate ideas:
 
 ** What else might you do?
 
-This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
-
-You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]].  Look through the links to additional resources and learn a few which seem promising!

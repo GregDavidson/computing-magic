@@ -44,4 +44,12 @@ See [[file:../README.org][Modules 1abc]]: Racket provides multiple toolkits for 
 
 This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
 
-You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!
+If you will be doing collaborative development, the resources above for learning =git= will pay off well. 
+
+If you will be working on complex projects involving multiple languages, learning =emacs= will serve you well, especially including =orgmode=, =magit=, =tramp= and other smart packages.  The only way to really learn it, though, is to use it regularly.  Using OrgMode to create and manage important documents will help you a lot.
+
+If you will be using a backend database, be sure and explore [[file:../Module-5-module-5.org][Module 5: SQL]].
+
+If you will be managing resources on a server or automating any processes, you will want to explore [[file:../../Software-Tools/scripting-readme.org][Scripting Tools]].
+
+If you want to hone your programming skills, there's value in learning [[file:../../Racket/more-racket.org][More Racket]]!
