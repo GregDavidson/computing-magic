@@ -6,6 +6,11 @@ These materials are primarily organized as a set of Modules which, after the
 first module, can be explored in almost any order.
 - [[file:Modules/README.org][Browse the Modules README]]
 
+** Some Inspiration
+
+Fasten your seat-belt and watch the first 40 minutes of [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]]!
+- We'll be doing even more wonderful things!
+
 ** Context and More Content
 
 This repository is the beginning of a curriculum for learning *Computing Magic*.
