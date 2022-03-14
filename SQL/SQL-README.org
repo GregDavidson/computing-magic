@@ -1,4 +1,12 @@
 * Computing Magic SQL Notes
+  
+* What Are
+- [[https://en.wikipedia.org/wiki/SQL][SQL]] :: A standard Query Language for leveraging Relational Databases
+- [[https://en.wikipedia.org/wiki/Relational_database][Relational Database]] :: A database of /persistent/ and potentially /very long
+  lived information/ and /relationships/ with a flexible update and access
+  /(Query)/ mechanism.
+- [[https://www.postgresql.org/][PostgreSQL]] :: An especially flexible, open source and popular
+  Object-Relational Database System
 
 * Files for the PostgreSQL Tutorial
 
@@ -8,4 +16,3 @@ They're part of the freely downloadable PostgreSQL source archive.
 
 - [[file::pg-tut.tar][pg-tut.tar]] :: Berkeley Zipped Tar Archive
 - [[file::pg-tut.zip][pg-tut.zip]] :: Zip Archive
-  

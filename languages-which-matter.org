@@ -35,11 +35,11 @@ Opinions of such experienced experts are well worth listening to!
 
 For the more complete list and explanation, see /Key Language Inventory/ below.
  
-- [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]], inside of [[https://racket-lang.org][Racket]]
+- [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]], inside of [[file:Racket/README.org][Racket]]
       - beginning with [[https://docs.racket-lang.org/quick][graphic arts computing]]
 - [[Emacs/elisp-vs-scheme.org][Emacs Lisp]], inside of [[https://www.gnu.org/software/emacs][Emacs]]
       - focused on customizing your tool stack
-- [[SQL/SQL-README.org][SQL]], inside of [[https://www.postgresql.org][PostgreSQL]]
+- [[file:SQL/SQL-README.org][SQL]], inside of [[https://www.postgresql.org][PostgreSQL]]
       - maximally leveraging the Database
 - [[https://duckduckgo.com/?t=ffab&q=posix+shell][Shell]], inside of [[https://www.gnu.org][Gnu/Linux]] or [[https://duckduckgo.com/?t=ffab&q=macintosh+command+line][Mac]] or [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows Subsystem for Linux]]
       - focused on customizing your tool stack
@@ -47,7 +47,8 @@ For the more complete list and explanation, see /Key Language Inventory/ below.
       - [[https://www.typescriptlang.org][TypeScript]] or [[https://clojurescript.org][ClojureScript]]
       - creating rich and /thin/ front ends
 - [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic]] [[https://en.wikipedia.org/wiki/Constraint_logic_programming][and]] [[https://en.wikipedia.org/wiki/Constraint_programming][Constraint]] Programming
-[[https://en.wikipedia.org/wiki/Knowledge-based_systems][- Knowledge-Based]] Programming
+      - Especially [[file:Prolog/README.org][Prolog]]
+- [[https://en.wikipedia.org/wiki/Knowledge-based_systems][Knowledge-Based]] Programming
  
 *** Key Language Inventory
 
