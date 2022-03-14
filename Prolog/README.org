@@ -1,4 +1,4 @@
-* Prolog = PROgramming with LOGic!
+* Prolog = PROgramming with LOGic
 
 ** Move Fast and Break Things!
 
@@ -9,12 +9,12 @@ Get a Good Free Software Prolog
       - [[https://ciao-lang.org/][Ciao]] Sophisticated, multi-paradigm
 - Our examples are written for SWI-Prolog
 
-We edit Prolog using =Emacs= in /Prolog-Mode/ but any editor will do
+We edit Prolog using /Emacs/ in =prolog-mode= but any editor will do
 - SWI-Prolog even has its [[https://www.swi-prolog.org/pldoc/man?section=pceemacs][own special editor]].
 
 Start with these two quick reads:
-- [[file:prolog-is-simple.org][Prolog Is Simple]]
 - [[file:prolog-is-wild.org][Prolog Is Wild]]
+- [[file:prolog-is-simple.org][Prolog Is Simple]]
 
 Then let's solve a couple of the [[../Modules/Module-7/Problems/README.org][Module 7 AI Problems]]
 - Solving the [[../Modules/Module-7/Problems/jugs.org][The Water Jug Problem]]
