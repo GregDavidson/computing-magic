@@ -2,11 +2,11 @@
 
 ** Move Fast and Break Things!
 
-Get a Good Free Software Prolog
+Get a good /Free-Software/ Prolog
 - there are many, here are three
       - [[https://www.swi-prolog.org/][SWI-Prolog]] Popular, easy to install or [[https://swish.swi-prolog.org/][use online]]
-      - [[http://xsb.sourceforge.net/][XSB]] Integrated with Flora2 Knowledge Representation System
-      - [[https://ciao-lang.org/][Ciao]] Sophisticated, multi-paradigm
+      - [[http://xsb.sourceforge.net/][XSB]] with [[http://flora.sourceforge.net/][Flora-2]] Knowledge Representation System
+      - [[https://ciao-lang.org/][Ciao]] Multi-Paradigm, Logic + Constraint Programming
 - Our examples are written for SWI-Prolog
 
 We edit Prolog using /Emacs/ in =prolog-mode= but any editor will do
