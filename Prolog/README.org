@@ -1,4 +1,4 @@
-* Prolog!
+* Prolog = PROgramming with LOGic!
 
 ** Move Fast and Break Things!
 

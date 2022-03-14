@@ -1,9 +1,15 @@
-* Problems to Learn AI Techniques From
+* Problems to Solve for Learning AI Techniques
+
+#+begin_quote
+Problems worth of attack
+prove their worth by hitting back!
+-- Piet Hein
+#+end_quote
 
 These are a sequence of toy problems which gradually increase in difficulty.
 
 Each is designed to build intuitions and skills that are useful when building
-artificially intelligent systems.
+AI systems.
 
 ** [[append.org][Two Sequences Append To Become A Third]]
 
