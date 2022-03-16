@@ -9,13 +9,15 @@
     (cc-superimpose picture (rectangle (+ extra-width w) h)) ) )
 (boxed-pict (text "hello\\0"))
 
-(define (max-picts-width-height pict-seq)
-  (let ( [max-width 0] [max-height 0] )
-    (sequence-map (λ (p)
-                    (let ( [w (pict-width p)] [h (pict-height p)] )
-                      (when (> w max-width) (set! max-width w))
-                      (when (> h max-height) (set! max-height h)) ) ) pict-seq)
-    (values max-width max-height) ) )
+(define (max-picts-width-height pict-seq #:width [width 0] #:height [height 0])
+  (sequence-for-each
+   (λ (p) (let ( [w (pict-width p)] [h (pict-height p)] )
+            (when (> w width) (set! width w))
+            (when (> h height) (set! height h)) ) )
+   pict-seq )
+  (values width height) )
+(let-values ( [(w h) (max-picts-width-height (in-list (list (circle 10) (rectangle 5 15))))] )
+  (print (list w h)) )
 
 ; Explode a string into a sequence of characters
 ; and transform those into a sequence of picts
@@ -27,10 +29,10 @@
 ; - the max of the sizes of their constituents
 ; - plus a skosh around the width inside the boxes
 (define (string-diagram str #:null [add-null #f])
-  (let* ( [s (if add-null (string-append str "\\0") str)]
-          [picts (picts-explode-string s)] )
-    (let-values (  [(w h) (max-picts-width-height picts)] )
-      (let ( [boxed-picts (sequence-map (λ (p) (boxed-pict #:width w #:height #:skosh 2 h p)) picts)] )
+  (let* ( [pict-seq (picts-explode-string str)]
+          [picts (if add-null (sequence-append pict-seq (in-list (list (text "\\0")))) pict-seq)] )
+    (let-values ( [(w h) (max-picts-width-height picts)] )
+      (let ( [boxed-picts (sequence-map (λ (p) (boxed-pict #:width w #:height h #:skosh 2 p)) picts)] )
         (apply hc-append (sequence->list boxed-picts)) ) ) ) )
 (string-diagram "Hello!" #:null #t)
 
