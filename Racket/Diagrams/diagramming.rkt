@@ -1,628 +1,112 @@
-#reader(lib"read.ss""wxme")WXME0108 ## 
-#|
-   This file uses the GRacket editor format.
-   Open this file in DrRacket version 7.2 or later to read it.
+#lang slideshow
+(require racket/format)
 
-   Most likely, it was created by saving a program in DrRacket,
-   and it probably contains a program with non-text elements
-   (such as images or comment boxes).
+;; * diadraw - a Racket diagramming toolkit
 
-            http://racket-lang.org/
-|#
- 33 7 #"wxtext\0"
-3 1 6 #"wxtab\0"
-1 1 8 #"wximage\0"
-2 0 8 #"wxmedia\0"
-4 1 34 #"(lib \"syntax-browser.ss\" \"mrlib\")\0"
-1 0 36 #"(lib \"cache-image-snip.ss\" \"mrlib\")\0"
-1 0 68
-(
- #"((lib \"image-core.ss\" \"mrlib\") (lib \"image-core-wxme.rkt\" \"mr"
- #"lib\"))\0"
-) 1 0 16 #"drscheme:number\0"
-3 0 44 #"(lib \"number-snip.ss\" \"drscheme\" \"private\")\0"
-1 0 36 #"(lib \"comment-snip.ss\" \"framework\")\0"
-1 0 93
-(
- #"((lib \"collapsed-snipclass.ss\" \"framework\") (lib \"collapsed-sni"
- #"pclass-wxme.ss\" \"framework\"))\0"
-) 0 0 43 #"(lib \"collapsed-snipclass.ss\" \"framework\")\0"
-0 0 19 #"drscheme:sexp-snip\0"
-0 0 29 #"drscheme:bindings-snipclass%\0"
-1 0 101
-(
- #"((lib \"ellipsis-snip.rkt\" \"drracket\" \"private\") (lib \"ellipsi"
- #"s-snip-wxme.rkt\" \"drracket\" \"private\"))\0"
-) 2 0 88
-(
- #"((lib \"pict-snip.rkt\" \"drracket\" \"private\") (lib \"pict-snip.r"
- #"kt\" \"drracket\" \"private\"))\0"
-) 0 0 55
-#"((lib \"snip.rkt\" \"pict\") (lib \"snip-wxme.rkt\" \"pict\"))\0"
-1 0 34 #"(lib \"bullet-snip.rkt\" \"browser\")\0"
-0 0 25 #"(lib \"matrix.ss\" \"htdp\")\0"
-1 0 22 #"drscheme:lambda-snip%\0"
-1 0 29 #"drclickable-string-snipclass\0"
-0 0 26 #"drracket:spacer-snipclass\0"
-0 0 57
-#"(lib \"hrule-snip.rkt\" \"macro-debugger\" \"syntax-browser\")\0"
-1 0 26 #"drscheme:pict-value-snip%\0"
-0 0 45 #"(lib \"image-snipr.ss\" \"slideshow\" \"private\")\0"
-1 0 38 #"(lib \"pict-snipclass.ss\" \"slideshow\")\0"
-2 0 55 #"(lib \"vertical-separator-snip.ss\" \"stepper\" \"private\")\0"
-1 0 18 #"drscheme:xml-snip\0"
-1 0 31 #"(lib \"xml-snipclass.ss\" \"xml\")\0"
-1 0 21 #"drscheme:scheme-snip\0"
-2 0 34 #"(lib \"scheme-snipclass.ss\" \"xml\")\0"
-1 0 10 #"text-box%\0"
-1 0 32 #"(lib \"text-snipclass.ss\" \"xml\")\0"
-1 0 1 6 #"wxloc\0"
-          0 0 62 0 1 #"\0"
-0 75 1 #"\0"
-0 12 90 -1 90 -1 3 -1 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 255 255 255 1 -1 0 9
-#"Standard\0"
-0 75 10 #"Monospace\0"
-0 15 90 -1 90 -1 3 -1 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 255 255 255 1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 -1 -1 2 24
-#"framework:default-color\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 150 0 150 0 0 0 -1 -1 2 15
-#"text:ports out\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 150 0 150 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1.0 0 -1 -1 93 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 255 0 0 0 0 0 -1
--1 2 15 #"text:ports err\0"
-0 -1 1 #"\0"
-1 0 -1 -1 93 -1 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 175 0 0 0 -1 -1 2 17
-#"text:ports value\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 0 175 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1.0 0 92 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 34 139 34 0 0 0 -1
--1 2 27 #"Matching Parenthesis Style\0"
-0 -1 1 #"\0"
-1.0 0 92 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 34 139 34 0 0 0 -1
--1 2 1 #"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 38 38 128 0 0 0 -1 -1 2 37
-#"framework:syntax-color:scheme:symbol\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 38 38 128 0 0 0 -1 -1 2 38
-#"framework:syntax-color:scheme:keyword\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 38 38 128 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 194 116 31 0 0 0 -1 -1 2
-38 #"framework:syntax-color:scheme:comment\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 194 116 31 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 41 128 38 0 0 0 -1 -1 2 37
-#"framework:syntax-color:scheme:string\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 41 128 38 0 0 0 -1 -1 2 35
-#"framework:syntax-color:scheme:text\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 41 128 38 0 0 0 -1 -1 2 39
-#"framework:syntax-color:scheme:constant\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 41 128 38 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 132 60 36 0 0 0 -1 -1 2 49
-#"framework:syntax-color:scheme:hash-colon-keyword\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 132 60 36 0 0 0 -1 -1 2 42
-#"framework:syntax-color:scheme:parenthesis\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 132 60 36 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 36
-#"framework:syntax-color:scheme:error\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 36
-#"framework:syntax-color:scheme:other\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 16
-#"Misspelled Text\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 81 112 203 0 0 0 -1 -1 2
-38 #"drracket:check-syntax:lexically-bound\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 81 112 203 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 178 34 34 0 0 0 -1 -1 2 28
-#"drracket:check-syntax:set!d\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 178 34 34 0 0 0 -1 -1 2 37
-#"drracket:check-syntax:unused-require\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 36
-#"drracket:check-syntax:free-variable\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 68 0 203 0 0 0 -1 -1 2 31
-#"drracket:check-syntax:imported\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 68 0 203 0 0 0 -1 -1 2 47
-#"drracket:check-syntax:my-obligation-style-pref\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 178 34 34 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 116 0 0 0 0 -1 -1 2 50
-#"drracket:check-syntax:their-obligation-style-pref\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 116 0 0 0 0 -1 -1 2 48
-#"drracket:check-syntax:unk-obligation-style-pref\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 139 142 28 0 0 0 -1 -1 2
-49 #"drracket:check-syntax:both-obligation-style-pref\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 139 142 28 0 0 0 -1 -1 2
-26 #"plt:htdp:test-coverage-on\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 1 0 0 0 0 0 0 255 165 0 0 0 0 -1 -1 2 27
-#"plt:htdp:test-coverage-off\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 1 0 0 0 0 0 0 255 165 0 0 0 0 -1 -1 4 1
-#"\0"
-0 70 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1.0 1.0 1.0 1.0 1.0 1.0 0 0 0 0 0 0
--1 -1 4 4 #"XML\0"
-0 70 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1.0 1.0 1.0 1.0 1.0 1.0 0 0 0 0 0 0
--1 -1 2 37 #"plt:module-language:test-coverage-on\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 38
-#"plt:module-language:test-coverage-off\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 1 0 0 0 0 0 0 255 165 0 0 0 0 -1 -1 4 1
-#"\0"
-0 71 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1.0 1.0 1.0 1.0 1.0 1.0 0 0 0 0 0 0
--1 -1 4 1 #"\0"
-0 -1 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 1 0 0 0 0 0 0 0 0 1.0 1.0 1.0 0 0 255 0 0 0 -1
--1 4 1 #"\0"
-0 71 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 1 0 0 0 0 0 0 0 0 1.0 1.0 1.0 0 0 255 0 0 0 -1
--1 4 1 #"\0"
-0 71 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 0 100 0 0 0 0 -1
--1 0 1 #"\0"
-0 75 10 #"Monospace\0"
-0.0 15 90 -1 90 -1 3 -1 0 1 0 1 0 0 0.0 0.0 0.0 0.0 0.0 0.0 0 0 0 255
-255 255 1 -1 2 1 #"\0"
-0 -1 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0.0 0.0 0.0 1.0 1.0 1.0 0 0 0 0 0 0
--1 -1 2 1 #"\0"
-0 -1 1 #"\0"
-1.0 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0.0 0.0 0.0 1.0 1.0 1.0 150 0 150 0
-0 0 -1 -1 2 1 #"\0"
-0 -1 1 #"\0"
-1.0 0 -1 -1 93 -1 -1 -1 0 1 0 0 0 0 0.0 0.0 0.0 1.0 1.0 1.0 255 0 0 0 0
-0 -1 -1 2 1 #"\0"
-0 -1 1 #"\0"
-1.0 0 -1 -1 -1 93 -1 -1 0 1 0 0 0 0 0.0 0.0 0.0 1.0 1.0 1.0 0 0 175 0 0
-0 -1 -1 2 1 #"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 200 0 0 0 0 0 -1 -1 4 1
-#"\0"
-0 -1 1 #"\0"
-1.0 0 92 -1 -1 -1 -1 -1 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 255 255 0 -1 -1
-          0 385 0 28 3 15 #"#lang slideshow"
-0 0 24 29 1 #"\n"
-0 0 24 29 1 #"\n"
-0 0 24 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 24 3 2 #" ("
-0 0 14 3 10 #"boxed-pict"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"p"
-0 0 24 3 1 #" "
-0 0 23 3 7 #"#:width"
-0 0 24 3 2 #" ["
-0 0 14 3 5 #"width"
-0 0 24 3 1 #" "
-0 0 21 3 2 #"#f"
-0 0 24 3 2 #"] "
-0 0 23 3 8 #"#:height"
-0 0 24 3 2 #" ["
-0 0 14 3 6 #"height"
-0 0 24 3 1 #" "
-0 0 21 3 2 #"#f"
-0 0 24 3 2 #"] "
-0 0 23 3 7 #"#:skosh"
-0 0 24 3 2 #" ["
-0 0 14 3 11 #"extra-width"
-0 0 24 3 1 #" "
-0 0 21 3 1 #"0"
-0 0 24 3 2 #"])"
-0 0 24 29 1 #"\n"
-0 0 24 3 3 #"  ("
-0 0 15 3 4 #"let*"
-0 0 24 3 4 #" ( ["
-0 0 14 3 3 #"p-w"
-0 0 24 3 2 #" ("
-0 0 14 3 10 #"pict-width"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"p"
-0 0 24 3 2 #")]"
-0 0 24 29 1 #"\n"
-0 0 24 3 11 #"          ["
-0 0 14 3 3 #"p-h"
-0 0 24 3 2 #" ("
-0 0 14 3 11 #"pict-height"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"p"
-0 0 24 3 2 #")]"
-0 0 24 29 1 #"\n"
-0 0 24 3 11 #"          ["
-0 0 14 3 1 #"w"
-0 0 24 3 2 #" ("
-0 0 14 3 2 #"if"
-0 0 24 3 2 #" ("
-0 0 14 3 3 #"and"
-0 0 24 3 1 #" "
-0 0 14 3 5 #"width"
-0 0 24 3 2 #" ("
-0 0 14 3 1 #">"
-0 0 24 3 1 #" "
-0 0 14 3 5 #"width"
-0 0 24 3 1 #" "
-0 0 14 3 3 #"p-w"
-0 0 24 3 3 #")) "
-0 0 14 3 5 #"width"
-0 0 24 3 1 #" "
-0 0 14 3 3 #"p-w"
-0 0 24 3 2 #")]"
-0 0 24 29 1 #"\n"
-0 0 24 3 11 #"          ["
-0 0 14 3 1 #"h"
-0 0 24 3 2 #" ("
-0 0 14 3 2 #"if"
-0 0 24 3 2 #" ("
-0 0 14 3 3 #"and"
-0 0 24 3 1 #" "
-0 0 14 3 6 #"height"
-0 0 24 3 2 #" ("
-0 0 14 3 1 #">"
-0 0 24 3 1 #" "
-0 0 14 3 6 #"height"
-0 0 24 3 1 #" "
-0 0 14 3 3 #"p-h"
-0 0 24 3 3 #")) "
-0 0 14 3 6 #"height"
-0 0 24 3 1 #" "
-0 0 14 3 3 #"p-h"
-0 0 24 3 4 #")] )"
-0 0 24 29 1 #"\n"
-0 0 24 3 5 #"    ("
-0 0 14 3 14 #"cc-superimpose"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"p"
-0 0 24 3 2 #" ("
-0 0 14 3 9 #"rectangle"
-0 0 24 3 2 #" ("
-0 0 14 3 1 #"+"
-0 0 24 3 1 #" "
-0 0 14 3 11 #"extra-width"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"w"
-0 0 24 3 2 #") "
-0 0 14 3 1 #"h"
-0 0 24 3 6 #")) ) )"
-0 0 24 29 1 #"\n"
-0 0 24 3 1 #"("
-0 0 14 3 10 #"boxed-pict"
-0 0 24 3 2 #" ("
-0 0 14 3 4 #"text"
-0 0 24 3 1 #" "
-0 0 19 3 8 #"\"hello!\""
-0 0 24 3 2 #") "
-0 0 23 3 7 #"#:skosh"
-0 0 24 3 1 #" "
-0 0 21 3 1 #"5"
-0 0 24 3 1 #")"
-0 0 24 29 1 #"\n"
-0 0 24 29 1 #"\n"
-0 0 24 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 24 3 2 #" ("
-0 0 14 3 22 #"max-picts-width-height"
-0 0 24 3 1 #" "
-0 0 14 3 8 #"pict-seq"
-0 0 24 3 1 #" "
-0 0 23 3 7 #"#:width"
-0 0 24 3 2 #" ["
-0 0 14 3 5 #"width"
-0 0 24 3 1 #" "
-0 0 21 3 1 #"0"
-0 0 24 3 2 #"] "
-0 0 23 3 8 #"#:height"
-0 0 24 3 2 #" ["
-0 0 14 3 6 #"height"
-0 0 24 3 1 #" "
-0 0 21 3 1 #"0"
-0 0 24 3 2 #"])"
-0 0 24 29 1 #"\n"
-0 0 24 3 3 #"  ("
-0 0 14 3 17 #"sequence-for-each"
-0 0 24 29 1 #"\n"
-0 0 24 3 4 #"   ("
-0 0 15 3 2 #"\316\273"
-0 0 24 3 2 #" ("
-0 0 14 3 1 #"p"
-0 0 24 3 3 #") ("
-0 0 15 3 3 #"let"
-0 0 24 3 4 #" ( ["
-0 0 14 3 1 #"w"
-0 0 24 3 2 #" ("
-0 0 14 3 10 #"pict-width"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"p"
-0 0 24 3 4 #")] ["
-0 0 14 3 1 #"h"
-0 0 24 3 2 #" ("
-0 0 14 3 11 #"pict-height"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"p"
-0 0 24 3 4 #")] )"
-0 0 24 29 1 #"\n"
-0 0 24 3 13 #"            ("
-0 0 15 3 4 #"when"
-0 0 24 3 2 #" ("
-0 0 14 3 1 #">"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"w"
-0 0 24 3 1 #" "
-0 0 14 3 5 #"width"
-0 0 24 3 3 #") ("
-0 0 14 3 4 #"set!"
-0 0 24 3 1 #" "
-0 0 14 3 5 #"width"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"w"
-0 0 24 3 2 #"))"
-0 0 24 29 1 #"\n"
-0 0 24 3 13 #"            ("
-0 0 15 3 4 #"when"
-0 0 24 3 2 #" ("
-0 0 14 3 1 #">"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"h"
-0 0 24 3 1 #" "
-0 0 14 3 6 #"height"
-0 0 24 3 3 #") ("
-0 0 14 3 4 #"set!"
-0 0 24 3 1 #" "
-0 0 14 3 6 #"height"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"h"
-0 0 24 3 6 #")) ) )"
-0 0 24 29 1 #"\n"
-0 0 24 3 3 #"   "
-0 0 14 3 8 #"pict-seq"
-0 0 24 3 2 #" )"
-0 0 24 29 1 #"\n"
-0 0 24 3 3 #"  ("
-0 0 14 3 4 #"valu"
-0 0 14 3 2 #"es"
-0 0 24 3 1 #" "
-0 0 14 3 5 #"width"
-0 0 24 3 1 #" "
-0 0 14 3 6 #"height"
-0 0 24 3 3 #") )"
-0 0 24 29 1 #"\n"
-0 0 17 3 3 #"; ("
-0 0 17 3 10 #"let-values"
-0 0 17 3 5 #" ( [("
-0 0 17 3 1 #"w"
-0 0 17 3 1 #" "
-0 0 17 3 1 #"h"
-0 0 17 3 3 #") ("
-0 0 17 3 22 #"max-picts-width-height"
-0 0 17 3 2 #" ("
-0 0 17 3 7 #"in-list"
-0 0 17 3 2 #" ("
-0 0 17 3 4 #"list"
-0 0 17 3 2 #" ("
-0 0 17 3 6 #"circle"
-0 0 17 3 1 #" "
-0 0 17 3 2 #"10"
-0 0 17 3 3 #") ("
-0 0 17 3 9 #"rectangle"
-0 0 17 3 1 #" "
-0 0 17 3 1 #"5"
-0 0 17 3 10 #" 15))))] )"
-0 0 24 29 1 #"\n"
-0 0 17 3 4 #";  ("
-0 0 17 3 5 #"print"
-0 0 17 3 2 #" ("
-0 0 17 3 4 #"list"
-0 0 17 3 1 #" "
-0 0 17 3 1 #"w"
-0 0 17 3 6 #" h)) )"
-0 0 24 29 1 #"\n"
-0 0 24 29 1 #"\n"
-0 0 17 3 48 #"; Explode a string into a sequence of characters"
-0 0 24 29 1 #"\n"
-0 0 17 3 46 #"; and transform those into a sequence of picts"
-0 0 24 29 1 #"\n"
-0 0 24 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 24 3 2 #" ("
-0 0 14 3 20 #"picts-explode-string"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"s"
-0 0 24 3 1 #")"
-0 0 24 29 1 #"\n"
-0 0 24 3 3 #"  ("
-0 0 14 3 12 #"sequence-map"
-0 0 24 3 2 #" ("
-0 0 15 3 2 #"\316\273"
-0 0 24 3 2 #" ("
-0 0 14 3 1 #"c"
-0 0 24 3 3 #") ("
-0 0 14 3 4 #"text"
-0 0 24 3 2 #" ("
-0 0 14 3 6 #"string"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"c"
-0 0 24 3 5 #"))) ("
-0 0 14 3 9 #"in-string"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"s"
-0 0 24 3 4 #")) )"
-0 0 24 29 1 #"\n"
-0 0 24 29 1 #"\n"
-0 0 17 3 54 #"; Explode a string into a sequence of boxed characters"
-0 0 24 29 1 #"\n"
-0 0 17 3 30 #"; of the same width and height"
-0 0 24 29 1 #"\n"
-0 0 17 3 46 #"; - the max of the sizes of their constituents"
-0 0 24 29 1 #"\n"
-0 0 17 3 50 #"; - plus a skosh around the width inside the boxes"
-0 0 24 29 1 #"\n"
-0 0 24 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 24 3 2 #" ("
-0 0 14 3 14 #"string-diagram"
-0 0 24 3 1 #" "
-0 0 14 3 3 #"str"
-0 0 24 3 1 #" "
-0 0 23 3 6 #"#:null"
-0 0 24 3 2 #" ["
-0 0 14 3 8 #"add-null"
-0 0 24 3 1 #" "
-0 0 21 3 2 #"#f"
-0 0 24 3 2 #"])"
-0 0 24 29 1 #"\n"
-0 0 24 3 3 #"  ("
-0 0 15 3 4 #"let*"
-0 0 24 3 4 #" ( ["
-0 0 14 3 8 #"pict-seq"
-0 0 24 3 2 #" ("
-0 0 14 3 20 #"picts-explode-string"
-0 0 24 3 1 #" "
-0 0 14 3 3 #"str"
-0 0 24 3 2 #")]"
-0 0 24 29 1 #"\n"
-0 0 24 3 11 #"          ["
-0 0 14 3 5 #"picts"
-0 0 24 3 2 #" ("
-0 0 14 3 2 #"if"
-0 0 24 3 1 #" "
-0 0 14 3 8 #"add-null"
-0 0 24 3 2 #" ("
-0 0 14 3 15 #"sequence-append"
-0 0 24 3 1 #" "
-0 0 14 3 8 #"pict-seq"
-0 0 24 3 2 #" ("
-0 0 14 3 7 #"in-list"
-0 0 24 3 2 #" ("
-0 0 14 3 4 #"list"
-0 0 24 3 2 #" ("
-0 0 14 3 4 #"text"
-0 0 24 3 1 #" "
-0 0 19 3 4 #"\"\\\\0"
-0 0 19 3 1 #"\""
-0 0 24 3 5 #")))) "
-0 0 14 3 8 #"pict-seq"
-0 0 24 3 4 #")] )"
-0 0 24 29 1 #"\n"
-0 0 24 3 5 #"    ("
-0 0 15 3 10 #"let-values"
-0 0 24 3 5 #" ( [("
-0 0 14 3 1 #"w"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"h"
-0 0 24 3 3 #") ("
-0 0 14 3 22 #"max-picts-width-height"
-0 0 24 3 1 #" "
-0 0 14 3 5 #"picts"
-0 0 24 3 4 #")] )"
-0 0 24 29 1 #"\n"
-0 0 24 3 7 #"      ("
-0 0 15 3 3 #"let"
-0 0 24 3 4 #" ( ["
-0 0 14 3 11 #"boxed-picts"
-0 0 24 3 2 #" ("
-0 0 14 3 12 #"sequence-map"
-0 0 24 3 2 #" ("
-0 0 15 3 2 #"\316\273"
-0 0 24 3 2 #" ("
-0 0 14 3 1 #"p"
-0 0 24 3 3 #") ("
-0 0 14 3 10 #"boxed-pict"
-0 0 24 3 1 #" "
-0 0 23 3 7 #"#:width"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"w"
-0 0 24 3 1 #" "
-0 0 23 3 8 #"#:height"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"h"
-0 0 24 3 1 #" "
-0 0 23 3 7 #"#:skosh"
-0 0 24 3 1 #" "
-0 0 21 3 1 #"2"
-0 0 24 3 1 #" "
-0 0 14 3 1 #"p"
-0 0 24 3 3 #")) "
-0 0 14 3 5 #"picts"
-0 0 24 3 4 #")] )"
-0 0 24 29 1 #"\n"
-0 0 24 3 9 #"        ("
-0 0 14 3 5 #"apply"
-0 0 24 3 1 #" "
-0 0 14 3 9 #"hc-append"
-0 0 24 3 2 #" ("
-0 0 14 3 14 #"sequence->list"
-0 0 24 3 1 #" "
-0 0 14 3 11 #"boxed-picts"
-0 0 24 3 10 #")) ) ) ) )"
-0 0 24 29 1 #"\n"
-0 0 24 3 1 #"("
-0 0 14 3 14 #"string-diagram"
-0 0 24 3 1 #" "
-0 0 19 3 1 #"\""
-0 0 19 3 7 #"Hello!\""
-0 0 24 3 1 #" "
-0 0 23 3 6 #"#:null"
-0 0 24 3 1 #" "
-0 0 21 3 2 #"#t"
-0 0 24 3 1 #")"
-0 0 24 29 1 #"\n"
-0 0 24 29 1 #"\n"
-0           0
+; Shall we use lists to structure our diagrams?
+; Shall we use a purely functional approach?
+; Shall we use typed/racket?
+; Or shall we be more eclectic?
+
+; Wrap a pic in a box
+; Either sized just right or of the specified sizes
+; and perhaps with a label outside of the box.
+; Without explicit sizing,
+;   the box will be sized to the interior picture
+;   and will ignore the size of the label.
+(define (boxed-pic p #:width [width #f] #:height [height #f] #:skosh [extra-width 0] #:label [label #f])
+  (let* ( [and-max (λ (i j) (if (and i (> i j)) i j))]
+          [w (and-max width (pict-width p))]
+          [h (and-max height (pict-height p))]
+          [box (cc-superimpose p (rectangle (+ extra-width w) h))] )
+    (if label (vc-append (text label) box) box) ) )
+(boxed-pic (text "hello!") #:skosh 5)
+
+; Append a list of pictures into a new picture
+(define (append-list pics #:append [f hc-append] #:skosh [extra-width 0])
+  (apply f (cons extra-width pics)) )
+
+; Append a sequence of pictures into a new picture
+(define (append-seq pics #:append [f hc-append] #:skosh [extra-width 0])
+  (append-list (sequence->list pics) #:append f #:skosh extra-width) )
+
+; Find the maximum width and height of a sequence of pictures
+(define (max-pic-seq-width-height pict-seq #:width [width 0] #:height [height 0])
+  (sequence-for-each
+   (λ (p) (let ( [w (pict-width p)] [h (pict-height p)] )
+            (when (> w width) (set! width w))
+            (when (> h height) (set! height h)) ) )
+   pict-seq )
+  (values width height) )
+(let-values ( [(w h) (max-pic-seq-width-height (in-list (list (circle 10) (rectangle 5 15))))] )
+ (printf "width ~a height ~a\n" w h) )
+
+; Find the maximum width and height of a list of pictures
+(define (max-pic-list-width-height picts #:width [width 0] #:height [height 0])
+  (define (max i j) (if (> i j) i j))
+  (if (null? picts)
+      (values width height)
+      (max-pic-list-width-height
+       (cdr picts)
+       #:width (max width (pict-width (car picts)))
+       #:height (max height (pict-height (car picts))) ) ) )
+(let-values ( [(w h) (max-pic-list-width-height (list (circle 10) (rectangle 5 15)))] )
+ (printf "width ~a height ~a\n" w h) )
+
+; Convert a sequence to a list
+; Possibly transforming through a mapping function
+; which might possibly want an index value
+; Possibly appending to an existing list
+(define (seq-to-list seq #:map [f #f] #:tail [tail '()] #:index [index #f])
+  (if (stream-empty? seq)
+      tail
+      (let ( [first (sequence-ref seq 0)] [rest (sequence-tail seq 1)] )
+        (cons
+         (if f (if index (f first index) (f first)) first)
+         (seq-to-list rest #:map f #:tail tail #:index (if index (+ 1 index) index)) ) ) ) )
+
+; Explode a string into a list
+; Possibly transforming through a mapping function
+; Possibly appending to an existing list
+(define (explode-string s #:map [f #f] #:tail [tail '()])
+  (seq-to-list (in-string s) #:map f #:tail tail) )
+
+; Explode a string into a sequence
+; Possibly transforming through a mapping function
+; Possibly appending to an existing sequence
+(define (seq-explode-string s #:map [f #f] #:tail [tail #f])
+  (let* ( [chars (in-string s)]
+          [mapped-chars (if f (sequence-map f chars) chars)]
+          [joined-chars (if tail (sequence-append mapped-chars tail) mapped-chars) ] )
+          joined-chars ) )
+(append-seq (seq-explode-string
+             "Hello!"
+             #:map (λ (c) (boxed-pic (text (string c))))
+             #:tail (in-list (list (boxed-pic (text "\\0")))) ))
+
+; Explode a string into a list
+; Possibly transforming through a mapping function
+; Possibly appending to an existing list
+(define (list-explode-string s #:map [f #f] #:tail [tail #f])
+  (seq-to-list (in-string s) #:map f #:tail tail) )
+(append-list (list-explode-string "Hello!"
+             #:map (list-explode-string (λ (c) (boxed-pic (text (string c)))))
+             #:tail (list (boxed-pic (text "\\0"))) ))
+
+; Explode a string into a list of boxed characters
+; of the same width and height
+; - the max of the sizes of their constituents
+; - plus a skosh around the width inside the boxes
+(define (boxed-chars-list str #:null [add-null #f] #:index [index #f])
+  (let* ( [char-seq (in-string str)]
+          [tail (if add-null (in-list (list (text "\\0"))) #f)]
+          [elements (if tail (sequence-append char-seq tail) char-seq)] )
+    (let-values ( [(w h) (max-pic-seq-width-height elements)] )
+      (let ( [f (if index
+                    (λ (p) (boxed-pic p #:width w #:height h #:skosh 2 #:label (~a index)))
+                    (λ (p i) (boxed-pic p #:width w #:height h #:skosh 2  #:label (~a index))) )] )
+        (seq-to-list elements #:map f #:index index) ) ) ) )
+
+(define (string-diagram s #:null [add-null #f] #:index [index #f])
+  (append-list (boxed-chars-list s #:null add-null #:index index)) )
+(string-diagram "Hello!" #:null #t)
