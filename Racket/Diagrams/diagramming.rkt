@@ -19,8 +19,8 @@
           [w (and-max width (pict-width p))]
           [h (and-max height (pict-height p))]
           [box (cc-superimpose p (rectangle (+ extra-width w) h))] )
-    (if label (vc-append (text label) box) box) ) )
-(boxed-pic (text "hello!") #:skosh 5)
+    (if label (vl-append (text label) box) box) ) )
+(boxed-pic (text "hello!") #:skosh 5 #:label "value")
 
 ; Append a list of pictures into a new picture
 (define (append-list pics #:append [f hc-append] #:skosh [extra-width 0])
@@ -58,12 +58,15 @@
 ; which might possibly want an index value
 ; Possibly appending to an existing list
 (define (seq-to-list seq #:map [f #f] #:tail [tail '()] #:index [index #f])
-  (if (stream-empty? seq)
+  (stream-to-list (sequence->stream seq) #:map f #:tail tail #:index index) )
+
+(define (stream-to-list ss #:map [f #f] #:tail [tail '()] #:index [index #f])
+  (if (stream-empty? ss)
       tail
-      (let ( [first (sequence-ref seq 0)] [rest (sequence-tail seq 1)] )
+      (let ( [first (stream-first ss)] [rest (stream-rest ss)] )
         (cons
          (if f (if index (f first index) (f first)) first)
-         (seq-to-list rest #:map f #:tail tail #:index (if index (+ 1 index) index)) ) ) ) )
+         (stream-to-list rest #:map f #:tail tail #:index (and index (+ 1 index))) ) ) ) )
 
 ; Explode a string into a list
 ; Possibly transforming through a mapping function
@@ -81,8 +84,8 @@
           joined-chars ) )
 (append-seq (seq-explode-string
              "Hello!"
-             #:map (λ (c) (boxed-pic (text (string c))))
-             #:tail (in-list (list (boxed-pic (text "\\0")))) ))
+             #:map (λ (c) (boxed-pic (text (string c)) #:skosh 3))
+             #:tail (in-list (list (boxed-pic (text "\\0") #:skosh 3))) ))
 
 ; Explode a string into a list
 ; Possibly transforming through a mapping function
@@ -90,23 +93,24 @@
 (define (list-explode-string s #:map [f #f] #:tail [tail #f])
   (seq-to-list (in-string s) #:map f #:tail tail) )
 (append-list (list-explode-string "Hello!"
-             #:map (list-explode-string (λ (c) (boxed-pic (text (string c)))))
-             #:tail (list (boxed-pic (text "\\0"))) ))
+                                  #:map (λ (c) (boxed-pic (text (string c)) #:skosh 3))
+                                  #:tail (list (boxed-pic (text "\\0") #:skosh 3)) ))
 
 ; Explode a string into a list of boxed characters
 ; of the same width and height
 ; - the max of the sizes of their constituents
 ; - plus a skosh around the width inside the boxes
 (define (boxed-chars-list str #:null [add-null #f] #:index [index #f])
-  (let* ( [char-seq (in-string str)]
+  (let* ( [pic-seq (seq-explode-string str #:map (λ (c) (text (string c))))]
           [tail (if add-null (in-list (list (text "\\0"))) #f)]
-          [elements (if tail (sequence-append char-seq tail) char-seq)] )
+          [elements (if tail (sequence-append pic-seq tail) pic-seq)] )
     (let-values ( [(w h) (max-pic-seq-width-height elements)] )
       (let ( [f (if index
-                    (λ (p) (boxed-pic p #:width w #:height h #:skosh 2 #:label (~a index)))
-                    (λ (p i) (boxed-pic p #:width w #:height h #:skosh 2  #:label (~a index))) )] )
+                    (λ (p i) (boxed-pic p #:width w #:height h #:skosh 2 #:label (~a index)))
+                    (λ (p) (boxed-pic p #:width w #:height h #:skosh 2)) )] )
         (seq-to-list elements #:map f #:index index) ) ) ) )
 
 (define (string-diagram s #:null [add-null #f] #:index [index #f])
   (append-list (boxed-chars-list s #:null add-null #:index index)) )
 (string-diagram "Hello!" #:null #t)
+(string-diagram "Hello!" #:null #t #:index 0)
