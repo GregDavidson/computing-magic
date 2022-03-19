@@ -1,12 +1,13 @@
 #lang slideshow
 (require racket/format)
 
-;; * diadraw - a Racket diagramming toolkit
+;; * diapic - a Racket diagramming toolkit
 
 ; Shall we use lists to structure our diagrams?
 ; Shall we use a purely functional approach?
 ; Shall we use typed/racket?
 ; Or shall we be more eclectic?
+; Let's do everything 2 or 3 ways and learn!
 
 ; Wrap a pic in a box
 ; Either sized just right or of the specified sizes
@@ -19,8 +20,14 @@
           [w (and-max width (pict-width p))]
           [h (and-max height (pict-height p))]
           [box (cc-superimpose p (rectangle (+ extra-width w) h))] )
-    (if label (vl-append (text label) box) box) ) )
-(boxed-pic (text "hello!") #:skosh 5 #:label "value")
+    (if label (vl-append box (text label)) box) ) )
+; Mystery: When the vl-append arguments are reversed, the top line
+; of the boxes does not show, even in tests where there should be no label!
+
+(define (test-boxed-pic [p (text "Hello world!")] #:width [width #f] #:height [height #f] #:skosh [extra-width 0] #:label [label #f])
+  (boxed-pic p  #:width #f #:height #f #:skosh 3 #:label "value") )
+
+(test-boxed-pic)
 
 ; Append a list of pictures into a new picture
 (define (append-list pics #:append [f hc-append] #:skosh [extra-width 0])
@@ -31,27 +38,35 @@
   (append-list (sequence->list pics) #:append f #:skosh extra-width) )
 
 ; Find the maximum width and height of a sequence of pictures
-(define (max-pic-seq-width-height pict-seq #:width [width 0] #:height [height 0])
+(define (max-pic-seq-width-height pic-seq #:width [width 0] #:height [height 0])
   (sequence-for-each
    (λ (p) (let ( [w (pict-width p)] [h (pict-height p)] )
             (when (> w width) (set! width w))
             (when (> h height) (set! height h)) ) )
-   pict-seq )
+   pic-seq )
   (values width height) )
-(let-values ( [(w h) (max-pic-seq-width-height (in-list (list (circle 10) (rectangle 5 15))))] )
- (printf "width ~a height ~a\n" w h) )
+
+(define (test-max-pic-seq-width-height [pic-seq (in-list (list (circle 10)))] #:width [width 0] #:height [height 0])
+  (let-values ( [(w h) (max-pic-seq-width-height pic-seq)] )
+    (printf "width ~a height ~a\n" w h) ) )
+
+(test-max-pic-seq-width-height)
 
 ; Find the maximum width and height of a list of pictures
-(define (max-pic-list-width-height picts #:width [width 0] #:height [height 0])
+(define (max-pic-list-width-height pics #:width [width 0] #:height [height 0])
   (define (max i j) (if (> i j) i j))
-  (if (null? picts)
+  (if (null? pics)
       (values width height)
       (max-pic-list-width-height
-       (cdr picts)
-       #:width (max width (pict-width (car picts)))
-       #:height (max height (pict-height (car picts))) ) ) )
-(let-values ( [(w h) (max-pic-list-width-height (list (circle 10) (rectangle 5 15)))] )
- (printf "width ~a height ~a\n" w h) )
+       (cdr pics)
+       #:width (max width (pict-width (car pics)))
+       #:height (max height (pict-height (car pics))) ) ) )
+
+(define (test-max-pic-list-width-height [pics (list (circle 10))] #:width [width 0] #:height [height 0])
+  (let-values ( [(w h) (max-pic-list-width-height pics)] )
+    (printf "width ~a height ~a\n" w h) ) )
+
+(test-max-pic-list-width-height)
 
 ; Convert a sequence to a list
 ; Possibly transforming through a mapping function
@@ -67,12 +82,6 @@
         (cons
          (if f (if index (f first index) (f first)) first)
          (stream-to-list rest #:map f #:tail tail #:index (and index (+ 1 index))) ) ) ) )
-
-; Explode a string into a list
-; Possibly transforming through a mapping function
-; Possibly appending to an existing list
-(define (explode-string s #:map [f #f] #:tail [tail '()])
-  (seq-to-list (in-string s) #:map f #:tail tail) )
 
 ; Explode a string into a sequence
 ; Possibly transforming through a mapping function
@@ -106,11 +115,12 @@
           [elements (if tail (sequence-append pic-seq tail) pic-seq)] )
     (let-values ( [(w h) (max-pic-seq-width-height elements)] )
       (let ( [f (if index
-                    (λ (p i) (boxed-pic p #:width w #:height h #:skosh 2 #:label (~a index)))
+                    (λ (p i) (boxed-pic p #:width w #:height h #:skosh 2 #:label (~a i)))
                     (λ (p) (boxed-pic p #:width w #:height h #:skosh 2)) )] )
         (seq-to-list elements #:map f #:index index) ) ) ) )
 
 (define (string-diagram s #:null [add-null #f] #:index [index #f])
   (append-list (boxed-chars-list s #:null add-null #:index index)) )
+
 (string-diagram "Hello!" #:null #t)
 (string-diagram "Hello!" #:null #t #:index 0)
