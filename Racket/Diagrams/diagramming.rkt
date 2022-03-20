@@ -12,10 +12,26 @@
 ; Shall we use typed/racket?
 ; Maybe eventuallly, but not yet!
 
-;; ** Simple Misc
+;; ** Calculating Sizes
 
 (define (max1 x1 x2) (if (> x1 x2) x1 x2) )
                           
+; Find the maximum width and height of a stream of pictures
+(define (max-pics-width-height pics #:width [width 0] #:height [height 0])
+  (if (stream-empty? pics)
+      (values width height)
+      (let ( [first (stream-first pics)] [rest (stream-rest pics)] )
+        (max-pics-width-height
+         rest
+         #:width (max1 width (pict-width first))
+         #:height (max1 height (pict-height first)) ) ) ) )
+
+(define (test-max-pics-width-height [pics (list (circle 10))] #:width [width 0] #:height [height 0])
+  (let-values ( [(w h) (max-pics-width-height pics)] )
+    (printf "width ~a height ~a\n" w h) ) )
+
+(test-max-pics-width-height)
+
 ;; ** Labels for Objects
 
 ; We want labels to be able to label
@@ -51,7 +67,7 @@
           [w (and-max gloss-width (and-max width (pict-width p)))]
           [h (and-max height (pict-height p))]
           [box (cc-superimpose p (rectangle (+ extra-width w) h))] )
-    (if gloss (vl-append box gloss) box) ) )
+    (if gloss (vc-append box gloss) box) ) )
 ; Mystery: When the vl-append arguments are reversed, the top line
 ; of the boxes does not show, even in tests where there should be no label!
 
@@ -64,24 +80,6 @@
 (define (append-pics pics #:append [f hc-append] #:skosh [extra-width 0])
   (let ( [args (stream->list pics)] )
     (apply f (if extra-width (cons extra-width args) args)) ) )
-
-;; ** Calculating Sizes
-
-; Find the maximum width and height of a stream of pictures
-(define (max-pics-width-height pics #:width [width 0] #:height [height 0])
-  (if (stream-empty? pics)
-      (values width height)
-      (let ( [first (stream-first pics)] [rest (stream-rest pics)] )
-        (max-pics-width-height
-         rest
-         #:width (max1 width (pict-width first))
-         #:height (max1 height (pict-height first)) ) ) ) )
-
-(define (test-max-pics-width-height [pics (list (circle 10))] #:width [width 0] #:height [height 0])
-  (let-values ( [(w h) (max-pics-width-height pics)] )
-    (printf "width ~a height ~a\n" w h) ) )
-
-(test-max-pics-width-height)
 
 ;; ** Transforming Sequences
 
@@ -134,10 +132,11 @@
 (string-diagram "Hello!" #:null #t #:index 0)
 
 (define (boxed-fields fields #:labels [labels #f] #:skosh [extra-width 0])
-   (let ( [f (if labels
-                  (λ (p i) (boxed-pic p #:skosh extra-width #:label i))
-                  (λ (p) (boxed-pic p #:skosh extra-width)) ) ] )
-      (stream-rebuild fields #:map f #:index labels) ) )
+  (let-values ( [(w h) (max-pics-width-height fields)] )
+    (let ( [f (if labels
+                  (λ (p i) (boxed-pic p #:height h #:skosh extra-width #:label i))
+                  (λ (p) (boxed-pic p #:height h #:skosh extra-width)) ) ] )
+      (stream-rebuild fields #:map f #:index labels) ) ) )
 
 (define (record-diagram fields #:labels [labels #f] #:skosh [extra-width 0])
   (append-pics (boxed-fields fields #:labels labels #:skosh extra-width)) )
