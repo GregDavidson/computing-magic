@@ -16,19 +16,20 @@
 
 (define (max1 x1 x2) (if (> x1 x2) x1 x2) )
                           
-; Find the maximum width and height of a stream of pictures
-(define (max-pics-width-height pics #:width [width 0] #:height [height 0])
+; Find the maximum width, height, length of a stream of pictures
+(define (max-pics-width-height pics #:width [width 0] #:height [height 0] #:len [length 0])
   (if (stream-empty? pics)
-      (values width height)
+      (values width height length)
       (let ( [first (stream-first pics)] [rest (stream-rest pics)] )
         (max-pics-width-height
          rest
          #:width (max1 width (pict-width first))
-         #:height (max1 height (pict-height first)) ) ) ) )
+         #:height (max1 height (pict-height first))
+         #:len (+ 1 length)) ) ) )
 
 (define (test-max-pics-width-height [pics (list (circle 10))] #:width [width 0] #:height [height 0])
-  (let-values ( [(w h) (max-pics-width-height pics)] )
-    (printf "width ~a height ~a\n" w h) ) )
+  (let-values ( [(w h n) (max-pics-width-height pics)] )
+    (printf "width ~a height ~a length ~a\n" w h n) ) )
 
 (test-max-pics-width-height)
 
@@ -68,8 +69,9 @@
           [h (and-max height (pict-height p))]
           [box (cc-superimpose p (rectangle (+ extra-width w) h))] )
     (if gloss (vc-append box gloss) box) ) )
-; Mystery: When the vl-append arguments are reversed, the top line
-; of the boxes does not show, even in tests where there should be no label!
+; Mystery: When the vl-append arguments are reversed,
+; the top line of the boxes does not show,
+; even in tests where there should be no label!
 
 (define (test-boxed-pic [p (text "Hello world!")] #:width [width #f] #:height [height #f] #:skosh [extra-width 0] #:label [label #f])
   (boxed-pic p  #:width #f #:height #f #:skosh 3 #:label "value") )
@@ -100,9 +102,10 @@
 ; Possibly appending to an existing list
 (define (explode-string s #:map [f #f] #:tail [tail #f])
   (stream-rebuild (sequence->stream (in-string s)) #:map f #:tail tail) )
+
 (append-pics (explode-string "Hello!"
-                                  #:map (λ (c) (boxed-pic (text (string c)) #:skosh 3))
-                                  #:tail (list (boxed-pic (text "\\0") #:skosh 3)) ))
+                             #:map (λ (c) (boxed-pic (text (string c)) #:skosh 3))
+                             #:tail (list (boxed-pic (text "\\0") #:skosh 3)) ))
 
 ;; Building Composite Objects
 
@@ -112,7 +115,7 @@
 ; - plus a skosh around the width inside the boxes
 ; - optionally adding indices underneath
 (define (boxed-elements elements #:index [index #f] #:skosh [extra-width 0])
-  (let-values ( [(w h) (max-pics-width-height elements)] )
+  (let-values ( [(w h n) (max-pics-width-height elements)] )
     (let ( [f (if index
                   (λ (p i) (boxed-pic p #:width w #:height h #:skosh extra-width #:label i))
                   (λ (p) (boxed-pic p #:width w #:height h #:skosh 2)) )] )
@@ -132,7 +135,7 @@
 (string-diagram "Hello!" #:null #t #:index 0)
 
 (define (boxed-fields fields #:labels [labels #f] #:skosh [extra-width 0])
-  (let-values ( [(w h) (max-pics-width-height fields)] )
+  (let-values ( [(w h n) (max-pics-width-height fields)] )
     (let ( [f (if labels
                   (λ (p i) (boxed-pic p #:height h #:skosh extra-width #:label i))
                   (λ (p) (boxed-pic p #:height h #:skosh extra-width)) ) ] )
@@ -145,3 +148,11 @@
 
 (record-diagram (stream (text "hello") (string-diagram "Hello!" #:null #t)) #:labels field-names)
 (record-diagram (stream (text "hello") (string-diagram "Hello!" #:null #t #:index 0)) #:labels field-names)
+
+;; ** What's next?
+
+; Taking into account the width of labels in computing the width of array elements
+
+; Pointers
+
+; Constraint Satisfaction
