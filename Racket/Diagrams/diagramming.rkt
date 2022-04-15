@@ -3,7 +3,7 @@
 
 ;; * diapic - a Racket diagramming toolkit
 
-; Shall we use lists to structure our diagrams?
+; Shall we use S-Exprs to structure our diagrams?
 ; Shall we use a purely functional approach?
 ; Let's use Streams:
 ; - Lists are automatically accepted as Streams
@@ -54,6 +54,18 @@
         [t (sequence-tail labels 1)] ) )
 
 ;; ** Composing Objects
+
+(define (box-pic p width height #:label [label #f])
+  (let ( [box (cc-superimpose p (rectangle width height))] )
+    (if gloss (vc-append box gloss) box) ) )
+
+;; Finish this??(define (box-pic p width height #:label [label #f])
+  (let ( [box (cc-superimpose p (rectangle (+ extra-width width) (+ extra-height height)))] )
+    (if gloss (vc-append box gloss) box) ) )
+
+(define (frame-pic p width height #:label [label #f])
+  (let ( [box (frame p)] )
+    (if gloss (vc-append box gloss) box) ) )
 
 ; Wrap a pic in a box
 ; Either sized just right or of the specified sizes
@@ -151,8 +163,22 @@
 
 ;; ** What's next?
 
+;; *** Use more pict constructors
+
+; frame instead of superposing rectangles?
+
+; Indicating space between different complete objects?
+; - blank constructor?
+; - unboxed ellipsis?
+
+; pin-arrow-line for pointers
+
+;; *** Quality
+
 ; Taking into account the width of labels in computing the width of array elements
 
-; Pointers
+;; *** Constraint Satisfaction
 
-; Constraint Satisfaction
+; https://docs.racket-lang.org/csp/index.html#%28tech._constraint._satisfaction._problem%29
+
+;; *** Misc

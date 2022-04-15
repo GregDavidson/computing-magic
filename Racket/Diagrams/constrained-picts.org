@@ -1,0 +1,61 @@
+* Racket Constrained Composite Pictures
+
+Racket's =pict= is an excellent object-centered functional graphics system.
+
+Ideally it would be possible to
+- create composite pictures as
+- a tree where
+      - the leaves are =pict=s
+      - the internal nodes are constraints
+      - free variables represent parameters
+            - possibly with defaults
+
+Composite pictures would allow functional operations
+- adding new pictures (leaves)
+- adding new constraints (as or to interior nodes)
+
+Constraint expressions and parameter values could be
+- added to a composite picture
+- and/or supplied at rendering time
+
+A representation is needed for constraint expressions.
+- Let's try following the existing Racket constraint solver's syntax!
+
+To what extent are Racket's =pict= objects size-independent?
+- Especially text =pict= objects?
+
+Some notions:
+
+Make Composite Picts usable anywhere that
+- A single =pict= would be usable
+- A stream of =pict= would be usable
+
+Allow a stream of composite picts to act like
+- a functionally updatable sequence
+- using a special interior node
+
+Provide labels for parts of composite picts
+- when functional updates create new trees
+- labels reference homologous parts
+
+Perhaps a composite picture needs
+- a top-of-picture index of
+  - labels
+  - anything else?
+
+Successful function updates and rendering requires
+- unification
+- constraint solving
+
+The composite picture would only be rendered when
+- the application needs to present it
+- all of the parameters are available
+
+When a size constraint provides insufficient room for parts of a picture
+- it should provide a ellipsis function
+- default ellipsis functions should be available
+
+Detection of constraint issues needs to be
+- noticeable as early as possible
+- checkable on demand before rendering
+  
