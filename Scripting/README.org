@@ -1,8 +1,8 @@
 * Scripting Notes for Computing Magic
   
 /Scripts/ are short, simple, easily understood and easily modified programs
-written in languages which avoid most of the complexity (and lack the full
-power) of general purpose languages.
+written in languages which make specialized tasks easier than they would be
+if written in general purpose languages.
     
 /Scriptable tools/ are tools (software or hardware) which can easily be
 controlled by /scripts/.
