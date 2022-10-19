@@ -145,91 +145,12 @@ before continuing with the rest of your intended commands
 *Scripts have no Common Sense!* Unless you add explicit code to your script, it
 will simply barrel on, executing the rest of the commands willy-nilly!
 
-** What if something goes wrong?
-
-Consider this /Install Script/ for [[https://www.postgresql.org/][the PostgreSQL Database System]] on a [[https://en.wikipedia.org/wiki/POSIX][Posix
-System]]
-- i.e. on a Unix, BSD, Gnu/Linux or similar Operating System
-- Based on the [[https://www.postgresql.org/docs/current/install-short.html][Short Version of Installation from Source Code]]
-- Note: This kind of installation is only used if a custom install is desired
-      - A custom install can deviate from standard package configurations
-
-#+begin_src bash
-  #!/usr/bin/bash -euv
-  # Don't try running this!!!
-  tarfile=~/Downloads/postgresql-14.1.tar.bz2
-  srcdir=/usr/local/src/PostgreSQL-Install
-  dstdir=/usr/local/pgsql
-  bindir="$dstdir"/bin
-  datadir="$dstdir"/data
-  sudo mkdir "$srcdir"
-  sudo chown "$USER" "$srcdir"
-  cd "$srcdir"
-  tar xf "$tarfile"
-  ./configure
-  make
-  sudo adduser --system --home "$dstdir" --shell `type -p bash` postgres
-  sudo mkdir -p "$datadir"
-  sudo chown -R postgres "$dstdir"
-  sudo su - postgres << 'PG_END'
-set -euv 
-PATH="$HOME/bin:$PATH"
-initdb -D ~/data
-pg_ctl -D ~/data -l logfile start
-createdb test
-psql test << 'PSQL_END'
-SELECT 'Hello world!'::text;
-\q
-PSQL_END 
-PG_END
-#+end_src
-
-What could go wrong?
-- The referenced files and directories might not exist
-- The tar archive might fail to extract properly
-- The configuration might fail
-    - PostgreSQL depends on many system resources
-    - Most systems don't initially have all of the required resources!
-- The build process managed by =make= might fail
-    - It builds more than 1000 target files!
-    - Then links them together with many required libraries
-- Account creation might fail
-- Starting PostgreSQL might fail
-- Running =psql= might fail
-
-This script *does not automate a PostgreSQL installation!*
-- It only organizes it for a human to supervise
-- The options =-euv= allow a human to take over
-      - =-x= causes the shell to print each command before executing it
-      - =-e= causes the shell to exit if a command fails
-      - =-u= causes the shell to consider an undefined variable to be an error
-            - essential for catching otherwise catastrophic typos
-- The part after =sudo su - postgres= is *very fragile*!
-- The =psql= part doesn't do any thorough testing
-- The script doesn't add any custom configuration options
-      - The only point of doing a custom install of this kind!
-- No database superuser is created
-      - Further administration will be unnecessarily awkward
-
-The biggest trouble here is that each time anything goes wrong
-- which it will, repeatedly!
-The human must
-- figure out what went wrong by studying the output
-- undo everything that got built or installed
-- fix the problem
-- rerun the script
-
-And the output is likely to be lost if this is run in the terminal in the usual way.
-- Either run it in an /Emacs Shell Buffer/ using =M-x Shell=
-- Or run it in a terminal /after/ running the =script= command
-      - Remember to =exit= from the script when it stops!
-
-** Fully Automating This Kind Of Script
+** Fully Automating Complex Scripts
 
 If we want to build complex artifacts and store them into databases or the
 filesystem and/or changes the state of the system or some subsystem in complex
-ways, we would certainly prefer to do so using a script, especially if we're
-going to want to do similar tasks repeatedly.
+ways, we would certainly prefer using a script, especially if we're going to
+want to do similar tasks repeatedly.
 
 Using a script
 1. documents the process
@@ -266,7 +187,8 @@ Once a problem has been detected, error recovery needs to
 
 Coding this is usually done with /Exit Codes/ which control
 - the =if= and =while= commands
-- the boolean operators =&&= (and then) and =||= (or else)
+- the Boolean operators =!= (not), =&&= (and then), =||= (or else)
+      - Here's a [[file://Reference-Sheets/bash-metas.pdf][handy reference sheet]] on such
 
 In many cases a script is just one part of a more complex automated process, so
 all it has to do is exit with a non-zero Exit Status, e.g. with =exit 1= --
@@ -274,7 +196,7 @@ although it's best to have different non-zero statuses for different kinds of
 failure.
 
 A top level script may need to alert humans that an important process has
-failed. This should never be done by popping up a notification on a user's
+failed. This should /never/ be done by popping up a notification on a user's
 screen asking them to report an error! A script should be able to send a text,
 email, etc. or file a trouble ticket, etc. to bring attention to the problem by
 the right person in a timely fashion. Scripts can also monitor a trouble ticket
@@ -283,4 +205,4 @@ when fixes are not occurring within an expected timeframe.
 
 ** Examples of Resilient Scripts
 
-*This is a placeholder for future content!*
+- [[file:shell-script-example-pginstall.org][A Custom Installation of PostgreSQL from Source]]
