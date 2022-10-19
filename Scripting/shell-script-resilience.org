@@ -18,7 +18,7 @@ create a naive shell script:
             - so you can run it simply as =SCRIPT-FILE-NAME=
 
 #+begin_src sh :results output
-  echoho Hello from ${0##*/}
+  echo Hello from ${0##*/}
   echo `date -I` is a good day to run!
 #+end_src
 
