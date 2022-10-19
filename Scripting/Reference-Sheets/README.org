@@ -1,7 +1,7 @@
 * Posix Little Language Reference Cards
-These tools and notations all trace their history to the Unix Timesharing System
-developed at Bell Laboratories and build upon by hackers at the University of
-California and the GNU Project. They share many characteristics which makes
+These tools and notations all trace their history to the [[https://en.wikipedia.org/wiki/Unix][Unix Operating System]]
+originally developed at [[https://en.wikipedia.org/wiki/Research_Unix][Bell Laboratories]] and built upon by the [[https://en.wikipedia.org/wiki/Berkeley_Software_Distribution][BSD Project]] and
+the [[https://www.gnu.org][GNU Project]] among others. They share many characteristics which makes
 learning them as a group easier, despite some inconsistencies.
 
 In honor of the Unix origin, we include a piece of Unix humor!
@@ -12,12 +12,16 @@ be great to rewrite these in OrgMode suitable for exporting to TeX, et al.
 Thanks to the GNU Project and others, all of these tools are still alive!
 
 - README.org :: this file
-- Makefile :: scripts to turn all of the following into PDFs
-- ed+sed+ex.tbl,me ::	some common ed, sed, ex commands
-- reg-exp.eqn,tbl,me ::	regular expression reference
-- reg-exp-lo.eqn,tbl,me ::	same with lower header line
-- reg-exp-orig.eqn,tbl,me ::	an earlier version
-- shell-metacharacters.eqn,tbl,me ::	some shell metacharacters
-- shell-metacharacters-lo.eqn,tbl,me ::	same with lower header line
-- unix-prank.me ::	apocryphal account of origin of Unix and C
-- vi-ref.me ::	2-column teaching reference for vi editor
+- [[file:Makefile][Makefile]] :: scripts to create the PDFs
+- [[file:ed+sed+ex.pdf][ed+sed+ex.pdf]] :: some common ed, sed, ex commands
+      - source :: [[file:ed+sed+ex.tbl,me][ed+sed+ex.tbl,me]]
+- [[file:reg-exp.pdf][reg-exp.pdf]] ::	regular expressions
+      - source :: [[file:reg-exp.eqn,tbl,me][reg-exp.eqn,tbl,me]]
+      - source :: [[file:reg-exp-lo.eqn,tbl,me][reg-exp-lo.eqn,tbl,me]] /with lower header line/
+- [[file:bash-metas.pdf][bash-metas.pdf]] :: some shell metacharacters
+      - source :: [[file:shell-metacharacters.eqn,tbl,me][shell-metacharacters.eqn,tbl,me]]
+      - source :: [[file:shell-metacharacters-lo.eqn,tbl,me][shell-metacharacters-lo.eqn,tbl,me]] /with lower header line/
+- [[file:vi.pdf][vi.pdf]] ::	2-column teaching reference for vi editor
+      - source :: [[file:vi.tbl.me][vi.tbl.me]]
+      - source :: [[file:vi-autoindent.tbl.me][vi-autoindent.tbl.me]]
+- [[file:unix-prank.me][unix-prank.me]] ::	apocryphal account of origin of Unix and C
