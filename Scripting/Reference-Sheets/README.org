@@ -1,0 +1,23 @@
+* Posix Little Language Reference Cards
+These tools and notations all trace their history to the Unix Timesharing System
+developed at Bell Laboratories and build upon by hackers at the University of
+California and the GNU Project. They share many characteristics which makes
+learning them as a group easier, despite some inconsistencies.
+
+In honor of the Unix origin, we include a piece of Unix humor!
+
+These files are written in the ancient Berkeley =me= macros for the ancient Bell
+Labs text formatting system =[nt]roff= and its palls =tbl= and =eqn=. It would
+be great to rewrite these in OrgMode suitable for exporting to TeX, et al.
+Thanks to the GNU Project and others, all of these tools are still alive!
+
+- README.org :: this file
+- Makefile :: scripts to turn all of the following into PDFs
+- ed+sed+ex.tbl,me ::	some common ed, sed, ex commands
+- reg-exp.eqn,tbl,me ::	regular expression reference
+- reg-exp-lo.eqn,tbl,me ::	same with lower header line
+- reg-exp-orig.eqn,tbl,me ::	an earlier version
+- shell-metacharacters.eqn,tbl,me ::	some shell metacharacters
+- shell-metacharacters-lo.eqn,tbl,me ::	same with lower header line
+- unix-prank.me ::	apocryphal account of origin of Unix and C
+- vi-ref.me ::	2-column teaching reference for vi editor

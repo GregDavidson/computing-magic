@@ -1,0 +1,79 @@
+.sz +1
+.EQ
+delim @@
+.EN
+.fo ''jgd.ngender.net/gnu''
+.bp
+.ce
+\fBUnix Shell Family Essential Metacharacters\fR
+
+.TS
+c s
+r l
+r l.
+\fBWild Card (globbing) metacharacters try to match files\fR
+.sp .5
+\fB?\fR	any single character
+\fB*\fR	zero or more occurrances of any character
+@[set\-of\-characters]@	any single character in the @set\-of\-characters@
+@[!set\-of\-characters]@	any single character \fBnot\fR in the @set\-of\-characters@
+.TE
+
+.TS
+c s
+r l
+r l.
+\fBQuoting and Grouping\fR
+.sp .5
+\fB\\\fR@any\-character@	@any\-character@ as a literal (not meta)
+\fB'\fR@any\-characters@\fB'\fR	@any\-characters@ as literal text
+\fB"\fR@most\-characters@\fB"\fR	@most\-characters@ as literal text, but:
+	@\"@\fIDouble quotes\fR@\"@ don't suppress @$Variable@, @\`@Embedding@\`@ or @$(@Nesting@)@
+	Quoted expressions will be parsed as one \fBword\fR, i.e. as one token
+.TE
+
+.TS
+c s
+r l
+r l.
+\fBCommand Embedding and Nesting\fR
+.sp .5
+\fB`\fR@shell\-command@`	replaced by output of embedded @sub\-command@ \fI(old syntax)\fR
+\fB$(\fR@shell\-command)@	replaced by output of nested @sub\-command@ \fI(new syntax)\fR
+.TE
+
+.TS
+c s
+r l
+r l.
+\fBVariables\fR
+.sp .5
+@name@@=@@word@	creates variable @name@ with value @word@ \fI(local to shell\fR)
+\fBexport\fR @name@@=@@word@	creates environment variable @name@ with value @word@ \fI(passed to new processes\fR)
+@$@@name@ or @$@\fB{\fR@name@\fB}\fR	replaced by value of variable @name@ or nothing
+	Expand variables inside double quotes to avoid surprises!
+
+.TE
+.TS
+c s
+r l
+r l.
+\fBCommand I/O Redirection\fR
+.sp .5
+@<@@file\-name@	standard input comes from @file\-name@
+@>@@file\-name@	standard output goes to @file\-name@, overwriting it
+@>@@>@@file\-name@	standard output goes to @file\-name@, appending to it
+.TE
+
+.TS
+c s
+r l
+r l.
+\fBSequencing Metacharacters\fR
+.sp .5
+@command@\fB&\fR	runs @command@ in the \fIbackground\fR for parallel processing
+@command sub 1@ \fB&&\fR @command sub 2@	 \fIand then\fR if @command sub 1@ succeeds, also runs @command sub 2@
+@command sub 1@ \fB||\fR @command sub 2@	 \fIor else\fR if @command sub 1@ fails, runs alternative @command sub 2@
+\fB{\fR @command@\fB;\fR ... \fB}\fR	grouped sequence of commands, use \fB;\fR or \fInewline\fR
+\fB!\fR @command@	succeeds when @command@ fails and vice versa
+.TE

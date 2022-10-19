@@ -1,0 +1,70 @@
+.sz +1
+.EQ
+delim @@
+.EN
+.fo ''Copyright \(co 1995 Virtual Infinity Systems''
+.fo ''jgd.ngender.net/gnu''
+.bp
+.ce
+\fBUnix Regular Expression Language\fR
+.sp .5in
+.TS
+c s
+r l
+r l.
+\fBBasic Regular Expression Metacharacters\fR
+.sp
+\fB.\fR	any single character
+\fB[\fR\fIset-of-characters\fR\fB]\fR	any single character in the \fIset-of-characters\fR
+\fB[^\fR\fIset-of-characters\fR\fB]\fR	any single character \fBnot\fR in the \fIset-of-characters\fR
+@regular\-expression@\fB*\fR	zero or more occurrances of @regular\-expression@
+\fB^\fR	the beginning of a line or field
+\fB$\fR	the end of a line or field
+@regular\-expression sub 1@ @regular\-expression sub 2@	@regular\-expression sub 1@ followed by @regular\-expression sub 2@
+\fB\\\fR@meta\-character@	@meta\-character@ as a literal
+@other\-character@	@other\-character@ as a literal
+.TE
+.sp
+.TS
+c s
+r l
+r l.
+\fBExtended Regular Expression Metacharacters\fR
+.sp
+\fBegrep\fR, \fBawk\fR, \fBlex\fR also understand:
+@regular\-expression@\fB+\fR	one or more occurrances of @regular\-expression@
+@regular\-expression@\fB?\fR	zero or one occurrance of @regular\-expression@
+@regular\-expression sub 1@\fB|\fR@regular\-expression sub 2@	@regular\-expression sub 1@ or @regular\-expression sub 2@
+\fB(\fR@regular\-expression@\fB)\fR	groups @regular\-expression@ for \fB*\fR, \fB+\fR, \fB?\fR or \fB|\fR
+.TE
+.sp
+.TS
+c s
+r l
+r l.
+\fBSpecial Regular Expression Metacharacters Requiring Backslashes\fR
+.sp
+\fBex\fR, \fBvi\fR, \fBBerkeley grep\fR, \fBegrep\fR understand:
+\fB\\<\fR	beginning of word
+\fB\\>\fR	end of word
+.sp
+\fBed\fR, \fBsed\fR, \fBex\fR, \fBexpr\fR understand:
+\fB\\(\fR@regular\-expression@\fB\\)\fR	tagged @regular\-expression@
+.sp
+\fBed\fR, \fBsed\fR, \fBex\fR understand:
+\fB@\\digit@\fR	refers back to @digit sup th@ tagged regular expression
+.TE
+.sp
+.TS
+c s
+r l
+r l.
+\fBNew Posix Repeat Constructs\fR
+.sp
+POSIX compliant programs understand:
+@regular\-expression@\fB\\{\fIn\fB\\}\fR	\fIn\fR occurrances of @regular\-expression@
+@regular\-expression@\fB\\{,\fIn\fB\\}\fR	up to \fIn\fR occurrances of @regular\-expression@
+@regular\-expression@\fB\\{\fIn\fB,\\}\fR	\fIn\fR or more occurrances of @regular\-expression@
+@regular\-expression@\fB\\{\fIm\fB,\fIn\fB\\}\fR	\fIm\fR to \fIn\fR occurrances of @regular\-expression@
+.TE
+With Extended Regular Expressions Posix repeats do not use backslashes.

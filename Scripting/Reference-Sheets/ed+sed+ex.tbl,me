@@ -1,0 +1,50 @@
+.he ''Ed, Sed, Ex Common Command Set''
+.fo ''jgd.ngender.net/gnu''
+.ce
+\fBCommand Syntax\fR
+
+.TS
+r l.
+\fB[\fR\fIaddress\fR\fB[\fR\fB,\fR\fIaddress\fR\fB]]\fR	\fIfunction\fR\fB[\fR\fIarguments\fR\fB]\fR
+
+\fB[\fR\fIaddress\fR\fB[\fR\fB,\fR\fIaddress\fR\fB]]{\fR
+	\fIfunction\fR\fB[\fR\fIarguments\fR\fB]\fR
+	\fB...\fR
+\fB}\fR
+
+\fIaddress\fR	line number (\fB$\fR for last line)
+	or \fB/\fIregular-expression\fB/\fR
+\fIfunction\fR	see below
+\fIarguments\fR	specific to the \fIfunction\fR, check Unix manual
+.TE
+
+.ce
+\fBCommon Functions\fR
+
+.TS
+l l l.
+Name	function	arguments
+
+insert	i	text
+append	a	text
+change	c	text
+delete	d
+print	p
+read	r	filename
+write	w	filename
+quit	q
+.TE
+
+.ce
+\fBSubstitute Function\fR
+
+\fBs/\fIregular-expression\fB/\fIreplacement\fB/\fIflags\fR
+
+.TS
+l l.
+flag	comments
+
+g	Global (all occurrances on line)
+p	Print if a replacement was made
+.TE
+

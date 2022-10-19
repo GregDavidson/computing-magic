@@ -1,0 +1,125 @@
+.he ''vi Editor Family Essential Commands''
+.fo ''jgd.ngender.net/gnu''
+.2c
+\fBEntering and Leaving:\fR
+.TS
+r l.
+
+\fBvi\fR \fIfiles...\fR	Edit \fIfiles\fR in \fIvisual mode\fR
+	Prefer \fBvim\fR or \fBgvim\fR to \fBvi\fR if available!
+
+\fBZZ\fR	Write changes and quit editor
+.TE
+
+\fBMoving the cursor:\fR
+
+Movement commands will not go beyond
+.br
+last line of file or last character of line.
+.TS
+r l.
+
+\fBh j k l\fR	Left, down, up, right
+
+\fB0 ^ $\fR	Column 0, start, end of line
+
+\fBw W\fR	Forward small, large \fBword\fR
+
+\fBb B\fR	\fBBack\fR small, large \fBword\fR
+
+\fB( )\fR	\fBSentence\fR start, next
+
+\fB{ }\fR	\fBParagraph\fR start, next
+
+\fB/ ?\fR	\fBSearch\fR forwards, backwards
+
+\fBn N\fR	\fBNext\fR search forwards, backwards
+.TE
+
+\fBInserting new text:\fR
+
+.TS
+r l.
+\fBi I\fR	\fBInsert\fR before character, line
+
+\fBa A\fR	\fBAppend\fR after character, line
+
+\fBo O\fR	\fBOpen\fR new line below, above
+.TE
+
+\fBInsert mode commands:\fR
+
+Function key commands in \fIinsert mode\fR supported
+by newer versions of \fRvi\fR.
+
+.TS
+r l.
+\fBESC\fR	Return to \fIcommand mode\fR
+
+\fBBACKSPACE\fR	Delete left (text may still show)
+
+\fB\fICtrl-\fBT \fICtrl-\fBD\fR	Adjust \fIautoindent\fR in, out
+.TE
+.bc
+\fBCross-product Commands:\fR
+
+Follow these commands with a movement command,
+or double them to select a line.
+.TS
+r l.
+
+\fBd\fR	\fBDelete\fR (cut) to copy buffer
+
+\fBy\fR	\fBYank\fR (copy) to copy buffer
+
+\fBc\fR	\fBChange\fR (combines delete and insert)
+
+\fB<\fR	\fBShift\fR indentation \fBleft\fR
+
+\fB>\fR	\fBShift\fR indentation \fBright\fR
+.TE
+
+\fBRepeating, redoing and undoing:\fR
+
+Most commands can be repeated by prefacing
+them with a repeat count.
+.TS
+r l.
+
+\fB.\fR	\fBDo again\fR last buffer-changing command.
+\fBu\fR	\fBUndo\fR last buffer-changing command
+\fICtrl-\fBR\fR	\fBRedo\fR last \fBundo\fR \fI(vim and gvim only)\fR
+\fBp P\fR	\fBPaste\fR after, before current character or line
+.TE
+
+\fBEx command mode:\fR
+
+.TS
+r l.
+\fB:\fR	 issue single \fBex\fR command from \fIvisual mode\fR
+\fBQ\fR	Quit \fIvisual mode\fR for \fIex mode\fR
+.TE
+
+.TS
+r l.
+\fBn\fRext	\fBNext\fR file
+\fBq\fRuit!	\fBQuit\fR the editor
+\fBw\fRrite \fIfile\fR	\fBWrite\fR buffer to \fIfile\fR
+\fBr\fRead \fIfile\fR	\fBRead\fR \fIfile\fR into buffer
+\fBvi\fRsual	Enter \fIvisual mode\fR from \fIex mode\fI
+\fBset autoindent\fR	Maintain indentation
+.TE
+
+Read and write default to original file.
+.br
+Use \fB!\fR at end of command name to force data loss.
+
+\fBMiscellaneous commands:\fR
+.TS
+r l.
+
+\fBJ\fR	\fBJoin\fR current line with next one
+\fBx\fR	\fBx out\fR character (same as \fBdl\fR)
+\fBr\fIC\fR	\fBReplace\fR current character with \fIC\fR
+\fIline\fR\fBG\fR	\fBGoto\fR \fIline\fR number or end-of-file
+.TE
