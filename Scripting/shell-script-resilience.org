@@ -57,9 +57,8 @@ local system at the current time with the builtin =type= command.
 #+RESULTS:
 : bash is /usr/bin/bash
 
-If you're using =bash=, you can get brief documentation about any builtin
-command using the builtin =help= command. local system at the current time with
-the builtin =help= command.
+If you're using =bash=, you can get brief documentation about /any/ builtin
+command using the builtin =help= command.
 
 #+begin_src bash :results output
  help type
@@ -103,16 +102,18 @@ So let's upgrade our script:
 
 #+begin_src bash :results output
   #!/usr/bin/bash
+  # Strip the directories off the executable program path
   script_name="${0##*/}"
   echo Hello from "$script_name"
-  echo `date -I` is a good day to run!
+  # Embed the ISO date in our message
+  echo "`date -I` is a good day to run!"
 #+end_src
 
 #+RESULTS:
 : Hello from bash
 : 2022-10-18 is a good day to run!
 
-There's not a lot of point making this script more resilent, but what about a
+There's not a lot of point making this script more resilient, but what about a
 script which administers essential services?
 
 ** Ensuring the expected context
@@ -138,7 +139,7 @@ of them gives an unexpected result
 your /Common Sense/ tells you to
 - stop and find out what happened
 - and take corrective action
-before continuing issuing the rest of your familiar commands
+before continuing with the rest of your intended commands
 - if they're even still relevant!
 
 *Scripts have no Common Sense!* Unless you add explicit code to your script, it
@@ -190,8 +191,8 @@ What could go wrong?
     - PostgreSQL depends on many system resources
     - Most systems don't initially have all of the required resources!
 - The build process managed by =make= might fail
-    - It builds more than 1000 target files
-    - Then links them together with required libraries
+    - It builds more than 1000 target files!
+    - Then links them together with many required libraries
 - Account creation might fail
 - Starting PostgreSQL might fail
 - Running =psql= might fail
@@ -200,7 +201,7 @@ This script *does not automate a PostgreSQL installation!*
 - It only organizes it for a human to supervise
 - The options =-euv= allow a human to take over
       - =-x= causes the shell to print each command before executing it
-      - =-e= causes the shell to exit if a command failes
+      - =-e= causes the shell to exit if a command fails
       - =-u= causes the shell to consider an undefined variable to be an error
             - essential for catching otherwise catastrophic typos
 - The part after =sudo su - postgres= is *very fragile*!
