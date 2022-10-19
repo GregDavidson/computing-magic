@@ -1,0 +1,168 @@
+#+TITLE: Shell Script Resilience
+#+SUBTITLE:  PostgreSQL Installation
+#+AUTHOR: J. Greg Davidson
+#+DATE: 18 October 2022
+#+OPTIONS: toc:nil 
+#+OPTIONS: num:nil
+# +OPTIONS: date:nil 
+# +OPTIONS: author:nil 
+
+* Custom PostgreSQL Installation Worked Example
+
+The task:
+- Write a shell script
+- or an organized collection of shell scripts, if necessary
+- to automate a customized installation of [[https://www.postgresql.org/][the PostgreSQL Database System]]
+- on a [[https://en.wikipedia.org/wiki/POSIX][Posix System]]
+      - i.e. on a Unix, BSD, Gnu/Linux or similar Operating System
+
+Note:
+- This kind of installation is only used if a custom install is desired
+- Otherwise a package install is a simple transactional one-line command
+- Packages often provide configuration options for non-standard installations
+
+** Starting with the [[https://www.postgresql.org/docs/current/install-short.html][Short Version of Installation from Source Code]]
+
+The excellent [[https://www.postgresql.org/docs/current/index.html][PostgreSQL Documentation]] has a [[https://www.postgresql.org/docs/current/install-short.html][whole chapter on Installing
+PostgreSQL from Source]] describing many opportunities for customization.
+
+Here's their [[https://www.postgresql.org/docs/current/install-short.html][Short Version]] which precedes the onslaught of options:
+
+#+begin_src sh
+  # Do not try running this!!!
+  ./configure
+  make
+  su
+  make install
+  adduser postgres
+  mkdir -p /usr/local/pgsql/data
+  chown postgres /usr/local/pgsql/data
+  su - postgres
+  /usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data
+  /usr/local/pgsql/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start
+  /usr/local/pgsql/bin/createdb test
+  /usr/local/pgsql/bin/psql test
+#+end_src
+
+*** What could go wrong?
+
+- The referenced files and directories might not exist
+- The tar archive might fail to extract properly
+- The configuration might fail
+    - PostgreSQL depends on many system resources
+    - Most systems don't initially have all of the required resources!
+- The build process managed by =make= might fail
+    - It builds more than 1000 target files!
+    - Then links them together with many required libraries
+- Account creation might fail
+- Starting PostgreSQL might fail
+- Running =psql= might fail
+
+*** Getting The Source Files
+
+The first point of failure is the omission of how we might obtain source files
+for a desired source files for the desired version of PostgreSQL.  Fortunately,
+they are easily downloaded from [[https://www.postgresql.org/ftp/source/][PostgreSQL Sources]]
+
+#+begin_src sh
+  #!/usr/bin/bash -eu
+  # We're using the bash shell with options
+  # -e -- stop if any command fails
+  # -u -- unknown variable references treated as errors
+  cd ~/Downloads # where we can initially save the files
+  # the downloads directory for the desired version
+  url_base='https://ftp.postgresql.org/pub/source/v15.0'
+  file_base='postgresql-15.0.tar' # the tar archive
+  bz2="$file_base.bz2" # the bz2 compressed archive
+  md5="$bz2.md5" # the md5 checksum for the bz2 file
+  sha256="$bz2.sha256" # the sha256 checksum for the bz2 file
+  # download all three files
+  wget --quiet "$url_base/$bz2" "$url_base/$md5" "$url_base/$sha256"  
+  # Verify the compressed archive with the md5 checksum
+  md5sum -c "$md5"
+  # Verify the compressed archive with the sha256 checksum
+  sha256sum -c "$sha256"
+#+end_src
+
+#+RESULTS:
+| postgresql-15.0.tar.bz2: | OK |
+| postgresql-15.0.tar.bz2: | OK |
+
+*** This Is Not A Script!
+
+Although this looks like a script, it's not. It's only a recipe for a human to
+follow. A human should issue each command individually and study the result
+before either proceeding or before cleaning up after a failed step and figuring
+out what's needed to proceed.
+
+If this were a script, it would fail after the =su - postgres= since that creates a
+new shell. The subsequent commands have to be given to that shell rather than to
+the original shell. And the last command =/usr/local/pgsql/bin/psql test=
+creates a third interactive process, a database shell, which needs to be given
+suitable test commands, either interactively or from another script.
+
+** Turning the Short Version into a Script
+
+#+begin_src bash
+  #!/usr/bin/bash -eux
+  # Option -x prints each command just before execution
+  # alternatively, -v would print each command before expansion
+  # --> Don't try running this!!!
+  tarfile=~/Downloads/postgresql-14.1.tar.bz2
+  srcdir=/usr/local/src/PostgreSQL-Install
+  dstdir=/usr/local/pgsql
+  bindir="$dstdir"/bin
+  datadir="$dstdir"/data
+  sudo mkdir "$srcdir"
+  sudo chown "$USER" "$srcdir"
+  cd "$srcdir"
+  tar xf "$tarfile"
+  ./configure
+  make
+  sudo adduser --system --home "$dstdir" --shell `type -p bash` postgres
+  sudo mkdir -p "$datadir"
+  sudo chown -R postgres "$dstdir"
+  sudo su - postgres << 'PG_END'
+set -eux 
+PATH="$HOME/bin:$PATH"
+initdb -D ~/data
+pg_ctl -D ~/data -l logfile start
+createdb test
+psql test << 'PSQL_END'
+SELECT 'Hello world!'::text;
+\q
+PSQL_END 
+PG_END
+#+end_src
+
+*** This is Semi-Automation At Best
+
+This script *does not fully automate a PostgreSQL installation!*
+- It only organizes it for a human to supervise
+- The options =-euv= allow a human to take over
+      - =-x= causes the shell to print each command before executing it
+            - but after all "expansions", e.g. of variables
+      - =-e= causes the shell to exit if a command fails
+      - =-u= causes the shell to consider an undefined variable to be an error
+            - essential for catching otherwise catastrophic typos
+      - these options can be given to the shell as startup arguments
+      - or using the =set= command anytime after the shell has started
+- The part after =sudo su - postgres= is *very fragile*!
+- The =psql= part doesn't do any thorough testing
+- The script doesn't add any custom configuration options
+      - The only point of doing a custom install of this kind!
+- No database superuser is created
+      - Further administration will be unnecessarily awkward
+
+The biggest trouble here is that each time anything goes wrong
+- which it will, repeatedly!
+The human must
+- figure out what went wrong by studying the output
+- undo everything that got built or installed
+- fix the problem
+- rerun the script
+
+And the output is likely to be lost if this is run in the terminal in the usual way.
+- Either run it in an /Emacs Shell Buffer/ using =M-x Shell=
+- Or run it in a terminal /after/ running the =script= command
+      - Remember to =exit= from the script when it stops!
