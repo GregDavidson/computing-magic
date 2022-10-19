@@ -1,35 +1,30 @@
 * Shell Script Resilience
 
+This is an OrgMode Document. If you are reading it with Emacs you can run the
+examples as well as change them and run them again.
+
 ** Version 1: The Naive Script
 
 If you know how to issue commands to a shell manually, then you can trivially
 create a naive shell script:
 - Create a new text file using your favorite editor
 - Enter your desired commands into it
-- Make the script executable
+- Make the script executable with =chmod +x SCRIPT-FILE-NAME=
 - To run it, either
-	- specify a path to it when you run it
-	- place it in a directory on your $PATH
-
-Create and run a new script
-- If you're viewing this file inside of Emacs
-  - and you've set up OrgMode and Babyl correctly ;-)
-  - then =Control-C Control-C= in this block will run it
-- Otherwise you can copy and paste this block into a terminal
-  running a Posix shell
+      - specify a path to it when you run it
+            - e.g. type =./SCRIPT-FILE-NAME= at the Shell Prompt
+      - place it in a directory which is on your =$PATH=
+            - e.g. =mv SCRIPT-FILE-NAME ~/bin=
+            - so you can run it simply as =SCRIPT-FILE-NAME=
 
 #+begin_src sh :results output
-cat > script-version-1 << 'END'
-echo Hello from ${0##*/}
-echo `date -I` is a good day to die!
-END
-chmod +x script-version-1
-./script-version-1
+  echoho Hello from ${0##*/}
+  echo `date -I` is a good day to run!
 #+end_src
 
 #+RESULTS:
-: Hello from script-version-1
-: 2022-10-18 is a good day to die!
+: Hello from sh
+: 2022-10-18 is a good day to run!
 
 *** Let's criticise version 1
 
@@ -42,6 +37,7 @@ resources invoked and accessed by the script may change in ways which cause the
 script to fail.
 
 **** Specifying an Interpreter
+
 The excutable file is still just a text file, which won't do anything by itself.
 
 Giving it execute permission doesn't say which program should be run to
@@ -50,11 +46,31 @@ program we intended when we (or whoever) originally wrote the script.
 
 We let the system know which program we would like it to use to /Interpret/ our
 /Script/ with a [[https://en.wikipedia.org/wiki/Shebang_(Unix)][Shebang Line]] as the first line of the file.
+
+If you're using =bash=, you can find out where a program is located on your
+local system at the current time with the builtin =type= command.
+
+#+begin_src bash :results output
+ type bash 
+#+end_src
+
+#+RESULTS:
+: bash is /usr/bin/bash
+
+If you're using =bash=, you can get brief documentation about any builtin
+command using the builtin =help= command. local system at the current time with
+the builtin =help= command.
+
+#+begin_src bash :results output
+ help type
+#+end_src
+
 **** Documenting The Script
+
 Let's assume that you've looked up the features behind
 - ${0##*/}
 - date -I
-And that nesting commands inside of `back quotes` is familiar to you.
+- And nesting commands inside of `back quotes`
 
 Will someone looking at this script in the future
 - possibly you, after you've forgotten some of these things
@@ -64,77 +80,206 @@ You should document anything non-obvious
 - The shell ignores anything after an unquoted # character
 - If a short comment will do, give it
 - Otherwise link to a more complete explanation elsewhere
-**** Data integrity part 1: Shell Variables
+ 
+**** Controlling Shell Variables
+
 It's good to use shell variables for any content which might change or which
 needs to be repeated, or simply content we wish to document by giving it a name
-which explains its purpose.
+which explains its purpose or makes it easier to think about.
 
-The value of a shell variable can easily contain special characters which invoke
-shell features unexpectedly. A simple space in a shell variabale can cause a
-disaster. For this reason we almost always quote the initial value of a shell
+The value of a shell variable can contain nearly any string of characters,
+including spaces and special characters which unless quoted may activate shell
+features unexpectedly. Thus we almost always quote the initial value of a shell
 variable with either 'single quotes' or "double quotes" and we almost always
-quote a snell expansion with "double quotes". In those rare cases where we don't
-quote shell values or expansions, we should put in a comment explaining why!
-
+quote a shell expansion with "double quotes". In those rare cases where we don't
+quote shell values or expansions, a comment should explain why!
 
 ** Version 2: A Little Better
 
-There is nothing wrong with creating a naive script, as long as you upgrade it before using it again, and especially before giving it to anyone else to use!
+There is nothing wrong with creating a naive script, as long as you upgrade it
+before using it again, and especially before giving it to anyone else to use!
+
+So let's upgrade our script:
 
 #+begin_src bash :results output
-# Choose a filename not in use
-script_name=script-version-2
-[ -e "$script_name" ] && {
-    >&2 echo "You'll need to remove the existing $script_name"
-    exit 1
-}
-# Create the script
-# Let's create a bash script and assume we're using bash now.
-# The builtin type command will tell us where bash is stored
-# (on our current system at the current time).
-{ echo "#!`type -p bash`"
-  cat << 'END'
-script_name="${0##*/}"
-echo Hello from "$script_name"
-echo `date -I` is a good day to die!
-END
-} > "$script_name"
-# make the script executable
-chmod +x $script_name
-./$script_name
+  #!/usr/bin/bash
+  script_name="${0##*/}"
+  echo Hello from "$script_name"
+  echo `date -I` is a good day to run!
 #+end_src
 
 #+RESULTS:
-: Hello from script-version-2
-: 2022-10-18 is a good day to die!
+: Hello from bash
+: 2022-10-18 is a good day to run!
+
+There's not a lot of point making this script more resilent, but what about a
+script which administers essential services?
 
 ** Ensuring the expected context
+
 When you're issuing a command interactively, there's a certain background
 context:
-- You're logged in under a particular user account
+- You're logged in under a particular user account with particular permissions
 - On a system with particular versions of programs and libraries
-- With a particular /Working Directory/
-- With particular /Environment Variables/ set in particular ways
-- With particular contents in particular configuration files 
+- You have a particular /Current Working Directory/
+- Your particular /Environment Variables/ are set in particular ways
+- You have particular configuration files with particular contents
 
 All of the above particulars can effect what, if anything, a command
-you issue might do.  Add to that context
-- the state of any other resources your command might access
+you issue might do.  In addition to that context
+- consider the state of any resources your command might access
 	- other files and directories on your local system
 	- services and other processes on your local system
-	- services and resources on other systems
+	- services and resources on other systems across the Internet
 
 When you start to issue a series of familiar commands manually and one
 of them gives an unexpected result
 - especially an error message!
-you're probably going to
+your /Common Sense/ tells you to
 - stop and find out what happened
 - and take corrective action
 before continuing issuing the rest of your familiar commands
 - if they're even still relevant!
 
-Unless you add explicit code to your script, it will simply barrel on, executing
-the rest of the commands!
+*Scripts have no Common Sense!* Unless you add explicit code to your script, it
+will simply barrel on, executing the rest of the commands willy-nilly!
 
 ** What if something goes wrong?
-** Data integrity
+
+Consider this /Install Script/ for [[https://www.postgresql.org/][the PostgreSQL Database System]] on a [[https://en.wikipedia.org/wiki/POSIX][Posix
+System]]
+- i.e. on a Unix, BSD, Gnu/Linux or similar Operating System
+- Based on the [[https://www.postgresql.org/docs/current/install-short.html][Short Version of Installation from Source Code]]
+- Note: This kind of installation is only used if a custom install is desired
+      - A custom install can deviate from standard package configurations
+
+#+begin_src bash
+  #!/usr/bin/bash -euv
+  # Don't try running this!!!
+  tarfile=~/Downloads/postgresql-14.1.tar.bz2
+  srcdir=/usr/local/src/PostgreSQL-Install
+  dstdir=/usr/local/pgsql
+  bindir="$dstdir"/bin
+  datadir="$dstdir"/data
+  sudo mkdir "$srcdir"
+  sudo chown "$USER" "$srcdir"
+  cd "$srcdir"
+  tar xf "$tarfile"
+  ./configure
+  make
+  sudo adduser --system --home "$dstdir" --shell `type -p bash` postgres
+  sudo mkdir -p "$datadir"
+  sudo chown -R postgres "$dstdir"
+  sudo su - postgres << 'PG_END'
+set -euv 
+PATH="$HOME/bin:$PATH"
+initdb -D ~/data
+pg_ctl -D ~/data -l logfile start
+createdb test
+psql test << 'PSQL_END'
+SELECT 'Hello world!'::text;
+\q
+PSQL_END 
+PG_END
+#+end_src
+
+What could go wrong?
+- The referenced files and directories might not exist
+- The tar archive might fail to extract properly
+- The configuration might fail
+    - PostgreSQL depends on many system resources
+    - Most systems don't initially have all of the required resources!
+- The build process managed by =make= might fail
+    - It builds more than 1000 target files
+    - Then links them together with required libraries
+- Account creation might fail
+- Starting PostgreSQL might fail
+- Running =psql= might fail
+
+This script *does not automate a PostgreSQL installation!*
+- It only organizes it for a human to supervise
+- The options =-euv= allow a human to take over
+      - =-x= causes the shell to print each command before executing it
+      - =-e= causes the shell to exit if a command failes
+      - =-u= causes the shell to consider an undefined variable to be an error
+            - essential for catching otherwise catastrophic typos
+- The part after =sudo su - postgres= is *very fragile*!
+- The =psql= part doesn't do any thorough testing
+- The script doesn't add any custom configuration options
+      - The only point of doing a custom install of this kind!
+- No database superuser is created
+      - Further administration will be unnecessarily awkward
+
+The biggest trouble here is that each time anything goes wrong
+- which it will, repeatedly!
+The human must
+- figure out what went wrong by studying the output
+- undo everything that got built or installed
+- fix the problem
+- rerun the script
+
+And the output is likely to be lost if this is run in the terminal in the usual way.
+- Either run it in an /Emacs Shell Buffer/ using =M-x Shell=
+- Or run it in a terminal /after/ running the =script= command
+      - Remember to =exit= from the script when it stops!
+
+** Fully Automating This Kind Of Script
+
+If we want to build complex artifacts and store them into databases or the
+filesystem and/or changes the state of the system or some subsystem in complex
+ways, we would certainly prefer to do so using a script, especially if we're
+going to want to do similar tasks repeatedly.
+
+Using a script
+1. documents the process
+2. saves labor
+3. increases reliability
+But 2 and 3 are only true if the script can detect and handle errors.
+- Stopping with a transcript is only semi-automation
+
+*** Error Detection Strategies
+
+All processes (commands) in a Posix environment return an /Exit Status/.
+- By convention, 0 means success, non-0 means something weird happened
+      - Note that this is the opposite of traditional Boolean values!
+- The /Exit Status/ of the /Last Command/ is available in the =$?= pseudo-variable.
+
+Some processes require explicit integrity tests
+- The /Posix/ environment provides some has many often helpful tools
+      - =cmp= will compare two files that should be the same
+      - =test= has lots of built-in tests
+      - The =case= and =expr= commands can do pattern matching
+      - etc.
+- The =make= tool is often used to organize tests scripts
+      - =make test= is a frequent part of a build process
+
+*** Error Recovery Strategies
+
+Once a problem has been detected, error recovery needs to
+- Capture what happened
+- Restore the system to a known state
+- Diagnose the problem
+- Document and log the problem
+- Execute an alternative process if there is one
+- Indicate failure if we're out of alternatives
+
+Coding this is usually done with /Exit Codes/ which control
+- the =if= and =while= commands
+- the boolean operators =&&= (and then) and =||= (or else)
+
+In many cases a script is just one part of a more complex automated process, so
+all it has to do is exit with a non-zero Exit Status, e.g. with =exit 1= --
+although it's best to have different non-zero statuses for different kinds of
+failure.
+
+A top level script may need to alert humans that an important process has
+failed. This should never be done by popping up a notification on a user's
+screen asking them to report an error! A script should be able to send a text,
+email, etc. or file a trouble ticket, etc. to bring attention to the problem by
+the right person in a timely fashion. Scripts can also monitor a trouble ticket
+system or repeatedly check a system which is out of order and escalate an issue
+when fixes are not occurring within an expected timeframe.
+
+** Examples of Resilient Scripts
+
+*This is a placeholder for future content!*
