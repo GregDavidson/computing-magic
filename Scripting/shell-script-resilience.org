@@ -1,0 +1,140 @@
+* Shell Script Resilience
+
+** Version 1: The Naive Script
+
+If you know how to issue commands to a shell manually, then you can trivially
+create a naive shell script:
+- Create a new text file using your favorite editor
+- Enter your desired commands into it
+- Make the script executable
+- To run it, either
+	- specify a path to it when you run it
+	- place it in a directory on your $PATH
+
+Create and run a new script
+- If you're viewing this file inside of Emacs
+  - and you've set up OrgMode and Babyl correctly ;-)
+  - then =Control-C Control-C= in this block will run it
+- Otherwise you can copy and paste this block into a terminal
+  running a Posix shell
+
+#+begin_src sh :results output
+cat > script-version-1 << 'END'
+echo Hello from ${0##*/}
+echo `date -I` is a good day to die!
+END
+chmod +x script-version-1
+./script-version-1
+#+end_src
+
+#+RESULTS:
+: Hello from script-version-1
+: 2022-10-18 is a good day to die!
+
+*** Let's criticise version 1
+
+A great thing about storing commands in a script is that we (and others) can now
+re-execute these commands as often as we like far into the future. This is also
+the problem: The people running the script (including a future version of you)
+do not necessarily understand these commands *and* the script can fail because
+the script may be used differently than you initially used it *and* the
+resources invoked and accessed by the script may change in ways which cause the
+script to fail.
+
+**** Specifying an Interpreter
+The excutable file is still just a text file, which won't do anything by itself.
+
+Giving it execute permission doesn't say which program should be run to
+/Interpret/ the script. So we get a system default, which may or may not be the
+program we intended when we (or whoever) originally wrote the script.
+
+We let the system know which program we would like it to use to /Interpret/ our
+/Script/ with a [[https://en.wikipedia.org/wiki/Shebang_(Unix)][Shebang Line]] as the first line of the file.
+**** Documenting The Script
+Let's assume that you've looked up the features behind
+- ${0##*/}
+- date -I
+And that nesting commands inside of `back quotes` is familiar to you.
+
+Will someone looking at this script in the future
+- possibly you, after you've forgotten some of these things
+understand what these things mean?
+
+You should document anything non-obvious
+- The shell ignores anything after an unquoted # character
+- If a short comment will do, give it
+- Otherwise link to a more complete explanation elsewhere
+**** Data integrity part 1: Shell Variables
+It's good to use shell variables for any content which might change or which
+needs to be repeated, or simply content we wish to document by giving it a name
+which explains its purpose.
+
+The value of a shell variable can easily contain special characters which invoke
+shell features unexpectedly. A simple space in a shell variabale can cause a
+disaster. For this reason we almost always quote the initial value of a shell
+variable with either 'single quotes' or "double quotes" and we almost always
+quote a snell expansion with "double quotes". In those rare cases where we don't
+quote shell values or expansions, we should put in a comment explaining why!
+
+
+** Version 2: A Little Better
+
+There is nothing wrong with creating a naive script, as long as you upgrade it before using it again, and especially before giving it to anyone else to use!
+
+#+begin_src bash :results output
+# Choose a filename not in use
+script_name=script-version-2
+[ -e "$script_name" ] && {
+    >&2 echo "You'll need to remove the existing $script_name"
+    exit 1
+}
+# Create the script
+# Let's create a bash script and assume we're using bash now.
+# The builtin type command will tell us where bash is stored
+# (on our current system at the current time).
+{ echo "#!`type -p bash`"
+  cat << 'END'
+script_name="${0##*/}"
+echo Hello from "$script_name"
+echo `date -I` is a good day to die!
+END
+} > "$script_name"
+# make the script executable
+chmod +x $script_name
+./$script_name
+#+end_src
+
+#+RESULTS:
+: Hello from script-version-2
+: 2022-10-18 is a good day to die!
+
+** Ensuring the expected context
+When you're issuing a command interactively, there's a certain background
+context:
+- You're logged in under a particular user account
+- On a system with particular versions of programs and libraries
+- With a particular /Working Directory/
+- With particular /Environment Variables/ set in particular ways
+- With particular contents in particular configuration files 
+
+All of the above particulars can effect what, if anything, a command
+you issue might do.  Add to that context
+- the state of any other resources your command might access
+	- other files and directories on your local system
+	- services and other processes on your local system
+	- services and resources on other systems
+
+When you start to issue a series of familiar commands manually and one
+of them gives an unexpected result
+- especially an error message!
+you're probably going to
+- stop and find out what happened
+- and take corrective action
+before continuing issuing the rest of your familiar commands
+- if they're even still relevant!
+
+Unless you add explicit code to your script, it will simply barrel on, executing
+the rest of the commands!
+
+** What if something goes wrong?
+** Data integrity
