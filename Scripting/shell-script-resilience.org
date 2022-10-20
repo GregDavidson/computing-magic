@@ -203,6 +203,222 @@ the right person in a timely fashion. Scripts can also monitor a trouble ticket
 system or repeatedly check a system which is out of order and escalate an issue
 when fixes are not occurring within an expected timeframe.
 
+** How Do We Code When Things Might Fail?
+
+At first blush it seems obvious what we should do if things might fail. We
+simply use =if/else= statements to account for all possibilities.
+
+We'll start out with just reporting problems, leaving it up to a human to read
+the problem reports and deal with them.  But we could add more code anywhere to do
+cleanup, try fixes and alternatives, etc.
+
+#+begin_src sh
+  archive_url='https://ftp.postgresql.org/pub/source/v15.0/postgresql-15.0.tar.bz2'
+  if type wget >/dev/null; then
+      wget "$archive_url"
+  else
+      >&2 "$pgm error: missing program wget; aborting"
+      exit 1
+  fi
+#+end_src
+
+but then the =wget= command could fail, so maybe we better do
+
+#+begin_src sh
+  project_dir="$HOME/Projects/Showoff"
+  archive_url='https://ftp.postgresql.org/pub/source/v15.0/postgresql-15.0.tar.bz2'
+  mkdir -p "$project_dir"
+  cd "$project_dir"
+  git init
+  if type wget >/dev/null; then
+      if wget "$archive_url"; then
+          tar xf "$archive_url"
+          ./configure
+          make
+          make test
+          make install
+      else
+          >&2 "$pgm error: wget can't get $archive_url; aborting"
+          exit 2
+      fi
+  else
+      >&2 "$pgm error: missing program wget; aborting"
+      exit 1
+  fi
+#+end_src
+
+- What if we're missing any of the commands =git=, =tar= or =make=?
+- Suppose we have all the programs - what can still fail?
+- How would we need to write this to immediately report when something failed?
+- How might we reverse any side effects before exiting?
+- How might we log or communicate any problems appropriately?
+- Do we care why a command might have failed?
+      - We have the wrong version of the program?
+      - The data given to it is not as expected
+      - We're missing permissions
+
+*** An Organized Semi-Automated Approach
+
+We're still just going to report problems if they occur, so our script is still
+not fully automating the task.
+
+#+begin_src bash
+  #!/usr/bin/bash -u
+  pgm='hero'
+  target='postgresql-15.0.tar.bz2'
+  project_dir="$HOME/Projects/$target"
+  archive_dir='https://ftp.postgresql.org/pub/source/v15.0'
+  archive_file="$target.tar.bz2"
+  archive_url="$archive_dir/$archive_file"
+  mkdir -p "$project_dir" || {
+      >&2 echo "$hero error: Can't create directory $project_dir"
+      exit 1
+  }
+  cd "$project_dir" || {
+      >&2 echo "$hero error: Can't cd to directory $project_dir"
+      exit 2
+  }
+  for p in git wget tar; do
+    type "$p" >/dev/null || {
+      >&2 echo "$hero error: Missing required command $p"
+      exit 3
+    }
+    # How might we check the required versions?
+  done
+  git init || {
+      >&2 echo "$hero error: git init failed in directory $project_dir"
+      exit 4
+  }
+  wget "$archive_url" || {
+      >&2 echo "$hero error: wget failed to get $archive_url"
+      exit 5
+  }
+  tar xf "$archive_file" || {
+      >&2 echo "$hero error: tar failed to extract $archive_file"
+      exit 6
+  }
+  ./configure || {
+      >&2 echo "$hero error: configure of $target failed in $project_dir"
+      exit 7
+  }
+  make || {
+      >&2 echo "$hero error: make of $target failed in $project_dir"
+      exit 8
+  }
+  make test || {
+      >&2 echo "$hero error: test of $target failed in $project_dir"
+      exit  9
+  }
+  make install || {
+      >&2 echo "$hero error: install of $target from $project_dir failed"
+      exit  10
+  }
+#+end_src
+
+Hmm, that's a lot of boiler plate, and we haven't even added any fallback code!
+- Let's see if we can simplify it first!
+
+*** A Better Organized Semi-Automated Approach
+
+#+begin_src bash
+  #!/usr/bin/bash -u
+  # expanding undefined variables will cause an error (-u in effect)
+  # set variables for clarity and multiple use
+  pgm='hero'
+  target='postgresql-15.0.tar.bz2'
+  project_dir="$HOME/Projects/$target"
+  archive_dir='https://ftp.postgresql.org/pub/source/v15.0'
+  archive_file="$target.tar.bz2"
+  archive_url="$archive_dir/$archive_file"
+  # define some handy functions -- could be imported from a library!
+  report() { local level="$1"; shift; >&2 echo "$pgm $level: $*"; }
+  error() { report error "$*"; return 1; }
+  error_exit() { local code="$1"; report error "$*"; exit "$code"; }
+  mkdir -p "$project_dir" || error_exit 1 "Can't create directory $project_dir"
+  cd "$project_dir" || error_exit 2 "Can't cd to directory $project_dir"
+  for p in git wget tar; do
+    type "$p" >/dev/null || error_exit 3 "Missing required command $p"
+    # How might we check the required versions?
+  done
+  git init || error_exit 4 "git init failed in directory $project_dir"
+  wget "$archive_url" || error_exit 5 "wget failed to get $archive_url"
+  tar xf "$archive_file" || error_exit 6 "tar failed to extract $archive_file"
+  ./configure || error_exit 7 "configure of $target failed in $project_dir"
+  make || error_exit 8 "make of $target failed in $project_dir"
+  make test || error_exit 9 "test of $target failed in $project_dir"
+  make install || error_exit 10 "install of $target from $project_dir failed"
+#+end_src
+
+Anywhere where we have an =error_exit= we could put back in a block to clean
+things up, or we could be even fancier:
+
+#+begin_src bash
+  { git init || error "git init failed in directory $project_dir"; } &&
+  { wget "$archive_url" || error "wget failed to get $archive_url"; } &&
+  { tar xf "$archive_file" || error "tar failed to extract $archive_file"; } || {
+      cd ..
+      rm -rf "$project_dir"
+      error_exit 4 "Removed botched $project_dir"
+  }
+#+end_src
+
+*** A Super Organized Semi-Automated Approach
+
+#+begin_src bash
+  #!/usr/bin/bash -u
+  # expanding undefined variables will cause an error (-u in effect)
+  # set variables for clarity and multiple use
+  pgm='hero'
+  target='postgresql-15.0.tar.bz2'
+  project_dir="$HOME/Projects/$target"
+  archive_dir='https://ftp.postgresql.org/pub/source/v15.0'
+  archive_file="$target.tar.bz2"
+  archive_url="$archive_dir/$archive_file"
+  # define some handy functions -- could be imported from a library!
+  try_code=10			# non-zero and unique
+  try() {
+    (( try_code++ ))	# increment the failure code
+    if "$@"; then echo "OK: $@"
+    else echo "$pgm FAILED: $@"; exit "$try_code"
+    fi
+  }
+  # check for the existence of required programs
+  for p in git wget tar; do
+    try type "$p" >/dev/null || {
+        >&2 echo "Missing required command $p"
+        exit 1
+    }
+    # How might we check the required versions?
+  done
+  # Now the business logic
+  try mkdir -p "$project_dir"
+  try cd "$project_dir"
+  try git init
+  try wget "$archive_url"
+  try tar xf "$archive_file"
+  try ./configure
+  try make
+  try make test
+  try make install
+#+end_src
+
+Now where might we put fixup, fallback, cleanup or tactical communication code?
+
+*** Criticism
+
+We've achieved some success in reducing boiler plate
+- After we've defined variables and functions
+- And checked for existence of the required programs
+- We have about the same number of commands and complexity
+
+We still need to deal with
+- actually dealing with failure
+      - diagnosing the source of the problem
+      - trying any known fixes or alternatives
+      - removing (perhaps to a study area) any messes left behind
+- whether there's success or failure
+      - logging and communicating appropriately
+
 ** Examples of Resilient Scripts
 
 - [[file:shell-script-example-pginstall.org][A Custom Installation of PostgreSQL from Source]]
