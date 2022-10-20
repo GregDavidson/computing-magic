@@ -1,3 +1,12 @@
+#+TITLE: Shell Script Resilience
+#+SUBTITLE: Overview of the Problem Space
+#+AUTHOR: J. Greg Davidson
+#+DATE: 18 October 2022
+#+OPTIONS: toc:nil 
+#+OPTIONS: num:nil
+# +OPTIONS: date:nil 
+# +OPTIONS: author:nil 
+
 * Shell Script Resilience
 
 This is an OrgMode Document. If you are reading it with Emacs you can run the
