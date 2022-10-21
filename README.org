@@ -1,5 +1,7 @@
 * Computing Magic
 
+A [[https://github.com/GregDavidson/loel/blob/main/Devel/creating-curricula.org][Curriculum]] of the [[https://github.com/GregDavidson/loel][League of Extraordinary Learners]].
+
 ** TL;DR
   
 These materials are primarily organized as a set of Modules which, after the
