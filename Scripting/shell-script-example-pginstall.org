@@ -2,24 +2,23 @@
 #+SUBTITLE:  PostgreSQL Installation
 #+AUTHOR: J. Greg Davidson
 #+DATE: 18 October 2022
-#+OPTIONS: toc:nil 
+#+OPTIONS: toc:nil
 #+OPTIONS: num:nil
-# +OPTIONS: date:nil 
-# +OPTIONS: author:nil 
+# +OPTIONS: date:nil
+# +OPTIONS: author:nil
 
 * Custom PostgreSQL Installation Worked Example
 
 The task:
 - Write a shell script
-- or an organized collection of shell scripts, if necessary
-- to automate a customized installation of [[https://www.postgresql.org/][the PostgreSQL Database System]]
-- on a [[https://en.wikipedia.org/wiki/POSIX][Posix System]]
-      - i.e. on a Unix, BSD, Gnu/Linux or similar Operating System
+- to automate a customized installation from source
+- of [[https://www.postgresql.org/][the PostgreSQL Database System]]
 
 Note:
-- This kind of installation is only used if a custom install is desired
-- Otherwise a package install is a simple transactional one-line command
-- Packages often provide configuration options for non-standard installations
+- Custom installs from source are only occasionally needed
+- A regular package install is a simple transactional one-line command
+- Package installs sometimes provide a few configuration options
+- Source installs provide much more configuration options!
 
 ** The Short Version of "Installation from Source Code"
 
@@ -90,7 +89,7 @@ they are easily downloaded from [[https://www.postgresql.org/ftp/source/][Postgr
   md5="$bz2.md5" # the md5 checksum for the bz2 file
   sha256="$bz2.sha256" # the sha256 checksum for the bz2 file
   # download all three files
-  wget --quiet "$url_base/$bz2" "$url_base/$md5" "$url_base/$sha256"  
+  wget --quiet "$url_base/$bz2" "$url_base/$md5" "$url_base/$sha256"
   # Verify the compressed archive with the md5 checksum
   md5sum -c "$md5"
   # Verify the compressed archive with the sha256 checksum
@@ -104,7 +103,7 @@ they are easily downloaded from [[https://www.postgresql.org/ftp/source/][Postgr
 Note that there are other ways we could get the PostgreSQL sources, including
 cloning a Git Repository.
 
-*** Is This Overkill?
+**** Is This Overkill?
 
 It would be easy to do the downloads manually from a browser
 and it doesn't need to be done very often - fair enough!
@@ -137,7 +136,7 @@ and it doesn't need to be done very often - fair enough!
   sudo mkdir -p "$datadir"
   sudo chown -R postgres "$dstdir"
   sudo su - postgres << 'PG_END'
-set -eux 
+set -eux
 PATH="$HOME/bin:$PATH"
 initdb -D ~/data
 pg_ctl -D ~/data -l logfile start
@@ -145,7 +144,7 @@ createdb test
 psql test << 'PSQL_END'
 SELECT 'Hello world!'::text;
 \q
-PSQL_END 
+PSQL_END
 PG_END
 #+end_src
 
@@ -179,4 +178,59 @@ The human must
 And the output is likely to be lost if this is run in the terminal in the usual way.
 - Either run it in an /Emacs Shell Buffer/ using =M-x Shell=
 - Or run it in a terminal /after/ running the =script= command
-      - Remember to =exit= from the script when it stops!
+      - =man script=
+      - Remember to =exit= from the /script/ shell afterwards!
+
+** Some Planning and Design Is Needed!
+
+The task of installing a complex subsystem like PostgreSQL is a good example of
+many challenging problems. Parts of it can be done with straightforward
+procedures which can be fully automated. Other parts are likely to need human
+assistance before they work correctly. Yet anything a human does manually is
+likely to be hard to reproduce and quickly forgotten. Let's refine the task
+statement:
+
+*** The New Task Statement
+
+- Write a shell script
+- or an organized collection of shell scripts
+- to automate a customized installation from source
+- of [[https://www.postgresql.org/][the PostgreSQL Database System]]
+- on a [[https://en.wikipedia.org/wiki/POSIX][Posix System]]
+      - i.e. on a Unix, BSD, Gnu/Linux or similar Operating System
+      - augmented with any special requirements
+- possible failures should be planned for
+      - any parts which may fail should be isolated
+      - the nature of the failure needs to be made clear
+
+*** The New Plan
+
+Isolate everything in a new directory with subdirectories
+- The new directory should be specific to this version of the system
+- The new directory should contain
+      - Centralized /notes/ on all attempts
+      - The scripts used to carry out all of the tasks
+      - An untainted readonly copy of the sources in a subdirectory
+            - to serve as a reference
+      - Numbered subdirectories for each attempt
+- Isolate Major Stages of the installation
+      - So that they can be iterated independently
+      - Save transcripts of each iteration of each stage!
+- The Major Stages
+      - Configuration
+      - The =make= process
+      - Testing
+- Iterate towards a fully automated build
+      - Refine the scripts until they can do a fully automated build from scratch
+      - Document and test for all external dependencies that were resolved!
+- Final Fully Automated Build and Installation
+      - When the Fully Automated Build succeeds from a fresh set of sources
+      - It should /Install/ the results into a new directory
+- Any earlier installations should be undisturbed!
+
+When should the material of the failed build attempts be removed?
+- Perhaps when this version of the system is no longer in use
+- The final scripts, notes and transcripts should be kept as reference
+- The transcripts can be compressed
+- Document this removal and archiving process
+    - Possibly script it and save the script!
