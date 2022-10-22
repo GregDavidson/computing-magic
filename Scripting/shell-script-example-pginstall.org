@@ -58,6 +58,19 @@ Here's their [[https://www.postgresql.org/docs/current/install-short.html][Short
 - Starting PostgreSQL might fail
 - Running =psql= might fail
 
+*** This Is Not A Script!
+
+Although this looks like a script, it's not. It's only a recipe for a human to
+follow. A human needs to issue each of these commands manually and study the
+result before either proceeding if it succeeds or if it fails, cleaning up any
+mess and figuring out what's needed to proceed.
+
+If this were a script, it would fail after the =su - postgres= since that creates a
+new shell. The subsequent commands have to be given to that shell rather than to
+the original shell. And the last command =/usr/local/pgsql/bin/psql test=
+creates a third interactive process, a database shell, which needs to be given
+suitable test commands, either interactively or from another script.
+
 *** Getting The Source Files
 
 The first point of failure is the omission of how we might obtain source files
@@ -87,19 +100,6 @@ they are easily downloaded from [[https://www.postgresql.org/ftp/source/][Postgr
 #+RESULTS:
 | postgresql-15.0.tar.bz2: | OK |
 | postgresql-15.0.tar.bz2: | OK |
-
-*** This Is Not A Script!
-
-Although this looks like a script, it's not. It's only a recipe for a human to
-follow. A human should issue each command individually and study the result
-before either proceeding or before cleaning up after a failed step and figuring
-out what's needed to proceed.
-
-If this were a script, it would fail after the =su - postgres= since that creates a
-new shell. The subsequent commands have to be given to that shell rather than to
-the original shell. And the last command =/usr/local/pgsql/bin/psql test=
-creates a third interactive process, a database shell, which needs to be given
-suitable test commands, either interactively or from another script.
 
 ** Turning the Short Version into a Script
 
