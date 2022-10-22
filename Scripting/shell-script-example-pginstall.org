@@ -21,7 +21,7 @@ Note:
 - Otherwise a package install is a simple transactional one-line command
 - Packages often provide configuration options for non-standard installations
 
-** Starting with the [[https://www.postgresql.org/docs/current/install-short.html][Short Version of Installation from Source Code]]
+** The Short Version of "Installation from Source Code"
 
 The excellent [[https://www.postgresql.org/docs/current/index.html][PostgreSQL Documentation]] has a [[https://www.postgresql.org/docs/current/install-short.html][whole chapter on Installing
 PostgreSQL from Source]] describing many opportunities for customization.
@@ -100,6 +100,20 @@ they are easily downloaded from [[https://www.postgresql.org/ftp/source/][Postgr
 #+RESULTS:
 | postgresql-15.0.tar.bz2: | OK |
 | postgresql-15.0.tar.bz2: | OK |
+
+Note that there are other ways we could get the PostgreSQL sources, including
+cloning a Git Repository.
+
+*** Is This Overkill?
+
+It would be easy to do the downloads manually from a browser
+and it doesn't need to be done very often - fair enough!
+- And it is important to document administrative procedures
+      - a naive script can serve as good documentation
+            - it helps with remembering important details
+                  - like how to verify the download!
+      - the formality of this one may be overkill
+            - except it was easy and a good example!
 
 ** Turning the Short Version into a Script
 
