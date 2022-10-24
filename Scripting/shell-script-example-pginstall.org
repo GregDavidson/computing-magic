@@ -48,14 +48,16 @@ Here's their [[https://www.postgresql.org/docs/current/install-short.html][Short
 - The referenced files and directories might not exist
 - The tar archive might fail to extract properly
 - The configuration might fail
-    - PostgreSQL depends on many system resources
-    - Most systems don't initially have all of the required resources!
+      - PostgreSQL depends on many system resources
+      - Most systems don't initially have all of the required resources!
 - The build process managed by =make= might fail
-    - It builds more than 1000 target files!
-    - Then links them together with many required libraries
+      - It builds more than 1000 target files!
+      - Then links them together with many required libraries
 - Account creation might fail
 - Starting PostgreSQL might fail
 - Running =psql= might fail
+- The tests might fail
+- Installation might fail
 
 *** This Is Not A Script!
 
@@ -226,6 +228,9 @@ Isolate everything in a new directory with subdirectories
 - Final Fully Automated Build and Installation
       - When the Fully Automated Build succeeds from a fresh set of sources
       - It should /Install/ the results into a new directory
+      - Be sure to accommodate any Post-Installation steps!
+            - These are generally necessary with PostgreSQL
+            - And for the Wicci as well!
 - Any earlier installations should be undisturbed!
 
 When should the material of the failed build attempts be removed?

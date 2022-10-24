@@ -234,8 +234,9 @@ cleanup, try fixes and alternatives, etc.
 but then the =wget= command could fail, so maybe we better do
 
 #+begin_src sh
-  project_dir="$HOME/Projects/Showoff"
-  archive_url='https://ftp.postgresql.org/pub/source/v15.0/postgresql-15.0.tar.bz2'
+  project='postgresql-15.0'
+  project_dir="$HOME/Projects/$project"
+  archive_url="https://ftp.postgresql.org/pub/source/v15.0/$project.tar.bz2"
   mkdir -p "$project_dir"
   cd "$project_dir"
   git init
@@ -271,55 +272,58 @@ but then the =wget= command could fail, so maybe we better do
 We're still just going to report problems if they occur, so our script is still
 not fully automating the task.
 
+This next attempt is going to be tedious. When you get bored with reading it,
+skip to the next section where we make it better!
+
 #+begin_src bash
   #!/usr/bin/bash -u
-  pgm='hero'
-  target='postgresql-15.0.tar.bz2'
-  project_dir="$HOME/Projects/$target"
+  pgm='install-pgsql-v1'
+  project='postgresql-15.0'
+  project_dir="$HOME/Projects/$project"
   archive_dir='https://ftp.postgresql.org/pub/source/v15.0'
-  archive_file="$target.tar.bz2"
+  archive_file="$project.tar.bz2"
   archive_url="$archive_dir/$archive_file"
   mkdir -p "$project_dir" || {
-      >&2 echo "$hero error: Can't create directory $project_dir"
+      >&2 echo "$pgm error: Can't create directory $project_dir"
       exit 1
   }
   cd "$project_dir" || {
-      >&2 echo "$hero error: Can't cd to directory $project_dir"
+      >&2 echo "$pgm error: Can't cd to directory $project_dir"
       exit 2
   }
   for p in git wget tar; do
     type "$p" >/dev/null || {
-      >&2 echo "$hero error: Missing required command $p"
+      >&2 echo "$pgm error: Missing required command $p"
       exit 3
     }
     # How might we check the required versions?
   done
   git init || {
-      >&2 echo "$hero error: git init failed in directory $project_dir"
+      >&2 echo "$pgm error: git init failed in directory $project_dir"
       exit 4
   }
   wget "$archive_url" || {
-      >&2 echo "$hero error: wget failed to get $archive_url"
+      >&2 echo "$pgm error: wget failed to get $archive_url"
       exit 5
   }
   tar xf "$archive_file" || {
-      >&2 echo "$hero error: tar failed to extract $archive_file"
+      >&2 echo "$pgm error: tar failed to extract $archive_file"
       exit 6
   }
   ./configure || {
-      >&2 echo "$hero error: configure of $target failed in $project_dir"
+      >&2 echo "$pgm error: configure of $archive_file failed in $project_dir"
       exit 7
   }
   make || {
-      >&2 echo "$hero error: make of $target failed in $project_dir"
+      >&2 echo "$pgm error: make of $archive_file failed in $project_dir"
       exit 8
   }
   make test || {
-      >&2 echo "$hero error: test of $target failed in $project_dir"
+      >&2 echo "$pgm error: test of $archive_file failed in $project_dir"
       exit  9
   }
   make install || {
-      >&2 echo "$hero error: install of $target from $project_dir failed"
+      >&2 echo "$pgm error: install of $archive_file from $project_dir failed"
       exit  10
   }
 #+end_src
@@ -333,11 +337,11 @@ Hmm, that's a lot of boiler plate, and we haven't even added any fallback code!
   #!/usr/bin/bash -u
   # expanding undefined variables will cause an error (-u in effect)
   # set variables for clarity and multiple use
-  pgm='hero'
-  target='postgresql-15.0.tar.bz2'
-  project_dir="$HOME/Projects/$target"
+  pgm='install-pgsql-v2'
+  project='postgresql-15.0'
+  project_dir="$HOME/Projects/$project"
   archive_dir='https://ftp.postgresql.org/pub/source/v15.0'
-  archive_file="$target.tar.bz2"
+  archive_file="$project.tar.bz2"
   archive_url="$archive_dir/$archive_file"
   # define some handy functions -- could be imported from a library!
   report() { local level="$1"; shift; >&2 echo "$pgm $level: $*"; }
@@ -352,10 +356,10 @@ Hmm, that's a lot of boiler plate, and we haven't even added any fallback code!
   git init || error_exit 4 "git init failed in directory $project_dir"
   wget "$archive_url" || error_exit 5 "wget failed to get $archive_url"
   tar xf "$archive_file" || error_exit 6 "tar failed to extract $archive_file"
-  ./configure || error_exit 7 "configure of $target failed in $project_dir"
-  make || error_exit 8 "make of $target failed in $project_dir"
-  make test || error_exit 9 "test of $target failed in $project_dir"
-  make install || error_exit 10 "install of $target from $project_dir failed"
+  ./configure || error_exit 7 "configure of $project failed in $project_dir"
+  make || error_exit 8 "make of $project failed in $project_dir"
+  make test || error_exit 9 "test of $project failed in $project_dir"
+  make install || error_exit 10 "install of $project from $project_dir failed"
 #+end_src
 
 Anywhere where we have an =error_exit= we could put back in a block to clean
@@ -371,17 +375,17 @@ things up, or we could be even fancier:
   }
 #+end_src
 
-*** A Super Organized Semi-Automated Approach
+*** A Super-Organized Semi-Automated Approach
 
 #+begin_src bash
   #!/usr/bin/bash -u
   # expanding undefined variables will cause an error (-u in effect)
   # set variables for clarity and multiple use
-  pgm='hero'
-  target='postgresql-15.0.tar.bz2'
-  project_dir="$HOME/Projects/$target"
+  pgm='install-pgsql-v3'
+  project='postgresql-15.0'
+  project_dir="$HOME/Projects/$project"
   archive_dir='https://ftp.postgresql.org/pub/source/v15.0'
-  archive_file="$target.tar.bz2"
+  archive_file="$project.tar.bz2"
   archive_url="$archive_dir/$archive_file"
   # define some handy functions -- could be imported from a library!
   try_code=10			# non-zero and unique
