@@ -154,7 +154,7 @@ PG_END
 
 This script *does not fully automate a PostgreSQL installation!*
 - It only organizes it for a human to supervise
-- The options =-euv= allow a human to take over
+- The options =-eux= allow a human to take over
       - =-x= causes the shell to print each command before executing it
             - but after all "expansions", e.g. of variables
       - =-e= causes the shell to exit if a command fails
