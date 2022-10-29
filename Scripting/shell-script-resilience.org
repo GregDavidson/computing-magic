@@ -197,7 +197,7 @@ Once a problem has been detected, error recovery needs to
 Coding this is usually done with /Exit Codes/ which control
 - the =if= and =while= commands
 - the Boolean operators =!= (not), =&&= (and then), =||= (or else)
-      - Here's a [[file://Reference-Sheets/bash-metas.pdf][handy reference sheet]] on such
+      - See bash-metas in [[file://Reference-Sheets/README.org][handy reference sheets]]
 
 In many cases a script is just one part of a more complex automated process, so
 all it has to do is exit with a non-zero Exit Status, e.g. with =exit 1= --
