@@ -206,9 +206,9 @@ failure.
 
 A top level script may need to alert humans that an important process has
 failed. This should /never/ be done by popping up a notification on a user's
-screen asking them to report an error! A script should be able to send a text,
-email, etc. or file a trouble ticket, etc. to bring attention to the problem by
-the right person in a timely fashion. Scripts can also monitor a trouble ticket
+screen asking them to report an error! A script should be able to bring attention
+to the problem to the right person in a timely fashion (e.g. by sending an
+email, filing a trouble ticket, etc). Scripts can also monitor a trouble ticket
 system or repeatedly check a system which is out of order and escalate an issue
 when fixes are not occurring within an expected timeframe.
 
@@ -263,9 +263,9 @@ but then the =wget= command could fail, so maybe we better do
 - How might we reverse any side effects before exiting?
 - How might we log or communicate any problems appropriately?
 - Do we care why a command might have failed?
-      - We have the wrong version of the program?
-      - The data given to it is not as expected
-      - We're missing permissions
+      - Do we have the wrong version of the program?
+      - Is the data provided to the progrma in the expected format?
+      - Are we missing permissions to perform a certain action?
 
 *** An Organized Semi-Automated Approach
 
