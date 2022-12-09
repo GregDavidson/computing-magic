@@ -1,0 +1,25 @@
+* Emacs Org-Babel Notebooks
+
+Document-Oriented Computing is a style of interactive and exploratory computing
+where a document contains embedded sections of editable code in various
+computing languages and when the user runs that code the results become part of
+the document. A popular recent example is [[https://docs.jupyter.org/en/latest][Project Jupyter Notebooks]] which,
+however, only allows for one programming language to be used in any given
+document.
+
+Org-Babel is more general than Jupyter as it (1) supports a larger number of
+computing languages, (2) allows any number of those languages to be used
+together in a single document and (3) let's you leverage all of the rest of
+OrgMode's functionality.
+
+You can also use Org-Babel for Literate Programming, which is a system for
+integrating documentation with code so that your programs are self-documenting.
+Org-Mode Literate Programming can be /Interactive/ for exploration and
+development and evolve to become a /Publishable/ book in any document format, e.g.
+/HTML/, /LaTeX/, etc. along with a standalone code-base.
+
+Some Introductions and Tutorials:
+- [[https://orgmode.org/worg/org-contrib/babel][Babel: Active Code in Org]]
+- [[https://orgmode.org/worg/org-contrib/babel/intro.html][Introducing Babel]]
+- [[http://cachestocaches.com/2018/6/org-literate-programming][Interactive Programming with Org-mode]]
+- [[https://caiorss.github.io/Emacs-Elisp-Programming/Org-mode-recipes.html][Org-Mode Recipes]]
