@@ -42,12 +42,26 @@ You don't have to build a nice Emacs environment from scratch!
 - Really, you won't believe it,
 - until you've discovered it for yourself!
 
-There are /lots/ of good tutorials and videos for the many, many things you can
-do with OrgMode.
+There are /lots/ of good tutorials for the many, many things you can do with
+OrgMode.
+- [[https://orgmode.org/worg/org-tutorials/index.html][Org-Mode Tutorials]]
 
+A good place to start:
 -[[https://orgmode.org/][ Org Mode: Your life in plain text]]
 
-Suggestion: Start keeping all of your notes and resources using Emacs Orgmode.
+Some select Video Tutorials:
+- [[https://youtu.be/0-brF21ShRk][Learn Org Mode - It's Easy!]]
+- [[https://youtu.be/oJTwQvgfgMM][Org-Mode for note-taking and project planning]]
+- [[https://youtu.be/Bpmkeh4D98s][Building a Second Brain in Org Mode]]
+
+Suggestion: *Start keeping your notes and resources using Emacs Orgmode.*
+- Start as soon as you've learned the most basic Emacs and Org-Mode features
+- Keep learning and exploiting more Emacs and Org-Mode features
+
+If you've used [[https://docs.jupyter.org/en/latest][Project Jupyter Notebooks]] or similar tools for
+- Literate and/or Document-Oriented Programming or Analysis
+you have a treat in store:
+- [[file:emacs-org-babel.org][Org-Babel Notebooks]] are even better!
 
 **** Emacs is Continually Evolving!
 
