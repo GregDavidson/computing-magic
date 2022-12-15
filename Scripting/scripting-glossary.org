@@ -1,0 +1,90 @@
+* Scripting Glossary
+
+This is a glossary for terms related to Scripting. It's also an [[https://orgmode.org][OrgMode]]
+Document. If you are reading it with [[file:../Software-Tools/Emacs/emacs-readme.org][Emacs]] you can follow internal links to
+specific terms. You can also use a script to create such links for your
+documents!
+
+** Terms
+
+- Scripts :: Programs written in =Scripting Languages= which are generally
+  easier to create, understand and modify than programs written in =General
+  Purpose Compiled Programming Languages=. Scripts are usually less flexible and
+  less computationally efficient (taking longer to run and using more memory)
+  than programs written in =General Purpose Compiled Programming Languages=.
+
+- Scripting Languages :: Simplified Computer Languages designed to allow users
+  who might have minimal computer programming skills to control processes with
+  simple programs called =Scripts=. Examples include (optionally interactive)
+  =Shells= such as =sh=, =bash=,  =zsh=; (generally non-interactive) languages
+  such as =tcl=, =perl=, =racu=, =php=, =python=; etc.
+
+- Scriptable tools :: Tools (software or hardware) which can be controlled by
+  =Scripts=. Examples include /Scriptable Text Editors/, /3D Printers/, etc.
+
+- Posix :: A standard for Unix-like systems, including the scripting tools of
+  the /Unix Programming Environment/ which helps unify basic features among
+  /Posix/ systems such as modern =Unix=, =BSD= and =Gnu/Linux= Operating
+  Systems. Warning: No modern systems strictly comply to the standard!
+
+- BSD :: The Berkeley Software Distribution. An family of Operating Systems
+  descended from from BSD Version 4.4 developed at the University of California,
+  Berkeley in the early 1980s.  All versions of BSD are /Open Source/, but not
+  /Free Software/.
+
+- BSD Family :: The BSD Family includes =Darwin=, =OpenBSD=, =FreeBSD= and
+  others.
+
+- Darwin :: A version of BSD which underlies Apple's MacOS subsequent to Steve
+  Jobs' return from NeXT. It is available /Open Source/ from Apple but without
+  Apple's proprietary extensions.
+
+- OpenBSD :: A highly security-conscious version of BSD.
+
+- FreeBSD :: A version of BSD which incorporates many innovative features.
+
+- The Unix Programming Environment :: A collection of tools and
+  software-engineering practices which developed within the culture of the users
+  of the Unix Operating System in the 1970s.
+
+- Operating System Kernel :: Software which provides access to the electronic
+  hardware of a computer for the benefit of programs running on that computer. A
+  =Kernel= provdes such access in the form of =System Abstractions= such as
+  =Filesystems=, =Processes=, =Interprocess Communication=, =Security
+  Abstractions=, =Networking Abstractions=, etc.
+
+- Monolithic Kernel :: A Kernel which consists of a single =Heavyweight
+  Process=. Examples include =Unix= and =BSD= Kernels and =Linux=.
+
+- Micro-Kernel :: A collection of =Heavyweight Processes= which collectively
+  provide traditional =Kernel= Services. Examples include =Minix= and the =Gnu
+  Hurd=.
+
+- Heavyweight Process :: Aka =task=. A Heavyweight Process is process which is
+  executing a =Program= within an =Execution Context= which includes a =Memory
+  Space= and =input/output abstractions= along with one or more =threads of
+  control= which sequence through the instructions of the =Program=. A
+  Heavyweight Process is highly restricted in what it can do: It can only
+  perform computations, some of which read and write the contents of its =Memory
+  Space= - none of which can have any direct effect on anything outside of its
+  =Execution Context=. Everything else, e.g. Input/Output, must be done through
+  =System Calls= which request that the =Kernel= perform a desired action on
+  behalf of the Heavyweight Process.
+
+- Lightweight Process :: Aka =Thread=. A Lightweight Process is a thread of
+  control within a =Heavyweight Process= and its =Program=. At minimum, a
+  Lightweight Process provides the location of a =Hardware Instruction= being
+  executed within the Heavyweight Process's =Program=. Some Lightweight
+  Process's may provide additional resources, such as a =Stack=, a reserved (but
+  not protected) subset of the Heavyweight Process's =Memory Space=.
+
+- Program :: A collection of =instructions= which can be executed by an
+  =interpreter process=. An =intepreter process= can be implemented in a
+  computer's hardware or it can be implemented in software, or by a combination
+  of such. A program may also include =static data= (prepared prior to any
+  execution of the program) as well as metadata (used for program management,
+  e.g. debugging). In some environments, Programs may contain references to
+  =external libraries=. In order to be executed, a program (and any libraries it
+  requires) must be =loaded= into a suitable =execution context=, e.g. a
+  =heavyweight process= which provides the resources, e.g. memory needed for the
+  execution of the program.
