@@ -1,46 +1,55 @@
 * Scripting Notes for Computing Magic
-  
-/Scripts/ are short, simple, easily understood and easily modified programs
-written in languages which make specialized tasks easier than they would be
-if written in general purpose languages.
-    
-/Scriptable tools/ are tools (software or hardware) which can easily be
-controlled by /scripts/.
 
-/Scripting tools/ are software tools intended to control other tools using
-scripts.
+From our [[file:scripting-glossary.org][Scripting Glossary]]
 
-Modern scripting emerged from the Unix Programming Environment and is a key part
-of the power and productivity of Unix, BSD and Linux. POSIX is a standard for
-Unix-derived scriptable and scripting tools.
- 
+- Scripts :: Programs written in Scripting Languages which are generally easier
+  to create, understand and modify than programs written in General Purpose
+  Programming Languages.
+
+- Scriptable tools :: tools (software or hardware) which can easily be
+  controlled by /Scripts/.
+
+Modern scripting emerged from =The Unix Programming Environment= and is a key
+part of the power and productivity of =Unix=, =BSD= and =Gnu/Linux=. =POSIX= is
+a standard for Unix-derived scriptable tools.
+- Note :: Linux is a /Kernel/ which manages the /Computer Hardware/ for a
+  Gnu/Linux System. Gnu provides several /User Interfaces/, including a
+  traditional /Shell Interface/ along with a rich set of /Scriptable Tools/. We
+  will refer to the combination as Gnu/Linux for clarity and to respect its
+  developers' wishes.
+
 ** Getting the Tools
 
-If you have Unix, Linux or BSD you already have the tools or they're available
+If you have Unix, Gnu/Linux or BSD you already have the tools or they're available
 from a standard package with a simple command.
 
-If you have a Mac you can install the latest tools using [[https://brew.sh/][Homebrew]] - Apple's
-versions are often out of date.
+If you have a Mac you can install the latest tools using [[https://brew.sh/][Homebrew]]
+- Versions of these tools which come from Apple are often out of date!
 
 If you have an older μSoft Windows machine, you can install everything using
-[[https://cygwin.com/][Cygwin]]. For a newer μSoft Windows system, you can install μSoft's [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows
-Subsystem for Linux]] free of charge.
- 
+- [[https://cygwin.com/][Cygwin]].
+For a newer μSoft Windows system, you can install μSoft's
+- [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows Subsystem for Linux]]
+Both of these options are  free of charge and free from commercial licensing!
+
 ** Exploring the Posix Command Environment
 
-The first tool you should get is a good /shell/. Apple Macintoshes come with an
+The first tool you should get is a good /shell/.
+- All standard Gnu/Linux systems
+
+ Apple Macintoshes come with an
 out-of-date version of =bash= and are moving to =zsh=. I recommend getting the
 latest =bash=. You might or might not want to learn =zsh= later - it's more
 powerful but it's also a lot more complicated. (Fancy interactive shell features
 are largely obsoleted by those who run their shells through =emacs=.)
-      
+
 Once you have the basic tools, I recommend this fun way to get started:
 
 - [[https://github.com/mks22-dw/bashcrawl][BASH Crawl - a shell adventure!]]
 - [[https://marlborough-college.gitbook.io/attic-lab/the-terminal/games/level-1-bashcrawl][BASH Crawl Intro]]
 
 **  The Unix Toolkit and Philosophy
-      
+
 Once you can run simple commands from a shell, you can move on. It could also be
 worth your while to spend some time absorbing the Unix Philosophy, especially in
 regards to creative use of the Unix Tools.
