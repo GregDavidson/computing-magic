@@ -1,5 +1,5 @@
 #+TITLE: Shell Script Resilience
-#+SUBTITLE: Overview of the Problem Space
+#+SUBTITLE: Building Resilient Scripts
 #+AUTHOR: J. Greg Davidson
 #+DATE: 18 October 2022
 #+OPTIONS: toc:nil
@@ -7,7 +7,7 @@
 # +OPTIONS: date:nil
 # +OPTIONS: author:nil
 
-* Shell Script Resilience
+* Building Resilient Scripts
 
 ** Notes to the Reader
 
