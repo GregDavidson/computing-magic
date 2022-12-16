@@ -2,29 +2,42 @@
 #+SUBTITLE: Overview of the Problem Space
 #+AUTHOR: J. Greg Davidson
 #+DATE: 18 October 2022
-#+OPTIONS: toc:nil 
+#+OPTIONS: toc:nil
 #+OPTIONS: num:nil
-# +OPTIONS: date:nil 
-# +OPTIONS: author:nil 
+# +OPTIONS: date:nil
+# +OPTIONS: author:nil
 
 * Shell Script Resilience
+
+** Notes to the Reader
 
 This is an OrgMode Document. If you are reading it with Emacs you can run the
 examples as well as change them and run them again.
 
+We believe that as much as possible
+- learning should be driven by specific examples
+- general theory studied afterwards
+- rather than the reverse!
+We therefore encourage you to
+- study these examples
+- run them yourself
+- look up the specific features they use
+- try variations
+- allowing your intuition to really /get/ what's going on!
+Later you can
+- Read more general material
+- Perhaps starting with [[file:posix-shell-basics.org][Posix Shell Basics]]
+      - which should accompany this article
+- and other quality reference manuals, tutorials and guides
+
 ** Version 1: The Naive Script
 
-If you know how to issue commands to a shell manually, then you can trivially
-create a naive shell script:
-- Create a new text file using your favorite editor
-- Enter your desired commands into it
-- Make the script executable with =chmod +x SCRIPT-FILE-NAME=
-- To run it, either
-      - specify a path to it when you run it
-            - e.g. type =./SCRIPT-FILE-NAME= at the Shell Prompt
-      - place it in a directory which is on your =$PATH=
-            - e.g. =mv SCRIPT-FILE-NAME ~/bin=
-            - so you can run it simply as =SCRIPT-FILE-NAME=
+- Note :: Rather than put these scripts in separate files, we're going to use
+  Emacs Org-Babel to embed them in this document. If you put these scripts in
+  separate files
+  - make them executable with ~chmod +x NAME-OF-FILE~
+  - put them in a directory which is on your =$PATH=
+  - or if they're in your current directory, prepend =./= to the filename
 
 #+begin_src sh :results output
   echo Hello from ${0##*/}
@@ -45,6 +58,38 @@ the script may be used differently than you initially used it *and* the
 resources invoked and accessed by the script may change in ways which cause the
 script to fail.
 
+**** Documenting The Script
+
+It's common to be inherit scripts using fancy features known by a long-gone
+associate, or maybe written by you some time ago when you had been studying
+features you've since forgotten.
+
+1. How do you figure out what things are?
+       - Read the /Finding Documentation/ section of [[file:posix-shell-basics.org][Posix Shell Basics]]
+2. How can you make it easier on the next guy
+       - Use Parameters and Comments to clarify things
+
+Let's assume that you studied the /bash info document/ to learn
+- You can protect "expansions" inside of "double quotes"
+- ~$0~ expands to the path to the script
+- ${0##*/} strips the directory path, leaving just the script name
+- You can nest commands within commands
+      - inside of `back quotes`
+      - or inside of $(a dollar sign with parentheses)
+- Commands can be put on separate lines
+      - or separated with semi-colons (;)
+
+Then you'd learn about the =-I= option to =date= using
+      - ~man date~ or ~date --help~
+      - or =Alt-x man= =date= inside of Emacs
+
+**** Documenting The Script
+
+You should document anything non-obvious
+- The shell ignores anything after an unquoted # character
+- If a short comment will do, give it
+- Otherwise link to a more complete explanation elsewhere
+ 
 **** Specifying an Interpreter
 
 The excutable file is still just a text file, which won't do anything by itself.
@@ -73,32 +118,16 @@ command using the builtin =help= command.
  help type
 #+end_src
 
-**** Documenting The Script
+**** Controlling Shell Parameters (aka Variables)
 
-Let's assume that you've looked up the features behind
-- ${0##*/}
-- date -I
-- And nesting commands inside of `back quotes`
-
-Will someone looking at this script in the future
-- possibly you, after you've forgotten some of these things
-understand what these things mean?
-
-You should document anything non-obvious
-- The shell ignores anything after an unquoted # character
-- If a short comment will do, give it
-- Otherwise link to a more complete explanation elsewhere
- 
-**** Controlling Shell Variables
-
-It's good to use shell variables for any content which might change or which
+It's good to use shell parameters for any content which might change or which
 needs to be repeated, or simply content we wish to document by giving it a name
 which explains its purpose or makes it easier to think about.
 
-The value of a shell variable can contain nearly any string of characters,
+The value of a shell parameter can contain nearly any string of characters,
 including spaces and special characters which unless quoted may activate shell
 features unexpectedly. Thus we almost always quote the initial value of a shell
-variable with either 'single quotes' or "double quotes" and we almost always
+parameter with either 'single quotes' or "double quotes" and we almost always
 quote a shell expansion with "double quotes". In those rare cases where we don't
 quote shell values or expansions, a comment should explain why!
 
@@ -130,10 +159,19 @@ script which administers essential services?
 When you're issuing a command interactively, there's a certain background
 context:
 - You're logged in under a particular user account with particular permissions
+      - Run ~id~ to see your basic identity
 - On a system with particular versions of programs and libraries
-- You have a particular /Current Working Directory/
-- Your particular /Environment Variables/ are set in particular ways
+- You have a particular /Working Directory/
+      - Run ~pwd~ to see what is is
+- Your /Environment Variables/ are extra parameters to your scripts (and other programs)
+      - Run ~env | less~ to browse them
+      - Three key less commands:
+            - SPACE :: next page
+            - q :: quit
+            - h :: help in a nested less, so =SPACE= or =q=
 - You have particular configuration files with particular contents
+      - run ~ls -adF ~/.??*~ for an overview
+      - the ones ending in a ~/~ are directories of configurations~
 
 All of the above particulars can effect what, if anything, a command
 you issue might do.  In addition to that context
@@ -173,16 +211,28 @@ But 2 and 3 are only true if the script can detect and handle errors.
 All processes (commands) in a Posix environment return an /Exit Status/.
 - By convention, 0 means success, non-0 means something weird happened
       - Note that this is the opposite of traditional Boolean values!
-- The /Exit Status/ of the /Last Command/ is available in the =$?= pseudo-variable.
+- The /Exit Status/ of the /Last Command/ is available in the =$?= pseudo-parameter.
 
 Some processes require explicit integrity tests
 - The /Posix/ environment provides some has many often helpful tools
-      - =cmp= will compare two files that should be the same
-      - =test= has lots of built-in tests
-      - The =case= and =expr= commands can do pattern matching
+      - =cmp= program will compare two files that should be the same
+            - ~man cmp~ and ~man diff~
+      - =test= builtin has lots of built-in tests
+            - ~help test~
+      - The =case= and =expr= builtins can do pattern matching
       - etc.
-- The =make= tool is often used to organize tests scripts
-      - =make test= is a frequent part of a build process
+- The =make= tool is often used to organize complex processes
+      - It uses a =Makefile= containing multiple scripts!
+      - Software build processes often consist of steps like
+            - ~./configure~ /a complex script written by another complex script!/
+            - then ~make~ followed by ~make test~ followed by ~make install~
+      - Complex scripts are often accompanied by a ~Makefile~
+            - Always read any =Makefiles= you're given!
+      - If you're not an experienced software developer
+            - you'll want some friendly =make= tutorials
+            - especially explaining why you might want such a thing!
+      - Eventually you'll want to consult
+            - ~man make~ and ~info make~
 
 *** Error Recovery Strategies
 
@@ -195,22 +245,56 @@ Once a problem has been detected, error recovery needs to
 - Indicate failure if we're out of alternatives
 
 Coding this is usually done with /Exit Codes/ which control
-- the =if= and =while= commands
+- the =if= and =while= builtin commands
 - the Boolean operators =!= (not), =&&= (and then), =||= (or else)
       - See bash-metas in [[file:Reference-Sheets/README.org][handy reference sheets]]
 
-In many cases a script is just one part of a more complex automated process, so
-all it has to do is exit with a non-zero Exit Status, e.g. with =exit 1= --
-although it's best to have different non-zero statuses for different kinds of
-failure.
+- Exit codes :: integers from 0 to 255
+- 0 :: Success: Execution went as expected
+- 1-255 :: Failure: Something deviated from expectations
+- Use specific codes to indicate different errors
+      - 1 :: For miscellaneous errors
+      - 2 :: For bad command syntax
+      - 3-125 :: As needed for specific failure modes of your script
+      - 126-255 :: Have conventional meanings so best avoided
+            - You can use them if you need to
 
-A top level script may need to alert humans that an important process has
-failed. This should /never/ be done by popping up a notification on a user's
-screen asking them to report an error! A script should be able to bring attention
-to the problem to the right person in a timely fashion (e.g. by sending an
-email, filing a trouble ticket, etc). Scripts can also monitor a trouble ticket
-system or repeatedly check a system which is out of order and escalate an issue
-when fixes are not occurring within an expected timeframe.
+When something goes wrong in an interactive script
+- Output an informative error message
+- ~>&2 echo MESSAGE~ sends a message to the /standard error stream/
+      - especially useful if the /standard output stream/ has been /redirected/
+            - e.g. to a /pipe/ or a /file/
+- Cleanup any mess from any incomplete operation
+- Exit with a non-zero exit code
+
+When something goes wrong in a non-interactive script
+- Report an informative message to an appropriate log file
+- ~echo $0 `date -Iseconds` MESSAGE >$LogFile~
+      - set ~LogFile=DESIRED-LOG-FILE~ at the top of your script
+      - use ~$0~ or ~${0##*/}~ to identify the script logging the issue
+      - include a timestamp - see ~man date~ for options
+      - possibly include a severity level, e.g. =error= or =warning= in the message
+- Exit with a non-zero exit code
+
+In many cases a script is just one part of a more complex automated process
+- scripts are often started by other scripts
+- the parent script will want to know if the child script finished ok or not
+- the easiest way to communicate is to use specific exit codes
+      - otherwise the parent has to parse output strings, ugh!
+- Program exit codes are 
+      - exit status 0 = the program succeeded, so 0 = true!
+      - any positive integer exit status = the program failed!
+            - use different exit codes to indicate different failures
+            - Use codes 1 through 125 as they have no special meaning
+
+A script may need to alert humans that an important process has failed.
+- This should /never/ be done by popping up a notification on a user's screen
+  asking them to report an error!
+A script should be able to bring attention to the problem to the right person in a timely fashion
+- File a trouble ticket
+- Send a message to a administrator alert address (email, text message, etc.)
+A trouble monitoring script can monitor trouble tickets
+- Escalating an issue not addressed within a expected timeframe
 
 ** How Do We Code When Things Might Fail?
 
@@ -222,11 +306,15 @@ the problem reports and deal with them.  But we could add more code anywhere to 
 cleanup, try fixes and alternatives, etc.
 
 #+begin_src sh
+  script_name="${0##*/}"
   archive_url='https://ftp.postgresql.org/pub/source/v15.0/postgresql-15.0.tar.bz2'
+  cd /usr/local/src
   if type wget >/dev/null; then
       wget "$archive_url"
+      # extract archive, build and install system
+      # further commands ...
   else
-      >&2 "$pgm error: missing program wget; aborting"
+      >&2 echo "$script_name error: missing program wget; aborting"
       exit 1
   fi
 #+end_src
@@ -234,153 +322,125 @@ cleanup, try fixes and alternatives, etc.
 but then the =wget= command could fail, so maybe we better do
 
 #+begin_src sh
-  project='postgresql-15.0'
-  project_dir="$HOME/Projects/$project"
-  archive_url="https://ftp.postgresql.org/pub/source/v15.0/$project.tar.bz2"
-  mkdir -p "$project_dir"
-  cd "$project_dir"
-  git init
+  script_name="${0##*/}"
+  archive_url='https://ftp.postgresql.org/pub/source/v15.0/postgresql-15.0.tar.bz2'
+  cd /usr/local/src
   if type wget >/dev/null; then
       if wget "$archive_url"; then
-          tar xf "$archive_url"
-          ./configure
-          make
-          make test
-          make install
+          # extract archive, build and install system
+          # further commands ...
       else
-          >&2 "$pgm error: wget can't get $archive_url; aborting"
+          >&2 echo "$script_name error: wget of $archive_url failed, aborting"
           exit 2
-      fi
+      filei
   else
-      >&2 "$pgm error: missing program wget; aborting"
+      >&2 echo "$script_name error: missing program wget; aborting"
       exit 1
   fi
 #+end_src
 
-- What if we're missing any of the commands =git=, =tar= or =make=?
-- Suppose we have all the programs - what can still fail?
-- How would we need to write this to immediately report when something failed?
-- How might we reverse any side effects before exiting?
-- How might we log or communicate any problems appropriately?
-- Do we care why a command might have failed?
+Yuk: This is getting pretty nested, the error code is getting increasing
+separated from the code it's checking and it's only going to get worse since
+every step in the build and install process will also need to be checked. We can
+use the /not/ operator ~!~ to reverse success and failure:
+
+#+begin_src sh
+  script_name="${0##*/}"
+  archive_url='https://ftp.postgresql.org/pub/source/v15.0/postgresql-15.0.tar.bz2'
+  cd /usr/local/src
+  if ! type wget >/dev/null; then
+      >&2 echo "$script_name error: missing program wget; aborting"
+      exit 1
+  fi
+  if ! wget "$archive_url"; then
+      >&2 echo "$script_name error: wget of $archive_url failed, aborting"
+      exit 2
+  fi
+  # extract archive, build and install system
+  # further commands, each in an if construct ...
+#+end_src
+
+This is better! A variation is to use the /or else/ operator ~||~ and turn the
+multi-statement action into a /block/ with {curly braces} like so
+
+#+begin_src sh
+  script_name="${0##*/}"
+  archive_url='https://ftp.postgresql.org/pub/source/v15.0/postgresql-15.0.tar.bz2'
+  cd /usr/local/src
+  type wget >/dev/null || {
+      >&2 echo "$script_name error: missing program wget; aborting"
+      exit 1
+  }
+  wget "$archive_url" || {
+      >&2 echo "$script_name error: wget of $archive_url failed, aborting"
+      exit 2
+  }
+  # extract archive, build and install system
+  # further commands, each with a an /or else/ construct ...
+#+end_src
+
+Can we do better?
+- We can turn the blocks into a /shell function/
+      - shell functions become new commands
+      - you write them like a script but in a named block
+      - FUNCTION_NAME() { commands as if in a separate script; }
+      - the parentheses ~()~ pronounced /function/ are always empty!
+      - space or newlines or ; around { curly; braces; } matters!
+
+#+begin_src sh
+  script_name="${0##*/}"
+  error_exit() {
+      code="$1"                           # first argument of the script
+      shift                               # drop first argument
+      >&2 echo $script_name error: "$*, aborting" # $* is all the remaining arguments
+      exit "$code"                        # exit the program
+  }
+  project='postgresql-15.0'
+  project_dir="$HOME/Projects/$project"
+  archive_url="https://ftp.postgresql.org/pub/source/v15.0/$project.tar.bz2"
+  archive="${archive_url##*"
+  mkdir -p "$project_dir" || error_exit 3 "Can't make $project_dir"
+  cd /usr/local/src
+  type wget >/dev/null || error_exit 4 missing program wget
+  wget "$archive_url" || error_exit 5  wget of $archive_url failed
+  # extract the files from the tar archive
+  tar xf "$archive" || error_exit 6 "Can't extract files from $archive"
+  # we expect the extraction to produce a directory named $project
+  cd "$project" || error_exit 7 "Project $project does not exist!"
+  # configure the system, logging the results in the directory above
+  ./configure |& tee ../LOG.config || error_exit 8 "configuration failed!"
+  # build the system, logging the results in the directory above
+  make |& tee ../LOG.make || error_exit 9 "make failed!"
+  # test the system, logging the results in the directory above
+  make test |& tee ../LOG.test || error_exit 10 "test failed!"
+  # install the system, logging the results in the directory above
+  make install |& tee ../LOG.install || error_exit 11 "install failed!"
+#+end_src
+
+Where did the exit codes 3-11 come from?
+- We simply made them up!
+- If we're being called by another script it will see them
+- Interactive users can see them using ~echo $?~
+
+Be critical of the code
+- Is there anything that might fail that we aren't checking?
+- Are the error message concise and clear?
+- Should we log the error messages?
+      - right now, they're just going to the terminal!
+      - how could we fix that?
+- What messes are being left behind if something fails?
+      - should we clean up the mess or leave it to be studied?
+- Do we care /why/ a command might have failed?
       - Do we have the wrong version of the program?
       - Is the data provided to the progrma in the expected format?
       - Are we missing permissions to perform a certain action?
 
-*** An Organized Semi-Automated Approach
-
-We're still just going to report problems if they occur, so our script is still
-not fully automating the task.
-
-This next attempt is going to be tedious. When you get bored with reading it,
-skip to the next section where we make it better!
+*** Could it be easier?
 
 #+begin_src bash
   #!/usr/bin/bash -u
-  pgm='install-pgsql-v1'
-  project='postgresql-15.0'
-  project_dir="$HOME/Projects/$project"
-  archive_dir='https://ftp.postgresql.org/pub/source/v15.0'
-  archive_file="$project.tar.bz2"
-  archive_url="$archive_dir/$archive_file"
-  mkdir -p "$project_dir" || {
-      >&2 echo "$pgm error: Can't create directory $project_dir"
-      exit 1
-  }
-  cd "$project_dir" || {
-      >&2 echo "$pgm error: Can't cd to directory $project_dir"
-      exit 2
-  }
-  for p in git wget tar; do
-    type "$p" >/dev/null || {
-      >&2 echo "$pgm error: Missing required command $p"
-      exit 3
-    }
-    # How might we check the required versions?
-  done
-  git init || {
-      >&2 echo "$pgm error: git init failed in directory $project_dir"
-      exit 4
-  }
-  wget "$archive_url" || {
-      >&2 echo "$pgm error: wget failed to get $archive_url"
-      exit 5
-  }
-  tar xf "$archive_file" || {
-      >&2 echo "$pgm error: tar failed to extract $archive_file"
-      exit 6
-  }
-  ./configure || {
-      >&2 echo "$pgm error: configure of $archive_file failed in $project_dir"
-      exit 7
-  }
-  make || {
-      >&2 echo "$pgm error: make of $archive_file failed in $project_dir"
-      exit 8
-  }
-  make test || {
-      >&2 echo "$pgm error: test of $archive_file failed in $project_dir"
-      exit  9
-  }
-  make install || {
-      >&2 echo "$pgm error: install of $archive_file from $project_dir failed"
-      exit  10
-  }
-#+end_src
-
-Hmm, that's a lot of boiler plate, and we haven't even added any fallback code!
-- Let's see if we can simplify it first!
-
-*** A Better Organized Semi-Automated Approach
-
-#+begin_src bash
-  #!/usr/bin/bash -u
-  # expanding undefined variables will cause an error (-u in effect)
-  # set variables for clarity and multiple use
-  pgm='install-pgsql-v2'
-  project='postgresql-15.0'
-  project_dir="$HOME/Projects/$project"
-  archive_dir='https://ftp.postgresql.org/pub/source/v15.0'
-  archive_file="$project.tar.bz2"
-  archive_url="$archive_dir/$archive_file"
-  # define some handy functions -- could be imported from a library!
-  report() { local level="$1"; shift; >&2 echo "$pgm $level: $*"; }
-  error() { report error "$*"; return 1; }
-  error_exit() { local code="$1"; report error "$*"; exit "$code"; }
-  mkdir -p "$project_dir" || error_exit 1 "Can't create directory $project_dir"
-  cd "$project_dir" || error_exit 2 "Can't cd to directory $project_dir"
-  for p in git wget tar; do
-    type "$p" >/dev/null || error_exit 3 "Missing required command $p"
-    # How might we check the required versions?
-  done
-  git init || error_exit 4 "git init failed in directory $project_dir"
-  wget "$archive_url" || error_exit 5 "wget failed to get $archive_url"
-  tar xf "$archive_file" || error_exit 6 "tar failed to extract $archive_file"
-  ./configure || error_exit 7 "configure of $project failed in $project_dir"
-  make || error_exit 8 "make of $project failed in $project_dir"
-  make test || error_exit 9 "test of $project failed in $project_dir"
-  make install || error_exit 10 "install of $project from $project_dir failed"
-#+end_src
-
-Anywhere where we have an =error_exit= we could put back in a block to clean
-things up, or we could be even fancier:
-
-#+begin_src bash
-  { git init || error "git init failed in directory $project_dir"; } &&
-  { wget "$archive_url" || error "wget failed to get $archive_url"; } &&
-  { tar xf "$archive_file" || error "tar failed to extract $archive_file"; } || {
-      cd ..
-      rm -rf "$project_dir"
-      error_exit 4 "Removed botched $project_dir"
-  }
-#+end_src
-
-*** A Super-Organized Semi-Automated Approach
-
-#+begin_src bash
-  #!/usr/bin/bash -u
-  # expanding undefined variables will cause an error (-u in effect)
-  # set variables for clarity and multiple use
+  # expanding undefined parameters will cause an error (-u in effect)
+  # set parameters for clarity and multiple use
   pgm='install-pgsql-v3'
   project='postgresql-15.0'
   project_dir="$HOME/Projects/$project"
@@ -415,12 +475,12 @@ things up, or we could be even fancier:
   try make install
 #+end_src
 
-Now where might we put fixup, fallback, cleanup or tactical communication code?
+Now where might we put logging, fixup, fallback, cleanup or tactical communication code?
 
 *** Criticism
 
 We've achieved some success in reducing boiler plate
-- After we've defined variables and functions
+- After we've defined parameters and functions
 - And checked for existence of the required programs
 - We have about the same number of commands and complexity
 
@@ -435,3 +495,14 @@ We still need to deal with
 ** Examples of Resilient Scripts
 
 - [[file:shell-script-example-pginstall.org][A Custom Installation of PostgreSQL from Source]]
+
+** Roadmap for this Tutorial
+
+Everything here can be improved with your feedback and partnership!
+
+Some (but not all) of the ways you can help:
+- Improve the examples
+- Improve the Org-Babel and Literate Programming Markup
+- Create automated tests - maybe with a Makefile
+- Post issues
+- Fork, improve, submit pull requests!
