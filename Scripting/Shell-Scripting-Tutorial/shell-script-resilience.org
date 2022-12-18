@@ -40,14 +40,15 @@ Later you can
   - put them in a directory which is on your =$PATH=
   - or if they're in your current directory, prepend =./= to the filename
 
+#+NAME: hello-today
 #+begin_src sh :results output
   echo Hello from ${0##*/}
   echo `date -I` is a good day to run!
 #+end_src
 
-#+RESULTS:
+#+RESULTS: hello-today
 : Hello from sh
-: 2022-10-18 is a good day to run!
+: 2022-12-17 is a good day to run!
 
 *** Let's criticise version 1
 
