@@ -221,9 +221,12 @@ All processes (commands) in a Posix environment return an /Exit Status/.
 Some processes require explicit integrity tests
 - The /Posix/ environment provides some has many often helpful tools
       - =cmp= program will compare two files that should be the same
-            - ~man cmp~ and ~man diff~
+            - ~man cmp~
+      - =diff= program will show the differences in a variety of formats
+            - ~man diff~
+            - =git= uses =diff= to capture differences!
       - =test= builtin has lots of built-in tests
-            - ~help test~
+            - ~help test~ # if using =bash=
       - The =case= and =expr= builtins can do pattern matching
       - etc.
 - The =make= tool is often used to organize complex processes
@@ -255,7 +258,6 @@ Coding this is usually done with /Exit Codes/ which control
       - See bash-metas in [[file:../Reference-Sheets/README.org][handy reference sheets]]
 
 - Exit codes :: one-byte non-negative integers
-- 0 :: Success: Execution went as expected
 | code(s) | meaning                                               |
 |---------+-------------------------------------------------------|
 |   0-255 | available codes                                       |
