@@ -395,7 +395,7 @@ Can we do better?
       - you write them like a script but in a named block
       - FUNCTION_NAME() { commands as if in a separate script; }
       - the parentheses ~()~ pronounced /function/ are always empty!
-      - space or newlines or ; around { curly; braces; } matters!
+      - space or newlines or ; around { curly; braces; } matter!
 
 #+NAME: fetch-postgres-4
 #+begin_src sh
@@ -430,7 +430,7 @@ Can we do better?
 
 Where did the exit codes 3-11 come from?
 - We simply made them up!
-- If we're being called by another script it will see them
+- A parent script running this script can detect them
 - Interactive users can see them using ~echo $?~
 
 Be critical of the code
@@ -453,7 +453,7 @@ Be critical of the code
   #!/usr/bin/bash -u
   # expanding undefined parameters will cause an error (-u in effect)
   # set parameters for clarity and multiple use
-  pgm='install-pgsql-v3'
+  pgm="${0##*/}"
   project='postgresql-15.0'
   project_dir="$HOME/Projects/$project"
   archive_dir='https://ftp.postgresql.org/pub/source/v15.0'
@@ -487,7 +487,8 @@ Be critical of the code
   try make install
 #+end_src
 
-Now where might we put logging, fixup, fallback, cleanup or tactical communication code?
+Now where might we put logging, fixup, fallback, cleanup or tactical
+communication code?
 
 *** Criticism
 
@@ -506,7 +507,9 @@ We still need to deal with
 
 ** Examples of Resilient Scripts
 
-- [[https://github.com/GregDavidson/wicci-postgres/tree/main/PG-Install-2][A Custom Somewhat-Portable Installation Script for PostgreSQL]]
+[[https://github.com/GregDavidson/wicci-postgres/tree/main/PG-Install-2][A Custom Somewhat-Portable Installation Script for PostgreSQL]]
+- This is a fairly complex production script. It uses many of the techniques
+  we've discussed and it's still far from perfect.
 
 ** Roadmap for this Tutorial
 
