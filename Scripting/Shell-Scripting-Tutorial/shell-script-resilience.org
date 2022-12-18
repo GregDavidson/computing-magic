@@ -250,15 +250,16 @@ Coding this is usually done with /Exit Codes/ which control
 - the Boolean operators =!= (not), =&&= (and then), =||= (or else)
       - See bash-metas in [[file:Reference-Sheets/README.org][handy reference sheets]]
 
-- Exit codes :: integers from 0 to 255
+- Exit codes :: one-byte non-negative integers
 - 0 :: Success: Execution went as expected
-- 1-255 :: Failure: Something deviated from expectations
-- Use specific codes to indicate different errors
-      - 1 :: For miscellaneous errors
-      - 2 :: For bad command syntax
-      - 3-125 :: As needed for specific failure modes of your script
-      - 126-255 :: Have conventional meanings so best avoided
-            - You can use them if you need to
+| code(s) | meaning                                               |
+|---------+-------------------------------------------------------|
+|   0-255 | available codes                                       |
+|       0 | "success" code, treated as "true" in scripts          |
+|   1-255 | treated as "false" in scripts                         |
+|       1 | non-specific "failure" code                           |
+|   3-125 | available "failure" codes for any application purpose |
+| 126-255 | codes with pre-existing meanings, can be repurposed   |
 
 When something goes wrong in an interactive script
 - Output an informative error message
