@@ -1,0 +1,139 @@
+#+TITLE: Posix Shell Basics
+#+SUBTITLE: Overview of the Problem Space
+#+AUTHOR: J. Greg Davidson
+#+DATE: 18 October 2022
+#+OPTIONS: toc:nil 
+#+OPTIONS: num:nil
+
+* Posix Shell Basics
+
+** Notes to the Reader
+
+This is an [[https://orgmode.org][OrgMode]] Document. If you are reading it with Emacs you can follow
+internal links, fold and unfold content and much more! Using =GitHub= or other
+systems only a small subset of OrgMode will be available.
+
+Note: Many of the /Italicized/ or =verbatim= terms have a short explanation in
+the [[file:../scripting-glossary.org][Scripting Glossary]].
+
+** A Human-Oriented, Casual, Interactive /Command Interpreter/
+
+The /Posix Shell/ derives from the era where the primary human computer
+interface was a /Terminal/ consisting of a /Text-Oriented Display/ and a
+/Keyboard/. A /User/ would enter commands at the /Terminal/ which would be
+/Interpreted/ by the /Shell/ to (hopefully) perform the User's wishes.
+
+Key functions of a Shell:
+- Execute Programs
+- Manage Input and Output
+- Manage Errors
+- Make everything easier!
+
+*** An Interactive Shell takes input from a Terminal
+
+You can issue commands to a shell /interactively/ at the (P)REPL:
+- Prompt :: The Shell writes a prompt (default is "$ " in ~sh~ and ~bash~)
+- Read :: The shell reads a command from your terminal (typically your keyboard)
+       - A command can be one or more lines long.
+       - The shell keeps reading lines until the command is syntactically complete.
+- Evaluate :: The shell evaluates your command
+       - Interpreting any commands built-in to the shell
+       - Executing any external programs in new processes
+- Print :: Any output not redirected elsewhere is printed to your terminal.
+- Loop :: The shell loops back to Step 1.
+  
+*** A Non-Interactive Shell takes input from a Script
+
+A /Script/ consists of the same commands you can issue interactively
+- typically stored in a /textfile/
+- alternatively supplied by an /input stream/, e.g. a /pipe/
+
+If you know how to issue commands to a shell manually, then you can trivially
+create a naive shell script:
+- Create a new text file using your favorite editor
+- The first line starts with #! - aka the [[https://en.wikipedia.org/wiki/Shebang_(Unix)][Shebang]]
+      - Shebang :: #!PATH-TO-SHELL
+      - specifying the program to run to interpret your script
+      - You need a full path - make sure it's correct!
+            - to check, run =type SHELL-NAME= or =type -P SHELL-NAME=
+            - e.g. =type bash= or =type -P bash=
+- Enter your desired commands into it
+- Make the script executable
+      - =chmod +x SCRIPT-FILE-NAME=
+- To run it, either
+      - specify a path to it when you run it
+            - =./SCRIPT-FILE-NAME= if it's in your current directory
+      - or if it's in a directory which is on your =$PATH=
+            - e.g. =mv SCRIPT-FILE-NAME ~/bin=
+                  - =~/bin= is typically on your =$PATH=
+                  - to check, run =echo $PATH= or =echo $PATH | tr : '\n'=
+            - so you can run it simply as =SCRIPT-FILE-NAME=
+
+** Finding Documentation
+
+*** Most of the /Shell Commands/ are /Independent Programs!/
+
+Because most shell commands are independent programs, you need handy information
+on all possible programs on your system!
+
+The core of Posix documentation is /man pages/
+- man :: the quick-reference manual pages, like a set of cheat sheets
+      - run ~man man~ to learn how to use it!
+      - run ~man apropos~ to learn how to search the man pages
+      - run ~man whatis~ to learn how to access 1-line descriptions
+      - run ~whatis intro~ to see the sections
+            - if unsorted, try ~whatis intro | sort~
+      - run ~man date~ to lookup the date program
+      - run ~man bash~ to lookup the bash shell
+      - run ~man zsh~ to lookup the zsh shell
+- If you don't have the /man pages/ installed on your system
+      - You can access the same information online
+      - And we strongly encourage you to install them on your system
+
+Documentation for GNU programs might be in three places
+- man pages
+- info pages -- these are comprehensive!
+      - run ~info~ and then the ~h~ command to learn how to use it!
+      - of if you're inside of /emacs/
+            - ~Control-h i~ or ~Alt-x info~
+      - If you don't feel like learning this charmingly antiquated system
+            - You can find it all online, e.g
+            - [[https://www.gnu.org/software/bash/manual/bash.html][Bash Info Online]]
+            - [[https://www.gnu.org/software][Official GNU Software]]
+            - Or just do a web search for tutorials and reference manuals
+- brief program help and options
+      - Run the program with the option ~--help~ that's two dashes =--= and the word =help=
+      - Try ~cat --help~ and ~bash --help~
+
+*** A few /Shell Commands/ are /Built-Ins/
+
+If you're running =bash= you can lookup builtin commands with the =help= command
+- ~help~ -- with no arguments, prints a list of them all
+- ~help COMMAND~ -- prints a quick reference for COMMAND
+      - Try: ~help help~ and ~help type~
+      - Try: ~help true~ and ~help false~
+      - Try: ~help if~ and ~help exit~
+      - Some builtin commands have a /lot/ of options!
+
+If you're running ~zsh~ the =run-help= command might give 
+
+** Documenting Your Script
+
+You should document anything non-obvious
+- The shell ignores anything after an unquoted # character
+- If a short comment will do, give it
+- Otherwise link to a more complete explanation elsewhere
+
+Even better is to make things obvious:
+- You could say
+      - ~cd /usr/local/src # go to the destination directory~
+- or you could say
+      - ~dest_dir=/usr/local/src~
+      - ~cd "$dest_dir"~
+- especially if your script references it multiple times
+
+** Exit Codes
+
+In the Posix model, when a program terminates, it returns a non-negative /Exit
+Code/ to its parent process, e.g. to the shell.
+

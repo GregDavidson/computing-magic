@@ -20,11 +20,11 @@ We believe that as much as possible
 - general theory studied afterwards
 - rather than the reverse!
 We therefore encourage you to
-- study these examples
-- run them yourself
+- explore this document interactively
+- run the embedded commands yourself
 - look up the specific features they use
-- try variations
-- allowing your intuition to really /get/ what's going on!
+- try variations on them
+- allow your intuition to really /get/ what's going on!
 Later you can
 - Read more general material
 - Perhaps starting with [[file:posix-shell-basics.org][Posix Shell Basics]]
@@ -174,7 +174,7 @@ context:
         | h     | cheat sheet (recursive less) |
 - You have particular configuration files with particular contents
       - run ~ls -adF ~/.??*~ for an overview
-      - the ones ending in a ~/~ are directories of configurations
+      - the ones ending in ~/~ are directories of configurations
 
 All of the above particulars can effect what, if anything, a command
 you issue might do.  In addition to that context
