@@ -219,7 +219,7 @@ All processes (commands) in a Posix environment return an /Exit Status/.
 - The /Exit Status/ of the /Last Command/ is available in the =$?= pseudo-parameter.
 
 Some processes require explicit integrity tests
-- The /Posix/ environment provides some has many often helpful tools
+- The /Posix/ environment provides many helpful tools
       - =cmp= program will compare two files that should be the same
             - ~man cmp~
       - =diff= program will show the differences in a variety of formats
@@ -228,13 +228,11 @@ Some processes require explicit integrity tests
       - =test= builtin has lots of built-in tests
             - ~help test~ # if using =bash=
       - The =case= and =expr= builtins can do pattern matching
-      - etc.
 - The =make= tool is often used to organize complex processes
-      - It uses a =Makefile= containing multiple scripts!
       - Software build processes often consist of steps like
             - ~./configure~ /a complex script written by another complex script!/
             - then ~make~ followed by ~make test~ followed by ~make install~
-      - =make= is controlled by a ~Makefile~
+      - =make= uses a ~Makefile~ containing multiple embedded scripts!
             - Always read any =Makefiles= you're given!
       - If you're not an experienced software developer
             - you'll want to study some friendly =make= tutorials
@@ -270,7 +268,7 @@ Coding this is usually done with /Exit Codes/ which control
 When something goes wrong in an interactive script
 - Output an informative error message
 - ~>&2 echo MESSAGE~ sends a message to the /standard error stream/
-      - especially useful if the /standard output stream/ has been /redirected/
+      - useful if the /standard output stream/ has been /redirected/
             - e.g. to a /pipe/ or a /file/
 - Cleanup any mess from any incomplete operation
 - Exit with a non-zero exit code
@@ -281,7 +279,7 @@ When something goes wrong in a non-interactive script
       - set ~LogFile=DESIRED-LOG-FILE~ at the top of your script
       - use ~$0~ or ~${0##*/}~ to identify the script logging the issue
       - include a timestamp - see ~man date~ for options
-      - possibly include a severity level, e.g. =error= or =warning= in the message
+      - maybe include a severity level like =error:= or =warning:=
 - Exit with a non-zero exit code
 
 In many cases a script is just one part of a more complex automated process
