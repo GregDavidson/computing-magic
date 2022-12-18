@@ -369,8 +369,8 @@ use the /not/ operator ~!~ to reverse success and failure:
   # further commands, each in an if construct ...
 #+end_src
 
-This is better! A variation is to use the /or else/ operator ~||~ and turn the
-multi-statement action into a /block/ with {curly braces} like so
+A variation is to use the /or else/ operator ~||~ and turn the multi-statement
+action into a /block/ with { curly; braces; } like so
 
 #+NAME: fetch-postgres-3
 #+begin_src sh
