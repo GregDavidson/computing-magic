@@ -7,7 +7,7 @@
 # +OPTIONS: date:nil
 # +OPTIONS: author:nil
 
-* Building Resilient Scripts
+* Writing More Resilient Scripts
 
 ** Notes to the Reader
 
@@ -174,7 +174,7 @@ context:
         | h     | cheat sheet (recursive less) |
 - You have particular configuration files with particular contents
       - run ~ls -adF ~/.??*~ for an overview
-      - the ones ending in a ~/~ are directories of configurations~
+      - the ones ending in a ~/~ are directories of configurations
 
 All of the above particulars can effect what, if anything, a command
 you issue might do.  In addition to that context
