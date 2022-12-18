@@ -166,10 +166,12 @@ context:
       - Run ~pwd~ to see what is is
 - Your /Environment Variables/ are extra parameters to your scripts (and other programs)
       - Run ~env | less~ to browse them
-      - Three key less commands:
-            - SPACE :: next page
-            - q :: quit
-            - h :: help in a nested less, so =SPACE= or =q=
+        | key   | action in *less* pager       |
+        |-------+------------------------------|
+        | SPACE | next page                    |
+        | b     | back a page                  |
+        | q     | quit less                    |
+        | h     | cheat sheet (recursive less) |
 - You have particular configuration files with particular contents
       - run ~ls -adF ~/.??*~ for an overview
       - the ones ending in a ~/~ are directories of configurations~
