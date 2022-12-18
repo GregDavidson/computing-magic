@@ -439,8 +439,10 @@ Be critical of the code
 - Should we log the error messages?
       - right now, they're just going to the terminal!
       - how could we fix that?
+- Should we log other things?
 - What messes are being left behind if something fails?
-      - should we clean up the mess or leave it to be studied?
+      - do we need to clean up the mess?
+      - should we move it somewhere where it can be examined?
 - Do we care /why/ a command might have failed?
       - Do we have the wrong version of the program?
       - Is the data provided to the progrma in the expected format?
