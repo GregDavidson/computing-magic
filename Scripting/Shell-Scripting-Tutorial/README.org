@@ -1,0 +1,27 @@
+* Shell Scripting Tutorial
+
+Writing Shell Scripts is learned from multiple sources
+1. Reading example scripts
+2. Writing your own scripts
+3. Studying documentation
+
+While many people try doing this 3 -> 2 -> 1, we recommend interweaving all
+three steps, incrementally exploring 1 -> 2 -> 3. We especially advise against
+trying to remember more than one shell feature or trick which you haven't tried
+using yet!
+
+Please note that all examples, advice and documentation are flawed. Scripting is
+best approached with a combination of exuberance and skepticism - like life!
+
+Here are some materials to help get you started:
+
+Read and try out a bit from:
+- [[file:shell-script-resilience.org][shell-script-resilience.org]] :: a series of examples taking you from naive
+  scripts to more resilient scripts
+Mixing in some reading from:
+- [[file:posix-shell-basics.org][posix-shell-basics.org]] :: more didactic exposition about scripting
+Help yourself to code from:
+- [[file:shell-tricks.org][shell-tricks.org]] :: A framework derived from a fairly sophisticated script.
+
+There should be more resources in the directory above us, starting with
+- [[file:../README.org][Scripting README]]
