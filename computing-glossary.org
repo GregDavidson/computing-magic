@@ -1,18 +1,18 @@
-* Scripting Glossary
+* Computing Magic Glossary
 
-This is a glossary for terms related to Scripting. It's also an [[https://orgmode.org][OrgMode]]
+This is a glossary for terms related to Computing Magic. It's also an [[https://orgmode.org][OrgMode]]
 Document. If you are reading it with [[file:../Software-Tools/Emacs/emacs-readme.org][Emacs]] you can follow internal links to
 specific terms. You can also use a script to create such links for your
 documents!
 
-Note: This should really be merged into a more general Computing Glossary!
-
-** Terms
+** General Terms
 
 - Computer :: A tools which can almost magically perform any task you can
   specify with a suitable spell, err, program. As many fantasy books will warn
   you, creating spells can be perilous - a good grounding in Computing Magic is
   recommended!
+
+** Scripting Terms
 
 - Scripts :: Programs written in =Scripting Languages= which are generally
   easier to create, understand and modify than programs written in =General
@@ -28,6 +28,8 @@ Note: This should really be merged into a more general Computing Glossary!
 
 - Scriptable tools :: Tools (software or hardware) which can be controlled by
   =Scripts=. Examples include /Scriptable Text Editors/, /3D Printers/, etc.
+
+** Operating System Terms
 
 - Posix :: A standard for Unix-like systems, including the scripting tools of
   the /Unix Programming Environment/ which helps unify basic features among
