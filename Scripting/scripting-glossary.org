@@ -50,9 +50,10 @@ Note: This should really be merged into a more general Computing Glossary!
 
 - FreeBSD :: A version of BSD which incorporates many innovative features.
 
-- The Unix Programming Environment :: A collection of tools and
+- The Unix Programming Environment :: (1) A collection of tools and
   software-engineering practices which developed within the culture of the users
-  of the Unix Operating System in the 1970s.
+  of the Unix Operating System in the 1970s. (2) An excellent book on these
+  tools and practices.
 
 - Operating System Kernel :: Software which provides access to the electronic
   hardware of a computer for the benefit of programs running on that computer. A
@@ -88,10 +89,10 @@ Note: This should really be merged into a more general Computing Glossary!
 - Program :: A collection of =instructions= which can be executed by an
   =interpreter process=. An =intepreter process= can be implemented in a
   computer's hardware or it can be implemented in software, or by a combination
-  of such. A program may also include =static data= (prepared prior to any
+  of both. A program may also include =static data= (prepared prior to any
   execution of the program) as well as metadata (used for program management,
   e.g. debugging). In some environments, Programs may contain references to
   =external libraries=. In order to be executed, a program (and any libraries it
   requires) must be =loaded= into a suitable =execution context=, e.g. a
-  =heavyweight process= which provides the resources, e.g. memory needed for the
-  execution of the program.
+  =heavyweight process= which provides the resources needed for the execution of
+  the program, e.g. sufficient memory.
