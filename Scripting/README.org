@@ -12,8 +12,8 @@ From our [[file:scripting-glossary.org][Scripting Glossary]]
 Modern scripting emerged from =The Unix Programming Environment= and is a key
 part of the power and productivity of =Unix=, =BSD= and =Gnu/Linux=. =POSIX= is
 a standard for Unix-derived scriptable tools.
-- Note :: Linux is a /Kernel/ which manages the /Computer Hardware/ for a
-  Gnu/Linux System. Gnu provides several /User Interfaces/, including a
+- Note :: [[https://en.wikipedia.org/wiki/Linux_kernel][Linux]] is a /Kernel/ which manages the /Computer Hardware/ for a
+  [[https://www.gnu.org/gnu/linux-and-gnu.en.html][Gnu/Linux System]]. [[https://www.gnu.org/philosophy/categories.html#TheGNUsystem][A Gnu System]] provides several /User Interfaces/, including a
   traditional /Shell Interface/ along with a rich set of /Scriptable Tools/. We
   will refer to the combination as Gnu/Linux for clarity and to respect its
   developers' wishes.
@@ -40,14 +40,13 @@ The first tool you should get is a good [[https://en.wikipedia.org/wiki/POSIX][P
       - =zsh= is similar to =bash=
             - more powerful, but much more complicated!
       - Apple often provides an out-of-date version of =bash=
-      - It's a good idea to get an up-to-date =bash= using =homebrew=
-         and are moving to =zsh=.
+            - get an up-to-date =bash= using =homebrew=!
 - =bash= and =zsh= are both compatible extensions of [[https://en.wikipedia.org/wiki/Bourne_shell][sh]]
       - It can be better to learn scripting with =sh=
-            - Then possibly migrating to, e.g. =bash= or =zsh=
+            - Then possibly migrating to a fancier shell
 
-Once you have the basic tools installed on your system, I recommend this fun way
-to get started:
+Once you have the basic tools installed on your system, I recommend this
+engaging way to get started:
 
 - [[https://github.com/mks22-dw/bashcrawl][BASH Crawl - a shell adventure!]]
 - [[https://marlborough-college.gitbook.io/attic-lab/the-terminal/games/level-1-bashcrawl][BASH Crawl Intro]]
