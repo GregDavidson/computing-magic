@@ -14,7 +14,7 @@ internal links, fold and unfold content and much more! Using =GitHub= or other
 systems only a small subset of OrgMode will be available.
 
 Note: Many of the /Italicized/ or =verbatim= terms have a short explanation in
-the [[file:../scripting-glossary.org][Scripting Glossary]].
+our [[file:../../computing-glossary.org][Computing Glossary]].
 
 ** A Human-Oriented, Casual, Interactive /Command Interpreter/
 
