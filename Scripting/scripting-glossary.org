@@ -5,7 +5,14 @@ Document. If you are reading it with [[file:../Software-Tools/Emacs/emacs-readme
 specific terms. You can also use a script to create such links for your
 documents!
 
+Note: This should really be merged into a more general Computing Glossary!
+
 ** Terms
+
+- Computer :: A tools which can almost magically perform any task you can
+  specify with a suitable spell, err, program. As many fantasy books will warn
+  you, creating spells can be perilous - a good grounding in Computing Magic is
+  recommended!
 
 - Scripts :: Programs written in =Scripting Languages= which are generally
   easier to create, understand and modify than programs written in =General
