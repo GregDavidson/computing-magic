@@ -2,9 +2,9 @@
 
 From our [[file:scripting-glossary.org][Scripting Glossary]]
 
-- Scripts :: Programs written in Scripting Languages which are generally easier
-  to create, understand and modify than programs written in General Purpose
-  Programming Languages.
+- Scripts :: Programs written in /Scripting Languages/ which are generally
+  easier to create, understand and modify than programs written in /General
+  Purpose Programming Languages/.
 
 - Scriptable tools :: tools (software or hardware) which can easily be
   controlled by /Scripts/.
@@ -20,8 +20,8 @@ a standard for Unix-derived scriptable tools.
 
 ** Getting the Tools
 
-If you have Unix, Gnu/Linux or BSD you already have the tools or they're available
-from a standard package with a simple command.
+If you have Unix, Gnu/Linux or BSD you already have the tools or they're
+available from a standard package with a simple command.
 
 If you have a Mac you can install the latest tools using [[https://brew.sh/][Homebrew]]
 - Versions of these tools which come from Apple are often out of date!
@@ -34,16 +34,20 @@ Both of these options are  free of charge and free from commercial licensing!
 
 ** Exploring the Posix Command Environment
 
-The first tool you should get is a good /shell/.
-- All standard Gnu/Linux systems
+The first tool you should get is a good [[https://en.wikipedia.org/wiki/POSIX][Posix]] [[https://en.wikipedia.org/wiki/List_of_command-line_interpreters][Shell]]
+- All standard Gnu/Linux systems come with [[https://www.gnu.org/software/bash][Gnu Bash]].
+- Apple Macintoshes have recently moved from =bash= to [[https://zsh.sourceforge.io][zsh]]
+      - =zsh= is similar to =bash=
+            - more powerful, but much more complicated!
+      - Apple often provides an out-of-date version of =bash=
+      - It's a good idea to get an up-to-date =bash= using =homebrew=
+         and are moving to =zsh=.
+- =bash= and =zsh= are both compatible extensions of [[https://en.wikipedia.org/wiki/Bourne_shell][sh]]
+      - It can be better to learn scripting with =sh=
+            - Then possibly migrating to, e.g. =bash= or =zsh=
 
- Apple Macintoshes come with an
-out-of-date version of =bash= and are moving to =zsh=. I recommend getting the
-latest =bash=. You might or might not want to learn =zsh= later - it's more
-powerful but it's also a lot more complicated. (Fancy interactive shell features
-are largely obsoleted by those who run their shells through =emacs=.)
-
-Once you have the basic tools, I recommend this fun way to get started:
+Once you have the basic tools installed on your system, I recommend this fun way
+to get started:
 
 - [[https://github.com/mks22-dw/bashcrawl][BASH Crawl - a shell adventure!]]
 - [[https://marlborough-college.gitbook.io/attic-lab/the-terminal/games/level-1-bashcrawl][BASH Crawl Intro]]
@@ -54,16 +58,14 @@ Once you can run simple commands from a shell, you can move on. It could also be
 worth your while to spend some time absorbing the Unix Philosophy, especially in
 regards to creative use of the Unix Tools.
 
-A great beginning is to read chapters 1 - 6 of /The Unix Programming
-Environment/ by Brian W. Kernigan and Rob Pike. Everything Unix-like since this
-book was written builds on the foundation it describes, adding incremental power
-and convenience but nothing radical. It is refreshingly free of the (convenient
-but mostly unnecessary) large number of features (feature creep) added since
-that time.
-- CONS:  It's somewhat out of date, although nearly everything still works.
-- PROS:  It reveals the power, simplicity and best usage of the tools.
-It would be great to bring it up to date
-- but continue to eschew most of the new features
+A great beginning is to read chapters 1 - 6 of [[https://en.wikipedia.org/wiki/The_Unix_Programming_Environment][The Unix Programming Environment]].
+Everything Unix-like since this book was written builds on the foundation it
+describes, adding incremental power and convenience but nothing radical. It is
+refreshingly free of the (convenient but mostly unnecessary) large number of
+features (feature creep) added since that time.
+- PROS :: It reveals the power, simplicity and best usage of the tools.
+- CONS :: It's somewhat out of date, although nearly everything still works.
+Would you be interested in helping bring it up to date?
 
 Tutorials and Guides
 - [[http://www.linux-tutorial.info/][The Linux Tutorial]]
