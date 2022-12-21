@@ -1,0 +1,609 @@
+#!/usr/bin/bash
+
+# * Some Handy Shell Scripting Tricks
+
+# ** Some Initial Words
+
+# This is a collection of handy tricks extracted from a shell script designed to
+# install a complex software system from source. You can see that script at
+# [[https://github.com/GregDavidson/wicci-postgres/blob/main/PG-Install-2/pg-install]]
+
+# Run this script with no arguments for help!
+
+# How you might use these tricks:
+# You could raid this file for useful snippets
+# You could turn it into a library to be loaded by scripts
+# Or you could use it as a starting point for your application
+# and edit it into what you need
+# If your experience leads you to improve these tricks, it would be lovely if
+# you would contribute them back!
+
+# Note: =Emacs= =outshine-mode= lets you treat this file as a hierarchical
+# document. TAB on comment lines beginning with asterisks will hide/show nodes
+# much like with =OrgMode=.
+
+# Debugging trick:
+# Surround misbehaving code with
+# set -vx                         # Turn on tracing for DEBUG !!
+# set +vx                         # Turn off tracing for DEBUG !!
+
+# ** A Few Initial Settings
+
+# exit on command failures
+# set -e
+# is currently commented out as some of our functions "fail"!
+# Research this as it would be nice to reinstate this protection!
+# Possibly we're lacking a few strategic
+#   return 0 # as last statement in a function
+#   || true  # at end of an expression
+# - but don't add these gratuitously or you'll conceal errors!
+# Note that vaiable settings don't change exit status, so
+#   COMMAND || VARIABLE-SETTING
+# Should be rewritten as
+#   COMMAND || VARIABLE-SETTING || true
+
+set -u                          # exit when referencing undefined variables
+set -o pipefail                 # capture last non-zero status in pipeline
+
+readonly Pgm_Name="${0##*/}"    # Name of this script
+readonly Pgm_Dir="$(realpath "$(dirname "$0")")"
+readonly Profile_Default="$Pgm_Dir/$Pgm_Name-profile.bash"
+
+# Early_Globals will be logged once logging is available
+declare -a Early_Globals=(Pgm_Name Pgm_Dir)
+
+# *** Some Defaults
+
+# If you care about Operating System Platforms, something like this might help
+# Note: Darwin is the name of the BSD distribution underlying MacOS
+
+# Uses uname -s
+readonly System_Name="$(uname -s)"
+case "$System_Name" in
+    Darwin) readonly PG_Group_Default='_postgres' ;;
+    Linux|[Uu]nix) ;;
+    *) echo "Warning: Unknown system $System_Name" ;;
+esac
+
+# ** Usage Help
+
+# *** Array Length Checking
+
+eq_array_lengths() {
+    local n0="$1"; shift        # save first array name
+    local -n a0="$n0"           # alias first array
+    local n; for n; do          # loop through all other names
+        local -n a="$n"         # alias
+        [ "${#a[@]}" -eq "${#a0[@]}" ] || { # lengths match or
+            >&2 printf '%s[%d] != %s[%d]!\n' "$n" "${#a[@]}"  "$n0" "${#a0[@]}"
+            exit 1
+        }
+    done
+}
+
+# *** Describing Usage
+
+# How this script can be used
+
+declare -r Options=(
+    '--help' '--dryrun' '--verbose'
+    # specify the rest of your options here
+)
+declare -r Options_Params=(
+    'Give_Help' 'Dry_Run' 'Verbose'
+    # specify the rest of the corresponding global parameters here
+)
+declare -ra Options_Explanations=(
+    'give help'
+    'go through the motions without doing much'
+    'send detailed reports to the terminal in addition to the logfile'
+    # explain the rest of the options here
+)
+
+# Ensure that these parallel arrays are of the same length
+eq_array_lengths Options Options_Params Options_Explanations
+
+# Specify how the script can be used
+
+declare -ra Arg_Patterns=(
+    ''                              # No arguments
+    # Put your other usage patterns here
+)
+declare -ra Arg_Pattern_Explanations=(
+    'give help'
+    # Explain your other usage patterns here
+)
+
+eq_array_lengths Patterns Arg_Patterns Arg_Pattern_Explanations
+
+# Warning you should give
+declare -ra Caveats=(
+    # For example:
+    'May behave arbitrarily badly in unfamiliar environment.'
+)
+
+# *** give_full_help
+
+give_full_help() {
+    local i
+    printf -- '* Calling Patterns:\n'
+    for i in ${!Arg_Patterns[@]}; do
+        printf -- '%s %s\n- %s\n' \
+               "$Pgm_Name" "${Arg_Patterns[$i]}" \
+               "${Arg_Pattern_Explanations[$i]}"
+    done
+    printf -- '* Options:\n'
+    for i in ${!Options[@]}; do
+        printf -- '%s -- %s\n' "${Options[$i]}" "${Options_Explanations[$i]}" 
+    done
+    printf -- '* Caveats:\n'
+    for i in ${!Caveats[@]}; do
+        printf -- '- %s\n' "${Caveats[$i]}"
+    done
+}
+
+# ** Reporting, Context, Logging, Setting Parameters
+
+# Reports will go to $Log_File once it has a value
+declare -g Log_File             # no value yet!
+
+# And Reports will go to stderr or stdout
+# - when Log_File is NOT set
+# - when Verbose = true
+
+# *** Context for Reports
+
+# Context is everything! Reports, including Warnings and Error Messages need to
+# report context. A ContextSequence is a space-separated string consisting of a
+# ContextRecords. A ContextRecord is a colon (:) separated record of an
+# ExitCode, LineNumber and optional entities such as FunctionNames and
+# ParameterSettings - which must not contain either spaces or colons. These
+# ContextSequences generally grow as they're passed as FunctionArguments.
+# ExitCodes and LineNumbers are generally computed by a tool.
+
+# cs makes context sequences
+# cs existing-context-sequence context-record-arguments
+cs() {
+    cs0="$1"; shift
+    printf -- '%s%s%s' "$(cr "$@")" "${cs0:+ }" "$cs0"
+}
+
+# cr makes ContextRecords which are also ContextSequence singletons
+# cr exit_code line_number [entity...]
+cr() {
+    local IFS=':'
+    printf -- '%s' "$*"
+}
+
+# burst a ContextRecord into space-separated fields
+cr_burst() {
+    local IFS=':'
+    local fields
+    read -ra fields <<< "$1"
+    IFS=' '
+    printf -- '%s' "${fields[*]}"
+}
+
+# test whether the argument appears to be a ContextSequence
+is_cs() {
+    [ -z "$1" ] || [[ "X$1" =~ ^X[0-9]+: ]]
+}
+
+# cs_code_maybe [CONTEXT]
+# returns the first ExitCode in the ContextSequence
+# - default to 9 if none is specified by the context
+# - ( generated ExitCodes begin with 10 )
+cs_code_maybe() {
+    local context="${1:-}"           # default to empty context
+    local code="${context%%[!0-9]*}" # strip starting with 1st non-digit
+    printf -- "%d" "${code:-9}"      # return the code to use
+    # verbose workaround to having a command fail
+    # [ -n "$code" ] # might trip -e
+    # workaround:
+    if [ -n "$code" ]; then return 0; else return 1; fi
+}
+
+# *** Reporting
+
+# report_out [-LEVEL] [CONTEXT] [FORMAT] REPORT...
+# All report messages go through here.
+# Formats should work well with OrgMode.
+# Currently any supplied FORMAT option is ignored.
+report_out() {
+    local level='' context='' format='' cr
+    # get the "level", if any
+    [[ "X$1" =~ ^X- ]] && {
+        level="${1#-}"          # strip initial -
+        shift                   # drop argument
+    }
+    # get the context, if any
+    is_cs "$1" && { context="$1"; shift; }
+    # get the "format", if any
+    case "$1" in
+        (:*|-:*) format="$1" ; shift ;;
+    esac
+    # make the main report
+    case "$level" in
+        ?*) # OrgMode definition-list format when level non-empty
+            printf -- '- %s :: %s\n' "$level" "$*" ;;
+        *)  # no format applied when level is empty
+            printf -- '%s\n' "$*" ;;
+    esac
+    # follow with all supporting context
+    for cr in $context; do
+        printf -- '- context: %s\n' "$(cr_burst "$cr")"
+    done
+}
+
+# same interface as report_out
+# report to stdout if Verbose or no Log_File
+# report to Log_File if it exists
+report() {
+    { "${Verbose:-false}" || [ -z "${Log_File:-}" ]; } && report_out "$@" >&2
+    [ -n "${Log_File:-}" ] && report_out "$@" >> "$Log_File"
+}
+
+# error [CONTEXT] REPORT...
+error() {
+    local code=$(cs_code_maybe "$1")
+    >&2 report -error "$@"
+    exit "$code"
+}
+
+# *** Setting and Reporting Global Parameters
+
+# Use these functions to set global parameters
+# so that the settings get reported!
+
+# report_param global_parameter
+# fix to take optional context!!
+report_param() {
+    local -n p="$1"     # alias p to the parameter
+    report -"\$$1" '' "$p"
+}
+
+# report_param global_array_parameter
+# fix to take optional context!!
+report_param_array() {
+    local -n a="$1"     # alias a to the array
+    local i
+    report -"$1[]" '' Elements
+    for i in ${!a[@]}; do
+        report -"[$i]" '' "${a[$i]}"
+    done
+}
+
+# report_params PARAMETER...
+# fix to take optional context!!
+report_params() {
+    local p; for p; do report_param "$p"; done
+}
+
+# set_param_silently global_parameter [value]
+# should we warn if the parameter already had a value??
+set_param_silently() {
+    { [ $# -ge 1 ] && [ $# -le 2 ]; } ||
+        error "set_param given $# arguments"
+    declare -g "$1"             # declare as global parameter
+    [ $# -eq 1 ] && return 0
+    local -n param="$1"         # alias as param
+    # shellcheck disable=SC2034
+    param="$2"                  # set its value
+}
+
+# set_param global_parameter [value]
+# fix to take optional context!!
+set_param() {
+    set_param_silently "$@"
+    report_param "$1" # report it
+    # if report couldn't log it, record it for later
+    [ -n "${Log_File:-}" ] || Early_Globals+=("$1")
+}
+
+# set_final global_parameter [value]
+# sets the global parameter as a readonly value
+# any later attempt to reset that parameter will be warned or ignored
+set_final() {
+    local -n v="$1"             # alias v to the parameter name
+    if [ -n "${v:-}" ]; then
+        # maybe warn of an attempt to reset the parameter??
+        return 0
+    fi
+    set_param "$@"
+    declare -gr "$1"            # declare as global readonly
+}
+
+# *** Utility Functions
+
+# Uses grep
+# Uses dscl if available
+# Assumes FILE is Posix /etc/passwd or /etc/group
+# user_or_group_exists NAME 'user|group' FILE [CONTEXT]
+user_or_group_exists() {
+    local this='user_or_group_exists'
+    local context="${4:-"`cr 10 320 $this`"}"
+    grep -qs "^$1:" "$3" ||
+        { type -P dscl >>/dev/null && dscl . -read "/${2}s/$1" RealName >/dev/null; } ||
+        error "$context" "No $2 $1"
+    printf -- '%s' "$1"            # return value
+}
+# user_exists USER-NAME [CONTEXT]
+user_exists() {
+    local this='user_exists'
+    local context="${4:-"`cr 11 329 $this`"}"
+    if type -P id >/dev/null; then
+        id "$1" >/dev/null || error "$context" "No user $1"
+        printf -- '%s' "$1"            # return value
+    else
+        user_or_group_exists "$1" 'user' '/etc/passwd' "${2:-}"
+    fi
+}
+# group_exists GROUP-NAME [CONTEXT]
+group_exists() {
+    user_or_group_exists "$1" 'group' '/etc/group' "${2:-}"
+}
+
+# ** Process Command Line Options
+
+# Find the path to a program with fallbacks, or fail
+# prog_path_maybe PROGRAM_NAME...
+prog_path_maybe() {
+    # set -vx                         # DEBUG !!
+    local prog path=''
+    for prog; do
+        path="$(type -P "$prog" 2>/dev/null)" && break
+    done
+    [ -n "$path" ] || return 1
+    printf -- '%s' "$path"
+}
+
+# option_key --foo=bar ==> --foo
+option_key() {
+    printf '%s' "${1%%=*}"
+}
+
+# option_val_maybe --foo=bar ==> bar
+# fails and returns '' when no val
+option_val_maybe() {
+    local name="${1##*=}"       # strip up to = if any
+    [ "X$name" != "X$1" ] || return 1
+    printf '%s' "$name"
+}
+
+declare -A Options_Index
+
+option_maybe() {
+    [[ "X$1" =~ ^X--[a-zA-Z_]+=? ]] || return 1
+    local key="$(option_key "$1")" val="$(option_val_maybe "$1")"
+    local i="${Options_Index["$key"]:-}"
+    [ -n "$i" ] || return 1
+    local option="${Options["$i"]}"
+    local param="${Options_Params["$i"]}"
+    case "$option" in
+        (--verbose)    # Evil Kludgy Patch:
+            # Verbose temporarily false while reporting Early_Globals
+            # if reported will have wrong value :-(
+            # so don't use set_final -- hang head in shame!!!
+            declare -g Verbose='true' ;;
+        ("${key}"=*) set_param "$param" "$val" ;; # value parameter
+        ("${key}") set_param "$param" true ;;     # boolean parameter
+        (*) >&2 echo "option_arg: impossible option $option"
+            exit 1 ;;
+    esac
+    return 0
+}
+
+# Option[i]=--foo ==> Options_Index[--foo]=i
+# Option[i]=--foo=bar ==> Options_Index[--foo]=i
+index_options() {
+    local i option key val
+    for i in ${!Options[@]}; do
+        option="${Options[$i]}"
+        key="$(option_key "$option")"
+        val="$(option_val_maybe "$option")" || true
+        Options_Index["$key"]=$i
+    done
+}
+
+set_option_defaults() {
+    local i
+    for i in "${!Options[@]}"; do
+        local param="${Options_Params[$i]}" # associated parameter
+        case "${Options[$i]}" in
+            (*=*) set_param_silently "$param" '' ;;    # value default
+            (*) set_param_silently "$param" 'false' ;; # boolean default
+        esac
+    done
+}
+
+do_suss_options() {
+    local this=do_suss_options
+    local arg
+    index_options
+    set_option_defaults
+    declare -g Pattern=''
+
+    # record options and save non-option arguments
+    declare -g Pgm_Args=( )                        # Non-Option args
+    for arg; do
+        option_maybe "$arg" || Pgm_Args+=("$arg")
+    done
+
+    "$Give_Help" && { give_full_help; exit 0; }
+
+    return 0
+}
+
+# Uses ls, grep
+# empty_dir() { ! [ -e "$1" ] || [ -d "$1"] && ! ls -qAH -- "$1" | grep -q .; }
+# just using bash builtin features
+empty_dir() {
+    ! [ -e "$1" ] || [ -d "$1" ] && ! [[ $(shopt -s nullglob dotglob; echo "$1"/*) ]];
+}
+
+# expect_dir PATH [CONTEXT]
+expect_dir() {
+    [ -d "$1" ] || error "${2:-}" "Expected directory $1"
+}
+
+# Uses mkdir, chown
+# ensure directory exists at PATH or mkdir and chown it
+# ensure_dir PATH ACCOUNT GROUP [CONTEXT]
+ensure_dir() {
+    local dir="$1" acct="$2" group="$3" cxt="${4:-}"
+    [ -d "$dir" ] || {
+        [ -e "$dir" ] &&          # whoops, something else there!
+            error "$cxt" "Expected directory $dir"
+        report -command "$cxt" mkdir -p "$dir"
+        mkdir -p "$dir"
+        report -command "$cxt" chown "$acct:$group" "$dir"
+        chown "$acct:$group" "$dir"
+    }
+}
+
+# *** su commands
+
+# su_acct_dir_cmd_log [-stdout] [CONTEXT] account directory command...
+# when -stdout, send output to stdout, otherwise just log it
+su_acct_dir_cmd_log() {
+    local stdout=false          # or
+    [ X-stdout != "X$1" ] || { stdout=true; shift; }
+    # We will be abusing our knowledge of ContextSeqence representation!
+    local cxt=''          # cxt will grow
+    is_cs "$1" && { cxt="$1"; shift; }
+    local acct="$1" dir="$2";  shift 2
+    local shell
+    if [ Darwin = "$System_Name" ]; then
+        shell=''                # MacOS doesn't support -s
+    else
+        shell="-s $Build_Shell" # don't quote when expanded!
+        cxt="$(cr 3 shell = "$Build_Shell") $cxt"
+    fi
+    cxt="$(cr 1 acct = "$acct") $(cr 2 dir = "$dir") $cxt"
+    report -command "$cxt" "$*" # goes to stderr
+    "$Dry_Run" || su - "$acct" $shell -c "cd \"$dir\"; $*" |
+            if "$stdout"
+            then cat            # to stdout
+            else log_example    # to logfile
+            fi
+}
+
+# su_acct_dir_cmd [CONTEXT] account directory command...
+# use this one when you musn't add anything to stdout
+su_acct_dir_cmd() { su_acct_dir_cmd_log -stdout "$@"; }
+
+# *** Logging Functions
+
+set_phase() {
+    declare -g Phase="$1"
+    declare -g Log_File="$Build_Dir/LOG_$Phase.org"
+    touch "$Log_File"
+    # chown -R "$Build_Acct:$Build_Group" "$Log_File"
+
+    { printf -- '%s -*- mode: %s; -*-\n' '' Org
+      # printf -- '#+%s: %s\n' TITLE 'Your log file title goes here'
+      printf -- '#+%s: %s\n' DATE "$(date)"
+      printf -- '\n'
+    } >> "$Log_File"
+
+    [ "${#Early_Globals[@]}" -gt 0 ] && {
+        declare -g Verbose
+        local verbose="$Verbose"
+        Verbose='false'
+        report '' '* Early Globals:'
+        report -'Pgm_Args[]' "${Pgm_Args[*]}"
+        report_params "${Early_Globals[@]}"
+        Early_Globals=( )
+        Verbose="$verbose"
+    }
+
+    report '' "* Phase $Phase"
+}
+
+# Uses awk
+# log stdin content, if any, as an OrgMode example block
+log_example() {
+    awk -v b='#+begin_example' -v e='#+end_example' \
+        'NR==1{print b}NR>0{print}END{if (NR>0) print e}' | tee -a "${Log_File:-/dev/null}"
+}
+
+# log_error CONTEXT REPORT...
+log_error() {
+    local code=$(cs_code_maybe "$1")
+    report -error "$@"
+    exit "$code"
+}
+
+# try [CONTEXT] COMMAND...
+try() {
+    local cxt=''
+    is_cs "$1" && { cxt="$1"; shift; }
+    report -command "$cxt" "$@"
+    "$@" || error "$cxt" "$Phase $1 -> $?"
+}
+
+# Uses grep
+# edit_config_file setting from to input_file [output_file]
+# edit a file of settings which are of the form
+# setting=value
+# Lots of assumptions here!
+# With the original application, the default settings are all commented out
+# with hashes.  YMMV!!
+edit_pg_conf() {
+    local setting="$1" from="$2" to="$3" this=edit_pg_conf
+    local if="$4"
+    local of="${5:-$if.$$}"
+
+    # Check that we have only one occurrance of "setting"
+    [ 1 -eq $(grep -c "\\<$setting\\>" "$if") ] || {
+        report -warning `cr 1 1 $this` "$conf1 $setting count != 1"
+        return 1
+    }
+    report -command "`cr 67 924 $this`" sed "/$setting *=/h;s/^#*//;s/$from/$to/;x" "$if"
+    sed "/^#$setting *=/{p;s/^#*//;s|$from|$to|}" \
+        "$if" >> "$of"
+    # Check that we now have two occurrance of "setting"
+    [ 2 -eq $(grep -c "\\<$setting\\>" "$of") ] || {
+        report -warning "`cr 68 928 $this`" "$conf2 count != 2"
+        return 1
+    }
+    cp "$of" "$if"
+}
+
+# ** Putting it all together
+
+# Define the Action Functions which actually *do things* in your domain!
+# Then you can call them flexibly!
+# You might, e.g. want a mechanism for skipping or repeated some of them based
+# on script arguments.
+
+[ $# -eq 0 ] && { give_full_help; exit 0; }
+
+# If the Action Functions all begin with do_
+# You can find all of their definitions by running
+# grep -n '^do_.*()' pg-install
+
+# Store script OPTIONS as parameter values
+# put regular options into global array Pgm_Args
+do_suss_options "$@"
+set -- "${Pgm_Args[@]}"      # options now gone from "$@"
+
+# Options for the configure script, doesn't have to be pre-declared
+# document its existence because likely extended by the Profile
+declare -ga Config_Options
+
+# Uses whoami
+# Does this script need to run as root?
+# test root = "`whoami`" || error "`cr 71 989 $Pgm_Name`" "Must run as root!"
+
+# Figure out the Version from the Patterns!
+# do_suss_args "$@"               # non-option arguments
+
+# ** Some Final Words
+
+# I've used the shellcheck program to help catch mistakes
+# with these .shellcheckrc settings:
+#	# accept legacy backtick `command` substitution
+#	disable=SC2006
+#	# accept =let EXPR= along with =(( EXPR ))=
+#	disable=SC2219
