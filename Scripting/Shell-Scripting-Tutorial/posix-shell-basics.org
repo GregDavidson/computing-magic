@@ -9,7 +9,7 @@
 
 ** Notes to the Reader
 
-This is an [[https://orgmode.org][OrgMode]] Document. If you are reading it with Emacs you can follow
+This is an [[https://orgmode.org][OrgMode]] Document. If you are reading it with [[https://github.com/GregDavidson/computing-magic/blob/main/Software-Tools/Emacs/emacs-readme.org][Emacs]] you can follow
 internal links, fold and unfold content and much more! Using =GitHub= or other
 emulations will only provide a small subset of OrgMode capabilities.
 
