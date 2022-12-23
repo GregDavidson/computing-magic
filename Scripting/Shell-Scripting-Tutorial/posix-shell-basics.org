@@ -86,8 +86,8 @@ create a naive shell script:
 
 *** Most of the /Shell Commands/ are /Independent Programs!/
 
-Because most shell commands are independent programs, you need handy information
-on all possible programs on your system!
+Because most shell commands are /independent programs/, you need handy
+information on /all possible programs/ on your system!
 
 The core of Posix documentation is /man pages/
 - man :: the quick-reference manual pages, like a set of cheat sheets
@@ -96,16 +96,13 @@ The core of Posix documentation is /man pages/
       - run ~man whatis~ to learn how to access 1-line descriptions
       - run ~whatis intro~ to see the sections
             - if unsorted, try ~whatis intro | sort~
-      - run ~man date~ to lookup the date program
-      - run ~man bash~ to lookup the bash shell
-      - run ~man zsh~ to lookup the zsh shell
-- If you don't have the /man pages/ installed on your system
-      - You can access the same information online
-      - And we strongly encourage you to install them on your system
+      - run ~man date~ to lookup the =date= program
+      - run ~man bash~ to lookup the =bash= shell
+      - run ~man zsh~ to lookup the =zsh= shell
 
 Documentation for GNU programs might be in three places
-- man pages
-- info pages -- these are comprehensive!
+- man pages -- basic reference, like a /cheat sheet/
+- info pages -- complete reference and tutorial in one document
       - run ~info~ and then the ~h~ command to learn how to use it!
       - of if you're inside of /emacs/
             - ~Control-h i~ or ~Alt-x info~
@@ -115,8 +112,13 @@ Documentation for GNU programs might be in three places
             - [[https://www.gnu.org/software][Official GNU Software]]
             - Or just do a web search for tutorials and reference manuals
 - brief program help and options
-      - Run the program with the option =--help= that's two dashes =--= and the word =help=
+      - Run the program with the option =--help=
+            - that's two dashes =--= and the word =help=
       - Try ~cat --help~ and ~bash --help~
+
+If you don't have the /man pages/ or /info pages/ installed on your system
+- You can access the same information via the Web
+- And it's nicer to have them installed on your local computer!
 
 *** A few /Shell Commands/ are /Built-Ins/
 
