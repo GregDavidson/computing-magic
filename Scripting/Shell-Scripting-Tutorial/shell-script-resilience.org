@@ -1,5 +1,5 @@
 #+TITLE: Posix Shell Essentials
-#+SUBTITLE: Building Resilient Scripts
+#+SUBTITLE: Writing Resilient Shell Scripts
 #+AUTHOR: J. Greg Davidson
 #+DATE: 18 October 2022
 #+OPTIONS: toc:nil

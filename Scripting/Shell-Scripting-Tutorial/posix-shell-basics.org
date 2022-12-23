@@ -1,5 +1,5 @@
 #+TITLE: Posix Shell Essentials
-#+SUBTITLE: Overview of the Problem Space
+#+SUBTITLE: Overview of Writing Posix Shell Scripts
 #+AUTHOR: J. Greg Davidson
 #+DATE: 18 October 2022
 #+OPTIONS: toc:nil
