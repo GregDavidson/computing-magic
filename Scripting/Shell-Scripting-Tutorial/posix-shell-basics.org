@@ -56,7 +56,7 @@ You can issue commands to a shell /interactively/ at the (P)REPL:
 
 A /Script/ consists of the same commands you can issue interactively
 - typically stored in a /textfile/
-- alternatively supplied by an /input stream/, e.g. a /pipe/
+- alternatively supplied by an /Input Stream/, e.g. a [[https://en.wikipedia.org/wiki/Pipeline_(Unix)][Pipe]]
 
 If you know how to issue commands to a shell manually, then you can trivially
 create a naive shell script:
@@ -65,18 +65,18 @@ create a naive shell script:
       - Shebang :: #!PATH-TO-SHELL
       - specifies the program to run to interpret your file
       - You need a full path - make sure it's correct!
-            - to check, run =type SHELL-NAME= or =type -P SHELL-NAME=
-            - e.g. =type bash= or =type -P bash=
+            - to check, run ~type SHELL-NAME~ or ~type -P SHELL-NAME~
+            - e.g. ~type bash~ or ~type -P bash~
 - Enter your desired commands into it
 - Make the script executable
-      - =chmod +x FILE-NAME=
+      - ~chmod +x FILE-NAME~
 - To run it, either
       - specify a path to it when you run it
-            - e.g. =./FILE-NAME= if it's in your current directory
-      - just use its name if it's in a directory on your =$PATH=
-            - e.g. =mv FILE-NAME ~/bin=
+            - e.g. ~./FILE-NAME~ if it's in your current directory
+      - just use its name if it's in a directory on your ~$PATH~
+            - e.g. ~mv FILE-NAME ~/bin~
                   - =~/bin= is typically on your =$PATH=
-                  - to check, run =echo $PATH= or =echo $PATH | tr : '\n'=
+                  - to check, run ~echo $PATH~ or ~echo $PATH | tr : '\n'~
             - Watch out for name clashes among programs on your =$PATH=!
 
 ** Finding Documentation
@@ -112,7 +112,7 @@ Documentation for GNU programs might be in three places
             - [[https://www.gnu.org/software][Official GNU Software]]
             - Or just do a web search for tutorials and reference manuals
 - brief program help and options
-      - Run the program with the option ~--help~ that's two dashes =--= and the word =help=
+      - Run the program with the option =--help= that's two dashes =--= and the word =help=
       - Try ~cat --help~ and ~bash --help~
 
 *** A few /Shell Commands/ are /Built-Ins/
@@ -169,7 +169,7 @@ When you run a command interactively its /Exit Code/ is available after terminat
 After the ~echo $?~, the ~$?~ will become the /Exit Code/ of the =echo= command,
 so if you want to use the code more than once, be sure to save it:
 - /Run some command/
-- my_command_status=$?
+- ~my_command_status=$?~
 - ~echo "$my_command_status"
 
 A script can use any of the 256 /Exit Codes/ to mean anything it likes, but
