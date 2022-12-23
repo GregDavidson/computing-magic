@@ -92,7 +92,7 @@ create a naive shell script:
 Because most shell commands are /independent programs/, you need handy
 information on /all possible programs/ on your system!
 
-The core of Posix documentation is /man pages/
+The core of Posix documentation is /Man pages/
 - man :: the quick-reference manual pages, like a set of cheat sheets
       - run ~man man~ to learn how to use it!
       - run ~man apropos~ to learn how to search the man pages
@@ -104,24 +104,41 @@ The core of Posix documentation is /man pages/
       - run ~man zsh~ to lookup the =zsh= shell
 
 Documentation for GNU programs might be in three places
-- man pages -- basic reference, like a /cheat sheet/
-- info pages -- complete reference and tutorial in one document
+- Man Pages -- basic reference, like a /cheat sheet/
+- Info Documents -- complete reference and tutorial in one document
       - run ~info~ and then the ~h~ command to learn how to use it!
       - of if you're inside of /emacs/
             - ~Control-h i~ or ~Alt-x info~
-      - If you don't feel like learning this charmingly antiquated system
-            - You can find it all online, e.g
-            - [[https://www.gnu.org/software/bash/manual/bash.html][Bash Info Online]]
-            - [[https://www.gnu.org/software][Official GNU Software]]
-            - Or just do a web search for tutorials and reference manuals
 - brief program help and options
       - Run the program with the option =--help=
             - that's two dashes =--= and the word =help=
       - Try ~cat --help~ and ~bash --help~
 
-If you don't have the /man pages/ or /info pages/ installed on your system
+If you don't have the /Man Pages/ or /Info Documents/ installed on your system
 - You can access the same information via the Web
 - And it's nicer to have them installed on your local computer!
+
+If you don't feel like learning how to use Info
+- You can find it all on the web, e.g
+- [[https://www.gnu.org/software/bash/manual/bash.html][Bash Info Online]]
+- [[https://www.gnu.org/software][Official GNU Software]]
+
+A /Web Search/ can find a /vast/ number of other reference materials and
+tutorials, including /YouTube Videos/, for everything related to /Posix
+Scripting/ - adding the keywords /Linux/ or /Unix/ or /Shell/ may help.
+
+An advantage of the =man= and =info= documents which come with your software is
+that they're generally up-to-date as well as accurate and complete. /Man Pages/
+have a consistent format; with experience, you can usually get what you need
+quicker with =man= than with other methods.
+
+Big hint: When you consult a /Man Page/ or /Info Document/, try to get only two
+pieces of information:
+1. What you need right now
+2. One extra thing that looks truly useful
+       - maybe something you wish you'd known before!
+Avoid getting distracted by other features when you're in the middle of doing
+something!
 
 *** A few /Shell Commands/ are /Built-Ins/
 
@@ -150,7 +167,7 @@ Even better is to make things obvious:
       dest_dir=/usr/local/src
       cd "$dest_dir"
 #+end_src
-      - also handy if your script needs =$dest_dir= multiple times
+- also handy if your script needs =$dest_dir= multiple times
 
 A comment should assist a /Power User/ in reading and understanding the script's
 code rather than be a substitute for understanding it. After all, a comment can
