@@ -57,7 +57,7 @@ engaging way to get started:
 
 Computers were invented to automate things which people used to have to do by
 hand. As soon as you're finding yourself doing something repetitious and tedious
-with a computer, /you're probably doing it wrong!/
+with a computer, /automate it!/
 
 Check out our [[file:Shell-Scripting-Tutorial][Shell Scripting Tutorial Materials]]!
 
