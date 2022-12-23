@@ -249,6 +249,10 @@ example, use the first 128 codes for various success conditions and the other
 
 Parent and Child Processes can be running any program, not just Shells.
 
+Big Hint: Before trying to write a script, solve the problem first by running
+the commands in an /Interactive Shell/. Make sure you understand what's going,
+what can go wrong and how you can tell! Gradually incorporate what you've done
+interactively into your script.
 
 ** The Bottom Line
 
