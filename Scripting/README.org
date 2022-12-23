@@ -86,22 +86,28 @@ The Unix Philosophy encourages creating a toolkit small simple programs, each of
 which has a small functional scope. Problems are solved by combining such
 component programs as needed.
 
-The /C Language/ was created to encourage writing this kind of small program. In
-fact, when Dennis Ritchie, the main designer of =C= was asked /What's the best
-way to write large programs in C?/ his reply was /Don't!/
+The /C Language/ was created to encourage writing this kind of small program.
+- When Dennis Ritchie, the main designer of =C= was asked
+      - /What's the best way to write large programs in C?/
+- His reply was:
+      - /Don't!/
 
 Most of the popular scripting languages such as Python, Ruby, Perl, JavaScript,
-etc. are written primarily in =C=.  =C= is written in =C=.
+etc. are written primarily in =C=. =C= is written in =C=. =C= is a small
+language which can be learned quickly.
+- Here's our quick [[https://github.com/GregDavidson/C-By-Example][Example-Driven Start to Learning C Programming]].
 
-The Lisp Philosophy encourages creating small simple Procedures (ideally,
-Functional Procedures), each of which has a small functional scope. Problems are
+The Lisp Philosophy encourages creating small simple Procedures. Problems are
 solved by combining such component procedures as needed. The major Lisps are
-written in Lisp.
+written mostly in Lisp. Some Lisps are large and complex. Others, especially
+=Scheme=, are even simpler than =C= yet are just as powerful!
+- Here's our take [[https://github.com/GregDavidson/on-lisp][On Lisp]].
 
-The similarities should be obvious. In practice, how do these two approaches
-differ?
+Do you see any design and philosophical similarities between the =C= and
+=Scheme= languages and programming philosophies? The original /Unix System/
+provided both =C= and /an early dialect of Lisp/.
 
 There have also been a number of Unix-like Toolkits, including shells created in
 Lisp. So far, none of them have sufficiently adopted POSIX syntax to allow them
 to be used as drop-in replacements for the more common POSIX programs. Some of
-them are worth learning and using, e.g. [[https://scsh.net/][scsh - the Scheme Shell]]
+them are very worth learning and using, e.g. [[https://scsh.net/][scsh - the Scheme Shell]]
