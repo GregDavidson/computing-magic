@@ -76,7 +76,10 @@ create a naive shell script:
       - just use its name if it's in a directory on your ~$PATH~
             - e.g. ~mv FILE-NAME ~/bin~
                   - =~/bin= is typically on your =$PATH=
-                  - to check, run ~echo $PATH~ or ~echo $PATH | tr : '\n'~
+                  - to check, run ~echo $PATH~ or
+#+begin_src sh
+  echo $PATH | tr : '\n'
+#+end_src
             - Watch out for name clashes among programs on your =$PATH=!
 
 ** Finding Documentation
