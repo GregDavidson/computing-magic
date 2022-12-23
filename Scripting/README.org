@@ -53,7 +53,7 @@ engaging way to get started:
 - [[https://github.com/mks22-dw/bashcrawl][BASH Crawl - a shell adventure!]]
 - [[https://marlborough-college.gitbook.io/attic-lab/the-terminal/games/level-1-bashcrawl][BASH Crawl Intro]]
 
-** Writing Shell Scripts
+** Learn to Script Everything!
 
 Computers were invented to automate things which people used to have to do by
 hand. As soon as you're finding yourself doing something repetitious and tedious
