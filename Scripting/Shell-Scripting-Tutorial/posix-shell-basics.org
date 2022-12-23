@@ -16,13 +16,16 @@ emulations will only provide a small subset of OrgMode capabilities.
 Note: Many of the /Italicized/ or =verbatim= terms have a short explanation in
 our [[file:../../computing-glossary.org][Computing Glossary]].
 
+This document is specifically about /Shell Scripting/. For more general
+scripting, please see [[../README.org][Scripting README]].
+
 This document is /didactic/. It's intended to complement the deeper
 understanding you'll get from
 - reading examples
 - trying out variations
 - writing your own scripts
 We recommend you read this document along with
-- the more /example-driven/ [[https://github.com/GregDavidson/computing-magic/blob/main/Scripting/Shell-Scripting-Tutorial/shell-script-resilience.org][Shell Script Resilience]]
+- the more /example-driven/ [[file:shell-script-resilience.org][Shell Script Resilience]]
 
 This document also introduces you to the essential online reference materials.
 
@@ -200,5 +203,5 @@ If you know how to use a Shell (or any other Scriptable Application)
 
 A good Script is /resilient/ to changes in the situation. As a start, we
 recommend that you
-- carefully study [[https://github.com/GregDavidson/computing-magic/blob/main/Scripting/Shell-Scripting-Tutorial/shell-script-resilience.org][Shell Script Resilience]]
+- carefully study [[file:shell-script-resilience.org][Shell Script Resilience]]
 - bring your creative critical intelligence to the /Art Of Scripting/!

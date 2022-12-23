@@ -83,7 +83,7 @@ Let's assume that you studied the /bash info document/ to learn
 
 Then you'd learn about the =-I= option to =date= using
       - ~man date~ or ~date --help~
-      - or =Alt-x man= =date= inside of Emacs
+      - or ~Alt-x man~ =date= inside of Emacs
 
 **** Documenting The Script
 
@@ -232,7 +232,7 @@ Some processes require explicit integrity tests
       - Software build processes often consist of steps like
             - ~./configure~ /a complex script written by another complex script!/
             - then ~make~ followed by ~make test~ followed by ~make install~
-      - =make= uses a ~Makefile~ containing multiple embedded scripts!
+      - =make= uses a =Makefile= containing multiple embedded scripts!
             - Always read any =Makefiles= you're given!
       - If you're not an experienced software developer
             - you'll want to study some friendly =make= tutorials
