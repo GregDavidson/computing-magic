@@ -146,9 +146,11 @@ Even better is to make things obvious:
 - You could say
       - ~cd /usr/local/src # go to the destination directory~
 - or you could say
-      - ~dest_dir=/usr/local/src~
-      - ~cd "$dest_dir"~
-- especially if your script references it multiple times
+#+begin_src sh
+      dest_dir=/usr/local/src
+      cd "$dest_dir"
+#+end_src
+      - also handy if your script needs =$dest_dir= multiple times
 
 A comment should assist a /Power User/ in reading and understanding the script's
 code rather than be a substitute for understanding it. After all, a comment can
@@ -156,29 +158,61 @@ easily be wrong!
 
 ** Exit Codes and Program Logic
 
-In the Posix model, when a program terminates, it returns an /Exit
-Code/ to its parent process, e.g. to the shell.  Exit codes are 1-byte
-integers in the range 0..255
+When a program is run /Interactively/ in a /Terminal/ and something goes wrong -
+or simply not as expected - it's up to the /User/ to notice and deal with the
+situation. The /User/ will generally determine what happened based on the
+/Output Text/ the /Program/ in the /Child Process/ wrote to the terminal.
 
-- Exit codes :: one-byte non-negative integers
-| code(s) | meaning                                               |
-|---------+-------------------------------------------------------|
-|   0-255 | available codes                                       |
-|       0 | "success" code, treated as "true" in scripts          |
-|   1-255 | treated as "false" in scripts                         |
-|       1 | non-specific "failure" code                           |
-|   3-125 | available "failure" codes for any application purpose |
-| 126-255 | codes with pre-existing meanings, can be repurposed   |
+When a /Child Process/ is run by a non-interactive /Parent Process/ (which might
+be a Shell Script), it's up to that /Parent Process/ to detect what happened and
+deal with it. The easiest way for the /Parent Process/ to notice a problem is by
+inspecting the /Exit Code/ of the /Child Process/.
 
-When you run a command interactively its /Exit Code/ is available after termination in the /Special Parameter/ =$?=
-- /Run some command/
-- ~echo $?~
+In the /Posix Process Model/, when a /Heavyweight Process/ running a /Program/
+/Terminates/, it /Returns/ a 1-byte /Exit Code/ to its /Parent Process/.
 
-After the ~echo $?~, the ~$?~ will become the /Exit Code/ of the =echo= command,
-so if you want to use the code more than once, be sure to save it:
-- /Run some command/
-- ~my_command_status=$?~
-- ~echo "$my_command_status"
+- Exit Codes :: 1-byte non-negative integers
+
+| Exit Code | Conventional Meaning                                  |
+|-----------+-------------------------------------------------------|
+|     0-255 | available codes                                       |
+|         0 | "success" code, treated as "true" in scripts          |
+|     1-255 | treated as "false" in scripts                         |
+|         1 | non-specific "failure" code                           |
+|     3-125 | available "failure" codes for any application purpose |
+|   126-255 | codes with pre-existing meanings, can be repurposed   |
+
+When a /Parent Process/ is a /Shell/ (interactive or not), the /Exit Code/ of
+the last command which finished is available in the /Special Parameter/ =$?=
+#+begin_src sh :results output
+  echo hello                      # should succeed
+  echo $?                         # should prints 0
+  grep unlikely /etc/passwd       # if no match
+  echo $?                         # prints a failure code
+  grep nobody /etc/xyzyy          # if no such file
+  echo $?                         # prints a failure code
+  echo $?                         # last command succeeded!
+#+end_src
+
+#+RESULTS:
+: hello
+: 0
+: 1
+: 2
+: 0
+
+After ~echo $?~, ~$?~ becomes the /Exit Code/ of the =echo= command; you can
+save an exit code for use later:
+#+begin_src sh :results output
+  grep nobody /etc/xyzzy
+  code=$?
+  date
+  echo "grep failed with code $code"
+#+end_src
+
+#+RESULTS:
+: Fri 23 Dec 2022 02:20:09 PM PST
+: grep failed with code 2
 
 A script can use any of the 256 /Exit Codes/ to mean anything it likes, but
 most commands follow the convention
@@ -190,7 +224,14 @@ When you follow this convention you can combine commands using Boolean Logic:
 - the Boolean operators =!= (not), =&&= (and then), =||= (or else)
       - See bash-metas in [[file:../Reference-Sheets/README.org][handy reference sheets]]
 
-Again, you don't have to use Exit Codes
+Again, you don't have to use the conventional Exit Code values. You could, for
+example, use the first 128 codes for various success conditions and the other
+128 codes for various failure conditions, or whatever.
+
+/Exit Codes/ are the simplest way a /Child Process/ can let its /Parent Process/
+
+Parent and Child Processes can be running any program, not just Shells.
+
 
 ** The Bottom Line
 
