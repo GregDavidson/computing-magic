@@ -2,7 +2,7 @@
 #+SUBTITLE: Overview of the Problem Space
 #+AUTHOR: J. Greg Davidson
 #+DATE: 18 October 2022
-#+OPTIONS: toc:nil 
+#+OPTIONS: toc:nil
 #+OPTIONS: num:nil
 
 * Posix Shell Basics
@@ -15,6 +15,13 @@ systems only a small subset of OrgMode will be available.
 
 Note: Many of the /Italicized/ or =verbatim= terms have a short explanation in
 our [[file:../../computing-glossary.org][Computing Glossary]].
+
+This document is theory-oriented. It's intended to complement the essential
+understanding you'll get from reading examples and trying out variations and
+writing your own scripts.
+
+We recommend you read this document along with the more example-driven [[https://github.com/GregDavidson/computing-magic/blob/main/Scripting/Shell-Scripting-Tutorial/shell-script-resilience.org][Shell
+Script Resilience]].
 
 ** A Human-Oriented, Casual, Interactive /Command Interpreter/
 
@@ -40,8 +47,8 @@ You can issue commands to a shell /interactively/ at the (P)REPL:
        - Interpreting any commands built-in to the shell
        - Executing any external programs in new processes
 - Print :: Any output not redirected elsewhere is printed to your terminal.
-- Loop :: The shell loops back to Step 1.
-  
+- Loop :: The shell loops back to *Prompt*.
+
 *** A Non-Interactive Shell takes input from a Script
 
 A /Script/ consists of the same commands you can issue interactively
@@ -51,23 +58,23 @@ A /Script/ consists of the same commands you can issue interactively
 If you know how to issue commands to a shell manually, then you can trivially
 create a naive shell script:
 - Create a new text file using your favorite editor
-- The first line starts with #! - aka the [[https://en.wikipedia.org/wiki/Shebang_(Unix)][Shebang]]
+- The first line starts with #! aka the [[https://en.wikipedia.org/wiki/Shebang_(Unix)][Shebang]]
       - Shebang :: #!PATH-TO-SHELL
-      - specifying the program to run to interpret your script
+      - specifies the program to run to interpret your file
       - You need a full path - make sure it's correct!
             - to check, run =type SHELL-NAME= or =type -P SHELL-NAME=
             - e.g. =type bash= or =type -P bash=
 - Enter your desired commands into it
 - Make the script executable
-      - =chmod +x SCRIPT-FILE-NAME=
+      - =chmod +x FILE-NAME=
 - To run it, either
       - specify a path to it when you run it
-            - =./SCRIPT-FILE-NAME= if it's in your current directory
-      - or if it's in a directory which is on your =$PATH=
-            - e.g. =mv SCRIPT-FILE-NAME ~/bin=
+            - e.g. =./FILE-NAME= if it's in your current directory
+      - just use its name if it's in a directory on your =$PATH=
+            - e.g. =mv FILE-NAME ~/bin=
                   - =~/bin= is typically on your =$PATH=
                   - to check, run =echo $PATH= or =echo $PATH | tr : '\n'=
-            - so you can run it simply as =SCRIPT-FILE-NAME=
+            - Watch out for name clashes among programs on your =$PATH=!
 
 ** Finding Documentation
 
@@ -108,14 +115,14 @@ Documentation for GNU programs might be in three places
 *** A few /Shell Commands/ are /Built-Ins/
 
 If you're running =bash= you can lookup builtin commands with the =help= command
-- ~help~ -- with no arguments, prints a list of them all
+- ~help~ -- with no arguments, lists all builtins
 - ~help COMMAND~ -- prints a quick reference for COMMAND
       - Try: ~help help~ and ~help type~
       - Try: ~help true~ and ~help false~
       - Try: ~help if~ and ~help exit~
       - Some builtin commands have a /lot/ of options!
 
-If you're running ~zsh~ the =run-help= command might give 
+If you're running ~zsh~ try ~man zshbuiltins~
 
 ** Documenting Your Script
 
@@ -132,8 +139,58 @@ Even better is to make things obvious:
       - ~cd "$dest_dir"~
 - especially if your script references it multiple times
 
-** Exit Codes
+A comment should assist a /Power User/ in reading and understanding the script's
+code rather than be a substitute for understanding it. After all, a comment can
+easily be wrong!
 
-In the Posix model, when a program terminates, it returns a non-negative /Exit
-Code/ to its parent process, e.g. to the shell.
+** Exit Codes and Program Logic
 
+In the Posix model, when a program terminates, it returns an /Exit
+Code/ to its parent process, e.g. to the shell.  Exit codes are 1-byte
+integers in the range 0..255
+
+- Exit codes :: one-byte non-negative integers
+| code(s) | meaning                                               |
+|---------+-------------------------------------------------------|
+|   0-255 | available codes                                       |
+|       0 | "success" code, treated as "true" in scripts          |
+|   1-255 | treated as "false" in scripts                         |
+|       1 | non-specific "failure" code                           |
+|   3-125 | available "failure" codes for any application purpose |
+| 126-255 | codes with pre-existing meanings, can be repurposed   |
+
+When you run a command interactively its /Exit Code/ is available after termination in the /Special Parameter/ =$?=
+- /Run some command/
+- ~echo $?~
+
+After the ~echo $?~, the ~$?~ will become the /Exit Code/ of the =echo= command,
+so if you want to use the code more than once, be sure to save it:
+- /Run some command/
+- my_command_status=$?
+- ~echo "$my_command_status"
+
+A script can use any of the 256 /Exit Codes/ to mean anything it likes, but
+most commands follow the convention
+- Exit Code 0 :: to mean /True/ or the command /Succeeded/ in its purpose
+- any non-zero Exit Code :: to mean /False/ or the command /Failed/ or somehow
+  deviated from expectations
+When you follow this convention you can combine commands using Boolean Logic:
+- the =if= and =while= builtin commands
+- the Boolean operators =!= (not), =&&= (and then), =||= (or else)
+      - See bash-metas in [[file:../Reference-Sheets/README.org][handy reference sheets]]
+
+Again, you don't have to use Exit Codes
+
+** The Bottom Line
+
+If you know how to use a Shell (or any other Scriptable Application)
+/Interactively/ from a /Terminal/, then writing a /Naïve Script/ is easy:
+- Just stuff the commands you would use interactively in a file with an
+  appropriate /Shebang/ and make it executable.
+- But the next time those commands are executed they may no longer be
+  appropriate!
+
+A good Script is /resilient/ to changes in the situation. As a start, we
+recommend that you
+- carefully study [[https://github.com/GregDavidson/computing-magic/blob/main/Scripting/Shell-Scripting-Tutorial/shell-script-resilience.org][Shell Script Resilience]]
+- bring your creative critical intelligence to the /Art Of Scripting/!
