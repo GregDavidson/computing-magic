@@ -1,4 +1,4 @@
-#+TITLE: Shell Script Resilience
+#+TITLE: Posix Shell Essentials
 #+SUBTITLE: Building Resilient Scripts
 #+AUTHOR: J. Greg Davidson
 #+DATE: 18 October 2022
@@ -7,7 +7,7 @@
 # +OPTIONS: date:nil
 # +OPTIONS: author:nil
 
-* Writing More Resilient Scripts
+* Writing Resilient Shell Scripts
 
 ** Notes to the Reader
 
@@ -311,7 +311,7 @@ We'll start out with just reporting problems, leaving it up to a human to read
 the problem reports and deal with them.  But we could add more code anywhere to do
 cleanup, try fixes and alternatives, etc.
 
-#+NAME: fetch-postgres-1
+#+NAME: install-postgres-1
 #+begin_src sh
   script_name="${0##*/}"
   archive_url='https://ftp.postgresql.org/pub/source/v15.0/postgresql-15.0.tar.bz2'
@@ -328,7 +328,7 @@ cleanup, try fixes and alternatives, etc.
 
 but then the =wget= command could fail, so maybe we better do
 
-#+NAME: fetch-postgres-2
+#+NAME: install-postgres-2
 #+begin_src sh
   script_name="${0##*/}"
   archive_url='https://ftp.postgresql.org/pub/source/v15.0/postgresql-15.0.tar.bz2'
@@ -352,7 +352,7 @@ separated from the code it's checking and it's only going to get worse since
 every step in the build and install process will also need to be checked. We can
 use the /not/ operator ~!~ to reverse success and failure:
 
-#+NAME: fetch-postgres-3
+#+NAME: install-postgres-3
 #+begin_src sh
   script_name="${0##*/}"
   archive_url='https://ftp.postgresql.org/pub/source/v15.0/postgresql-15.0.tar.bz2'
@@ -372,7 +372,7 @@ use the /not/ operator ~!~ to reverse success and failure:
 A variation is to use the /or else/ operator ~||~ and turn the multi-statement
 action into a /block/ with { curly; braces; } like so
 
-#+NAME: fetch-postgres-3
+#+NAME: install-postgres-3
 #+begin_src sh
   script_name="${0##*/}"
   archive_url='https://ftp.postgresql.org/pub/source/v15.0/postgresql-15.0.tar.bz2'
@@ -397,7 +397,7 @@ Can we do better?
       - the parentheses ~()~ pronounced /function/ are always empty!
       - space or newlines or ; around { curly; braces; } matter!
 
-#+NAME: fetch-postgres-4
+#+NAME: install-postgres-4
 #+begin_src sh
   script_name="${0##*/}"
   error_exit() {
@@ -450,7 +450,7 @@ Be critical of the code
 
 *** Could it be easier?
 
-#+NAME: fetch-postgres-5
+#+NAME: install-postgres-5
 #+begin_src bash
   #!/usr/bin/bash -u
   # expanding undefined parameters will cause an error (-u in effect)
