@@ -1,0 +1,169 @@
+* Getting Help From A Command Shell
+
+When you are working with a standard Shell under a Posix (Unix-Like) Operating
+System, a lot of help should be readily available. In this tutorial I'll assume
+that you're working with the standard /GNU Shell/ =bash= (a descendant of the
+/Bourne Shell/ =sh= created by Stephen Bourne) on a typical GNU/Linux platform.
+If instead, you are using, e.g. =zsh= on a =MacOS= platform, /YMMV/ somewhat.
+
+** Some Simple Commands for Basic Information
+
+In this and following example sessions
+- The shell is running in some kind of /Terminal Emulator/ program
+- My commands are preceded by the /shell prompt/ =$ =
+- with any output on the following line(s)
+- and any commentary by me preceded by =# =
+
+#+begin_src bash
+$ whatis whatis
+whatis (1)           - display one-line manual page descriptions
+# 'whatis' just looked up it's own documentation!
+# It found its documentation in section 1 of the manual
+# (more on sections later) and printed just the 1-line description.
+515 $ whatis ps
+ps (1)               - report a snapshot of the current processes.
+# standard 'ps' will only report on processes associated with
+# the same terminal device, by default.
+516 $ ps
+    PID TTY          TIME CMD
+  284123 pts/3    00:00:00 bash
+  286490 pts/3    00:00:00 ps
+# all processes get a unique PID - Process ID Number
+# and an associated TTY - Terminal device for standard Input/Output
+# 'ps' found the 'bash' shell which we used to run it
+# 'ps' also found itself, but the 'ps' process terminated
+# when it finished giving its report
+# the 'bash' process gives us a new prompt when its child terminates
+$ whatis pwd
+pwd (1)              - print name of current/working directory
+ $ pwd
+/Data/Greg/Gits-Ours/computing-magic/Scripting
+# All processes are also associated with a directory (aka folder)
+# called their "Working Directory" which they inherit from the
+# process which created them.  So 'pwd' just showed you its
+# working directory which it inherited from our 'bash' shell.
+$ whatis ls
+ls (1)               - list directory contents
+# You can use the command 'ls' to show you the names of all
+# files (if any) in the current Working Directory
+#+end_src
+
+** Avoiding Information Overload
+
+Modern Operating Systems and many Programs have way more features than you
+should bother trying to memorize unless you have a truly extraordinary memory.
+Trying to learn too many features at the beginning will get in the way of
+understanding the system: you'll be inundated with all the details of the leaves
+and you'll miss seeing the structure of the trees, the forest and the land.
+
+There are handy reference manuals cheatsheets available online which allow you
+to easily look up the features you needed for any task at hand. But like a web
+search, they can easily present more information than you need and distract you
+from that task.
+
+*A Major Piece Of Advice: The +1 Strategy*
+
+Whenever you're consulting any of the reference materials to discover or learn
+how to use some features which you need for your current task, try to mostly
+ignore everything else you're being shown. Try to only come out with what you
+need for your current task, /plus maybe one extra thing/.
+
+The /one extra thing/ should be some additional piece of information which you
+either find /especially interesting/ or which you realize will be /especially
+useful/ for the kinds of things you often do. Perhaps something which you which
+you'd known sooner, as it could have made your earlier work easier.
+
+If you mostly follow the *+1 Strategy*
+- You'll avoid losing your focus on the current task
+- Over time, the many +1s will add up!
+
+*Consider Creating Your Own Notes Repository*
+
+When I learn an interesting feature of any complex systems, I record it in my
+Notes Repository. I use /OrgMode/ files under my =Notes= Git Repository which I
+keep as a private repository on GitHub and as a top-level directory on all of
+the devices I use, including my phone! You might prefer to use a different
+system for your Notes Repository and that's totally alright!
+
+When I'm not in the middle of a task, I often enjoy reading Manual Pages and
+other good materials to learn more. Interesting things go into my Notes
+Repository. I occasionally go over my Notes Repositories too, pruning out the
+material I now find obvious or obsolete, checking on and clarifying things, etc.
+
+** Accessing the /Posix Manual Pages/
+
+The /Posix Reference Manual/ consists of concise, one-page /quick reference
+documents/ called /man pages/. It's divided into 8 sections, documenting all
+components of your /Posix System/. The /Posix Reference Manual/ is NOT intended
+as a Tutorial, but rather a fairly complete Reference, so you don't have to
+memorize all the features of each component of your system. You'll find
+Tutorials, HOWTOs, etc. elsewhere, e.g. on YouTube or via Web Searches.
+
+*** One-Line Descriptions and Sections
+
+According to the Posix Standard, the /Reference Manual/ should be installed on
+your computer and /Section 1/ should have /Man Pages/ on each of the programs
+installed on your computer. We'll discuss the other sections shortly.
+
+/Man Pages/ begin with a 1-line description, which can be accessed by the
+=whatis= program for super-concise help. So =whatis man= will print a one-line
+description of any /Man Page/ named =man=:
+#+begin_src bash
+$ whatis man
+man (7)              - macros to format man pages
+man (1)              - an interface to the system reference manuals
+# We got two "hits", from sections 1 and 7,
+# let's learn about manual sections, with this handy command:
+$ whatis intro | sort
+intro (1)            - introduction to user commands
+intro (2)            - introduction to system calls
+intro (3)            - introduction to library functions
+intro (4)            - introduction to special files
+intro (5)            - introduction to file formats and filesystems
+intro (6)            - introduction to games
+intro (7)            - introduction to overview and miscellany section
+intro (8)            - introduction to administration and privileged commands
+# The Posix Reference Manual has 8 standard sections
+# (some Posix systems also have subsections)
+# and each section has a page called =intro= which explains the
+# purpose of that section!
+# The = | sort= sorted the output of =whatis intro=.
+# This is called a /pipe/ which you will want to learn about,
+# but not in this tutorial!
+#+end_src
+
+*** Displaying Full Man Pages
+
+Manual pages are generally too long to fit entirely on one terminal window.
+=man= will look up the specified /Manual Page/ and then for your convenience,
+=man= will run a /Pager Program/ to display the /Manual Page/ for you, one
+terminal-sized /Page/ at a time. The most common /Pager Programs/ are =less= and
+=more=. When I ask =man= to lookup a /Man Page/, e.g. =man man= to ask =man= to
+lookup its own /Man Page/, =man= will find that page and then run =less= on that
+page. So when you're reading a /Man Page/ you're not interacting with =man= but
+with a /Pager/.
+
+*** Using Pagers such as =more= or =less= to view a textfile
+
+I'll assume we're using =less= although =more= is similar.
+- =less= displays the first /Page/ of the document (text file).
+- =less= prompts at the bottom of the screen for a /less command/
+      - =q= will cause =less= to quit, i.e. terminate
+      - SPACEBAR will display the next /Page/
+- There are MANY MORE commands, too many to memorize!
+      - =h= for help will
+            - lookup a less command cheat-sheet document
+            - run =less= recursively on that document
+      - =q= will quit the recursive =less=
+
+Because you'll be using some /Pager/ program a lot for reading textfiles,
+it's worth gradually learning a lot of its features.  Assuming that /Pager/ is =less=
+- Consult =man less= occasionally
+- Study the less cheatsheet using the =less= =h= command
+- And avoid Information Overload!
+
+*** Finding Commands and Man Pages
+
+The command =apropos= which is also available as =man -k= lists /man pages/ by
+/keyword/ or /string/, which is helpful for finding the names of commands and
+other features as well!
