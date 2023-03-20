@@ -14,9 +14,9 @@ It's recommended that you take notes about what you discover and learn!
 
 In this and following example sessions
 - The shell is running in some kind of /Terminal Emulator/ program
-- My commands are preceded by the /shell prompt/ =$ =
+- My commands are preceded by the /shell prompt/ "$ "
 - with any output on the following line(s)
-- and any commentary by me preceded by =# =
+- and any commentary by me preceded by "# "
 
 #+begin_src bash
 $ whatis whatis
@@ -40,7 +40,7 @@ ps (1)               - report a snapshot of the current processes.
 # the 'bash' process gives us a new prompt when its child terminates
 $ whatis pwd
 pwd (1)              - print name of current/working directory
- $ pwd
+$ pwd
 /Data/Greg/Gits-Ours/computing-magic/Scripting
 # All processes are also associated with a directory (aka folder)
 # called their "Working Directory" which they inherit from the
@@ -54,16 +54,16 @@ ls (1)               - list directory contents
 
 ** Avoiding Information Overload
 
-Modern Operating Systems and many Programs have way more features than you
-should bother trying to memorize unless you have a truly extraordinary memory.
-Trying to learn too many features at the beginning will get in the way of
-understanding the system: you'll be inundated with all the details of the leaves
-and you'll miss seeing the structure of the trees, the forest and the land.
+Modern /Operating Systems/ and many /Programs/ have way more features than you
+should try to memorize. Trying to learn too many features at the beginning will
+get in the way of understanding the system: you'll be inundated with all the
+details of the leaves and you'll miss seeing the structure of the trees, the
+forest and the land.
 
-There are handy reference manuals cheatsheets available online which allow you
-to easily look up the features you needed for any task at hand. But like a web
-search, they can easily present more information than you need and distract you
-from that task.
+There are handy reference manuals and "cheatsheets" available online which allow
+you to easily look up the features you needed for any task at hand. But like a
+web search, they can easily present more information than you need and distract
+you from that task.
 
 *A Major Piece Of Advice: The +1 Strategy*
 
@@ -74,7 +74,7 @@ need for your current task, /plus maybe one extra thing/.
 
 The /one extra thing/ should be some additional piece of information which you
 either find /especially interesting/ or which you realize will be /especially
-useful/ for the kinds of things you often do. Perhaps something which you which
+useful/ for the kinds of things you often do. Perhaps something which you wish
 you'd known sooner, as it could have made your earlier work easier.
 
 If you mostly follow the *+1 Strategy*
@@ -83,30 +83,31 @@ If you mostly follow the *+1 Strategy*
 
 *Consider Creating Your Own Notes Repository*
 
-When I learn an interesting feature of any complex systems, I record it in my
-Notes Repository. I use /OrgMode/ files under my =Notes= Git Repository which I
-keep as a private repository on GitHub and as a top-level directory on all of
-the devices I use, including my phone! You might prefer to use a different
-system for your Notes Repository and that's totally alright!
+When I learn an interesting feature of any complex system, I record it in my
+/Notes Repository/. I use /OrgMode/ files under my /Git Repository/ =Notes=
+which I keep as a private repository on =GitHub= and as a top-level directory on
+all of the devices I use, including my phone! You might prefer to use a
+different system for your /Notes Repository/ and that's totally alright!
 
-When I'm not in the middle of a task, I often enjoy reading Manual Pages and
-other good materials to learn more. Interesting things go into my Notes
-Repository. I occasionally go over my Notes Repositories too, pruning out the
-material I now find obvious or obsolete, checking on and clarifying things, etc.
+When I'm not in the middle of a task, I sometimes enjoy reading /Manual Pages/
+and other materials to learn more. I add more interesting and useful knowledge
+to my /Notes Repository/. I occasionally go selected files in my /Notes
+Repository/ too, reviewing, clarifying and pruning out the material I now find
+obvious or obsolete.
 
 ** Accessing the /Posix Manual Pages/
 
 The /Posix Reference Manual/ consists of concise, one-page /quick reference
-documents/ called /man pages/. It's divided into 8 sections, documenting all
-components of your /Posix System/. The /Posix Reference Manual/ is NOT intended
-as a Tutorial, but rather a fairly complete Reference, so you don't have to
-memorize all the features of each component of your system. You'll find
-Tutorials, HOWTOs, etc. elsewhere, e.g. on YouTube or via Web Searches.
+documents/ called /Man Pages/. It's divided into 8 sections, documenting all
+components of your /Posix System/. The /Posix Reference Manual/ is /NOT/
+intended as a Tutorial, but rather to be a quick and efficient Reference, so you
+don't have to memorize all the features of each component of your system. You'll
+find Tutorials, HOWTOs, etc. elsewhere, e.g. on YouTube or via Web Searches.
 
 *** One-Line Descriptions and Sections
 
 According to the Posix Standard, the /Reference Manual/ should be installed on
-your computer and /Section 1/ should have /Man Pages/ on each of the programs
+your computer and /Section 1/ should have /Man Pages/ on each of the /Programs/
 installed on your computer. We'll discuss the other sections shortly.
 
 /Man Pages/ begin with a 1-line description, which can be accessed by the
@@ -154,20 +155,20 @@ I'll assume we're using =less= although =more= is similar.
 - =less= prompts at the bottom of the screen for a /less command/
       - =q= will cause =less= to quit, i.e. terminate
       - SPACEBAR will display the next /Page/
-- There are MANY MORE commands, too many to memorize!
+- =less= has /MANY MORE/ commands, too many to memorize!
       - =h= for help will
             - lookup a less command cheat-sheet document
             - run =less= recursively on that document
       - =q= will quit the recursive =less=
 
-Because you'll be using some /Pager/ program a lot for reading textfiles,
-it's worth gradually learning a lot of its features.  Assuming that /Pager/ is =less=
+Because you'll often be using some /Pager/ program to read textfiles, it's worth
+gradually learning more of its features. Assuming that /Pager/ is =less=
 - Consult =man less= occasionally
 - Study the less cheatsheet using the =less= =h= command
-- And avoid Information Overload!
+- Learn gradually to avoid Information Overload!
 
 *** Finding Commands and Man Pages
 
-The command =apropos= which is also available as =man -k= lists /man pages/ by
-/keyword/ or /string/, which is helpful for finding the names of commands and
-other features as well!
+The command =apropos=, equivalent to =man -k= lists /man pages/ by /keyword/ or
+/string/, which is helpful for finding the names of commands and other features
+as well!
