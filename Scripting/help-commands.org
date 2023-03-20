@@ -1,10 +1,14 @@
 * Getting Help From A Command Shell
 
 When you are working with a standard Shell under a Posix (Unix-Like) Operating
-System, a lot of help should be readily available. In this tutorial I'll assume
-that you're working with the standard /GNU Shell/ =bash= (a descendant of the
-/Bourne Shell/ =sh= created by Stephen Bourne) on a typical GNU/Linux platform.
-If instead, you are using, e.g. =zsh= on a =MacOS= platform, /YMMV/ somewhat.
+System, a lot of help should be readily available.
+
+This document is designed to be read while you're trying things out
+interactively, ideally using the standard /GNU Shell/ =bash= (compatible with
+Stephen Bourne's =sh= but with additional features) on a =GNU/Linux= platform.
+If instead, you are using, e.g. =zsh= on a =MacOS= platform, /YMMV/.
+
+It's recommended that you take notes about what you discover and learn!
 
 ** Some Simple Commands for Basic Information
 
