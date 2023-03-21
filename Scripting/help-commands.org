@@ -1,14 +1,15 @@
 * Getting Help From A Command Shell
 
-Power Users, people who expect the most from their computer systems, generally
-make extensive use of Command Shells, systems which allow for the open-ended
-execution of diverse programs and the control of those programs and of the data
-flowing through them.
+/Power Users/, people who expect the most from their computer systems, generally
+make extensive use of /Command Shells/, programs which allow for the open-ended
+execution of diverse programs, the control of those programs and of the ways
+that data flows through those programs stage by stage.
 
-Command Shells, the Programs they control and the Operating Systems and
-Platforms which underlie them have lots of complex features. When you are
-working with a Command Shell under a Posix (Unix-Like) Operating System, a lot
-of help is readily available to assist you in managing all of that complexity.
+Modern /Command Shells/, the /Programs/ they control and the /Operating Systems
+and Platforms/ which underlie them have lots of complex features. When you are
+working with a /Command Shell/ under a /Posix Operating System/ such as Unix,
+BSD, MacOS or Gnu/Linux, a lot of help is readily available to assist you in
+managing all of that complexity.
 
 This document is designed to be read interactively, i.e. while you're trying
 things out. We assume that you're using the standard /GNU Shell/ =bash=
@@ -16,7 +17,8 @@ things out. We assume that you're using the standard /GNU Shell/ =bash=
 =GNU/Linux= platform. If instead, you are using, e.g. =zsh= on a =MacOS=
 platform, /YMMV/.
 
-It's recommended that you take notes about what you discover and learn!
+As you work though this tutorial we recommend that you take notes about what you
+discover and learn!
 
 ** Some Simple Commands for Basic Information
 
