@@ -12,7 +12,7 @@ BSD, MacOS or Gnu/Linux, a lot of help is readily available to assist you in
 managing that complexity.
 
 This document is designed to be read interactively, i.e. while you're trying
-things out. We assume that you're using the standard /GNU Shell/ =bash=, which
+things out. We assume that you're using the standard /GNU Shell/ =bash=,
 compatible with Stephen Bourne's =sh=, on a =GNU/Linux= platform. If instead,
 you are using, e.g. =zsh= on a =MacOS= platform, your system's behavior will
 deviate somewhat from what we describe.
