@@ -1,0 +1,276 @@
+* Setting up Your Environment at Login Time
+
+Part of the [[file:../../README.org][Computing Magic]] curriculum on [[file:../README.org][Scripting]]
+Part of a series on /Customizing Your Computing Platforms/
+Be sure you know how to [[file:../help-commands.org][Command Help]] before reading this document!
+
+The examples in this Tutorial were created on a [[https://www.gnu.org/][Gnu/Linux]] Platform (often called
+"Linux" for short) using the Gnu variants of the [[https://en.wikipedia.org/wiki/POSIX][Posix Standard]] tools, including
+the [[https://www.gnu.org/software/bash/][Bash Shell]]. They might need modification to apply to other Platforms and
+Shells.
+
+** Essential Knowledge of Processes and the Environment
+
+When a /Process/ creates a new /Process/ we call the creator the /Parent
+Process/ and the new process the /Child Process/. The /Operating System/
+maintains the /Process Family Tree/ (available via the command =pstree=) and
+uses it for various purposes not relevant to this tutorial. What is important to
+us here, though, is that a portion of the memory store of every /Process/ is
+designated as its /Environment/, and when a new /Process/ is created, the /Child
+Process/ receives a copy of the /Environment/ of its /Parent Process/ at that
+time.
+
+Any further changes to the /Environment/ of either the /Parent Process/ or the
+/Child Process/ will /NOT/ affect the other process! This feature allows a
+limited form of propagation of information without breaking the rule that
+/Processes/ cannot modify one another's memory stores. But what's in the
+/Environment/?
+
+The /Environment/ consists of NAME=VALUE pairs compatible with Shell variables.
+Indeed, when the process is a Shell, /Environment Variables/ can be used as if
+they were regular /Shell Variables/, and /Shell Variables/ can be /Exported/
+(copied) to the /Environment/ with the =export= command.
+
+** Examples of Environment Variables
+
+A well-known example of an /Environment Variable/ is =PATH= which contains a
+list of /directories/ (aka /folders/) to search to find programs. Here's an
+example on my Gnu/Linux platform where
+- My commands are preceded by the shell prompt '$ '
+- with any output on the following line
+- then my commentary preceded by '# '
+#+begin_src shell
+  $ echo $PATH
+  /home/greg/Projects/Wicci/Tools/Bin:/home/greg/Bin.guix:/home/greg/.guix-profile/bin:/home/greg/.config/guix/current/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+  # A dollar sign before a name in a shell command tells the shell
+  # to expand (replace) that variable with its value.
+  # 'echo' is a simple command which prints its arguments literally.
+  # 'echo' gets the value of '$PATH' after the shell expands it
+  # and 'echo' simply prints that literal argument.
+  # We notice that the value of PATH is a long string
+  # string consisting of directories (folders) separated by colons.
+  # There are currently 13 directories on my path.
+  $ type type
+  type is a shell builtin
+  # a few commands are "builtin" (part of) the shell
+  # type can tell you where a given command can be found
+  $ type emacs
+  emacs is /home/greg/Bin.guix/emacs
+  # 'emacs' is NOT a shell builtin command
+  # therefore 'type' seaches for 'emacs' on my PATH,
+  # and finds 'emacs' as '/home/greg/Bin.guix/emacs'.
+  $ type psql
+  bash: type: psql: not found
+  # Hmm, where is the 'psql' command?
+  $ ls /usr/local/SW/pgsql/bin/psql 
+  /usr/local/SW/pgsql/bin/psql
+  # Let's add '/usr/local/SW/pgsql/bin' to my PATH
+  $ PATH=$PATH:/usr/local/SW/pgsql/bin
+  # The shell will expand the '$PATH' in this assignment command,
+  # so now:
+  $ echo $PATH
+  PATH=/home/greg/Projects/Wicci/Tools/Bin:/home/greg/Bin.guix:/home/greg/.guix-profile/bin:/home/greg/.config/guix/current/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/SW/pgsql/bin
+  $ type psql
+  psql is /usr/local/SW/pgsql/bin/psql
+  # I can now use the command 'psql' to run my favorite SQL client
+  # instead of having to type '/usr/local/SW/pgsql/bin/psql'
+  # Also, my favorite software development program, 'emacs' will
+  # now find 'psql' when I want to work with SQL!
+  $ export PATH  # copy PATH variable to the environment
+  # 'export PATH' is redundant in Bash which knows that PATH
+  # was in the environment so automatically updates it there
+#+end_src
+
+OK, that was a bit long-winded and you may already know a lot of it!
+
+You need to have the /Path Variables/ in your /Environment/ set correctly to
+allow your Operating System to locate /Programs/ and for those programs to find
+resources, e.g. Documentation and Dynamic Libraries. /Environment Variables/,
+including /Path Variables/, should be set in your /Login Profile/ so that they
+will be /Inherited/ by all of the /Processes/ of your /Session/.
+
+Here are a few more /Environment Variables/ which are also paths:
+- MANPATH :: a list of directories containing /Man Pages/
+- CLASSPATH :: a list of /jar files/ where compiled JVM (Java, etc.) code is
+  stored where programs are stored, searched when you run
+
+There are dozens of /Path Variables/ used by Posix (Unix-Like) Systems, i.e. by
+Unix, BSD, Gnu/Linux and MacOS. Microsoft Windows also adopted the concept and
+uses even more /Environment Path Variables/!  (If you're curious, the idea comes from
+Multics which inspired Unix.)
+
+The values of Environment Variables really really just text strings and most of
+them don't represent any kind of a path, e.g.
+- DISPLAY :: informs graphics programs where to find your graphics display
+  device
+
+This tutorial, though, is going to focus on /Path Variables/ using the /Posix/
+convention of a text string which is *a sequence of values separated by colons*.
+
+** The First Shell Process and Login Profiles
+
+When you log in to a Posix system, a /Shell Process/ is created. That Process
+"sources" some /Shell Scripts/ called /Profiles/.
+
+- Shell Profile :: a Shell Script automatically sourced at login time or when a
+  new shell is created
+- Shell Script :: a text file containing Shell Commands
+- source :: pause performing commands from the current input source, perform the
+  commands in a specified Script, then resume performing commands from the
+  earlier input source.  =source= commands can be nested!
+
+While any commands can be placed in the /Login Profiles/, we would especially
+like commands which establish the values of all /Environment Variables/ we'd
+like to have available to all /Processes/ in our session, i.e. to all
+/Processes/ that are /Descendants/ of this First Shell.
+
+Logging in to a Non-Graphical Posix Session
+1. An authentication program checks your identity
+2. It then changes its identity to be your identity
+3. It then executes your /Preferred Shell/ to be your /Login Shell/
+4. Your /Login Shell/ then sources your profile(s)
+      - i.e. it executes the commands in those script files, just as it would
+        execute interactive commands
+5. Your /Login Shell/ prompts you for commands
+
+Logging in to a Graphical Posix Session involves similar steps
+1. An authentication program checks your identity
+      - This is typically a Graphical /Display Manager/
+2. It (or a /Child Process/) changes its identity to be your identity and
+   executes the /System Default Shell/
+3. That Shell sources your profile(s)
+4. That Shell then starts up your graphics session
+      - Sometimes called a /Graphical Shell/
+      - It creates Panels, a Desktop, a Window Manager, etc. as required
+
+In both scenarios, the key to establishing the Environment is to do so via the
+/Login Profiles/ which contain the /Commands/ executed by that first shell with
+your identity before that shell creates the rest of your session as /Child
+Processes/!
+
+** Your Preferred Shell and the System Default Shell
+
+Your account has a /Preferred Shell/, maybe
+- bash :: on a Gnu/Linux System
+- zsh :: on a recent MacOS System
+- tcsh :: on a BSD-inspired System
+or maybe something else, but you can use the
+- chsh :: command to change your /Preferred Shell/
+
+Alas, the First Shell created when logging you in is /NOT/ your /Preferred
+Shell/!
+
+The /System Default Shell/ is generally the program =sh= stored in the directory
+=/bin= which traditionally stores links to "essential programs administrators
+need". These days =/bin= is often a link to the =/usr/bin= directory which has
+traditionally stored links to "programs users expect to be available". You can
+use =man hier= to learn more about these conventions.
+
+This =sh= shell is usually a rewrite of the original [[https://en.wikipedia.org/wiki/Bourne_shell][Bourne Shell]]. Later shells,
+such as =ksh=, =bash=, =zsh= and =dash= mostly understand traditional =sh=
+syntax and features and when they are invoked via a link (filename) =sh= they
+try to more closely imitate the =sh= feature set, including disabling many of
+their extensions. It's therefore very likely that the program =sh= on your
+system stored in your =/bin= directory is really just a link to one of these
+more modern shells.
+
+The =dash= shell has recently become very popular as the "real shell" behind the
+=/bin/sh= link.
+
+Dash Advantages
+- Faster execution than most other shells
+- Smaller, simpler and probably more secure and reliable source code
+Dash Disadvantages
+- Least powerful feature set of popular modern user shells
+- Deletes exported shell functions
+
+/Shell Functions/ are the most powerful feature of Shells, allowing you to
+create new commands especially easily. =ksh=, =bash= and =zsh= allow you to
+=export= your favorite /Shell Functions/ in your /Login Profile/ so that they're
+always available. If your /System Shell/ is really a link to any of these very
+powerful Shells, you will have the most success in customizing your account.
+
+If your /System Shell/ is the original =sh=, it will ignore any /Exported Shell
+Functions/ in the /Environment/ but if use some clever hacks to put them in
+there it will leave them there to be available when you run your /Preferred
+Shell/.
+
+If your /System Shell/ is actually =dash=, it will strip any /Exported Shell
+/Functions/ from the /Environment/! This may be intended as as a /Security
+Precaution/, but it definitely limits your ability to customize your Command
+Experience.
+
+If you are the administrator and primary user of your computer system and if
+your /Preferred Shell/ is =sh= compatible, we recommend you ensure that your
+/Preferred Shell/ is also your /System Default Shell/.
+
+If your /Preferred Shell/ is /NOT/ =sh= compatible, e.g. it might be =fish=, or
+if you are /NOT/ the administrator or /NOT/ the primary user of your computer
+system we recommend you ensure (or ask your administrator to ensure) that your
+/System Default Shell/ is one of =bash=, =zsh= or =ksh=.
+
+The best way to change the /System Default Shell/ varies according to which type
+of Posix System you are using. Unless and until we put in some guidance on that
+topic here, you are advised to research the issue for your System Type.
+
+Some commands for determining your System Type and basic Account Information, in
+case you weren't the one who installed it and don't know. Note: Not all of these
+commands will work on all Posix Systems! Also note: (parentheses) are different
+from {curly braces} and CAPITALIZATION MATTERS!
+#+begin_src sh
+  uname -a
+  cat /etc/os-release
+  cat /usr/lib/os-release         # if the previous command didn't work
+  whoami
+  echo ${USER}                    #  if the previous command didn't work
+  id
+  grep $(whoami) /etc/passwd
+  grep ${USER} /etc/passwd        #  if the previous command didn't work
+  man -s 5 passwd
+#+end_src
+You could (and should) run =man= on any commands we're using which you aren't
+familiar with.
+
+** Which Profiles Should We Edit?
+
+Profiles are just text files, so we can edit them with any text editor or easily
+create them with a program. We want to identify the ones which are automatically
+sourced by the First Shell which has our identity during the login process.
+Unfortunately, different Profile Files are used by different versions of
+different shells in different circumstances.
+
+All Shell Profiles are stored in the User's Home Directory and their names begin
+with a Dot ('.') so that they are considered "hidden" files.
+
+Try these commands:
+#+begin_src sh
+  cd                           # make sure we're in our home directory
+  ls                           # list our regular files there
+  ls -a                        # include any hidden files as well
+  ls -d .??*                   # include only hidden files
+#+end_src
+Do you understand what each one is doing?
+- the last one requires you to understand [[https://en.wikipedia.org/wiki/Glob_(programming)#Syntax]["globbing"]]
+
+There are several different /Login Profiles/ and /Shell Profiles/ we will need
+to consider depending on our /System Default Shell/ and /Preferred Shell/.
+
+.profile :: Normal /Login Profile/ for =ksh= and shells linked as =sh=
+.bash_profile :: Normal /Login Profile/ for =bash=
+.zprofile :: Normal /Login Profile/ for =zsh=
+
+Older versions of =bash= use =.bash_login= but that is considered obsolete and
+will be ignored if you have a =.bash_profile=. If you have neither, =bash= will
+default to =.profile=.
+
+=zsh= also understands =.zlogin= and =.zshenv= but you should be able to just
+use =.zprofile.  If you have none of these, =zsh= will default to =.profile=.
+
+A Sophisticated Strategy if your /Preferred Shell/ is =sh= compatible
+- Put =sh= compatible Login Commands in =.profile=
+      - This should be your preference where possible
+- Put some /Login Profile/ commands in your /Preferred Shell's Profile/
+      - Where your /Preferred Shell's Features/ are needed
+- Record when you START and when you FINISH sourcing any profile
+- Have your /Preferred Shell's Profile/ ensure that =.profile= gets sourced
+- Have =.profile= ensure that your /Preferred Shell's Profile/ gets sourced
