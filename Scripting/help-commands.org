@@ -9,13 +9,13 @@ Modern /Command Shells/, the /Programs/ they control and the /Operating Systems
 and Platforms/ which underlie them have lots of complex features. When you are
 working with a /Command Shell/ under a /Posix Operating System/ such as Unix,
 BSD, MacOS or Gnu/Linux, a lot of help is readily available to assist you in
-managing all of that complexity.
+managing that complexity.
 
 This document is designed to be read interactively, i.e. while you're trying
-things out. We assume that you're using the standard /GNU Shell/ =bash=
-(compatible with Stephen Bourne's =sh= but with additional features) on a
-=GNU/Linux= platform. If instead, you are using, e.g. =zsh= on a =MacOS=
-platform, /YMMV/.
+things out. We assume that you're using the standard /GNU Shell/ =bash=, which
+compatible with Stephen Bourne's =sh=, on a =GNU/Linux= platform. If instead,
+you are using, e.g. =zsh= on a =MacOS= platform, your system's behavior will
+deviate somewhat from what we describe.
 
 As you work though this tutorial we recommend that you take notes about what you
 discover and learn!
@@ -23,8 +23,8 @@ discover and learn!
 ** Some Simple Commands for Basic Information
 
 In this and following example sessions
-- The shell is running in some kind of /Terminal Emulator/ program
-- My commands are preceded by the /shell prompt/ "$ "
+- my shell is running in some kind of /Terminal Emulator/ program
+- my commands are preceded by the /shell prompt/ "$ "
 - with any output on the following line(s)
 - and any commentary by me preceded by "# "
 
@@ -101,15 +101,15 @@ different system for your /Notes Repository/ and that's totally alright!
 
 When I'm not in the middle of a task, I sometimes enjoy reading /Manual Pages/
 and other materials to learn more. I add more interesting and useful knowledge
-to my /Notes Repository/. I occasionally go selected files in my /Notes
-Repository/ too, reviewing, clarifying and pruning out the material I now find
-obvious or obsolete.
+to my /Notes Repository/. I occasionally review selected files in my /Notes
+Repository/ too, clarifying and pruning out the material I now find obvious or
+obsolete.
 
-** Accessing the /Posix Manual Pages/
+** Accessing the /Manual Pages/
 
-The /Posix Reference Manual/ consists of concise, one-page /quick reference
+The /Reference Manual/ consists of concise, one-page /quick reference
 documents/ called /Man Pages/. It's divided into 8 sections, documenting all
-components of your /Posix System/. The /Posix Reference Manual/ is /NOT/
+components of your /Posix System/. The /Reference Manual/ is /NOT/
 intended as a Tutorial, but rather to be a quick and efficient Reference, so you
 don't have to memorize all the features of each component of your system. You'll
 find Tutorials, HOWTOs, etc. elsewhere, e.g. on YouTube or via Web Searches.
@@ -138,11 +138,11 @@ intro (5)            - introduction to file formats and filesystems
 intro (6)            - introduction to games
 intro (7)            - introduction to overview and miscellany section
 intro (8)            - introduction to administration and privileged commands
-# The Posix Reference Manual has 8 standard sections
+# The Reference Manual has 8 standard sections
 # (some Posix systems also have subsections)
-# and each section has a page called =intro= which explains the
+# and each section has a page called "intro" which explains the
 # purpose of that section!
-# The = | sort= sorted the output of =whatis intro=.
+# The " | sort" sorted the output of "whatis intro".
 # This is called a /pipe/ which you will want to learn about,
 # but not in this tutorial!
 #+end_src
@@ -167,12 +167,14 @@ I'll assume we're using =less= although =more= is similar.
       - SPACEBAR will display the next /Page/
 - =less= has /MANY MORE/ commands, too many to memorize!
       - =h= for help will
-            - lookup a less command cheat-sheet document
+            - lookup a =less command= cheat-sheet document
             - run =less= recursively on that document
       - =q= will quit the recursive =less=
 
 Because you'll often be using some /Pager/ program to read textfiles, it's worth
-gradually learning more of its features. Assuming that /Pager/ is =less=
+gradually learning more of its features.
+
+Assuming that your /Pager/ is =less=
 - Consult =man less= occasionally
 - Study the less cheatsheet using the =less= =h= command
 - Learn gradually to avoid Information Overload!
@@ -218,9 +220,9 @@ The shell finds the command by its name or a file path
 - Most commands are stored as separate files in various directories
       - many of those directories are on your =PATH= variable
       - Run the command =echo $PATH= to see these
-            - Another document explains how to customize =PATH=
+      - /(Customizing =PATH= is covered in other tutorials!)/
 
-Options usually begin with "-", occasionally "+"
+Options usually begin with "-"
 - Most options are standalone, e.g. =date -I=
 - Some options take /Option Arguments/
       - e.g. the =3= in =man -s 3 intro=
@@ -232,20 +234,21 @@ Options usually begin with "-", occasionally "+"
       - All GNU programs have two important /Long Options/
             - =--version= :: print this program's version
             - =--help= :: print a cheatsheet for this program
-- These are just conventions, some programs deviate":
+- These are just conventions, some programs deviate:
       - =man 3 intro= instead of =man -s 3 intro=
       - =find= and =cc= use a single "-" for long arguments
+      - etc.
 
 Often /program arguments/ are names or paths for files or directories, e.g.
-- =ls Notes= :: list the contents of directory Notes
-- =less Notes/README.org= :: display file README.org in Directory Notes
+- =ls Notes= :: list the contents of directory =Notes=
+- =less Notes/README.org= :: display file =README.org= in Directory =Notes=
 
 ** Man Pages of Note
 
 Please follow our advice above to avoid Information Overload /and/ here are some
 man pages we suggest you browse soon and review from time to time:
 
-Consult =man man= to learn more about man!
+Run =man man= to learn more about program =man=!
 
 When there are /Man Pages/ of the same name in multiple sections, e.g. the many
 /Man Pages/ named =intro=, you can specify the desired section number, e.g.
@@ -256,9 +259,9 @@ When there are /Man Pages/ of the same name in multiple sections, e.g. the many
 So check out the =intro= pages for each section 1 through 8!
 
 Some important, if complex pages:
-- =man less= :: if =less= is your preferred /Pager/
-- =man hier= :: to learn how the filesystem is structured
-- =man bash= :: or whatever shell you prefer
+- =man less= :: valuable if =less= is your preferred /Pager/
+- =man hier= :: how your hierarchical filesystem is structured
+- =man bash= :: or lookup whatever shell you prefer
 
 Some ubiquitous commands:
 - =man date=
@@ -266,6 +269,7 @@ Some ubiquitous commands:
 - =man ls=
 - =man uname=
 - =man ps=
+Try running these commands with diverse options!
 
 ** Builtin =bash= Commands
 
@@ -276,19 +280,26 @@ directories.
 My =bash=, version 5, has 76 internal (builtin) commands. Since those builtin
 commands are not separate programs, they don't have individual /Man Pages/.
 
-The documentation on command built into =bash= is available as part of the
+The documentation on commands built into =bash= is available as part of the
 (rather long) =bash= /Man Page/ and the even longer =bash= /GNU Info Document/.
 
-Fortunately, =bash= has the builtin =help= command for listing the basic features of all of its builtin commands:
+Fortunately, =bash= has the builtin =help= command for listing the basic
+features of all of its builtin commands:
 - =help= gives a cheat sheet of all builtin commands
 - =help COMMAND= gives a concise description of the named COMMAND
+- try
+      - =help help=
+      - =help cd=
+      - =help pwd=
+      - =help history=
+      - =history=
 
 ** The Gnu Info System vs. Web Pages
 
 Richard Stallman, the founder of the GNU Project which created the Gnu/Linux
 System (Linux part of a Gnu/Linux System, the /kernel/) didn't like Unix-style
 /Man Pages/. He added a =--help= option to all GNU Programs and created a
-browsing hypertext system for the complete documenation. That hypertext system
+browsing hypertext system for the complete documentation. That hypertext system
 is called /Gnu Info/. Web Pages didn't yet exist, so Richard created something
 similar, but simpler, as it had to be simple enough to use in a small terminal
 device. (Early Web Pages were similarly constrained, but later added CSS, etc.)
@@ -300,12 +311,12 @@ printed document. Not all modern Gnu/Linux systems install /Gnu Info/ documents,
 but they're all available via the Web and many people find the Web version more
 readable.
 - To access (and learn how to use) /Gnu Info/ online
-      - just issue the command =info= with no arguments
+      - Run =info= with no arguments
 - To access a specific /Info Document/
-      - =info NAME=, e.g. =info bash=
-- [[https://www.gnu.org/software/bash/manual/bash.html][Bash Reference Manual on the Web]]
+      - Run =info NAME=, e.g. =info bash=
+- Or browse the [[https://www.gnu.org/software/bash/manual/bash.html][Bash Reference Manual]] on the Web!
 
-** Terminal Emulators vs. Emacs
+** Terminal Emulators vs. Emacs vs. Scripts
 
 Originally people interacted with Shells such as =sh= using a device called a
 /terminal/ or /teletype/. /Teletypes/ were electric typewriters connected to a
@@ -313,23 +324,36 @@ computer. What you and the computer were typing was being hammered with ink onto
 a roll of paper which went through the /teletype/ machine!
 
 Later /Glass Teletypes/ used a CRT Screen instead of paper. You generally got 24
-lines of 80 monospaced characters on the CRT Screen.  Richard Stallman designed =emacs= to be able to work on a paper or glass teletype.  On the glass teletype it could split the screen into windows - but they weren't very big!
+lines of 80 monospaced characters on the CRT Screen. Richard Stallman designed
+=emacs= to be able to work on a paper or glass teletype. On the glass teletype
+=emacs= could split the screen into (rather small) windows.
 
 When higher-resolution graphics screens became available, new ways of issuing
 commands became available, including:
-- Build special GUI programs which issue the commands for you
+- Special GUI programs which issue the commands for you
       - Often more intuitive but usually functionally limited
-- Build programs which emulate a /Glass Teletype/
+- Programs which emulate a /Glass Teletype/
       - Like the Microsoft "Command Prompt"
-      - Many such are available for Posix Systems
-- Use =emacs= in Graphics Mode
-      - =emacs= Can support multiple Graphical Windows
-      - =emacs= Windows can display interactive /Process Buffers/
+      - Many nice /Terminal Emulators/ are available for /Posix Systems/
+- Modern =emacs= in Graphics Mode
+      - Modern =emacs= can display multiple /Graphical Windows/
+      - =emacs= Windows can display /Interactive/ /Process Buffers/
       - /Process Buffers/ can run traditional terminal-oriented commands
             - Such as Command Shells, SQL Shells, etc.
 
-Many people who use command shells and such prefer the simplicity of terminal
-emulators, generally in conjunction with other graphical utilities. Other people
-prefer =emacs= for its extensive integrated functionality, despite its long
-learning curve. Either way, Command Shells continue to be essential tools for
-Power Users!
+Many people who use /Command Shells/ prefer the simplicity of using multiple
+/Terminal Emulators/ along with other /Graphical Utilities/ in separate windows.
+
+Many people prefer a single graphical =emacs= process split into multiple
+windows for its extensive integrated functionality, including help features,
+despite its fairly long learning curve - the complexity of =emacs= has grown
+over the years!
+
+Most importantly: Any sequence of commands one can issue interactively through a
+Terminal Emulator or through Emacs can be placed in a executable textfile. Such
+a file is then a /Shell Script/ which can run without human interaction,
+automating some complex task. /(Developing Shell Scripts is covered in other
+tutorials!)/
+
+Whether through Terminal Shells, Emacs Buffers or in Scripts, /Command Shells/
+are essential tools for Power Users!
