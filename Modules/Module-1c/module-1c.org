@@ -14,7 +14,8 @@ Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Ste
 
 Explore Game Programming with  
 - [[http://realmofracket.com/][Realm of Racket]]
-- /I have a copy you can borrow/
+- Look at some of the videos and example games
+- If you start on the book, let us know and you may have collaborators!
 
 Learn game-relevant [[https://docs.racket-lang.org/index.html][Racket Resources]] including
 - More 2-D Graphics
@@ -35,3 +36,10 @@ Learn game-relevant [[https://docs.racket-lang.org/index.html][Racket Resources]
 This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
 
 You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!
+
+You might want to explore creating games using other languages
+- [[https://blog.logrocket.com/5-rust-game-engines-consider-next-project/][5 Rust Game Engines]]
+
+As your game project gets more complex, you might want
+- [[file:../Module-2/module-2.org][Module-2: Software Development Power Tools]]
+- with Emacs, Git, OrgMode, Scripting!
