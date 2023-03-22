@@ -10,15 +10,25 @@ Based on notes from a [[https://github.com/GregDavidson/computing-magic][Computi
 
 Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:../Module-1/module-1.org][Module 1]].
 
-** What else might you do?
-
-Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
-- Many of which are graphics related
-- There are also some APIs for sound
+** I'm Ready to Build Games!
 
 Explore Game Programming with  
 - [[http://realmofracket.com/][Realm of Racket]]
 - /I have a copy you can borrow/
+
+Learn game-relevant [[https://docs.racket-lang.org/index.html][Racket Resources]] including
+- More 2-D Graphics
+      - [[https://docs.racket-lang.org/pict/][Pict 2D]]
+      - [[https://docs.racket-lang.org/mode-lambda/][Mode-Lambda]]
+- 3-D Graphics
+      - [[https://docs.racket-lang.org/sgl/][OpenGL 3-D Graphics]]
+- Sound
+      - [[https://docs.racket-lang.org/rsound/index.html][RSound Sound Engine]]
+- Graphical Application Frameworks
+      - [[https://docs.racket-lang.org/framework/index.html][Framework]]
+      - [[https://docs.racket-lang.org/gui/][Graphical Interface Toolkit]]
+- Game Frameworks
+      - [[https://docs.racket-lang.org/rilouworld/][Rilouworld Decentralized Game Universe]]
 
 ** What else might you do?
 
