@@ -5,14 +5,42 @@ Document. If you are reading it with [[file:Software-Tools/Emacs/emacs-readme.or
 specific terms. You can also use a script to create such links for your
 documents!
 
-** General Terms
+** Computing Terms                                :definition:computing_term:
 
-- Computer :: A tool which can almost magically perform any task you can specify
-  with a suitable spell, err, /Program/. As many fantasy books will warn you,
-  creating spells can be perilous - a good grounding in /Computing Magic/ is
-  recommended!
+*** General Computing Terms
 
-** Scripting Terms
+- Computer :: A tool which can /almost magically/ perform any task you can
+  specify with a suitable spell, err, /Program/. As many fantasy books will warn
+  you, creating spells can be perilous - a good grounding in /Computing Magic/
+  is recommended!
+
+- High-Level Programming Language (HLL) :: A language invented to clearly
+  explain the specification and/or solution methods of a problem of interest to
+  humans. Specifying such things in human languages, e.g. English proved to be
+  less suitable due to the lack of needed distinctions and precision.
+  /Programming Languages/ were originally used by humans as guidance in writing
+  programs in the machine language of a computer. Eventually programmers
+  invented interpreter programs which could directly execute expressions in HLL
+  notation and compiler programs which can translate such "code" into machine
+  language "code" which can then perform the desired instructions at full speed.
+  Two influential early HLLs originally only understood by humans are The [[https://en.wikipedia.org/wiki/Lambda_calculus][Lambda
+  Calculus]] and [[https://en.wikipedia.org/wiki/ALGOL][ALGOL]]. Thousands of HLLs have since been designed of [[https://en.wikipedia.org/wiki/Computer_language][many
+  different kinds]]. Some interesting examples are: [[https://github.com/GregDavidson/on-lisp#readme][Lisp]], [[https://xpqz.github.io/learnapl/intro.html][APL]], [[https://github.com/GregDavidson/C-By-Example#readme][C]], [[https://github.com/GregDavidson/computing-magic/blob/main/Prolog/README.org][Prolog]], [[https://github.com/GregDavidson/computing-magic/blob/main/SQL/SQL-README.org][SQL]],
+  [[https://en.wikipedia.org/wiki/Java_%28programming_language%29][Java]] and [[https://en.wikipedia.org/wiki/Python_(programming_language)][Python]]. Code in different languages can [[https://rosettacode.org/wiki/Category:Programming_Languages][look very different]] and have
+  [[https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html][very different performance]]. There are many criteria for [[https://github.com/GregDavidson/computing-magic/blob/main/languages-which-matter.org][choosing a programming
+  language]].
+
+- Shell :: A program or collection of programs designed to allow a computer user
+  to run and control selected programs on a computer. Graphical Shells are
+  designed to be easy to learn and use at the expense of flexibility. Command
+  Shells are designed to interpret user commands in a Shell Programming
+  Language. Commands can either be entered /interactively/ with the user typing
+  them directly to the shell program or they can be placed in a text file so
+  they can be executed automatically whenever desired. Thus, a Command Shell is
+  a /Domain Specific/ =High-Level Programming Language= for writing =Shell
+  Programs= aka =Shell Scripts=.
+
+*** Scripting Terms                                          :scripting_term:
 
 - Scripts :: Programs written in =Scripting Languages= which are generally
   easier to create, understand and modify than programs written in =General
@@ -29,7 +57,7 @@ documents!
 - Scriptable tools :: Tools (software or hardware) which can be controlled by
   =Scripts=. Examples include /Scriptable Text Editors/, /3D Printers/, etc.
 
-** Operating System Terms
+*** Operating System Terms                                          :os_term:
 
 - Posix :: A standard for Unix-like systems, including the scripting tools of
   the /Unix Programming Environment/ which helps unify basic features among
@@ -83,10 +111,11 @@ documents!
 
 - Lightweight Process :: Aka =Thread=. A Lightweight Process is a thread of
   control within a =Heavyweight Process= and its =Program=. At minimum, a
-  Lightweight Process provides the location of a =Hardware Instruction= being
-  executed within the Heavyweight Process's =Program=. Some Lightweight
-  Process's may provide additional resources, such as a =Stack=, a reserved (but
-  not protected) subset of the Heavyweight Process's =Memory Space=.
+  Lightweight Process provides a =program counter= which is a =register=
+  specifying the location of the =Instruction= being executed within the
+  Heavyweight Process's =Program=. Lightweight Processes may provide additional
+  resources, such as a =Stack=, a reserved (but not protected) subset of the
+  Heavyweight Process's =Memory Space=.
 
 - Program :: A collection of =instructions= which can be executed by an
   =interpreter process=. An =intepreter process= can be implemented in a
@@ -97,4 +126,4 @@ documents!
   =external libraries=. In order to be executed, a program (and any libraries it
   requires) must be =loaded= into a suitable =execution context=, e.g. a
   =heavyweight process= which provides the resources needed for the execution of
-  the program, e.g. sufficient memory.
+  the program.
