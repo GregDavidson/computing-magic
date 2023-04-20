@@ -215,12 +215,15 @@ Consider a typical command: =man -s 3 intro=
 Understanding these conventions helps you understand the commands.
 
 The shell finds the command by its name or a file path
-- A few commands are either built-in to the shell
-      - Newer shells have dozens of builtin commands
-- Most commands are stored as separate files in various directories
-      - many of those directories are on your =PATH= variable
+- A few commands are builtins, i.e. components of the shell
+      - Newer shells have a few dozen builtin commands
+      - But that's not many!
+- Most commands are /Programs/ stored as /Executable Files/
+  in various directories
+      - many of those directories are "on" your =PATH= variable
       - Run the command =echo $PATH= to see these
       - /(Customizing =PATH= is covered in other tutorials!)/
+      - There are typically thousands of programs in those directories!
 
 Options usually begin with "-"
 - Most options are standalone, e.g. =date -I=
@@ -269,6 +272,7 @@ Some ubiquitous commands:
 - =man ls=
 - =man uname=
 - =man ps=
+- =man echo=
 Try running these commands with diverse options!
 
 ** Builtin =bash= Commands
@@ -291,8 +295,14 @@ features of all of its builtin commands:
       - =help help=
       - =help cd=
       - =help pwd=
+      - =help echo=
       - =help history=
       - =history=
+- and be sure to experiment with their options!
+
+You may have noticed that there are a few commands which exist as /both/ =bash=
+builtin commands and external programs, e.g. =pwd= and =echo=. When you use
+these commands in =bash= you will get the builtin commands by default.
 
 ** The Gnu Info System vs. Web Pages
 

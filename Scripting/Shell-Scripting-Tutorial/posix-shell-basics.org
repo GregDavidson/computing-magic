@@ -241,7 +241,7 @@ When you follow this convention you can combine commands using Boolean Logic:
 - the Boolean operators =!= (not), =&&= (and then), =||= (or else)
       - See bash-metas in [[file:../Reference-Sheets/README.org][handy reference sheets]]
 
-Again, you don't have to use the conventional Exit Code values. You could, for
+Again, you don't have to use the conventional Exit Code value. You could, for
 example, use the first 128 codes for various success conditions and the other
 128 codes for various failure conditions, or whatever.
 
