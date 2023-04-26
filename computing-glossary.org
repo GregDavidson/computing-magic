@@ -14,108 +14,48 @@ documents!
   you, creating spells can be perilous - a good grounding in /Computing Magic/
   is recommended!
 
-- High-Level Programming Language (HLL) :: A language invented to clearly
-  explain the specification and/or solution methods of a problem of interest to
-  humans. Specifying such things in human languages, e.g. English proved to be
-  less suitable due to the lack of needed distinctions and precision.
-  /Programming Languages/ were originally used by humans as guidance in writing
-  programs in the machine language of a computer. Eventually programmers
-  invented interpreter programs which could directly execute expressions in HLL
-  notation and compiler programs which can translate such "code" into machine
-  language "code" which can then perform the desired instructions at full speed.
-  Two influential early HLLs originally only understood by humans are The [[https://en.wikipedia.org/wiki/Lambda_calculus][Lambda
-  Calculus]] and [[https://en.wikipedia.org/wiki/ALGOL][ALGOL]]. Thousands of HLLs have since been designed of [[https://en.wikipedia.org/wiki/Computer_language][many
-  different kinds]]. Some interesting examples are: [[https://github.com/GregDavidson/on-lisp#readme][Lisp]], [[https://xpqz.github.io/learnapl/intro.html][APL]], [[https://github.com/GregDavidson/C-By-Example#readme][C]], [[https://github.com/GregDavidson/computing-magic/blob/main/Prolog/README.org][Prolog]], [[https://github.com/GregDavidson/computing-magic/blob/main/SQL/SQL-README.org][SQL]],
-  [[https://en.wikipedia.org/wiki/Java_%28programming_language%29][Java]] and [[https://en.wikipedia.org/wiki/Python_(programming_language)][Python]]. Code in different languages can [[https://rosettacode.org/wiki/Category:Programming_Languages][look very different]] and have
-  [[https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html][very different performance]]. There are many criteria for [[https://github.com/GregDavidson/computing-magic/blob/main/languages-which-matter.org][choosing a programming
-  language]].
-
 - Shell :: A program or collection of programs designed to allow a computer user
-  to run and control selected programs on a computer. Graphical Shells are
-  designed to be easy to learn and use at the expense of flexibility. Command
-  Shells are designed to interpret user commands in a Shell Programming
-  Language. Commands can either be entered /interactively/ with the user typing
-  them directly to the shell program or they can be placed in a text file so
-  they can be executed automatically whenever desired. Thus, a Command Shell is
-  a /Domain Specific/ =High-Level Programming Language= for writing =Shell
-  Programs= aka =Shell Scripts=.
+  to run (and possibly control) other programs, e.g. Application Programs aka
+  Apps. Graphical Shells are designed to be easy to learn at the expense of
+  flexibility. Command Shells are designed for maximum power and flexibility.
+  Commands can be entered /interactively/, i.e. typed directly by the user to
+  the shell or they can be placed in a text file to be performed automatically
+  or whenever desired.
+
+- High-Level Language (HLL) :: A language invented to clearly explain the
+  specification and/or solution methods of a problem of interest to humans.
+  Specifying such things in human languages, e.g. English proved to be less
+  suitable due to the lack of needed distinctions and precision. /Programming
+  Languages/ were originally used by humans as guidance in writing programs in
+  the machine language of a computer. Eventually programmers invented
+  interpreter programs which could directly execute expressions in HLL notation
+  and compiler programs which can translate such "code" into machine language
+  "code" which can then perform the desired instructions at full speed. Two
+  influential early HLLs originally only understood by humans are the [[https://en.wikipedia.org/wiki/Lambda_calculus][Lambda
+  Calculus]] and [[https://en.wikipedia.org/wiki/ALGOL][ALGOL]]. Thousands of HLLs have since been designed of [[https://en.wikipedia.org/wiki/Computer_language][many
+  different kinds]]. Some interesting or popular examples are: [[https://github.com/GregDavidson/on-lisp#readme][Lisp]], [[https://xpqz.github.io/learnapl/intro.html][APL]], [[https://github.com/GregDavidson/C-By-Example#readme][C]],
+  [[https://github.com/GregDavidson/computing-magic/blob/main/Prolog/README.org][Prolog]], [[https://github.com/GregDavidson/computing-magic/blob/main/SQL/SQL-README.org][SQL]], [[https://en.wikipedia.org/wiki/Java_%28programming_language%29][Java]] and [[https://en.wikipedia.org/wiki/Python_(programming_language)][Python]]. Code in different languages can [[https://rosettacode.org/wiki/Category:Programming_Languages][look very
+  different]] and have [[https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html][very different performance]]. There are many criteria for
+  [[https://github.com/GregDavidson/computing-magic/blob/main/languages-which-matter.org][choosing a programming language]].
 
 *** Scripting Terms                                          :scripting_term:
 
 - Scripts :: Programs written in =Scripting Languages= which are generally
-  easier to create, understand and modify than programs written in =General
-  Purpose Compiled Programming Languages=. Scripts are usually less flexible and
-  less computationally efficient (taking longer to run and using more memory)
-  than programs written in =General Purpose Compiled Programming Languages=.
+  easier to create, understand and modify than programs written in General
+  Purpose =HLLs=.  Traditional Scripts are mainly concerned with controlling
+  other programs, rather than directly performing complex operations themselves.
+
+- Scriptable tools :: Tools (software or hardware) which can be controlled by
+  =Scripts=. Examples include /Command Shells/, /Scriptable Text Editors/,
+  /3D Printers/, etc.
 
 - Scripting Languages :: Simplified Computer Languages designed to allow users
   who might have minimal computer programming skills to control processes with
   simple programs called =Scripts=. Examples include (optionally interactive)
-  =Shells= such as =sh=, =bash=,  =zsh=; (generally non-interactive) languages
-  such as =tcl=, =perl=, =racu=, =php=, =python=; etc.
-
-- Scriptable tools :: Tools (software or hardware) which can be controlled by
-  =Scripts=. Examples include /Scriptable Text Editors/, /3D Printers/, etc.
+  =Shells= such as =sh=, =bash=, =zsh= as well as (usually non-interactive)
+  languages such as =tcl=, =perl=, =racu=, =php=, =python=; etc.
 
 *** Operating System Terms                                          :os_term:
-
-- Posix :: A standard for Unix-like systems, including the scripting tools of
-  the /Unix Programming Environment/ which helps unify basic features among
-  /Posix/ systems such as modern =Unix=, =BSD= and =Gnu/Linux= Operating
-  Systems. Warning: No modern systems strictly comply to the standard!
-
-- BSD :: The Berkeley Software Distribution. An family of Operating Systems
-  descended from from BSD Version 4.4 developed at the University of California,
-  Berkeley in the early 1980s.  All versions of BSD are /Open Source/, but not
-  /Free Software/.
-
-- BSD Family :: The BSD Family includes =Darwin=, =OpenBSD=, =FreeBSD= and
-  others.
-
-- Darwin :: A version of BSD which underlies Apple's MacOS subsequent to Steve
-  Jobs' return from NeXT. It is available /Open Source/ from Apple but without
-  Apple's proprietary extensions.
-
-- OpenBSD :: A highly security-conscious version of BSD.
-
-- FreeBSD :: A version of BSD which incorporates many innovative features.
-
-- The Unix Programming Environment :: (1) A collection of tools and
-  software-engineering practices which developed within the culture of the users
-  of the Unix Operating System in the 1970s. (2) An excellent book on these
-  tools and practices.
-
-- Operating System Kernel :: Software which provides access to the electronic
-  hardware of a computer for the benefit of programs running on that computer. A
-  =Kernel= provdes such access in the form of =System Abstractions= such as
-  =Filesystems=, =Processes=, =Interprocess Communication=, =Security
-  Abstractions=, =Networking Abstractions=, etc.
-
-- Monolithic Kernel :: A Kernel which consists of a single =Heavyweight
-  Process=. Examples include =Unix= and =BSD= Kernels and =Linux=.
-
-- Micro-Kernel :: A collection of =Heavyweight Processes= which collectively
-  provide traditional =Kernel= Services. Examples include =Minix= and the =Gnu
-  Hurd=.
-
-- Heavyweight Process :: Aka =task=. A Heavyweight Process is process which is
-  executing a =Program= within an =Execution Context= which includes a =Memory
-  Space= and =input/output abstractions= along with one or more =threads of
-  control= which sequence through the instructions of the =Program=. A
-  Heavyweight Process is highly restricted in what it can do: It can only
-  perform computations, some of which read and write the contents of its =Memory
-  Space= - none of which can have any direct effect on anything outside of its
-  =Execution Context=. Everything else, e.g. Input/Output, must be done through
-  =System Calls= which request that the =Kernel= perform a desired action on
-  behalf of the Heavyweight Process.
-
-- Lightweight Process :: Aka =Thread=. A Lightweight Process is a thread of
-  control within a =Heavyweight Process= and its =Program=. At minimum, a
-  Lightweight Process provides a =program counter= which is a =register=
-  specifying the location of the =Instruction= being executed within the
-  Heavyweight Process's =Program=. Lightweight Processes may provide additional
-  resources, such as a =Stack=, a reserved (but not protected) subset of the
-  Heavyweight Process's =Memory Space=.
 
 - Program :: A collection of =instructions= which can be executed by an
   =interpreter process=. An =intepreter process= can be implemented in a
@@ -127,3 +67,143 @@ documents!
   requires) must be =loaded= into a suitable =execution context=, e.g. a
   =heavyweight process= which provides the resources needed for the execution of
   the program.
+
+- Application Program :: aka =app=. A =program= which is intended to directly interact
+  with a computer user or at least be known to them as something which is
+  carrying out their wishes.
+
+- Service Program :: A =program= which exists to serve the needs of other
+  Programs or the Operating System rather than to directly interact with Users
+  or be known to them. Service Programs often run as Background Tasks aka
+  Daemons.
+
+- Kernel :: A very special program which provides access to the electronic
+  hardware of a computer for the benefit of all other programs running on that
+  computer. A =Kernel= provdes such access in the form of =System Abstractions=
+  such as =Filesystems=, =Processes=, =Interprocess Communication=, =Security
+  Abstractions=, =Networking Abstractions=, etc. Corruption in the Kernel
+  requires rebooting of the whole Operating System.
+
+- Monolithic Kernel :: A Kernel which consists of a single =Heavyweight
+  Process=. Modern Monolithic Kernels have grown increasingly large and complex
+  as they have incorporated more and more services. Examples include =Linux= and
+  the kernels of the various =Unix= and =BSD= Operating Systems.
+
+- Micro-Kernel :: A Kernel with minimal built-in functionality which relies on a
+  collection of Service Programs to traditional =Kernel= Services. Examples
+  include =Minix= and the =Gnu Hurd=. Micro-Kernels are much smaller and simpler
+  than Monolithic Kernels. The associated Service Programs can generally be
+  restarted without a need to reboot the entire Operating System.
+
+- Heavyweight Process :: Aka =task=. A Heavyweight Process is a process which is
+  executing a =Program= within an =Execution Context= which includes a =Memory
+  Space= and =Input/Output Abstractions= along with one or more =Threads Of
+  Control= which sequence through the instructions of the =Program=. A
+  Heavyweight Process is highly restricted in what it can do: It can only
+  directly perform computations involving the contents its own private =Memory
+  Space= - none of which can have any direct effect on anything outside of its
+  =Execution Context=. Everything else, e.g. Input/Output, must be done through
+  =System Calls= which are requests of the =Kernel= to perform a desired action
+  on behalf of the Heavyweight Process.
+
+- Lightweight Process :: Aka =Thread=. A Lightweight Process is a thread of
+  control within a =Heavyweight Process= and its =Program=. At minimum, a
+  Lightweight Process provides a =program counter= which is a =register=
+  specifying the location of the =Instruction= being executed within the
+  Heavyweight Process's =Program=. Lightweight Processes may provide additional
+  resources, such as a =Stack=, a reserved (but not protected) subset of the
+  Heavyweight Process's =Memory Space=.
+
+*** Operating Systems                                               :operating_systems:
+
+- Unix :: A highly-influential Operating System created by a group of
+  researchers at AT&T Bell Laboratories in the 1970s along with the
+  /C Programming Language/. Unlike most Operating Systems at the time, Unix was
+  /Portable/, able to run on many different kinds of computers, partly because
+  it was written in the C Language rather than in a machine-specific language.
+  Although Unix was always Proprietary Software, it was widely distributed in
+  the early days and was especially popular in colleges and universities.
+
+- Posix :: A standard for Unix-like systems, including the scripting tools of
+  the /Unix Programming Environment/ which helps unify basic features among
+  /Posix/ systems such as modern =Unix=, =BSD= and =Gnu/Linux= Operating
+  Systems. Warning: No modern systems strictly comply to the standard!
+
+- BSD :: The Berkeley Software Distribution. An family of Operating Systems
+  descended from from BSD Version 4.4 developed at the University of California,
+  Berkeley in the early 1980s. BSD built on the ideas of the Unix Operating
+  System and added many new features including modern networking. All versions
+  of BSD are [[https://en.wikipedia.org/wiki/Open-source_software][Open Source]], but are not [[https://en.wikipedia.org/wiki/Free_software][Free Software]]. The BSD Family includes
+  =Darwin=, =OpenBSD=, =FreeBSD= and others.
+
+- Darwin :: A version of BSD which underlies Apple's MacOS subsequent to Steve
+  Jobs' return from NeXT. It is available /Open Source/ from Apple but without
+  Apple's proprietary extensions.  [[https://en.wikipedia.org/wiki/Darwin_(operating_system)][Wikipedia: Darwin]]
+
+- OpenBSD :: A highly security-conscious version of BSD.  [[http://www.openbsd.org][OpenBSD Website]]
+
+- FreeBSD :: A version of BSD which incorporates many innovative features.
+  [[https://www.freebsd.org/][FreeBSD Website]]
+
+*** Languages                                                      :language:
+
+- Bourne Shell Command Language :: The Command Language used by the [[https://en.wikipedia.org/wiki/Bourne_shell][Bourne Shell]]
+  invented by Stephen Bourne in 1979 at AT&T Bell Laboratories for the Unix
+  Operating System. The Bourne Shell Command Language was especially elegant
+  (powerful and general without being very complex) compared to earlier Unix
+  Shell Command Languages. /A great way to become a Power User is to master
+  master the Bourne Shell Command Language!/ Many popular later shells,
+  including =dash=, =bash= and =zsh= implement the Bourne Shell Command Language
+  along with many complex additional features yet they will try to implement the
+  original Bourne Shell Command Language when invoked via a link named =sh=, the
+  original name of the Bourne Shell program.
+
+- C Programming Language :: A Portable High-Level Language intended primarily
+  for writing /Systems Programs/, i.e. components of highly-performant Operating
+  Systems, including Kernels which need to directly interact with a computer's
+  hardware. =C= inspired by the earlier languages =B= and =BCPL=. Although the
+  =C= originally targeted the /PDP-11 Minicomputer/ (the original hardware
+  platform of the Unix Operating System written in C) it abstracts the /PDP-11
+  Architecture/ into what we call the /C Machine/. Although modern computers
+  operate very differently from the PDP-11 minicomputer and the C Machine, they
+  go to great efforts to /appear/ to be efficient /C Machines/. Programmers who
+  want to understand what their programs are actually doing on real machines
+  often begin by studying /C/ and the /C Machine/ before going on to learn more
+  modern languages and techniques. This is an especially efficient approach as
+  the C language and the C Machine are both very simple and easy to learn
+  compared to most languages and machine architectures.
+
+- C++ Programming Language :: A Portable High-Level Language which adds a large
+  number of useful but complex features onto the C Programming Language. Because
+  it is an almost perfect superset of =C= it can be used as a =C= replacement,
+  although experts warn against using many of its features.
+
+- Rust Programming Language :: An unusually general, reliable and efficient
+  High-Level Language which is suitable Systems Programming as well as for
+  writing Application Programs and Tools. It is more complex than =C= but much
+  less complex than =C++=. =Rust= is designed to be as efficient as =C= but
+  easier to learn than =C++= and easier to use reliably than either. It's still
+  arguably worthwhile to learn =C= and the /C Machine/ first as doing so makes
+  it easier to understand how =Rust= features work.
+
+*** Tools                                                          :tools:
+
+- The Unix Programming Environment :: A collection of (1) flexible Software
+  Tools, (2) a methodology for using them and (3) an excellent book on these
+  practices from the Unix Operating System culture. While later tools are more
+  complex and diverse, a great way to learn this way of solving problems is to
+  read the still relevant and wonderfully concise book [[https://en.wikipedia.org/wiki/The_Unix_Programming_Environment][The Unix Programming
+  Environment]] and experiment with all the techniques it describes.
+
+- Software Tools :: Flexible and often /Scriptable/ programs which can solve
+  challenging problems without the need to write new programs. See =The Unix
+  Programming Environment=. These /Software Tools/ are designed to be easily
+  combined for use in solving challenging problems without the need to write new
+  programs, although such solutions are often controlled with /Scripts/ which
+  are programs of a simple kind. Most of these tools were originally written in
+  =C= for Unix, rewritten in =C= with extensions by the various /BSD Projects/,
+  the /GNU Project/, et al and are currently being rewritten and extended along
+  with the creation of new Tools in =Rust= and other modern languages. Used
+  singly and in combination these /Software Tools/ provide enormous
+  problem-solving capabilities to /Power Users/ who understand the /Software
+  Tools/ and /Scripting/ methodologies.
