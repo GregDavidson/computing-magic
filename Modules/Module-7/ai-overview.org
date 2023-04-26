@@ -33,10 +33,8 @@ techniques is referred to as a [[https://bdtechtalks.com/2020/03/04/gary-marcus-
 
 *** Generate and Test
 
-- Use some non-intelligent mechanism, e.g. machine learning, to generate
-  hypotheses
-- Apply systematic reasoning to judge the validity and/or value of the
-  hypotheses
+- Use some heuristic mechanism, e.g. machine learning, to generate hypotheses
+- Apply reasoning to judge the validity and/or value of the hypotheses
 
 *** Representation and Search
 
@@ -47,7 +45,7 @@ techniques is referred to as a [[https://bdtechtalks.com/2020/03/04/gary-marcus-
  
 Examples
 - Lists of roads in [[https://en.wikipedia.org/wiki/Journey_planner][Journey Planners]], e.g. /Google Maps/
-- Pieces laid out on a /game board/
+- Pieces laid out on a /game board/, e.g. chess, go, etc.
 - Fragments of [[https://en.wikipedia.org/wiki/Phrase_structure_rules][Phrase structure]] [[https://en.wikipedia.org/wiki/Tree_structure][trees]] in [[https://en.wikipedia.org/wiki/Natural-language_understanding][Natural Language Understanding]]
 
 (2) Design a [[https://en.wikipedia.org/wiki/Search_algorithm][search strategy]] which can
@@ -58,7 +56,6 @@ Examples
 Examples
 - [[https://en.wikipedia.org/wiki/A*_search_algorithm][A* Search]] for [[https://en.wikipedia.org/wiki/Journey_planner][Journey Planners]]
 - [[https://en.wikipedia.org/wiki/Minimax][Minimax]] with [[https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning][Alpha-Beta Pruning]] in /board games/
-- [[https://en.wikipedia.org/wiki/Blackboard_(design_pattern)][Blackboard Architecture]] in [[https://en.wikipedia.org/wiki/Natural-language_understanding][Natural Language Understanding]]
 
 The possible paths from /the givens/ to /a goal/ constitute /the search space/.
 Problems with a small search space, such as /Tic Tac Toe/ (American) aka Naughts
@@ -68,8 +65,30 @@ search all paths in the space and choose the best.
 Intelligence can be seen as the ability to effectively navigate through search
 spaces which are too large to search exhaustively, e.g. the search spaces of
 /Chess/ or /Go/ or the possible meanings of a sentence. In such situations, we
-use [[https://en.wikipedia.org/wiki/Heuristic][heuristics]] instead of [[https://en.wikipedia.org/wiki/Algorithm][algorithms]] to /prune the search space/. Machine
-Learning is often a great heuristic!
+use [[https://en.wikipedia.org/wiki/Heuristic][heuristics]] instead of [[https://en.wikipedia.org/wiki/Algorithm][algorithms]] to /prune the search space/.  /Machine
+Learning is often a great heuristic!/
+
+*** Combining Multiple Sources of Knowledge
+
+Humans intelligence is limited and often makes mistakes.  A key strategy which sophisticated
+humans use to reduce mistakes is to combine multiple intelligence strategies, synthesizing multiple
+sources of knowledge, multiple viewpoints.
+
+AI systems usually take a fairly narrow approach to parsing input and making
+decisions. Combining multiple sources of knowledge, e.g. multiple kinds of
+pattern matching, multiple representations, multiple reasoning strategies
+requires the developers to work a lot harder. Much recent progress has occurred
+by applying more brute force computational power to simpler strategies.
+Eventually though, all simplistic strategies hit diminishing returns.
+
+Combining multiple sources of knowledge is essential for generality, flexibility and
+low error rates in intelligent systems.  While far from easy, this approach has
+produced some of the most successful systems ever developed.  It is the future.
+
+Examples
+- [[https://en.wikipedia.org/wiki/Blackboard_(design_pattern)][Blackboard Architecture]] in [[https://en.wikipedia.org/wiki/Natural-language_understanding][Natural Language Understanding]]
+- Hybrid AI in IBM /Watson/'s Jeopardy System
+      - Rule-based AI plus Machine Learning
 
 ** AI Quotes
 
@@ -97,4 +116,14 @@ question of whether a submarine can swim.
 
 This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
 
-You might also want to learn [[file:../../Prolog/README.org][Prolog]]
+[[file:../../Prolog/README.org][Prolog]] will make it easier to create the Knowledge-Based parts of your system -
+and it's an easy and fun language to learn!  Prolog is especially strong for
+- Knowledge Representation
+- Logic-based Reasoning with uncertainty
+- Constraint-based Reasoning
+
+Some resources for building Knowledge-Based Systems
+- /PROLOG: a language for implementing expert systems/ by K.L. Clark and F.G. McCabe
+      - short (21 pages) but with step-by-step working code
+- /Building Expert Systems in Prolog/ by Dennis Merritt
+      - comprehensive
