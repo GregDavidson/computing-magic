@@ -1,19 +1,36 @@
 * Computing Problems To Challenge Our Creativity and Stretch Our Skills!
 
+Part of the [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Curriculum]] of the [[https://github.com/GregDavidson/loel][League of Extraordinary Learners]].
+
 #+begin_quote
 Problems worthy of attack
 prove their worth by hitting back.
 - Piet Hein
 #+end_quote
 
+If you already have at least one computer programming language you enjoy
+programming in, you may enjoy trying on these challenge problems right away.
+
+Alternatively, you might wish to try learning some of the languages and
+techniques from [[file:../Modules/README.org][modules]] of our [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Curriculum]] , e.g.
+- [[file:../Modules/Module-1/module-1.org][Functional Programming using Racket]]
+- [[file:../Modules/Module-5/module-5.org][Relational Database Programming using SQL]]
+- [[file:../Modules/Module-7/module-7.org][AI Programming using Prolog]]
+
 ** How to "Attack" Good Problems
 
 An excellent way to grow your problem solving skills is to "attack" good
 problems in worthwhile ways.
 
-- Important :: Avoid looking at other people's ideas and solutions until you
-  have explored your own! If you look at another person's solution, try finding
-  another approach, maybe using a different idea, language or paradigm.
+*Important:*
+- Avoid looking at other people's ideas and solutions
+      - /until you have explored some of your own ideas!/
+- After looking at another person's solution
+      - Explore some variations on what they did
+            - Can you make what they did
+            - simpler, more efficient, more pleasing?
+      - Try finding some significantly different approaches
+            - maybe using different ideas, languages or paradigms.
 
 You will get the most value out of these challenges if you iteratively
 1. Think about the problem itself for awhile
