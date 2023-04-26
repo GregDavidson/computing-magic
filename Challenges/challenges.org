@@ -1,0 +1,115 @@
+* Computing Problems To Challenge Our Creativity and Stretch Our Skills!
+
+#+begin_quote
+Problems worthy of attack \
+prove their worth by hitting back. \
+- Piet Hein
+#+end_quote
+
+** How to "Attack" Good Problems
+
+An excellent way to grow your problem solving skills is to "attack" good
+problems in worthwhile ways.
+
+- Important :: Avoid looking at other people's ideas and solutions until you
+  have explored your own! If you look at another person's solution, try finding
+  another approach, maybe using a different idea, language or paradigm.
+
+You will get the most value out of these challenges if you iteratively
+1. Think about the problem itself for awhile
+       - Ask yourself questions to expand your understanding of the problem
+       - Generate *multiple answers* to those questions!
+2. Speculate about strategies for attacking the problem
+       - Generate *multiple strategies*
+             - Some may be only partial ideas at first!
+       - Consider different
+             - [[https://en.wikipedia.org/wiki/Programming_paradigm][Programming Paradigms]]
+             - [[https://github.com/GregDavidson/computing-magic/blob/main/languages-which-matter.org][Interesting Programming Languages]]
+3. Select a strategy which interests you
+       - The goal is to stretch your skills
+       - Having fun is very important!
+4. Try /Dijkstra's Approach/ for hard problems
+       1. Imagine a system which would make solving the problem easy
+              - this might be a language, library or framework
+       2. Sketch out how you'd solve the problem with your imagined system
+       3. If looks promising enough
+              - Your new challenge is to implement your imagined system!
+
+** A Few Good Starter Problems
+
+Here are a few simple problems you might start with.
+
+*** Problems Amenable to Many Computing Approaches
+
+**** Fizz Buzz
+
+Fizz Buzz is a counting game used to amuse children - or challenged adults!
+
+A person or a computer program starts counting from 1, *except*
+      - for multiples of 3 you instead say "fizz"
+      - for multiples of 5 you instead say "buzz"
+so it looks like:
+      - 1, 2, fizz, 3, 4, buzz, ..., 14, fizzbuzz, 16, ....!
+
+For a computer program it's sufficient to count to 20.
+
+Notes on Fizz Buzz
+- How many ways can you think of solving this problem?
+      - Solve the problem at least two different ways
+      - What's an especially simple and satisfying solution?
+            - How does this depend on your choice of programming language?
+      - Can you avoid fancy arithmetic?
+            - Nothing beyond adding 1
+            - Maybe no arithmetic at all?
+- Can you generalize your program to allow other exceptions to be added easily?
+
+Here are *some [[file:fizz-buzz-solutions.org][Diverse Fizz Buzz Solutions]]*
+
+**** Water Jugs
+
+Given:
+- a little jug which can hold 3 liters
+- a big jug which can hold 5 liters
+
+Goal:
+- Starting with both jugs empty
+- Achieve exactly 4 liters in the big jug
+
+Allowed actions:
+- Fill either jug to its full capacity
+- Empty either jug completely
+- Pour one jug into the other until either
+      - the jug being poured from is empty
+      - the jug being poured into is full
+
+Extra challenges
+- Find and show the shortest sequence of actions
+- Find a pleasingly simple solution
+- Find a very different yet still pleasingly simple solution
+      - Maybe using another paradigm or language
+- Find an optimal solution more efficiently
+      - You may need to employ [[https://en.wikipedia.org/wiki/Heuristic_(computer_science)][heuristics!]]
+
+Here are *some [[file:water-jugs-solutions.org][Diverse Water Jugs Solutions]]*
+
+*** Exploring Functional Programming
+
+If you're interested or willing to use or learn some lisp
+- try [[https://github.com/GregDavidson/computing-magic/blob/main/Modules/Module-1/module-1.org][the first module]] of our [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Curriculum]]
+
+*** Exploring AI Programming
+
+If you're interested or willing to use or learn some Prolog
+- try [[https://github.com/GregDavidson/computing-magic/blob/main/Modules/Module-7/module-7.org][the AI Programming Module]] of our [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Curriculum]]
+
+*** Exploring Mathematical Programming
+
+- [[https://projecteuler.net/][Project Euler Mathematical Programming Challenges]]
+
+** Lots More Problems!
+
+*** Problems and Solutions
+- [[https://rosettacode.org/wiki/Category:Programming_Tasks][Rosetta Code Programming Tasks]]
+- [[https://adventofcode.com/2022/about][Advent of Code]]
+*** Efficiency Issues
+- [[https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html][Benchmarks Games]]
