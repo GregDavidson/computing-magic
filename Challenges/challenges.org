@@ -28,28 +28,28 @@ problems in worthwhile ways.
 - After looking at another person's solution
       - Explore some variations on what they did
             - Can you make what they did
-            - simpler, more efficient, more pleasing?
+                  - simpler, more efficient, more pleasing?
       - Try finding some significantly different approaches
             - maybe using different ideas, languages or paradigms.
 
 You will get the most value out of these challenges if you iteratively
 1. Think about the problem itself for awhile
-       - Ask yourself questions to expand your understanding of the problem
-       - Generate *multiple answers* to those questions!
+       - *Ask yourself questions* to expand your understanding of the problem
+       - Look for *multiple answers* to those questions!
 2. Speculate about strategies for attacking the problem
-       - Generate *multiple strategies*
-             - Some may be only partial ideas at first!
+       - Come up with *different ideas and strategies*
+             - Partial ideas are fine, this is all iterative!
        - Consider different
              - [[https://en.wikipedia.org/wiki/Programming_paradigm][Programming Paradigms]]
              - [[https://github.com/GregDavidson/computing-magic/blob/main/languages-which-matter.org][Interesting Programming Languages]]
 3. Select a strategy which interests you
        - The goal is to stretch your skills
        - Having fun is very important!
-4. Try /Dijkstra's Approach/ for hard problems
+4. For hard problems, try /Dijkstra's Approach/
        1. Imagine a system which would make solving the problem easy
               - this might be a language, library or framework
        2. Sketch out how you'd solve the problem with your imagined system
-       3. If looks promising enough
+       3. If it looks promising enough
               - Your new challenge is to implement your imagined system!
 
 ** A Few Good Starter Problems

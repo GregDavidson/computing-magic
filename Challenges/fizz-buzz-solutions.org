@@ -2,3 +2,4 @@
 
 - [[file:../SQL/Challenges/Solutions/fizz-buzz.sql][Fizz Buzz in SQL]]
 - [[https://github.com/GregDavidson/FizzBuzzInRust#readme][Fizz Buzz in Rust]]
+- [[https://github.com/GregDavidson/on-lisp/tree/main/FizzBuzz#readme][Fizz Buzz in Scheme Lisp]]
