@@ -1,0 +1,4 @@
+* Fizz Buzz Solutions
+
+- [[file:../SQL/Challenges/Solutions/fizz-buzz.sql][Fizz Buzz in SQL]]
+- [[https://github.com/GregDavidson/FizzBuzzInRust#readme][Fizz Buzz in Rust]]

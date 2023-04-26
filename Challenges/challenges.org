@@ -1,8 +1,8 @@
 * Computing Problems To Challenge Our Creativity and Stretch Our Skills!
 
 #+begin_quote
-Problems worthy of attack \
-prove their worth by hitting back. \
+Problems worthy of attack
+prove their worth by hitting back.
 - Piet Hein
 #+end_quote
 
