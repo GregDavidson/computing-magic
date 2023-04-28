@@ -1,0 +1,33 @@
+* Prolog Resources
+
+[[/home/greg/Keep/Books/Comp/Lang/Prolog/Good-Short-Prolog-Primers/Link to AnIntroductionToProlog.pdf][Appendix A: An Introduction To Prolog (pdf)]]
+- Useful
+      - Very approachable beginning.
+      - Covers Prolog deep structure well
+            - Unification, Resolution
+      - Covers box debugging model
+      - ISO Standard Prolog
+      - Free on SWI-Prolog Website
+      - From /Language Processing with Perl and Prolog/ by Pierre Nugues
+            - which covers language understanding, translation and more!
+- Challenges
+      - Examples are a bit dry
+      - A bit too technical at times
+
+[[file:/home/greg/Keep/Documents/Comp/Lang/Prolog/prolog:a-language-for-implementing-expert-systems.pdf][Prolog: A Language For Implementing Expert Systems -- K.L.Clarke & F.G.McCabe (pdf)]]
+
+[[file:/home/greg/Keep/Documents/Comp/Lang/Prolog/emycin-prolog-expert-system.pdf][EMycin Prolog Expert System Shell -- Fikret Ulug (pdf)]]
+
+[[file:/home/greg/Keep/Books/Comp/Lang/Prolog/HowToSolveIt/HowToSolveItWithProlog.pdf][How To Solve It With Prolog (pdf)]]
+
+[[/home/greg/Keep/Books/Comp/Lang/Prolog/Link to PrologIntro.pdf][Prolog - A Tutorial Introduction -- James Lu, Jerud J. Mead (pdf)]]
+- Useful
+      - Introduces Prolog with SWI-Prolog and Emacs
+- Challenges
+      - Too academic, starts with edge predicate!
+
+[[file:/home/greg/Keep/Books/Comp/Lang/Prolog/advanced-logic-programming-chapter-2-prolog-syntax_and_semantics-v6.pdf][Advanced Logic Programming - Chapter 2 - Prolog Syntax and Semantics v6 (pdf)]]
+- Useful
+      - Beautifully covers theory for math lovers
+- Challenges
+      - Too technical for non-math obsessed

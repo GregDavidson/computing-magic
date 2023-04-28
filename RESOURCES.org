@@ -1,0 +1,11 @@
+* Computing Magic Resources
+
+** Allied Curricula and Projects
+
+- [[https://gregdavidson.github.io/loel/][League of Extraordinary Learners]]
+- [[https://github.com/GregDavidson/on-computing#readme][On Computing]]
+- [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]]
+- [[https://gregdavidson.github.io/wicci-core-S0_lib/][Wicci Project]]
+
+** Books & Media
+

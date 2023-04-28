@@ -1,0 +1,10 @@
+* Computing Magic Roadmap
+
+Glorious things to work on:
+
+- Add more [[file:RESOURCES.org][General RESOURCES]]
+- Create RESOURCES for Topics
+- Organize the Materials for the AI Module
+
+Current Active Projects
+- Shell Scripting

@@ -1,0 +1,7 @@
+* Notes for the Construction of Module 7
+
+** AI Architectures
+*** Combining Multiple Knowledge Sources
+**** Blackboard Architecture
+
+[[file:/home/greg/Keep/Documents/Comp/AI/blackboard-systems--h.-penny-nii--stanford-cs-tr-86-1123.pdf][Blackboard Systems -- H. Penny Nii (pdf)]]

@@ -1,0 +1,13 @@
+* Racket Diagrams
+
+The original idea of this package is to create a nice set of Racket functions
+for rendering Racket data structures as Racket =pict= objects to accompany
+explanations of such data structures. The intention of the diagrams is to
+provide insight as to the /physical layout/ of such data structures in memory.
+
+The original design and implementation uses recursive traversal of said data
+structures along with lots of rendering options. The work is delegated to
+simpler functions which can be reused for different purposes.
+
+This work has inspired me to begin designing a constraint-oriented diagramming
+package. See [[file:constrained-picts.org][constrained-picts.org]] for more on that!

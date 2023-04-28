@@ -1,0 +1,42 @@
+* Learn Git and GitHub Quickly
+
+Git is a strange beast, consisting of
+- Plumbing :: which makes it work
+- Porcelein :: which makes it more comfortable
+- High-Level Interfaces :: which are /sometimes/ helpful
+
+** What's Git for?
+
+Git is designed to assist groups or communities in collaboratively developing
+and improving sophisticated projects which consist primarily of /files/ of
+/text/, aka /textfiles/.
+
+And although =git= was primarily designed to assist with collaborative projects,
+=git= can also be used by individuals for their solo projects.
+
+** So What's a /textfile/?
+
+These days /text/ usually consists of [[https://en.wikipedia.org/wiki/Unicode][Unicode]] characters, which include all of
+the characters used in all traditional human writing systems along with some
+extras, including a collection of [[https://en.wikipedia.org/wiki/Emoji][Emojis]]. Humans have been storing /Text/ on
+various media (paper, parchment, clay tablets, walls, billboards, etc.) for
+thousands of years. Storing /text/ in computer /files/ allows us to animate and
+automate a lot of otherwise tedious /text/ processing.
+
+In addition to projects using /textfile/ to store novels, poetry, textbooks and
+all of the other kinds of writings which humans do, Many projects use
+/textfiles/ to describe or automatically create artifacts such as computer
+software, music, visual art or objects manufactured by computer controlled
+machines, e.g. by 3D Printers. There are notations for expressing everything
+from raw data to highly abstract information as /text/ in /textfiles/.
+
+While computers have ways to encode data and information other than in
+/textfiles/, /textfiles/ have the advantage that they are very easy to present
+to humans, either on a computer display - they can even be printed on paper for
+reading offline. As long as a human is familiar with the particular characters
+and notation in such a /textfile/, they can be productive right away.
+
+** How does =git= help?
+
+A /Git Repository/ keeps track of all of the /textfiles/ within a project
+and records all of the changes those file 
