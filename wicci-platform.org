@@ -391,7 +391,7 @@ Your assistance can make a difference!
 
 It would be great to sharpen the Case for Action!
 
-The source of this document is an [[https://orgmode.org][OrgMode]] textfile hosted in a [[https://github.com/GregDavidson/new-rfcs][GitHub
+The source of this document is an [[https://orgmode.org][OrgMode]] textfile hosted in a [[https://github.com/GregDavidson/new-rfcs#readme][GitHub
 Repository]]. Any other formats have been generated from the OrgMode source with a
 one-way transformation, so please direct improvements to the OrgMode source lest
 they be lost when the secondary documents are regenerated.

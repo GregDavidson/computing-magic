@@ -1,6 +1,6 @@
 * Computing Magic Meeting Notes, Saturday 9 October 2021
 
-Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+Notes from the [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Project]].
 
 ** Announcement to the WhatsApp the day before
 

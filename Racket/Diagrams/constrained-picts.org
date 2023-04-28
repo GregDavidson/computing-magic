@@ -1,6 +1,41 @@
-* Racket Constrained Composite Pictures
+* RacketPad: Racket Constraint Composite Pictures and Graphics Library
+
+** What it Is
+
+Sutherland's SketchPad and Alan Borning's ThingLab based on Racket's Pict
+Library.
+
+** Approach
+
+Combine Racket's Pict (and maybe MetaPict and other components) with Racket's
+Constraint Satisfaction Library.
+
+** Problems
+*** Racket's Constraint Satisfaction Library is unmaintained???
+
+*** Racket's Pict object have fixed dimensions
 
 Racket's =pict= is an excellent object-centered functional graphics system.
+- Objects can be trees of sub-objects.
+- Alas, they have fixed sizes.
+
+Proposed Solution
+- Use inheritance as in SketchPad and ThingLab.
+- Any Racket Pict or other graphical object is just a base to inherit from.
+- Base object properties can be overridden in the derived object
+      - e.g. with a constraint variable!
+- Couple the existing rendering mechanisms to the new system
+      - generalize the =pict= accessor functions
+
+This solution would also allow us to use other Racket entities as base objects,
+whether or not they were designed for graphical display! And this includes our
+first implementation of fixed-size data structure diagrams!
+
+In order to have things be as Functional as possible, and to allow backtracking,
+etc. during constraint satisfaction, the parameters need to live in an
+environment loosely associated with the graphical objects to be rendered.
+
+** Original Thoughts
 
 Ideally it would be possible to
 - create composite pictures as
@@ -58,4 +93,3 @@ When a size constraint provides insufficient room for parts of a picture
 Detection of constraint issues needs to be
 - noticeable as early as possible
 - checkable on demand before rendering
-  

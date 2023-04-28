@@ -2,7 +2,7 @@
 
 This is a rough draft - check back later for something better!
 
-Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+Notes from the [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Project]].
 
 ** What should you do between Now and our Next Meeting?
 

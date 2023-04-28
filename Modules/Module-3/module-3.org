@@ -4,7 +4,7 @@
   
 /Mars, Monday 7 February 2022/
 
-Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
+Notes from a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
 ** Open Lab
 

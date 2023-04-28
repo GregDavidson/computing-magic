@@ -1,6 +1,6 @@
 * 10:30am, Saturday, 23 October 2021
 
-Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+Notes from the [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Project]].
 
 ** What should you do between Now and Next Saturday?
 

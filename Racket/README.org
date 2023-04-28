@@ -3,7 +3,7 @@
 ** What is Racket
 
 [[https://racket-lang.org/][Racket]] is an advanced multi-lingual, multi-paradigm computational environment.
-Racket began as an implementation of the [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]] Dialect of [[https://github.com/GregDavidson/on-lisp][Lisp]]. All Racket
+Racket began as an implementation of the [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]] Dialect of [[https://github.com/GregDavidson/on-lisp#readme][Lisp]]. All Racket
 languages compile to efficient native code on major computing platforms.
    
 ** What's a good way to learn Racket?

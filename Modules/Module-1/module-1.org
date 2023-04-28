@@ -2,7 +2,7 @@
 
 /Acquiring a Lisp/
 
-Based on a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
+Based on a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
 
 ** Programming with Pictures
 
@@ -45,7 +45,7 @@ the /Quick Tutorial/.
 
 You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!
 
-I've written about my long-term love affair with Lisp [[https://github.com/GregDavidson/on-lisp][elsewhere]]!
+I've written about my long-term love affair with Lisp [[https://github.com/GregDavidson/on-lisp#readme][elsewhere]]!
 
 Once you know a bit more, a really great way to gain more mastery is to
 volunteer as a /Peer Facilitator/ for this course and/or this curriculum.

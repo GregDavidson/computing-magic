@@ -2,7 +2,7 @@
 
 /Putting it all together!/
 
-Based on a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
+Based on a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
 
 ** What Would You Like To Build?
 

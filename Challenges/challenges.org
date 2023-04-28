@@ -1,6 +1,6 @@
 * Computing Problems To Challenge Our Creativity and Stretch Our Skills!
 
-Part of the [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Curriculum]] of the [[https://github.com/GregDavidson/loel][League of Extraordinary Learners]].
+Part of the [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Curriculum]] of the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]].
 
 #+begin_quote
 Problems worthy of attack

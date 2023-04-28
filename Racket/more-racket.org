@@ -24,7 +24,7 @@ Here's a good Tutorial Path
 1. Explore the [[https://docs.racket-lang.org/quick/][Quick Tutorial]]
 2. Explore the [[Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]] program
 3. Read and Explore [[https://github.com/GregDavidson/on-lisp/blob/main/lisp-simplicity.org][Lisp Simplicity]]
-4. Possibly explore more materials in the [[https://github.com/GregDavidson/on-lisp][On Lisp]] repository
+4. Possibly explore more materials in the [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]] repository
 5. Explore [[http://www.htdp.org/][How to Design Programs]]
 6. Explore the other Racket Tutorials
 7. Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]

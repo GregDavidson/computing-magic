@@ -97,13 +97,13 @@ The /C Language/ was created to encourage writing this kind of small program.
 Most of the popular scripting languages such as Python, Ruby, Perl, JavaScript,
 etc. are written primarily in =C=. =C= is written in =C=. =C= is a small
 language which can be learned quickly.
-- Here's our quick [[https://github.com/GregDavidson/C-By-Example][Example-Driven Start to Learning C Programming]].
+- Here's our quick [[https://github.com/GregDavidson/C-By-Example#readme][Example-Driven Start to Learning C Programming]].
 
 The Lisp Philosophy encourages creating small simple Procedures. Problems are
 solved by combining such component procedures as needed. The major Lisps are
 written mostly in Lisp. Some Lisps are large and complex. Others, especially
 =Scheme=, are even simpler than =C= yet are just as powerful!
-- Here's our take [[https://github.com/GregDavidson/on-lisp][On Lisp]].
+- Here's our take [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]].
 
 Do you see any design and philosophical similarities between the =C= and
 =Scheme= languages and programming philosophies? The original /Unix System/

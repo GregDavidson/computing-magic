@@ -1,6 +1,6 @@
 * Computing Magic -- A Modular Curriculum
   
-A [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Curriculum.
+A [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Project]] Curriculum.
 
 Think of this as a Montessori-style classroom for learning. The material is
 broken up into Modules which contain activities along with opportunities to

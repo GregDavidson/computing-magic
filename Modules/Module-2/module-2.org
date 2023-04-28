@@ -2,7 +2,7 @@
   
 /Tooling Up/
 
-Based on notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
+Based on notes from a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
 ** Software Development Power Tools
 
@@ -53,7 +53,7 @@ environment.
 Use [[file:../../Software-Tools/scripting-readme.org][Scripting README]] to install and learn powerful scripting tools
         
 Read more of the resources on my website, starting with
-- [[https://github.com/GregDavidson/computing-magic][Computing Magic README]]
+- [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic README]]
 - And explore the links!
   
 Let's collaborate!

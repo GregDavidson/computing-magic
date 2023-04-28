@@ -2,7 +2,7 @@
 
 /The Virtue of Persistence/
 
-Based on a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
+Based on a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
 
 ** Databases and Relational Programming
 

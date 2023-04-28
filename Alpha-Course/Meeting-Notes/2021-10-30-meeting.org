@@ -1,6 +1,6 @@
 * 10:30am, Saturday, 30 October 2021
 
-Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+Notes from the [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Project]].
 
 ** Following up on this Awesomeness
 

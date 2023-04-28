@@ -2,7 +2,7 @@
 
 /Imperative Art/
 
-Notes from a [[https://github.com/GregDavidson/computing-magic][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
+Notes from a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
 ** Good things to before this meeting
 

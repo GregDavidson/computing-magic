@@ -1,11 +1,11 @@
 * Computing Magic, Early Meetings and Getting Started
 
-Notes from the early and formational [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]] Meetings
+Notes from the early and formational [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Project]] Meetings
 
 ** How we got here
 
 The current [[file:../cm-curriculum.org][Computing Magic Curriculum]] emerged after a number of presentations
-and discussions of aspects of [[https://github.com/GregDavidson/computing-magic][Computing Magic]] with the wonderful members of the
+and discussions of aspects of [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] with the wonderful members of the
 [[https://docs.google.com/document/d/1qSUTfoOXDAfoH-OF_7N7kEzlp5-F4nf0JP3BzgppDY0][Limitless Fellowship]] in 2021 and earlier.
 
 The early presentations were too complex, but some people wanted to find a way

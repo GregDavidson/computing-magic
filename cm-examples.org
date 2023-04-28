@@ -93,7 +93,7 @@ of exotic metal alloys and other materials.
 ***** What Computers Are
 ****** TODO get my article back online!!!
 ***** C
-- [[https://github.com/GregDavidson/C-By-Example][Crash Course: C By Example]]
+- [[https://github.com/GregDavidson/C-By-Example#readme][Crash Course: C By Example]]
 ***** Rust
 If you're interested in creating the kinds of programming which have traditionally been
 done in C and C++, e.g. creating Operating Systems, Rust is likely your best

@@ -1,6 +1,6 @@
 * /DRAFT/ Computing Magic Meeting - Saturday, 4 December 2021
 
-Notes from the [[https://github.com/GregDavidson/computing-magic][Computing Magic Project]].
+Notes from the [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Project]].
 
 ** How can you /Give Back/ to this project?
    
@@ -52,7 +52,7 @@ We want to be able to access our database from web pages and programs, e.g. apps
 Two good approaches:
 
 - https://postgrest.org
-[[https://github.com/GregDavidson/Wicci-Shim-Racket][- The Racket Shim]]
+[[https://github.com/GregDavidson/Wicci-Shim-Racket#readme][- The Racket Shim]]
 
 Advanced SQL Programming and MetaProgramming
 - https://github.com/GregDavidson/wicci-core-S0_lib

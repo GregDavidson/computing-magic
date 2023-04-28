@@ -527,7 +527,7 @@ ML Modules, etc.
 
 The most powerful method for extending and automating SQL programming is a
 general metaprogramming facility. A system for metaprogramming in PostgreSQL is
-in the [[https://github.com/GregDavidson/wicci-core-S0_lib][Wicci Core]].
+in the [[https://github.com/GregDavidson/wicci-core-S0_lib#readme][Wicci Core]].
 
 **** Versions and Monotonicity
 
@@ -551,7 +551,7 @@ Row references would have static and (when necessary, also) dynamic types.
 
 Generic operations would be associated with static object (tuple) types and
 dispatched to type and table-specific methods. A system for doing this in
-PostgreSQL is in [[https://github.com/GregDavidson/wicci-core-S1_refs][Wicci Schema 1:Refs]].
+PostgreSQL is in [[https://github.com/GregDavidson/wicci-core-S1_refs#readme][Wicci Schema 1:Refs]].
 
 **** Reproducible Caching Build-Systems for Constructed Blobs
 
@@ -588,7 +588,7 @@ hierarchical structures into /Relational Tables/ with /Foreign Key References/.
 
 A particularly flexible system for mapping any kind of Mostly-Hierarchical
 Document into Relational Tables and supporting Monotonic Updates is prototyped
-in [[https://github.com/GregDavidson/wicci-core-S4_doc][Wicci Schema 4: Doc]] with application to XML Specifically in [[https://github.com/GregDavidson/wicci-core-S5_xml][Wicci Schema 5:
+in [[https://github.com/GregDavidson/wicci-core-S4_doc#readme][Wicci Schema 4: Doc]] with application to XML Specifically in [[https://github.com/GregDavidson/wicci-core-S5_xml#readme][Wicci Schema 5:
 XML]].
 
 Navigating links among Relational Tables could be made much easier with a simple
@@ -614,14 +614,14 @@ efficiently, including using appropriate inlining.
 
 Being RESTful means being accessible in the same stateless manner that Web
 Servers are accessible. There are several projects providing RESTful HTTP
-interfaces to PostgreSQL, including [[https://github.com/GregDavidson/wicci-core-S6_htt][Wicci Schema Level 6: HTTP]] which works in
-conjuction with [[https://github.com/GregDavidson/Wicci-Shim-Racket][The Wicci Shim]].
+interfaces to PostgreSQL, including [[https://github.com/GregDavidson/wicci-core-S6_http#readme][Wicci Schema Level 6: HTTP]] which works in
+conjuction with [[https://github.com/GregDavidson/Wicci-Shim-Racket#readme][The Wicci Shim]].
 
 It should be possible to build nice Web Front Ends to an RDBMS. In addition to
 supporting arbitrary Dynamic Web Pages as other frameworks do, there should be
 special support for Document-Oriented Content Management Systems and
 Notebook-Style Development Environments. Support for this kind of system is in
-the [[https://github.com/GregDavidson/wicci-core-S7_wicci][Wicci Schema 7: Wicci]]. We anticipate being able to use The Wicci to produce
+the [[https://github.com/GregDavidson/wicci-core-S7_wicci#readme][Wicci Schema 7: Wicci]]. We anticipate being able to use The Wicci to produce
 a better Wiki System than Wikipedia, a better Notebook System than Juypeter and
 to be the ideal Collaborative Software Development Environment for use in
 developing itself and all of the other ideas expressed in this Manifesto!

@@ -1,9 +1,9 @@
 * Computing Magic
 
-A [[https://github.com/GregDavidson/loel/blob/main/Devel/creating-curricula.org][Curriculum]] of the [[https://github.com/GregDavidson/loel][League of Extraordinary Learners]].
+A [[https://github.com/GregDavidson/loel/blob/main/Devel/creating-curricula.org][Curriculum]] of the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]].
 
 ** TL;DR
-  
+
 These materials are primarily organized as a set of Modules which, after the
 first module, can be explored in almost any order.
 - [[file:Modules/README.org][Browse the Modules README]]
@@ -63,8 +63,8 @@ practical minimum.
 - See [[file:languages-which-matter.org][Which Computer Languages Matter?]]
 
 You might also like some of the background material at
-- [[https://github.com/GregDavidson/on-computing][On Computing]]
-- [[https://github.com/GregDavidson/on-lisp][On Lisp]]
+- [[https://github.com/GregDavidson/on-computing#readme][On Computing]]
+- [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]]
 
 To start your journey with /this curriculum/
 - [[file:Modules/README.org][Browse the Modules README]]
