@@ -11,6 +11,9 @@ prove their worth by hitting back.
 If you already have at least one computer programming language you enjoy
 programming in, you may enjoy trying on these challenge problems right away.
 
+Note: Working on small well-defined problems is very different from working on
+[[file:complex-systems.org][complex systems]].
+
 Alternatively, you might wish to try learning some of the languages and
 techniques from [[file:../Modules/README.org][modules]] of our [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Curriculum]] , e.g.
 - [[file:../Modules/Module-1/module-1.org][Functional Programming using Racket]]
@@ -51,6 +54,16 @@ You will get the most value out of these challenges if you iteratively
        2. Sketch out how you'd solve the problem with your imagined system
        3. If it looks promising enough
               - Your new challenge is to implement your imagined system!
+5. Can you find a solution which is a good balance among
+       - clarity, it's clear
+             - that it works correctly
+             - how and how well it works
+             - as a good example of how to to do things
+       - generality and maintainability
+             - Can you add functionality
+             - evolve it gracefully as requirements and platforms change
+             - adjust the efficiency of its use cases
+- If so, let's add it to our examples here!
 
 ** A Few Good Starter Problems
 
