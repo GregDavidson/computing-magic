@@ -1,7 +1,8 @@
 * Challenges for Complex Systems and Applications
 
-[[file:challenges.org][Solving simple puzzles]] is great for learning narrow techniques. Creating complex
-systems is an entirely different challenge.
+[[file:challenges.org][Solving simple puzzles]] is great for learning narrow techniques.
+
+Creating complex systems is an entirely different challenge!
 
 Aspects of a Complex System
 - Human/Computer Interaction
@@ -21,6 +22,10 @@ Aspects of a Complex System
             - Upgrading and downgrading versions?
                   - XML and XSLT pathways?
                   - Database vs. structured files
+            - Data Corruption
+                  - ECC Memory, RAID, Distributed Incremental Checkpoints
+                  - Automated Reconsiliation of divergences?
+                        - of Backups, Checkpoints, Replications?
       - Resilience Entities
             - Settings, scripts, checkpoints
 
@@ -37,3 +42,6 @@ Leverage Relational Database Management Systems
 - Consider building the system /in/ the Database
       - only the user-facing interface is outside
       - and even that is mirrored in the database
+- Administrator can tune performance of use-cases
+      - e.g. with Indexes and Replications
+      - without needing to change "Business Logic"!
