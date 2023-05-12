@@ -23,10 +23,12 @@ languages - they might be languages you currently like! You'll be able to form
 your own opinions after gaining experience with some unquestionably excellent
 languages.
 
-Can you trust /anyone's/ opinions on the of programming languages? Only when
-they have significant experience using it
-- the way it was designed to be used
-- in ways unanticipated by its designers
+I generally disregard programmers' opinions about a programming language unless
+- they have significant experience using it
+      - the way it was designed to be used
+      - in ways unanticipated by its designers
+- they have significant experience with alternative languages
+      - both in the same family and in different families
 Opinions of such experienced experts are well worth listening to!
 
 ** Some Languages which Matter, and Why
