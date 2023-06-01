@@ -2,43 +2,30 @@
 
 A [[https://github.com/GregDavidson/loel/blob/main/Devel/creating-curricula.org][Curriculum]] of the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]].
 
+This curriculum is under continuous development by its participants!
+
 ** TL;DR
 
-These materials are primarily organized as a set of Modules which, after the
-first module, can be explored in almost any order.
-- [[file:Modules/README.org][Browse the Modules README]]
+The main path through this curriculum is a set of Modules. After completing the
+first module, the other modules can be explored in a flexible order.
+- [[file:Modules/README.org][Go to the Modules]]
 
-** Some Inspiration
+** What is Computing Magic?
 
 Fasten your seat-belt and watch the first 40 minutes of [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]]!
-- We'll be doing even more wonderful things!
+- And that amazing video barely scratches the surface of what's available from
+  Computing Magic!
 
-** Context and More Content
-
-This repository is the beginning of a curriculum for learning *Computing Magic*.
-
-I am very grateful for the participation of the brave and hardy Alpha
-participants from [[https://docs.google.com/document/d/1qSUTfoOXDAfoH-OF_7N7kEzlp5-F4nf0JP3BzgppDY0/edit][The Limitless Fellowship]] in 2021 and the similarly intrepid
-Beta participants from [[https://mars.college][Mars College]] in 2022 who have inspired and contributed to
-this project. Hopefully this project will never be truly finished and /you can
-help make it better!/
-
-This repository is intended to be a gateway to a lot of important materials,
-linked by the documents here. If you explore these materials, please share your
-experience, through direct communication, by Posting Issues, etc. *Please suggest
-improvements!* Feel free to Clone This Repository, Make Changes and submit Pull
-Requests!
-
-Computing Magic is leveraging the power of computers and software to do with
+/Computing Magic/ is leveraging the power of computers and software to do with
 ease what would be hopelessly difficult in the real world. With Computing Magic
 we can design
 - Biological organisms
 - Fabulous machines
 - Interactive games
 
-We can explore our creations with /Virtual Reality/, share them with collaborators
-and increasingly we can use /Automated Manufacturing/ (3D Printers, DNA
-sequencers, etc.) to materialize them in the physical world.
+We can explore our creations with /Virtual Reality/, share them with
+collaborators and use /Automated Manufacturing/ (3D Printers, DNA sequencers,
+etc.) to materialize them in the physical world.
 
 One key ingredient is what makes it magic: Instead of creating digital artifacts
 manually, e.g. using graphical user interfaces and/or editors, we make the
@@ -51,20 +38,41 @@ software, few of today's /programmers/ and /users/ can see the possibility of su
 mastery. This repository contains the beginning of a fast-path curriculum for
 learning Computing Magic!
 
-All of the materials in this repository are in the process of development /and
-if you're curious/ you might want to check out:
+** Curriculum Resources
+
+- [[file:Modules/README.org][the Main Modules]]
 - [[cm-examples.org]]
 - [[cm-curriculum.org]]
 - [[cm-distinctions.org]]
 - [[cm-quotes.org]]
+- [[file:computing-glossary.org][computing-glossary.org]]
 
 We'll be trying to keep the Computer Programming Languages which we use to a
 practical minimum.
 - See [[file:languages-which-matter.org][Which Computer Languages Matter?]]
 
-You might also like some of the background material at
+We also have the material in some related Repositories
 - [[https://github.com/GregDavidson/on-computing#readme][On Computing]]
 - [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]]
 
 To start your journey with /this curriculum/
 - [[file:Modules/README.org][Browse the Modules README]]
+
+** Acknowledgments and Invitation
+
+I am very grateful for the participation of the brave and hardy Alpha
+participants from [[https://docs.google.com/document/d/1qSUTfoOXDAfoH-OF_7N7kEzlp5-F4nf0JP3BzgppDY0/edit][The Limitless Fellowship]] in 2021 and the similarly intrepid
+Beta participants from [[https://mars.college][Mars College]] in 2022 who have inspired and contributed to
+this project.
+
+We you to participate by
+- Using thise materials for your own benfit as a /Learner/
+- Then assisting New Learners as /Peer Facilitators/
+
+We invite you to improve these materials by
+- Submitting Issues or Pull Requests
+      - You're welcome to fork the repository!
+- Sharing your experience
+      - As Issues, on our Discord, etc.
+
+Open Content from the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]].
