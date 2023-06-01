@@ -13,30 +13,36 @@ first module, the other modules can be explored in a flexible order.
 ** What is Computing Magic?
 
 Fasten your seat-belt and watch the first 40 minutes of [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]]!
-- And that amazing video barely scratches the surface of what's available from
+- This amazing video barely scratches the surface of what's available from
   Computing Magic!
 
 /Computing Magic/ is leveraging the power of computers and software to do with
 ease what would be hopelessly difficult in the real world. With Computing Magic
 we can design
-- Biological organisms
-- Fabulous machines
-- Interactive games
+- Biological Organisms
+- Fabulous Machines
+- Immersive Games
+- and much more!
 
 We can explore our creations with /Virtual Reality/, share them with
-collaborators and use /Automated Manufacturing/ (3D Printers, DNA sequencers,
-etc.) to materialize them in the physical world.
+/Collaborative Computing/ and materialize them in the Real World with
+- 3D Printers
+- DNA sequencers
+- etc.
 
-One key ingredient is what makes it magic: Instead of creating digital artifacts
-manually, e.g. using graphical user interfaces and/or editors, we make the
-computer do the hard work while we supply only high-level specifications. We say
-/what we want/ and the computer figures out /how to do it/.
+A key ingredient of the magic: Instead of creating digital artifacts manually,
+e.g. with /Graphical User Interfaces/ and/or /Interactive Editors/, we supply
+specifications and let the computer do the hard work. Specifications say /what/
+we want and the computer figures out /how/ to do it.
 
-Many of the pioneers of computing were computing magicians. With the surfeit of
-ready-made solutions and the mind-numbing unnecessary complexity of most current
-software, few of today's /programmers/ and /users/ can see the possibility of such
-mastery. This repository contains the beginning of a fast-path curriculum for
-learning Computing Magic!
+Many of the Pioneers of computing were Computing Magicians - by necessity! The
+modern surfeit of ready-made solutions and mind-numbing complexity of most
+current software obscures the possibility of Magic and Mastery from most of
+today's /Users/ and /Programmers/. Yet the power of today's tools makes
+Computing Magic potentially more accessible!
+
+This repository contains the beginning of a fast-path curriculum for learning
+Computing Magic for those who want that!
 
 ** Curriculum Resources
 
@@ -75,4 +81,10 @@ We invite you to improve these materials by
 - Sharing your experience
       - As Issues, on our Discord, etc.
 
-Open Content from the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]].
+Most of our Documents are textfiles using [[https://orgmode.org][OrgMode]] markup notation. OrgMode is
+much more powerful than the more commonly used Markdown. If you are reading our
+documents with [[https://github.com/GregDavidson/computing-magic/blob/main/Software-Tools/Emacs/emacs-readme.org][Emacs]] you can follow internal links, fold and unfold content and
+much more! The reading and editing features of GitHub and some other tools can
+also be provided although with much less power.
+
+This is /Open Content/ from the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]]!
