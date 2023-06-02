@@ -87,4 +87,4 @@ much more powerful than the more commonly used =Markdown=. Github has some
 support for =OrgMode= as do several popular programming environments. When
 you're ready to unlock the full power of =OrgMode= you'll want to learn [[https://github.com/GregDavidson/computing-magic/blob/main/Software-Tools/Emacs/emacs-readme.org][Emacs]].
 
-This is /Open Content/ from the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]]!
+This is [[https://github.com/GregDavidson/loel/blob/main/Short-Works/open-content.org][Open Content]] from the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]]!
