@@ -43,7 +43,7 @@ today's /Users/ and /Programmers/. Yet the power of today's tools makes
 Computing Magic potentially more accessible!
 
 This repository contains the beginning of a fast-path curriculum for learning
-Computing Magic for those who want that!
+Computing Magic for those who yearn for such!
 
 ** Curriculum Resources
 
