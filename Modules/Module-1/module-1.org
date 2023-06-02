@@ -4,6 +4,13 @@
 
 Based on a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
 
+This Module introduces programming using
+- a *Functional Programming Paradigm*
+- writing Functional *Programs which Draw Pictures!*
+- the programs and the pictures become progressively more interesting!
+- This module provides much of interest
+      - whether you're new to programming or an expert!
+
 ** Learning by Exploring
 
 Programming is best learned by Exploring, that is to say
