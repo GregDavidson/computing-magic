@@ -37,7 +37,7 @@ specifications and let the computer do the hard work. Specifications say /what/
 we want and the computer figures out /how/ to do it.
 
 Many of the Pioneers of computing were Computing Magicians - by necessity! The
-modern surfeit of ready-made solutions and mind-numbing complexity of most
+modern surfeit of ready-made solutions and the mind-numbing complexity of most
 current software obscures the possibility of Magic and Mastery from most of
 today's /Users/ and /Programmers/. Yet the power of today's tools makes
 Computing Magic potentially more accessible!
