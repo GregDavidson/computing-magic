@@ -4,7 +4,7 @@
 
 Based on a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
 
-** Programming with Pictures
+** Learning by Exploring
 
 Programming is best learned by Exploring, that is to say
 1. Read a bit, e.g. from a Tutorial
