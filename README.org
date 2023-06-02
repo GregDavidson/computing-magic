@@ -19,8 +19,8 @@ Fasten your seat-belt and watch the first 40 minutes of [[https://www.youtube.co
 /Computing Magic/ is leveraging the power of computers and software to do with
 ease what would be hopelessly difficult in the real world. With Computing Magic
 we can design
-- Biological Organisms
 - Fabulous Machines
+- Customized Biological Organisms
 - Immersive Games
 - and much more!
 
@@ -28,6 +28,7 @@ We can explore our creations with /Virtual Reality/, share them with
 /Collaborative Computing/ and materialize them in the Real World with
 - 3D Printers
 - DNA sequencers
+- Hybrid AI Frameworks
 - etc.
 
 A key ingredient of the magic: Instead of creating digital artifacts manually,
@@ -81,10 +82,9 @@ We invite you to improve these materials by
 - Sharing your experience
       - As Issues, on our Discord, etc.
 
-Most of our Documents are textfiles using [[https://orgmode.org][OrgMode]] markup notation. OrgMode is
-much more powerful than the more commonly used Markdown. If you are reading our
-documents with [[https://github.com/GregDavidson/computing-magic/blob/main/Software-Tools/Emacs/emacs-readme.org][Emacs]] you can follow internal links, fold and unfold content and
-much more! The reading and editing features of GitHub and some other tools can
-also be provided although with much less power.
+Most of our Documents are textfiles using [[https://orgmode.org][OrgMode]] markup notation. =OrgMode= is
+much more powerful than the more commonly used =Markdown=. Github has some
+support for =OrgMode= as do several popular programming environments. When
+you're ready to unlock the full power of =OrgMode= you'll want to learn [[https://github.com/GregDavidson/computing-magic/blob/main/Software-Tools/Emacs/emacs-readme.org][Emacs]].
 
 This is /Open Content/ from the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]]!
