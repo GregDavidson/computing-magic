@@ -163,8 +163,9 @@ intuitions which open the power of multidimensional arrays which can then be
 exploited in any language.
 
 - APL is famous for its use of special characters
+      - Try [[https://mlochbaum.github.io/BQN][BQN for a modern update]]
 - [[https://www.jsoftware.com][J]] uses regular characters in a very compact notation
--
+- 
 ***** Smalltalks
 
 The Smalltalk languages are the most pure dynamic Object Oriented Languages.
