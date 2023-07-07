@@ -58,7 +58,7 @@ We'll be trying to keep the Computer Programming Languages which we use to a
 practical minimum.
 - See [[file:languages-which-matter.org][Which Computer Languages Matter?]]
 
-We also have the material in some related Repositories
+We have additional material in some related Repositories
 - [[https://github.com/GregDavidson/on-computing#readme][On Computing]]
 - [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]]
 
@@ -72,15 +72,18 @@ participants from [[https://docs.google.com/document/d/1qSUTfoOXDAfoH-OF_7N7kEzl
 Beta participants from [[https://mars.college][Mars College]] in 2022 who have inspired and contributed to
 this project.
 
-We you to participate by
+We invite you to participate by
 - Using thise materials for your own benfit as a /Learner/
-- Then assisting New Learners as /Peer Facilitators/
+- Assisting New Learners as /Peer Facilitators/
+- Improving these materials
 
-We invite you to improve these materials by
-- Submitting Issues or Pull Requests
-      - You're welcome to fork the repository!
-- Sharing your experience
-      - As Issues, on our Discord, etc.
+You can help improve these materials by
+- Submitting Issues
+- Forking the repository
+- Because all of our materials are Open Source (AGPL)
+      - You can make changes in your copy
+      - Share them with us via a pull request
+      - /We will need a copyright assignment from you to accept it/
 
 Most of our Documents are textfiles using [[https://orgmode.org][OrgMode]] markup notation. =OrgMode= is
 much more powerful than the more commonly used =Markdown=. Github has some
