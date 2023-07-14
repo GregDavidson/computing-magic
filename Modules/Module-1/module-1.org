@@ -51,7 +51,7 @@ The program [[file:../../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick
 the /Quick Tutorial/.
 
 If you'd like to explore Functional Graphics more, try this
-- [[file:Exercises/make-a-face.rkt.org::*Exercise: Make A Face in Racket][Exercise: Make A Face in Racket]]
+- [[file:Exercises/make-a-face.rkt.org][Exercise: Make A Face in Racket]]
 
 You might also want to [[file:../../Racket/learn-racket.org][Learn (More) Racket]]!
 
