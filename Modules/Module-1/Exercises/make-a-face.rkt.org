@@ -333,17 +333,18 @@ Browse the section /GUI and Graphics Libraries/ in the
 
 *** Learning the Lower-Level Racket Drawing Toolkit
   
-Racket's high-level libraries are based on the lower level
-https://docs.racket-lang.org/draw/index.html
-Racket Drawing Toolkit
+Racket's high-level libraries are based on the lower level [[https://docs.racket-lang.org/draw/index.html][Racket Drawing Toolkit]]
 
-. If you find the existing high-level libraries too limited for
+If you find the existing high-level libraries too limited for
 something you want to do, you can use the Racket Drawing Toolkit directly.
+
+You can also use the Racket Drawing Toolkit selectively in combination with
+higher level Racket libraries.
 
 The Racket Drawing Toolkit leverages Racket's ability to do /Object Oriented
 Programming/ to manage the complexity of low level graphics.
 
-Here's the tps://docs.racket-lang.org/make/overview.html][Racket Drawing Toolkit Overview]]
+Here's the [[https://docs.racket-lang.org/draw/overview.html][Racket Drawing Toolkit Overview]]
 
 Here's an example you can run in DrRacket:
 
@@ -398,8 +399,7 @@ Bitmaps have a fixed resolution.
 The Racket Making Library can also work with SVGs which can be scaled to fit
 any resolution.
 
-The Racket Making Tookit can use SVGs by using the class svg-dc%
-https://docs.racket-lang.org/make/svg-dc_.html
+The Racket Making Tookit can use SVGs by using the [[https://docs.racket-lang.org/draw/svg-dc_.html][Drawing Class svg-dc%]]
 
 The making methods are the same as making on a bitmap, but the result is often
 nicer.
