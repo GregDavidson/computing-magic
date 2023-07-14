@@ -15,7 +15,7 @@ at a time!* Ideally:
 - Read the OrgMode version with Emacs
 - Or a /Folding Version/ as a WebPage.
 
-** Step 1: Draw an Eye Interactively
+** Step 1: Make an Eye Interactively
 
 Look up the procedures 
 - filled-ellipse
@@ -44,7 +44,7 @@ forms.
    (disk 15 #:color "black") ) 
 #+end_src
 
-** Step 2: Draw Using A Parameterized Procedure
+** Step 2: Make Using A Parameterized Procedure
 
 Turn a solution to Step 1 into a Parameterized Procedure.
 - Turn all numbers into parameters
@@ -57,7 +57,7 @@ Call your procedure with different values for its paramters.
 - How convenient is it to have so many parameters?
 
 #+begin_src racket
-  (define (draw-eye YOUR PARAMETERS HERE)
+  (define (make-eye YOUR PARAMETERS HERE)
     (cc-superimpose
      (filled-ellipse YOUR ARGUMENTS HERE)
      (disk YOUR ARGUMENTS HERE)
@@ -69,7 +69,7 @@ Call your procedure with different values for its paramters.
 Usual Caveat that this is only one way to do it.
 
 #+begin_src racket
-  (define (draw-eye eye-height eye-ratio iris-ratio pupil-ratio iris-color)
+  (define (make-eye eye-height eye-ratio iris-ratio pupil-ratio iris-color)
     (let* ( [eye-width (* eye-ratio eye-height)]
             [iris-size (* iris-ratio eye-height)]
             [pupil-size (* pupil-ratio iris-size)] )
@@ -81,7 +81,7 @@ Usual Caveat that this is only one way to do it.
 
 #+begin_src racket
   ; Example call to eye1
-  (draw-eye 100 2 4/5 2/5 "brown")
+  (make-eye 100 2 4/5 2/5 "brown")
 #+end_src
 
 ** Step 3: Leverage Named and Optional Parameters
@@ -104,8 +104,8 @@ Good practice is to
 
 Define your procedure so that these are both legitimate calls:
 #+begin_src racket
-  (draw-eye 100)
-  (draw-eye 100 #:color "brown" #:ratio 2 #:pupil 1/5)
+  (make-eye 100)
+  (make-eye 100 #:color "brown" #:ratio 2 #:pupil 1/5)
 #+end_src
 
 
@@ -114,7 +114,7 @@ Define your procedure so that these are both legitimate calls:
 Usual Caveat that this is only one way to do it.
 
 #+begin_src racket
-  (define (draw-eye eye-height #:ratio [eye-ratio 2]
+  (define (make-eye eye-height #:ratio [eye-ratio 2]
                 #:iris [iris-ratio 4/5] #:pupil [pupil-ratio 2/5]
                 #:color [iris-color "brown"]
                 #:sclera-color [sclera-color "lightyellow"] )
@@ -127,22 +127,22 @@ Usual Caveat that this is only one way to do it.
      (disk pupil-size #:color "black") ) ) )
 #+end_src
 
-** Step 4: Build up to Drawing A Face
+** Step 4: Build up to Makeng A Face
 
 You're going to create a series of procedures. Each will have some parameters.
 Later procedures will call some of your earlier procedures. You will need to
 propagate parameter values appropriately to the procedures which you're calling.
 
 Suggested flow:
-- Create a procedure for drawing two eyes.
+- Create a procedure for making two eyes.
       - optional first argument of append functions specifies spacing
-- Create a procedure for drawing a nose
+- Create a procedure for making a nose
       - make it simple for now, e.g. a disk
-- Create a procedure for drawing eyes+nose
+- Create a procedure for making eyes+nose
       - Calling your earlier two procedures
-- Create a procedure for drawing a mouth
+- Create a procedure for making a mouth
       - make it simple for now, e.g. a filled ellipse
-- Create a procedure for drawing eyes+nose+mouth
+- Create a procedure for making eyes+nose+mouth
       - Calling your earlier two procedures
 
 Procedures you may find useful:
@@ -168,7 +168,7 @@ Here's a way to start:
   (define eye-sclera-color "lightyellow")
   (define eye-spacing-ratio 1/3)
 
-  (define (draw-eye eye-height #:ratio [eye-ratio eye-ratio]
+  (define (make-eye eye-height #:ratio [eye-ratio eye-ratio]
                     #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-iris-pupil-ratio]
                     #:color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color] )
     (let* ( [eye-width (* eye-ratio eye-height)]
@@ -179,7 +179,7 @@ Here's a way to start:
        (disk iris-size #:color iris-color)
        (disk pupil-size #:color "black") ) ) )
 
-  (define (draw-eyes eye-height
+  (define (make-eyes eye-height
                      #:spacing-ratio [spacing-ratio eye-spacing-ratio]
                      #:ratio [eye-ratio eye-ratio]
                      #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-iris-pupil-ratio]
@@ -215,7 +215,7 @@ A solution like this would not be produced all at once!!!
   (define mouth-ratio 1/4)
   (define mouth-color "red")
 
-  (define (draw-eye eye-height
+  (define (make-eye eye-height
                     #:ratio [eye-ratio eye-ratio]
                     #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-iris-pupil-ratio]
                     #:color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color] )
@@ -228,18 +228,18 @@ A solution like this would not be produced all at once!!!
        (disk pupil-size #:color "black") ) ) )
 
 
-  (define (draw-eyes eye-height
+  (define (make-eyes eye-height
                      #:spacing-ratio [spacing-ratio eye-spacing-ratio]
                      #:ratio [eye-ratio eye-ratio]
                      #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-iris-pupil-ratio]
                      #:color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color] )
-    (let ([eye (draw-eye eye-height #:ratio eye-ratio #:iris iris-ratio #:pupil pupil-ratio
+    (let ([eye (make-eye eye-height #:ratio eye-ratio #:iris iris-ratio #:pupil pupil-ratio
                          #:color iris-color #:sclera-color sclera-color )])
       (hc-append (* spacing-ratio eye-ratio eye-height) eye eye) ) )
 
-  (define (draw-nose size) (disk size))
+  (define (make-nose size) (disk size))
 
-  (define (draw-eyes+nose face-height
+  (define (make-eyes+nose face-height
                           #:face-eye-ratio [face-eye-ratio face-eye-ratio]
                           #:ratio [eye-ratio eye-ratio]
                           #:spacing-ratio [eye-spacing-ratio eye-spacing-ratio]
@@ -247,19 +247,19 @@ A solution like this would not be produced all at once!!!
                           #:color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color]
                           #:face-nose-ratio [face-nose-ratio face-nose-ratio] #:eye-nose-spacing [eye-nose-spacing 0] )
     (printf "~a\n" `(vc-append ,eye-nose-spacing
-                               (draw-eyes ,(* face-height face-eye-ratio))
-                               (draw-nose ,(* face-height face-nose-ratio)) ))
+                               (make-eyes ,(* face-height face-eye-ratio))
+                               (make-nose ,(* face-height face-nose-ratio)) ))
     (vc-append eye-nose-spacing
-               (draw-eyes (* face-height face-eye-ratio)
+               (make-eyes (* face-height face-eye-ratio)
                           #:ratio eye-ratio #:spacing-ratio eye-spacing-ratio
                           #:iris iris-ratio #:pupil pupil-ratio
                           #:color iris-color #:sclera-color sclera-color )
-               (draw-nose (* face-height face-nose-ratio)) ) )
+               (make-nose (* face-height face-nose-ratio)) ) )
 
-  (define (draw-mouth width #:ratio [ratio mouth-ratio] #:color [color mouth-color])
+  (define (make-mouth width #:ratio [ratio mouth-ratio] #:color [color mouth-color])
     (filled-ellipse width (* ratio width) #:color color) )
 
-  (define (draw-eyes+nose+mouth face-height
+  (define (make-eyes+nose+mouth face-height
                                 #:nose-mouth-ratio [nose-mouth-ratio face-nose-mouth-ratio]
                                 #:face-eye-ratio [face-eye-ratio face-eye-ratio]
                                 #:eye-ratio [eye-ratio eye-ratio]
@@ -270,16 +270,16 @@ A solution like this would not be produced all at once!!!
                                 #:face-mouth-ratio [face-mouth-ratio face-mouth-ratio] #:mouth-color [mouth-color mouth-color] )
     (let* ( [spacing (* nose-mouth-ratio face-height)] )
       (vc-append spacing
-                 (draw-eyes+nose face-height
+                 (make-eyes+nose face-height
                                  #:face-eye-ratio face-eye-ratio
                                  #:ratio eye-ratio #:spacing-ratio eye-spacing-ratio
                                  #:iris iris-ratio #:pupil pupil-ratio
                                  #:color iris-color #:sclera-color sclera-color
                                  #:face-nose-ratio face-nose-ratio #:eye-nose-spacing eye-nose-spacing
                                  )
-                 (draw-mouth (* face-height face-mouth-ratio) #:ratio face-mouth-ratio #:color mouth-color) ) ) )
+                 (make-mouth (* face-height face-mouth-ratio) #:ratio face-mouth-ratio #:color mouth-color) ) ) )
 
-  (define (draw-face height  #:ratio [ratio face-ratio]
+  (define (make-face height  #:ratio [ratio face-ratio]
                 #:color [color face-color]
                 #:border-width [border-width face-border-width]
                 #:nose-mouth-ratio [nose-mouth-ratio face-nose-mouth-ratio]
@@ -292,7 +292,7 @@ A solution like this would not be produced all at once!!!
                 #:nose-ratio [nose-ratio face-nose-ratio] #:eye-nose-spacing [eye-nose-spacing 0]
                 #:mouth-ratio [mouth-ratio face-mouth-ratio] #:mouth-color [mouth-color mouth-color] )
     (let* ( [width (* ratio height)]
-            [content (draw-eyes+nose+mouth height
+            [content (make-eyes+nose+mouth height
                                            #:nose-mouth-ratio nose-mouth-ratio #:face-eye-ratio face-eye-ratio
                                            #:eye-ratio eye-ratio #:eye-spacing-ratio eye-spacing-ratio
                                            #:iris iris-ratio #:pupil pupil-ratio
@@ -309,10 +309,12 @@ A solution like this would not be produced all at once!!!
 #+end_src
 
 
-** Step Infinity: Drawing Complex Objects, e.g. Noses, Mouths, Eyelids, etc.
+** Step Infinity: Making Complex Objects, e.g. Noses, Mouths, Eyelids, etc.
 
-Once you determine what you want to be able to draw you can select the right
+Once you determine what you want to be able to make you can select the right
 tools from Racket's libraries.
+
+*** Browsing the High-Level Libraries
 
 There are more useful procedures in the pict library. Some of them are packaged
 in sub-libraries and so they need a require form:
@@ -320,7 +322,7 @@ in sub-libraries and so they need a require form:
 #+begin_src racket
   (require pict/color)
 
-  (draw-eye 30 #:color (light "aquamarine"))
+  (make-eye 30 #:color (light "aquamarine"))
 #+end_src
 
 Racket provides other easy-to-use high-level libraries for graphics, e.g.
@@ -329,14 +331,19 @@ Pict3D for creating 3D images.
 Browse the section /GUI and Graphics Libraries/ in the
 - [[https://docs.racket-lang.org][Racket Documentation Webpage]]
 
-Racket's high-level libraries are based on the lower level /Racket Drawing
-Toolkit/. If you find the existing high-level libraries too limited for
+*** Learning the Lower-Level Racket Drawing Toolkit
+  
+Racket's high-level libraries are based on the lower level
+https://docs.racket-lang.org/draw/index.html
+Racket Drawing Toolkit
+
+. If you find the existing high-level libraries too limited for
 something you want to do, you can use the Racket Drawing Toolkit directly.
 
 The Racket Drawing Toolkit leverages Racket's ability to do /Object Oriented
 Programming/ to manage the complexity of low level graphics.
 
-Here's the [[https://docs.racket-lang.org/draw/overview.html][Racket Drawing Toolkit Overview]]
+Here's the tps://docs.racket-lang.org/make/overview.html][Racket Drawing Toolkit Overview]]
 
 Here's an example you can run in DrRacket:
 
@@ -344,9 +351,9 @@ Here's an example you can run in DrRacket:
   #lang racket
 
   (require pict)
-  (require racket/draw)
+  (require racket/make)
 
-  (define (draw-fancy-triangle w h)
+  (define (make-fancy-triangle w h)
     (dc (λ (dc dx dy)
           (define old-brush (send dc get-brush))
           (define old-pen (send dc get-pen))
@@ -360,20 +367,20 @@ Here's an example you can run in DrRacket:
           (send path line-to 50 0)
           (send path line-to 25 50)
           (send path close)
-          (send dc draw-path path dx dy)
+          (send dc make-path path dx dy)
           (send dc set-brush old-brush)
           (send dc set-pen old-pen) )
         w h ) )
 
-  ;; try: (draw-fancy-triangle 50 50)
+  ;; try: (make-fancy-triangle 50 50)
 #+end_src
 
 Notice that we're still using our familiar pict library so we can mix and match
-high-level pict functions with the low-level Racket Drawing Tool features.
+high-level pict functions with the low-level Racket Drawing Toolkit features.
 
 ** Bitmaps
 
-The Racket Drawing Library can create and manipulate Bitmaps directly.
+The Racket Making Library can create and manipulate Bitmaps directly.
 
 Existing images in files can be loaded into bitmaps in several ways, e.g.
 - (make-object bitmap% PATH-TO-FILE-AS-STRING KIND)
@@ -388,11 +395,11 @@ Bitmaps have a fixed resolution.
 
 ** SVG = Scalable Vector Graphics
 
-The Racket Drawing Library can also work with SVGs which can be scaled to fit
+The Racket Making Library can also work with SVGs which can be scaled to fit
 any resolution.
 
-The Racket Drawing Tookit can use SVGs by using the class svg-dc%
-https://docs.racket-lang.org/draw/svg-dc_.html
+The Racket Making Tookit can use SVGs by using the class svg-dc%
+https://docs.racket-lang.org/make/svg-dc_.html
 
-The drawing methods are the same as drawing on a bitmap, but the result is often
+The making methods are the same as making on a bitmap, but the result is often
 nicer.
