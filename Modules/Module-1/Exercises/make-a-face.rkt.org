@@ -83,7 +83,7 @@ Usual Caveat that this is only one way to do it.
 #+end_src
 
 #+begin_src racket
-  ; Example call to eye1
+  ; Example call to make-eye
   (make-eye 100 2 4/5 2/5 "brown")
 #+end_src
 
@@ -130,7 +130,7 @@ Usual Caveat that this is only one way to do it.
      (disk pupil-size #:color "black") ) ) )
 #+end_src
 
-** Step 4: Build up to Makeng A Face
+** Step 4: Build up to Making A Face
 
 You're going to create a series of procedures. Each will have some parameters.
 Later procedures will call some of your earlier procedures. You will need to
@@ -155,12 +155,11 @@ Procedures you may find useful:
 Some of these procedures will be
 - taking the same optional arguments as the procedures they're calling
 - passing these arguments on unchanged
-This will create some ugly redundancy!
-- Fixing this properly will take us to Object Oriented Programming!
-- For now, we should accept the redundancy
-- Except we should not repeat default values
-
-Here's a way to start:
+We should not repeat default values
+- we'll store them in global bindings for now
+- this will create some redundancy
+- but will allow us test each part separately
+      - this is an example of *loose coupling*
 
 #+begin_src racket
   ;; Define defaults for eye procedures
@@ -191,7 +190,7 @@ Here's a way to start:
 #+end_src
 
 
-** Step 4: Example Solution
+** Step 4: Example Solution with Loose Coupling
 
 Usual Caveat that this is only one way to do it.
 
@@ -311,6 +310,93 @@ A solution like this would not be produced all at once!!!
 
 #+end_src
 
+** Step 4: A Prettier Solution with Tight Coupling
+
+If we define each procedure inside of the scope of the procedure which calls us,
+we can get rid of all of this redundancy. However, we also get rid of the ease
+of running and testing each piece independently.
+
+Here it is, do you like it?  Do the comments help you see the scopes?
+
+#+begin_src racket
+   #lang slideshow
+
+  (define (make-face face-height
+                     #:ratio [face-ratio 3/4]
+                     #:color [color "tan"]
+                     #:border-width [border-width 2]
+                     #:nose-mouth-ratio [nose-mouth-ratio 1/8]
+                     #:content-ratio [content-ratio 1/3]
+                     #:face-eye-ratio [face-eye-ratio 1/7]
+                     #:eye-ratio [eye-ratio 2]
+                     #:eye-spacing-ratio [eye-spacing-ratio 1/3]
+                     #:iris [iris-ratio 4/5]
+                     #:pupil [pupil-ratio 2/5]
+                     #:eye-color [eye-color "brown"]
+                     #:sclera-color [sclera-color "lightyellow"]
+                     #:nose-ratio [nose-ratio 1/8]
+                     #:eye-nose-spacing [eye-nose-spacing 0]
+                     #:face-mouth-ratio [face-mouth-ratio 1/8]
+                     #:mouth-ratio [mouth-ratio 1/4]
+                     #:mouth-color [mouth-color "red"] )
+
+    ;; we're still inside the scope of make-face
+
+    (define (make-mouth width #:ratio [ratio mouth-ratio] #:color [color mouth-color])
+      (filled-ellipse width (* ratio width) #:color color) )
+
+    (define (make-eyes+nose+mouth)
+
+      ;; we're inside the scope of make-eyes+nose+mouth
+
+      (define (make-eyes+nose)
+
+        ;; we're inside the scope of make-eyes+nose
+
+        (define (make-eyes eye-height)
+
+          ;; we're inside the scope of make-eyes
+
+          (define (make-eye)
+            (let* ( [eye-width (* eye-ratio eye-height)]
+                    [iris-size (* iris-ratio eye-height)]
+                    [pupil-size (* pupil-ratio iris-size)] )
+              (cc-superimpose
+               (filled-ellipse eye-width eye-height #:color sclera-color)
+               (disk iris-size #:color eye-color)
+               (disk pupil-size #:color "black") ) ) )
+
+          ;; make-eyes body
+          (let ( [eye (make-eye)] )
+            (hc-append (* eye-spacing-ratio eye-ratio eye-height) eye eye) ) )
+
+        (define (make-nose size) (disk size))
+
+        ;; make-eyes+nose body
+        (vc-append eye-nose-spacing
+                   (make-eyes (* face-height face-eye-ratio))
+                   (make-nose (* face-height nose-ratio)) ) )
+
+      (define (make-mouth width)
+        (filled-ellipse width (* mouth-ratio width) #:color mouth-color) )
+
+      ;; make-eyes+nose+mouth body
+      (let* ( [spacing (* nose-mouth-ratio face-height)] )
+        (vc-append spacing
+                   (make-eyes+nose)
+                   (make-mouth (* face-height face-mouth-ratio) ) ) ) )
+
+    ;; make-face body
+    (let* ( [width (* face-ratio face-height)]
+            [content (make-eyes+nose+mouth)]
+            [margin (/ (- width (pict-width content)) 2)] )
+      (pin-over
+       (filled-ellipse width face-height #:color color #:border-width border-width)
+       margin (* content-ratio face-height) content ) ) )
+
+  ;; Example Call
+  (make-face 100)
+#+end_src
 
 ** Step Infinity: Making Complex Objects, e.g. Noses, Mouths, Eyelids, etc.
 
@@ -335,7 +421,7 @@ Browse the section /GUI and Graphics Libraries/ in the
 - [[https://docs.racket-lang.org][Racket Documentation Webpage]]
 
 *** Learning the Lower-Level Racket Drawing Toolkit
-  
+
 Racket's high-level libraries are based on the lower level [[https://docs.racket-lang.org/draw/index.html][Racket Drawing Toolkit]]
 
 If you find the existing high-level libraries too limited for
