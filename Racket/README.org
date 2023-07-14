@@ -2,23 +2,27 @@
 
 ** What is Racket
 
-[[https://racket-lang.org/][Racket]] is an advanced multi-lingual, multi-paradigm computational environment.
-Racket began as an implementation of the [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]] Dialect of [[https://github.com/GregDavidson/on-lisp#readme][Lisp]]. All Racket
-languages compile to efficient native code on major computing platforms.
-   
-** What's a good way to learn Racket?
-   
-Do these tutorials in this order:
-- https://docs.racket-lang.org/quick
-- https://docs.racket-lang.org/more
+[[https://racket-lang.org/][Racket]] is a
+- multi-lingual
+- multi-paradigm
+- general purpose
+- programming system
+- [[https://docs.racket-lang.org/scribble/index.html][and more!]]
 
-Maybe explore
-- [[https://htdp.org/2022-2-9/Book/index.html][How to Design Programs]]
+Racket is remarkably complete
+- [[https://docs.racket-lang.org][Browse the official list of Resources]]
+scroll through this link to browse the
+- languages, tools and libraries!
 
-** What Resources exist for Racket?
+Racket began as an implementation of the [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]] Dialect of [[https://github.com/GregDavidson/on-lisp#readme][Lisp]].
 
-- https://racket-lang.org/
-- https://docs.racket-lang.org/
-  - Includes friendly Guides along with comprehensive References!
-- https://pkgs.racket-lang.org/
-- https://awesome-racket.com/
+All Racket languages compile to efficient native code on major computing
+platforms.
+
+** Learning (More) Racket
+
+[[file:learn-reacket.org][Learn Racket via Exploration!]]
+
+** List of Racket Resources
+
+[[file:racket-resources.org][Racket Resources]]

@@ -30,4 +30,4 @@ Here are two more wonderful Racket Graphics packages
 
 This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
 
-You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!
+You might also want to [[file:../../Racket/learn-racket.org][Learn (More) Racket]]!

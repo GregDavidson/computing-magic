@@ -152,9 +152,9 @@ follow the Relational Model and use the standard query language SQL.
 
 - [[SQL/SQL-README.org][SQL]]
 
-**** Amazing Languages
+**** Amazing anguagealternative
 
-***** Array-Oriented Languages
+***** [Array-Oriented Languages
 
 The Iverson family of Languages use elegant compact notations allowing for
 remarkably short and powerful programs. These languages are very powerful and
@@ -163,7 +163,7 @@ intuitions which open the power of multidimensional arrays which can then be
 exploited in any language.
 
 - APL is famous for its use of special characters
-      - Try [[https://mlochbaum.github.io/BQN][BQN for a modern update]]
+      - Try [[https://mlochbaum.github.io/BQN][BQN for a modern alternative]]
 - [[https://www.jsoftware.com][J]] uses regular characters in a very compact notation
 - 
 ***** Smalltalks
@@ -174,9 +174,9 @@ you how to think in the Object Oriented paradigm which you can then use in other
 languages.
 
 - [[https://squeak.org][Squeak Smalltalk]] is the most popular
-- [[https://pharo.org][Pharo Smalltalk]] is the most elegant
+- [[ttps://pharo.org][Pharo Smalltalk]] is the most elealternative
 -
-***** Typed Functional Languages
+***** [Typed Functional Languages
 
 Haskell is the poster-child for developing programs by first expressing
 the types and relationships in the program.  Haskell will teach you powerful

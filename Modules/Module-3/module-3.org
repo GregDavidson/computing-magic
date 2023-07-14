@@ -52,4 +52,4 @@ If you will be using a backend database, be sure and explore [[file:../Module-5-
 
 If you will be managing resources on a server or automating any processes, you will want to explore [[file:../../Software-Tools/scripting-readme.org][Scripting Tools]].
 
-If you want to hone your programming skills, there's value in learning [[file:../../Racket/more-racket.org][More Racket]]!
+If you want to hone your programming skills, there's value in [[file:../../Racket/learn-racket.org][Learning (More) Racket]]!

@@ -35,7 +35,7 @@ Learn game-relevant [[https://docs.racket-lang.org/index.html][Racket Resources]
 
 This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
 
-You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!
+You might also want to [[file:../../Racket/learn-racket.org][Learn (More) Racket]]!
 
 You might want to explore creating games using other languages
 - [[https://blog.logrocket.com/5-rust-game-engines-consider-next-project/][5 Rust Game Engines]]

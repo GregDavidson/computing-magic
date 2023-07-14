@@ -50,7 +50,7 @@ You now have some some impressive skills
 The program [[file:../../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]] shows some variations on the code you explored with
 the /Quick Tutorial/.
 
-You might also want to learn [[file:../../Racket/more-racket.org][More Racket]]!
+You might also want to [[file:../../Racket/learn-racket.org][Learn (More) Racket]]!
 
 I've written about my long-term love affair with Lisp [[https://github.com/GregDavidson/on-lisp#readme][elsewhere]]!
 
