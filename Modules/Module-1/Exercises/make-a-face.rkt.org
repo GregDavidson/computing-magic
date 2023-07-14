@@ -10,15 +10,18 @@ Learn
 Prerequisites
 - [[https://docs.racket-lang.org/quick][Racket Quick Tutorial]]
 
-*This is a progressive exercise: Look at only *one step
-at a time!* Ideally:
-- Read the OrgMode version with Emacs
+*This is a progressive exercise: Look at only *one step at a time!*
+- You might read this OrgMode version with Emacs
+      - Fold and Unfold sections with TAB
 - Or a /Folding Version/ as a WebPage.
+      - Not yet available for this document
+- Otherwise, try to not look at the solutions
+      - Until you've tried to find your own
 
 ** Step 1: Make an Eye Interactively
 
 Look up the procedures 
-- filled-ellipse
+- filled-ellips
 - disk
 from [[https://docs.racket-lang.org/pict/Basic_Pict_Constructors.html][Basic Pict Constructors]] and
 - cc-superimpose
@@ -33,7 +36,7 @@ cc-superimpose to create the desired result.
 ** Step 1: Example Solution
 
 This is only an example illustrating a possible solution. Your solution might be
-different from this example and still just as good or better. The important
+different from this example and still be just as good or better. The important
 thing is that you're learning what you can do with nesting these and similar
 forms.
 
