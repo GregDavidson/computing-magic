@@ -441,7 +441,7 @@ Here's an example you can run in DrRacket:
   #lang racket
 
   (require pict)
-  (require racket/make)
+  (require racket/draw)
 
   (define (make-fancy-triangle w h)
     (dc (λ (dc dx dy)
@@ -457,7 +457,7 @@ Here's an example you can run in DrRacket:
           (send path line-to 50 0)
           (send path line-to 25 50)
           (send path close)
-          (send dc make-path path dx dy)
+          (send dc draw-path path dx dy)
           (send dc set-brush old-brush)
           (send dc set-pen old-pen) )
         w h ) )
