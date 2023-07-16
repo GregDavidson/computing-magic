@@ -456,7 +456,7 @@ Pict3D for creating 3D images.
 Browse the section /GUI and Graphics Libraries/ in the
 - [[https://docs.racket-lang.org][Racket Documentation Webpage]]
 
-Two of the high-level graphics systems provide Bezier Curves which can compactly
+Two of the high-level graphics systems provide [[https://en.wikipedia.org/wiki/B%C3%A9zier_curve][Bézier Curves]] which can compactly
 describe many complex curves and surfaces:
 - [[https://docs.racket-lang.org/metapict/index.html#%28part._ref-bez%29][Bezier Curves]] in the [[https://docs.racket-lang.org/metapict/index.html][MetaPict Library]]
 - [[https://docs.racket-lang.org/manual-sketching/Examples.html#%28part._example_bezier%29][Bezier]] in the [[https://docs.racket-lang.org/manual-sketching/index.html][Sketching Library/Language]]
