@@ -398,7 +398,43 @@ Here it is, do you like it?  Do the comments help you see the scopes?
   (make-face 100)
 #+end_src
 
-** Step Infinity: Making Complex Objects, e.g. Noses, Mouths, Eyelids, etc.
+** Step 4: Discussion: Can we have it all?
+
+The first example solution is very /hackable/
+- You can explore the solution space experimentally in the repl
+- The parameters and their defaults are easy to modify
+- Each function is easy to call independently
+
+The problem is that there's a lot of repeated boilerplace
+- Many similar keyword arguments are repeated across multiple functions
+- The global bindings with the argument defaults also seem syntactically repetitious
+
+How can we have the hackability without the rigidity of nested scopes?
+
+1. Modify the repl or debugger to allow issuing commands inside nested scopes
+       - Has anyone already done this?
+2. Write a macro to allow defining a named group of
+   keyword/parameter-names/default-values compactly and reusing it flexibly
+       - Macros are one of Lisp's superpowers
+       - This might wind up being a very useful language extension!
+       - With set operations for such argument groups, relationships among
+         procedure APIs could be made both more explicit and more compact!
+       - Such should also allow easy delegation of groups of applicable
+         arguments to sub-procedures!
+3. Use class objects with inheritance to store the groups of arguments.
+       - Advantage: Such is already be provided in Racket and most other Lisps
+       - Disadvantage: Some runtime overhead and possibly additional complexity.
+
+
+Questions:
+1. What might these approaches look like?
+2. What other approaches can you think of?
+3. What's already been done in this design space?
+4. Would you like to learn about
+       - Racket (or other Lisp) macros?
+       - Racket (or other Lisp) class and object systems?
+
+** Step Infinity: Complex Objects, e.g. Noses, Mouths, Eyelids, etc.
 
 Once you determine what you want to be able to make you can select the right
 tools from Racket's libraries.
@@ -419,6 +455,11 @@ Pict3D for creating 3D images.
 
 Browse the section /GUI and Graphics Libraries/ in the
 - [[https://docs.racket-lang.org][Racket Documentation Webpage]]
+
+Two of the high-level graphics systems provide Bezier Curves which can compactly
+describe many complex curves and surfaces:
+- [[https://docs.racket-lang.org/metapict/index.html#%28part._ref-bez%29][Bezier Curves]] in the [[https://docs.racket-lang.org/metapict/index.html][MetaPict Library]]
+- [[https://docs.racket-lang.org/manual-sketching/Examples.html#%28part._example_bezier%29][Bezier]] in the [[https://docs.racket-lang.org/manual-sketching/index.html][Sketching Library/Language]]
 
 *** Learning the Lower-Level Racket Drawing Toolkit
 
