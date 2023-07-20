@@ -1,14 +1,122 @@
-* Computing Magic Beta Module 7
+* Overview of Artificial Intelligence
 
-/Reaching for Intelligence/
-
-Based on a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
+Part of [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[file:module-7.org][Module 7]].
 
 ** What is Artificial Intelligence?
+
+/Artificial Intelligence/ is any computing technology which exhibits skills
+which, were they to be employed by a Human Being, we would consider an aspect of
+Human Intelligence. We do not count any behavior which is specified in detail by
+a program. The behavior should emerge from any program in a flexible and
+appropriate manner similar to the emergence of intelligent behavior in a human
+being.
 
 /Intelligence/ in computer systems is as diverse as intelligence is in human
 beings. I recommend reading [[https://en.wikipedia.org/wiki/Artificial_intelligence][Wikipedia on Artificial Intelligence]] and exploring
 some of the links there to get an overall map of the field.
+
+** Computing and Artificial Intelligence
+
+To a binary computer, everything is just data, i.e. sequences of 0's and 1's
+grouped into various chunks for processing by various hardware mechanisms.
+See [[https://gregdavidson.github.io/on-computing/what-computers-are][What Computers Are]] for details on this.
+
+In contrast, to a human, the world consists of meaningful /Domains/, e.g.
+- Financial Accounting
+- Playing Chess
+- Rendering 3D Virtual Worlds
+- Understanding human language
+- and so on, ad infinitum
+
+Computing has two fundamental aspects:
+- Representation -- how to effectively and efficiently express domain information
+- Processing -- how to process that data effectively and efficiently
+
+Notice the use of the words /effectively/ and /efficiently/ in both parts
+- Representation and Processing are intertwined
+- Effectiveness is about correctness
+      - Do we get correct answers and behavior?
+- Efficiency is necessary in practice
+      - Many known effective procedures require excessive resources
+            - More memory than is available or affordable
+            - More processing time than is available or useful
+            - What use to predict tomorrow's weather by next year?
+- A good representation aids efficiency
+      - E.g. a chess board could be represented as
+            - An image from a camera
+            - An 8x8 matrix of the locations of the chess pieces
+            - A list of openings and threats for each piece
+            - Etc.
+            - Which of these would be help in playing a good game?
+            - How could these representations be achieved?
+            - What other representations might be helpful?
+
+/Information/ is /Data/ which has /Meaning/ in a /Domain/
+- A picture of a chessboard is just meaningless bits to a computer
+- In the domain of chess, it represents an arrangement of chess pieces
+
+Meaning only exists for human beings. It's what allows us to understand things.
+Computers systems can be designed to act /as if/ they understand things in /very
+limited contexts/, but they don't actually understand anything!
+
+In conventional computer programming, the knowledge and understanding which the
+programmer used to design the computer system is /implicit/ in the program. The
+computer mindlessly executes the program and if it doesn't do what the
+programmer intended, we say "it has a bug" and an expert human programmer has to
+analyze the program and "fix the bug". The gap between human understanding and
+the structure of code is often so large that it's easier to just delete buggy
+code and design new code from scratch.
+
+In AI terminology, /Knowledge/ is /understanding/ which can be captured in data
+structures and flexibly applied within a domain.
+- Human experts generally have lot of knowledge about their domain of expertise.
+- AI Knowledge-Based "Expert" Systems can represent and apply /explicit knowledge/.
+      - The knowledge is in the form of rules and procedures.
+      - The rules and procedures were mostly created by human experts.
+      - But they can be flexibly applied using automated reasoning.
+- Machine Learning Systems can capture and apply large amounts of /implicit knowledge/.
+      - The knowledge is implicit in generalized pattern structures.
+      - The pattern structures were "trained" using a very large number of examples.
+      - They will tend to match anything similar to the training data.
+
+Explicit Knowledge-Based Systems and Machine Learning Systems
+- Act like experts when they're working well.
+      - Giving an appearance of understanding
+      - Performing valuable work
+- Act like bizarre and insane people when they fail
+      - Revealing their actual lack of understanding
+
+Hybrid AI Systems combine the strengths of the two approaches
+- Machine Learning is used for
+      - Generation of Hypotheses and Plans
+      - Efficient search of large domain spaces
+- Logical processing of explicit knowledge is used for
+      - Verification of hypotheses and plans
+      - Organizing strategies for solving problems
+
+A spectacular example of modern Hybrid AI was the [[https://en.wikipedia.org/wiki/IBM_Watson][IBM Watson]] Jeopardy
+Contestant. Like many other AI systems, it demonstrated extraordinary expertise
+within its specific domain. The techniques it employed can doubtless be applied
+to solve many important problems - but only when applied by human experts who
+have true understanding of both the techniques and the problem domains.
+
+*AGI,* /Artificial General Intelligence/, is the goal of creating AI systems
+which exhibit intelligence sufficient to rival human intelligence in all areas.
+Currently AGI is limited by the lack of anything resembling the true
+understanding possessed by human beings.
+
+True understanding consists of flexible distinctions which allow intelligent
+entities to understand
+- What everything means (the problem of interpretation)
+- What is important (values)
+- The boundaries of a domain (fuzziness)
+- How to transform data, information and knowledge when things change
+- Etc.
+So far true understanding seems to be
+- a capacity which only human beings exhibit
+- which we don't understand very well!
+
+** Areas of Artificial Intelligence
 
 Two of my favorite areas are
 - [[https://en.wikipedia.org/wiki/Natural-language_understanding][Natural Language Understanding]]
@@ -70,9 +178,9 @@ Learning is often a great heuristic!/
 
 *** Combining Multiple Sources of Knowledge
 
-Humans intelligence is limited and often makes mistakes.  A key strategy which sophisticated
-humans use to reduce mistakes is to combine multiple intelligence strategies, synthesizing multiple
-sources of knowledge, multiple viewpoints.
+Human intelligence is limited and often makes mistakes. A key strategy which
+sophisticated humans use to reduce mistakes is to combine multiple intelligence
+strategies, synthesizing multiple sources of knowledge, multiple viewpoints.
 
 AI systems usually take a fairly narrow approach to parsing input and making
 decisions. Combining multiple sources of knowledge, e.g. multiple kinds of
@@ -112,18 +220,22 @@ question of whether a submarine can swim.
 	― Edsger W. Dijkstra 
 #+end_quote
 
-** What else might you do?
+** How can you master AI technology?
 
-This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
+AI is a large field. It can't be learned all at once. Successfully creating AI
+systems is never guaranteed, even experts often fail.
 
-[[file:../../Prolog/README.org][Prolog]] will make it easier to create the Knowledge-Based parts of your system -
-and it's an easy and fun language to learn!  Prolog is especially strong for
-- Knowledge Representation
-- Logic-based Reasoning with uncertainty
-- Constraint-based Reasoning
+Learn incrementally, starting with
+- Problems which interest you
+- Techniques which appeal to you
 
-Some resources for building Knowledge-Based Systems
-- /PROLOG: a language for implementing expert systems/ by K.L. Clark and F.G. McCabe
-      - short (21 pages) but with step-by-step working code
-- /Building Expert Systems in Prolog/ by Dennis Merritt
-      - comprehensive
+AI is especially good at solving tasks, and parts of tasks, which human experts
+find boring.
+- Consider creating AI systems which assist human experts by handling the most
+  routine and boring parts of their work.
+- This will greatly increase the productivity and satisfaction of those human
+  experts!
+You can apply this strategy to programming (including AI development) itself.
+- Automate away the boring parts of software development!
+
+In this way, your path to mastery will be most enjoyable!
