@@ -5,9 +5,9 @@ Part of [[https://github.com/GregDavidson/computing-magic#readme][Computing Magi
 ** What is Artificial Intelligence?
 
 /Artificial Intelligence/ is any computing technology which exhibits skills
-which, were they to be employed by a Human Being, we would consider an aspect of
-Human Intelligence. We do not count any behavior which is specified in detail by
-a program. The behavior should emerge from any program in a flexible and
+which, were they to be employed by a Human Being, we would consider a sign of
+Intelligence. We do not count any behavior which is programmed in detail in
+advance. The behavior should emerge from any program in a flexible and
 appropriate manner similar to the emergence of intelligent behavior in a human
 being.
 
@@ -17,20 +17,32 @@ some of the links there to get an overall map of the field.
 
 ** Computing and Artificial Intelligence
 
-To a binary computer, everything is just data, i.e. sequences of 0's and 1's
+Review [[file:../../what-is-computing.org][What Is Computing]].
+
+*** Data vs. Meaningful Information
+
+To a binary computer, everything is just /data/, i.e. sequences of 0's and 1's
 grouped into various chunks for processing by various hardware mechanisms.
 See [[https://gregdavidson.github.io/on-computing/what-computers-are][What Computers Are]] for details on this.
 
-In contrast, to a human, the world consists of meaningful /Domains/, e.g.
+In contrast, humans see /Information/ which has /Meaning/ within a /Context/
+called a /Domain/ Examples of Domains include
 - Financial Accounting
 - Playing Chess
 - Rendering 3D Virtual Worlds
 - Understanding human language
 - and so on, ad infinitum
 
+Domains have no objective existence, they exist only as an interpretation which
+human beings create according to their needs and interests.
+
+*** Representation and Processing
+
 Computing has two fundamental aspects:
-- Representation -- how to effectively and efficiently express domain information
-- Processing -- how to process that data effectively and efficiently
+- Representation :: how to effectively and efficiently express domain
+  information as data
+- Processing :: how to process that data effectively and efficiently using
+  sequences of machine instructions.
 
 Notice the use of the words /effectively/ and /efficiently/ in both parts
 - Representation and Processing are intertwined

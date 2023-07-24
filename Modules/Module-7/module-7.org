@@ -1,8 +1,8 @@
-* Computing Magic Beta Module 7
+* Computing Magic, Module 7, Artificial Intelligence
 
 /Reaching for Intelligence/
 
-Based on a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
+Part of the [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] Curriculum.
 
 ** What is Artificial Intelligence?
 
