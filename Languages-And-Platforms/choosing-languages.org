@@ -33,9 +33,7 @@ Opinions of such experienced experts are well worth listening to!
 
 ** Some Especially Great Languages
 
-*** TL;DR
-
-For the more complete list and explanation, see /Key Language Inventory/ below.
+For the more complete list and explanation, see /Families Of Great Languages/ below.
 
 - [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]], inside of [[file:Racket/README.org][Racket]], a modern [[https://github.com/GregDavidson/on-lisp][Lisp]]
       - Scheme is an unusually clean and general language.
@@ -71,7 +69,7 @@ For the more complete list and explanation, see /Key Language Inventory/ below.
       - this paradigm is especially good for creating /Knowledge-Based Expert Systems/
       - good example languages are [[https://flora.sourceforge.net][Flora-2]] and its successor [[https://github.com/ErgoAI][ErgoAI]]
 
-*** Families Of Great Languages
+** Families Of Great Languages
 
 Computer Languages belong to Computer Language Families and are usually
 organized around [[https://en.wikipedia.org/wiki/Programming_paradigm][Programming Paradigms]]. Unless there's a pragmatic reason, you
@@ -82,7 +80,7 @@ languages after I'd used 60 languages for significant projects.
 
 Currently just a list of important languages. More content coming!
 
-**** [[https://github.com/GregDavidson/on-lisp#readme][Lisps]]
+*** [[https://github.com/GregDavidson/on-lisp#readme][Lisps]]
 
 The Lisp family contains some of the most flexible general purpose high-level
 languages. See [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]] for more depth. Lisps in the Scheme family are among the
@@ -96,7 +94,7 @@ most elegant, where elegance refers to a combination of power and simplicity.
 - [[https://en.wikipedia.org/wiki/Common_Lisp][Common Lisp is the largest Lisp]]
 - [[Emacs/elisp-vs-scheme.org][Emacs Lisp is what makes Emacs so powerful]]
 
-**** [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic]] [[https://en.wikipedia.org/wiki/Constraint_logic_programming][and]] [[https://en.wikipedia.org/wiki/Constraint_programming][Constraint]] Programming
+*** [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic]] [[https://en.wikipedia.org/wiki/Constraint_logic_programming][and]] [[https://en.wikipedia.org/wiki/Constraint_programming][Constraint]] Programming
 
 Logic and Constraint programming is the highest-level of Declarative
 Programming, i.e. programming where you way what is true in your domain and what
@@ -111,7 +109,7 @@ correct answers. This is powerful Computing Magic!
       - [[https://en.wikipedia.org/wiki/Ciao_(programming_language)][Ciao Prolog]] - also great for constraint logic programming
       - [[https://en.wikipedia.org/wiki/XSB][XSB Prolog]] - the host of Flora-2
 
-**** [[https://en.wikipedia.org/wiki/Knowledge-based_systems][Knowledge-Based]] Programming
+*** [[https://en.wikipedia.org/wiki/Knowledge-based_systems][Knowledge-Based]] Programming
 
 In Knowledge-Based Logic Programming you represent the knowledge of a rich
 domain with definite and probabilistic rules. The Knowledge Engine uses
@@ -140,7 +138,7 @@ Programming
 Many frameworks have been created for Knowledge-Based Programming
 - [[https://en.wikipedia.org/wiki/Flora-2][Wikipedia: Flora-2]], [[http://flora.sourceforge.net/][Flora-2 Website]]
 
-**** Systems Programming Languages
+*** Systems Programming Languages
 
 Systems Programming is the art of writing programs which directly control
 hardware devices, called device drivers and programs which directly control
@@ -159,7 +157,7 @@ the low-level systems abstractions provided by operating system kernels, e.g.
       - advanced features for control of resources
       - great for parallelism, utilizing multiple CPUs and GPUs
 
-**** Relational Programming
+*** Relational Programming
 
 All data in primary memory (RAM) is volatile and is erased when a program
 terminates, whether that was planned, caused by a crash or by a power loss.
@@ -170,9 +168,9 @@ follow the Relational Model and use the standard query language SQL.
 
 - [[SQL/SQL-README.org][SQL]]
 
-**** Some Truly Extraordinary Languages
+*** Some Extraordinary Languages
 
-***** [Array-Oriented Languages
+**** [Array-Oriented Languages
 
 The Iverson family of Languages use elegant compact notations allowing for
 remarkably short and powerful programs. These languages are very powerful and
@@ -184,7 +182,7 @@ exploited in any language.
       - Try [[https://mlochbaum.github.io/BQN][BQN for a modern alternative]]
 - [[https://www.jsoftware.com][J]] uses regular characters in a very compact notation
 
-***** Smalltalks
+**** Smalltalks
 
 The Smalltalk languages are a very pure expression of the ideal of dynamic
 Object Oriented Languages. They are especially good for art and multi-media
@@ -194,7 +192,7 @@ which you can then use in other languages.
 - [[https://squeak.org][Squeak Smalltalk]] is the most popular
 - [[ttps://pharo.org][Pharo Smalltalk]] is the most elealternative
 -
-***** [Typed Functional Languages
+**** [Typed Functional Languages
 
 Haskell is the poster-child for developing programs by first expressing
 the types and relationships in the program.  Haskell will teach you powerful
@@ -203,13 +201,22 @@ more reliable than usual.
 
 - [[https://www.haskell.org][Haskell]]
 
-**** Web and XML Languages
+*** Web and XML Languages
+
+**** Web Programming Languages
 
 - JavaScript
-      - TypeScript adds Haskell-like typing to JavaScript
-      - [[https://clojurescript.org][ClojureScript]] is a Lisp which compiles to JavaScript
+      - Famously powerful, famously flawed!
+- TypeScript adds Haskell-like typing to JavaScript
+      - Fixes much of JavaScript's weaknesses
+- [[https://clojurescript.org][ClojureScript]]
+      - Clojure Lisp compiled to JavaScript
+      - Use ClojureScript if you use Clojure on your server
 
-**** Web and Document Languages
+**** Document Languages
+
+These languages structure and present your information. They also provide hooks
+for programming language to manipulate your documents in creative ways.
 
 - [[https://en.wikipedia.org/wiki/HTML5][HTML5]]
       - [[https://html.spec.whatwg.org/multipage/][Features]] and [[https://www.w3.org/TR/][Standards]]
@@ -217,14 +224,14 @@ more reliable than usual.
 - [[https://en.wikipedia.org/wiki/XML][XML]], [[https://en.wikipedia.org/wiki/XHTML][XHTML]], [[https://en.wikipedia.org/wiki/XSLT][XSLT]]
 - [[https://orgmode.org][OrgMode]], [[https://en.wikipedia.org/wiki/TeX][ΤΕΧ]], [[https://www.libreoffice.org/discover/what-is-opendocument/][Open Document]]
 
-**** Shells and [[https://en.wikipedia.org/wiki/Domain-specific_language][Domain Specific Languages]]
+*** Shells and [[https://en.wikipedia.org/wiki/Domain-specific_language][Domain Specific Languages]]
 
-Shells allow both casual users and experts to create scripts which
-automate computer tasks, controlling other applications.
+Shells allow casual users and experts to create scripts (simple programs) to
+automate tasks and control applications.
 
-Domain Specific Languages, DSLs, especially those coming out of the Software
-Tools movement associated with Unix are especially powerful for specific texts,
-especially where the data is in the form of text in files and streams.
+Domain Specific Languages, DSLs (especially those coming out of the Software
+Tools movement associated with Unix) are especially powerful for specialized
+tasks, especially where the data is in the form of text in files and streams.
 
 Shells
 - [[https://en.wikipedia.org/wiki/Bourne_shell][sh: Bourne Shell]], [[https://www.gnu.org/software/bash][Bash]], [[https://en.wikipedia.org/wiki/Z_shell#External_links][zsh]]
@@ -247,3 +254,8 @@ solving various kinds of problems.
 
 Choice of language can also have a big impact on [[https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html][how fast your programs run]] and
 other performance criteria.
+
+It's hard to compare languages objectively. Many programs on Rosetta Code or
+Competitive Programming Sites are not written the way one would usually program
+in those languages. You have to be able to think in a language before you
+understand it properly. This takes time but can be very rewarding!
