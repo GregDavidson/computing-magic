@@ -1,0 +1,94 @@
+* Computing Magic, Module 8, Maximum Ambition!
+
+** The Most Ambitious and Challenging Problems
+
+How do we get computers to tackle the biggest and most challenging problems?
+
+- Driving Cars and Trucks on regular roads
+- Providing good customer service
+- Diagnosing and treating medical problems
+- Being a useful assistant to human experts
+- Managing a complex organization
+- etc.
+
+** Buzzwords and Consultants
+
+These days, many people will suggest the solution is
+- *AI!* (they mean /Machine Learning/)
+In reality
+- [[https://github.com/GregDavidson/on-computing/blob/main/what-is-computing.org#what-is-ai-programming][AI tends to produce worse results than conventional programming!]]
+
+Popular buzzwords in past years
+- *Agile!*
+- *Object Oriented Programming!*
+- *Expert Systems!*
+- *No-SQL Databases!*
+
+Countless hyped
+      - Programming Languages
+      - Web Frameworks
+      - No-Programming-Needed Tools
+which never fail to disappoint!
+
+[[https://en.wikipedia.org/wiki/List_of_failed_and_overbudget_custom_software_projects][Most Ambitious Software Projects Fail!]]
+
+The failed projects are often
+- Executed by the most prestigious consultancies
+- Using expensive proprietary products
+
+** What Works
+
+Challenging problems are generally best addressed by
+- using the *Best Techniques*
+- for *Each Part of the Problem*
+
+As a Lead in a Software Development Project, you need to
+- Have a good overview of the field
+- Have colleagues who fill in what you don't know
+- Know the keys of successful software development
+      - Not hidden but not well known!
+
+Some Keys to Software Project Success:
+- Use an appropriate Analysis and Design Process
+      - Example: [[https://en.wikipedia.org/wiki/Unified_Process][The (highly flexible) Unified Process]]
+      - Know how to adapt and apply it!
+      - Understand Use Cases vs. User Stories!
+- Pursue Elegance: Simplicity, Generality, Power
+      - https://en.wikipedia.org/wiki/Rule_of_least_power
+      - If you have much data, maximally Leverage Relational Databases
+            - Have a Relational Database Expert in your team
+            - Write your own SQL with Good Schemas
+            - Probably use [[https://www.postgresql.org][PostgreSQL]]
+      - Use powerful, well-chosen [[https://github.com/GregDavidson/computing-magic/blob/main/languages-which-matter.org][Languages]] and [[https://en.wikipedia.org/wiki/Programming_paradigm][Paradigms]]
+            - Prefer strong lexical typing!
+      - Generalizing a problem often makes it easier!
+- Keep reducing the amount and complexity of your code!
+      - Code should be clean and clear!
+      - Avoid Auto-generated code!
+- Small Teams with a Culture of Excellence
+      - Highly skilled, Experienced Developers
+- Test driven development
+      - Person 1 writes Spec
+      - Person 2 writes tests
+      - Person 3 writes code
+- Use Git or equivalent
+      - Checkins run the tests!
+      - No checkin on main branches with test failures!
+- Copyleft most of your code
+      - Your proprietary business logic should be
+            - very small
+            - run on top of a FLOSS framework
+
+** Plan for Failure and/or Success!
+
+Plan for failure!
+- What will you learn from failures along the way?
+- It's better to work incrementally
+      - What sub-goals will constitute partial success?
+- What are your legal and financial exposures?
+- What are your "intellectual property" exposures?
+      - Mostly write FLOSS!
+
+Plan for success
+- Lay a good foundation!
+- Create powerful, lasting relationships!

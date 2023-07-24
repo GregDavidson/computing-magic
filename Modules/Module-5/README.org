@@ -1,0 +1,28 @@
+* Computing Magic Beta Module 5
+
+/The Virtue of Persistence/
+
+Based on a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
+
+** Databases and Relational Programming
+
+Main memory is /volatile/, it disappears when your computer is turned off or
+your program (application) terminates. If you want your data to last beyond
+that, you have to store it in /persistent/ memory; typically, that means in
+/files/ or /databases/. Databases allow for the more flexible persistent storage
+of data.
+
+I recommend the [[https://www.postgresql.org/][PostgreSQL Object-Relational Database System]] for Ambitious
+Applications
+
+Here are two PostgreSQL Tutorials:
+- [[https://www.postgresql.org/docs/current/tutorial.html][A Quick Tutorial]]
+      - Ideal if this is not your first Rodeo
+- [[https://www.postgresqltutorial.com/][A More Extensive Tutorial]]
+      - With [[https://www.postgresqltutorial.com/postgresql-getting-started/][Handy Installation Instructions for Windows, Linux and MacOS]]
+
+** What else might you do?
+
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
+
+You might also want to learn how to [[https://docs.racket-lang.org/db/using-db.html][connect to a database from Racket]]

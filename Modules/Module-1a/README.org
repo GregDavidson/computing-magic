@@ -1,0 +1,33 @@
+* Computing Magic Beta Module 1a
+
+/Functional Art/
+
+Based on notes from a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
+
+** What to do before this module
+
+Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:../Module-1/module-1.org][Module 1]].
+
+** 2D Exploring Functional Art
+
+Create more art with 2D Functional Pictures in Slideshow
+  - [[https://docs.racket-lang.org/pict][2D Functional Pictures]]
+        - Explore more Shapes, Options and Combinators
+        - Animation and Interactive Features
+        - Exports to other media
+ 
+** 3D Functional Art
+   
+Explore [[https://docs.racket-lang.org/pict3d/quick.html][3D Functional Pictures]]
+
+** What else might you do?
+
+Here are two more wonderful Racket Graphics packages
+- [[http://soegaard.github.io/docs/metapict/metapict.html][MetaPict]] -- look at the examples at the end for motivation!
+- [[https://github.com/rodrigosetti/stamps][Stamps]] -- Do you like the examples?
+      - Here's the [[https://github.com/rodrigosetti/stamps/tree/master/tutorial][Beginnings of a Stamps Tutorial]]
+      - It's based on [[https://contextfreeart.org/gallery/search.php?t=new&num=25][Context Free]]
+
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
+
+You might also want to [[file:../../Racket/learn-racket.org][Learn (More) Racket]]!

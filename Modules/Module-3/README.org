@@ -1,0 +1,55 @@
+* Computing Magic Beta Meeting 3
+  
+/Practicing the Art/
+  
+/Mars, Monday 7 February 2022/
+
+Notes from a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
+
+** Open Lab
+
+Using the support of our Computing Magic Community, move forward in the projects
+which interest you.
+
+Touch will occasionally ask for our attention to present an enrichment piece or
+address a common question.
+
+Whatever you explore, you become a resource!
+
+Strategic things to work on are in the following sections
+
+*** Git Repositories
+
+Use [[file:../../Software-Tools/git-readme.org][Git README]] to install and learn how to exploit Git for your projects
+    
+*** Emacs and OrgMode
+
+Use [[file:../../Software-Tools/Emacs/emacs-readme.org][Emacs README]] to install and learn a nice Emacs and Emacs environment.
+
+*** Scripting Tools
+
+Use [[file:../../Software-Tools/scripting-readme.org][Scripting README]] to install and learn powerful scripting tools
+        
+*** Computational Art
+    
+See [[file:../README.org][Modules 1abc]]: Racket provides multiple toolkits for doing computational art!
+
+** Where we're headed in future sessions
+      - Systems Programming
+      - Custom Web Servers
+      - SQL & Database Magic
+      - The skills to realize any idea, elegantly!
+
+** What else might you do?
+
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
+
+If you will be doing collaborative development, the resources above for learning =git= will pay off well. 
+
+If you will be working on complex projects involving multiple languages, learning =emacs= will serve you well, especially including =orgmode=, =magit=, =tramp= and other smart packages.  The only way to really learn it, though, is to use it regularly.  Using OrgMode to create and manage important documents will help you a lot.
+
+If you will be using a backend database, be sure and explore [[file:../Module-5-module-5.org][Module 5: SQL]].
+
+If you will be managing resources on a server or automating any processes, you will want to explore [[file:../../Software-Tools/scripting-readme.org][Scripting Tools]].
+
+If you want to hone your programming skills, there's value in [[file:../../Racket/learn-racket.org][Learning (More) Racket]]!
