@@ -1,6 +1,6 @@
 * Overview of Artificial Intelligence
 
-Part of [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[file:module-7.org][Module 7]].
+Part of [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[file:README.org][Module 7]].
 
 ** What is Artificial Intelligence?
 

@@ -62,7 +62,7 @@ Creating an ambitious Project to use Web, Graphics, Lisp and SQL. An opening for
 *Creativity and Software Design*. This is very much a /build your own adventure/
 module. Consider doing this module with a group or with partners.
 
-**** [[file:Module-7/module-7.org][NEW Module 7: Artificial Intelligence Programming Techniques]]
+**** [[file:Module-7/README.org][NEW Module 7: Artificial Intelligence Programming Techniques]]
 *Getting computers to understand your domain:* AI is one of the most magical
 areas of computing with many diverse and powerful technologies to offer. This
 module aims to give you experience with some of the most central and powerful AI
