@@ -20,7 +20,7 @@ some of the links there to get an overall map of the field.
 Review [[https://github.com/GregDavidson/on-computing/tree/main#readme][On Computing]]
 - especially [[https://github.com/GregDavidson/on-computing/blob/main/what-is-computing.org][What Is Computing?]]
       - especially the last section explaining
-            - *Why AI Programming produces the Worst Solutions*
+            - *Why AI Programming produces the Worst Solutions!*
 
 *** Data vs. Meaningful Information
 
