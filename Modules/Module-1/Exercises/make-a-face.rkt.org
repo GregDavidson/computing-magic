@@ -425,7 +425,6 @@ How can we have the hackability without the rigidity of nested scopes?
        - Advantage: Such is already be provided in Racket and most other Lisps
        - Disadvantage: Some runtime overhead and possibly additional complexity.
 
-
 Questions:
 1. What might these approaches look like?
 2. What other approaches can you think of?
