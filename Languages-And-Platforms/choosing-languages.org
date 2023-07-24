@@ -1,6 +1,6 @@
 * Choosing Computer Languages
 
-** What Makes Some Languages Especially Valuable
+** Some Criteria for Choosing Languages
 
 Let's use *hack* in the /MIT/ sense, of an ability to bend something to your
 will through informed programming. See
@@ -31,7 +31,7 @@ I generally disregard programmers' opinions about a programming language unless
       - both in the same family and in different families
 Opinions of such experienced experts are well worth listening to!
 
-** Some Great Languages and Why They're Great
+** Some Especially Great Languages
 
 *** TL;DR
 
