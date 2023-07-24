@@ -20,76 +20,21 @@ some of the links there to get an overall map of the field.
 Review [[https://github.com/GregDavidson/on-computing/tree/main#readme][On Computing]]
 - especially [[https://github.com/GregDavidson/on-computing/blob/main/what-is-computing.org][What Is Computing?]]
       - especially the last section explaining
-            - *Why AI Programming produces the Worst Solutions!*
-
-*** Data vs. Meaningful Information
-
-To a binary computer, everything is just /data/, i.e. sequences of 0's and 1's
-grouped into various chunks for processing by various hardware mechanisms.
-Make sure you've read [[https://gregdavidson.github.io/on-computing/what-computers-are][What Computers Are]]!
-
-In contrast, humans see /Information/ which has /Meaning/ within a /Context/
-called a /Domain/ Examples of Domains include
-- Financial Accounting
-- Playing Chess
-- Rendering 3D Virtual Worlds
-- Understanding Human Language
-- and so on, ad infinitum
-
-Domains have no objective existence, they exist only as an interpretation which
-human beings create according to their needs and interests.
-
-*** Representation and Processing
-
-Computing has two fundamental aspects:
-- Representation :: how to effectively and efficiently express domain
-  information as data
-- Processing :: how to process that data effectively and efficiently using
-  sequences of machine instructions.
-
-Notice the use of the words /effectively/ and /efficiently/ in both parts
-- Representation and Processing are intertwined
-- Effectiveness is about correctness
-      - Do we get correct answers and behavior?
-- Efficiency is necessary in practice
-      - Many known effective procedures require excessive resources
-            - More memory than is available or affordable
-            - More processing time than is available or useful
-            - What use to predict tomorrow's weather by next year?
-- A good representation aids efficiency
-      - E.g. a chess board could be represented as
-            - An image from a camera
-            - An 8x8 matrix of the locations of the chess pieces
-            - A list of openings and threats for each piece
-            - Etc.
-            - Which of these would be help in playing a good game?
-            - How could these representations be achieved?
-            - What other representations might be helpful?
-
-/Information/ is /Data/ which has /Meaning/ in a /Domain/
-- A picture of a chessboard is just meaningless bits to a computer
-- In the domain of chess, it represents an arrangement of chess pieces
-
-Meaning only exists for human beings. It's what allows us to understand things.
-Computers systems can be designed to act /as if/ they understand things in /very
-limited contexts/, but they don't actually understand anything!
+            - When to use AI Techniques and
+            - *Why AI tends to produce the worst solutions!*
 
 In conventional computer programming, the knowledge and understanding which the
-programmer used to design the computer system is /implicit/ in the program. The
-computer mindlessly executes the program and if it doesn't do what the
-programmer intended, we say "it has a bug" and an expert human programmer has to
-analyze the program and "fix the bug". The gap between human understanding and
-the structure of code is often so large that it's easier to just delete buggy
-code and design new code from scratch.
+programmer used to design the computer system is /implicit/ in the program.
 
-In AI terminology, /Knowledge/ is /understanding/ which can be captured in data
-structures and flexibly applied within a domain.
+In /Artificial Intelligence Programming/, /Knowledge/ is a form of
+/Understanding/ which can be captured in special data structures and flexibly
+applied within a domain.
 - Human experts generally have lot of knowledge about their domain of expertise.
-- AI Knowledge-Based "Expert" Systems can represent and apply /explicit knowledge/.
+- Knowledge-Based "Expert" Systems can represent and apply /Explicit Knowledge/.
       - The knowledge is in the form of rules and procedures.
       - The rules and procedures were mostly created by human experts.
-      - But they can be flexibly applied using automated reasoning.
-- Machine Learning Systems can capture and apply large amounts of /implicit knowledge/.
+      - But they can be flexibly applied using /Automated Reasoning/.
+- Machine Learning Systems can capture and apply large amounts of /Implicit Knowledge/.
       - The knowledge is implicit in generalized pattern structures.
       - The pattern structures were "trained" using a very large number of examples.
       - They will tend to match anything similar to the training data.
@@ -99,7 +44,7 @@ Explicit Knowledge-Based Systems and Machine Learning Systems
       - Giving an appearance of understanding
       - Performing valuable work
 - Act like bizarre and insane people when they fail
-      - Revealing their actual lack of understanding
+      - Revealing that their understanding is quite shallow!
 
 Hybrid AI Systems combine the strengths of the two approaches
 - Machine Learning is used for
