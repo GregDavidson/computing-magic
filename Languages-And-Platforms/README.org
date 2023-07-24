@@ -5,6 +5,14 @@ Any sufficiently advanced technology is indistinguishable from magic.\\
 - Arthur C. Clarke
 #+end_quote
 
+*DRAFT NOTES*
+- Need to
+      - create great languages list
+            - reuse what-languages-matter!
+            - maybe move it here and link it in from above
+      - create great platform list
+- What about Magical Tools?
+
 ** TL;DR
 
 A [[file:awesome-computing-magic-languages.org][great programming language]] running on a [[file:awesome-computing-magic-platforms.org][great platform]] should should amplify
