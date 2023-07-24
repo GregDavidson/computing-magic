@@ -1,0 +1,43 @@
+* Some Racket Resources
+
+** Select Racket Videos
+
+There are a /lot/ of Racket Videos.
+- Some things are easier to get with audio and video.
+
+Videos Covering Racket in /Small Pieces/
+- [[https://www.youtube.com/watch?v=FoPW4Ji6EAM&list=PLH9NxWfOK2NUdV9fxgMQcA9JYt472dIYo][Calling And Defining Functions, =if=, =cond=]]
+- [[https://www.youtube.com/watch?v=-yNJZnZ6Nnw&list=PLH9NxWfOK2NUdV9fxgMQcA9JYt472dIYo&index=6][the Trace tool!]]
+- [[https://www.youtube.com/watch?v=ing4IKLW4rU&list=PLH9NxWfOK2NUdV9fxgMQcA9JYt472dIYo&index=3][List Functions]]
+- [[https://www.youtube.com/watch?v=yUV1eOOJwWc][Cons Cells]]
+- [[https://www.youtube.com/watch?v=-9h6lJedPdo&list=PLH9NxWfOK2NUdV9fxgMQcA9JYt472dIYo&index=4][Intro to Maps: Keys --> Values]]
+- [[https://www.youtube.com/watch?v=-8vR_GngFeI&list=PLH9NxWfOK2NUdV9fxgMQcA9JYt472dIYo&index=5][Recurrence with =foldr= and =foldl=]]
+
+A few more Racket-Related Videos
+- if your search for a Lisp has become a search for a good Scheme
+      - [[https://www.youtube.com/watch?v=R-hy8xLlkHA][Comparing Guile Scheme with Racket]]
+- developing with Racket versus Python
+- [[https://www.youtube.com/watch?v=l6VuYdQHhE0][Why use Racket to Learn Programming?]]
+      - Briefly compares Racket to toy languages like Snap
+      - Shows the process of building a game using Python vs. Racket
+- [[https://www.youtube.com/watch?v=ZHXSHw09fDA][Efficiency]]
+      - the growth of resources as programs run
+      - Introduces "Big-O" Notation
+
+
+** Racket Resources
+
+- https://racket-lang.org/
+- https://docs.racket-lang.org/
+  - Includes friendly Guides along with comprehensive References!
+- https://pkgs.racket-lang.org/
+- https://awesome-racket.com/
+
+** Lisp and Racket Humor
+
+This section should be moved to our /On Lisp/ repository!
+
+- [[https://www.youtube.com/watch?v=5-OjTPj7K54&t=8s][Lisp - The Eternal Flame Gospel Song]]
+- [[https://xkcd.com/224/][xkcd comic: Lisp]]
+- [[https://xkcd.com/297/][xkcd comic: Lisp Cycles]]
+- [[https://youtu.be/HM1Zb3xmvMc][Land of Lisp Music Video]]
