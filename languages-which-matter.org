@@ -17,7 +17,7 @@ more discriminating. The languages truly worth our time must be
 - Elegant :: minimum complexity and cognitive burden for maximum utility
 
 We can immediately dismiss the [[http://www.paulgraham.com/avg.html][blub languages]] because they lack power and don't
-teach us much - indeed, [[https://www.cs.virginia.edu/~evans/cs655/readings/ewd498.html][they can even harm us]] or [[https://nibblestew.blogspot.com/2020/03/its-not-what-programming-languages-do.htmlquality][lead us astray]]! These essays
+teach us much; indeed, [[https://www.cs.virginia.edu/~evans/cs655/readings/ewd498.html][they can even harm us]] or [[https://nibblestew.blogspot.com/2020/03/its-not-what-programming-languages-do.htmlquality][lead us astray]]! These essays
 are old and I'll avoid the mistake of listing today's /blub/ or harmful
 languages - they might be languages you currently like! You'll be able to form
 your own opinions after gaining experience with some unquestionably excellent
@@ -37,20 +37,39 @@ Opinions of such experienced experts are well worth listening to!
 
 For the more complete list and explanation, see /Key Language Inventory/ below.
 
-- [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]], inside of [[file:Racket/README.org][Racket]]
-      - beginning with [[https://docs.racket-lang.org/quick][graphic arts computing]]
+- [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]], inside of [[file:Racket/README.org][Racket]], a modern [[https://github.com/GregDavidson/on-lisp][Lisp]]
+      - Scheme is an unusually clean and general language.
+            - Scheme is primarily used for learning programming.
+      - Racket extends Scheme with practical extensions, libraries, tools and more.
+            - Racket is a good general-purpose language.
+            - Racket may be an even better language for learning programming.
+                  - especially beginning with [[https://docs.racket-lang.org/quick][graphic arts computing]]
 - [[Emacs/elisp-vs-scheme.org][Emacs Lisp]], inside of [[https://www.gnu.org/software/emacs][Emacs]]
       - focused on customizing your tool stack
+      - there are extraordinary productivity tools written in Emacs Lisp
+      - you can easily extend them or write new ones!
 - [[file:SQL/SQL-README.org][SQL]], inside of [[https://www.postgresql.org][PostgreSQL]]
-      - maximally leveraging the Database
+      - SQL makes data storage and access a dream
+      - PostgreSQL is Open Source Free Software (FLOSS)
+      - PostgreSQL allows you to extend SQL and the Database
+            - many powerful PostgreSQL extensions are freely available (FLOSS)
+            - and you can create magic with your own PostgreSQL extensions!
 - [[https://duckduckgo.com/?t=ffab&q=posix+shell][Shell]], inside of [[https://www.gnu.org][Gnu/Linux]] or [[https://duckduckgo.com/?t=ffab&q=macintosh+command+line][Mac]] or [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows Subsystem for Linux]]
       - focused on customizing your tool stack
+      - anything you can do manually, you can automated with a /Shell Script/!
 - Web Languages
       - [[https://www.typescriptlang.org][TypeScript]] or [[https://clojurescript.org][ClojureScript]]
-      - creating rich and /thin/ front ends
+            - highly dynamic lisp-like languages
+            - ideal for animating rich web pages
 - [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic]] [[https://en.wikipedia.org/wiki/Constraint_logic_programming][and]] [[https://en.wikipedia.org/wiki/Constraint_programming][Constraint]] Programming
-      - Especially [[file:Prolog/README.org][Prolog]]
+      - [[file:Prolog/README.org][Prolog]] is the simplest Logic Programming Language
+            - excellent for Learning AI Programming Techniques
+      - /Constraint Logic Programming/ is extraordinarily powerful
+            - many HLLs cater to this style of programming
+            - part of the general practice of [[https://en.wikipedia.org/wiki/Automated_reasoning][Automated Reasoning]]
 - [[https://en.wikipedia.org/wiki/Knowledge-based_systems][Knowledge-Based]] Programming
+      - this paradigm is especially good for creating /Knowledge-Based Expert Systems/
+      - good example languages are [[https://flora.sourceforge.net][Flora-2]] and its successor [[https://github.com/ErgoAI][ErgoAI]]
 
 *** Key Language Inventory
 
@@ -165,13 +184,13 @@ exploited in any language.
 - APL is famous for its use of special characters
       - Try [[https://mlochbaum.github.io/BQN][BQN for a modern alternative]]
 - [[https://www.jsoftware.com][J]] uses regular characters in a very compact notation
-- 
+
 ***** Smalltalks
 
-The Smalltalk languages are the most pure dynamic Object Oriented Languages.
-They are especially good for art and multi-media simulations.  They will teach
-you how to think in the Object Oriented paradigm which you can then use in other
-languages.
+The Smalltalk languages are a very pure expression of the ideal of dynamic
+Object Oriented Languages. They are especially good for art and multi-media
+simulations. They will teach you how to think in the Object Oriented paradigm
+which you can then use in other languages.
 
 - [[https://squeak.org][Squeak Smalltalk]] is the most popular
 - [[ttps://pharo.org][Pharo Smalltalk]] is the most elealternative
