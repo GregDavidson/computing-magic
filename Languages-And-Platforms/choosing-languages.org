@@ -1,6 +1,6 @@
-* Which Computer Languages Matter?
+* Choosing Computer Languages
 
-** Why Some Languages Matter More Than Others
+** What Makes Some Languages Especially Valuable
 
 Let's use *hack* in the /MIT/ sense, of an ability to bend something to your
 will through informed programming. See
@@ -31,7 +31,7 @@ I generally disregard programmers' opinions about a programming language unless
       - both in the same family and in different families
 Opinions of such experienced experts are well worth listening to!
 
-** Some Languages which Matter, and Why
+** Some Great Languages and Why They're Great
 
 *** TL;DR
 
@@ -71,7 +71,7 @@ For the more complete list and explanation, see /Key Language Inventory/ below.
       - this paradigm is especially good for creating /Knowledge-Based Expert Systems/
       - good example languages are [[https://flora.sourceforge.net][Flora-2]] and its successor [[https://github.com/ErgoAI][ErgoAI]]
 
-*** Key Language Inventory
+*** Families Of Great Languages
 
 Computer Languages belong to Computer Language Families and are usually
 organized around [[https://en.wikipedia.org/wiki/Programming_paradigm][Programming Paradigms]]. Unless there's a pragmatic reason, you
@@ -85,9 +85,8 @@ Currently just a list of important languages. More content coming!
 **** [[https://github.com/GregDavidson/on-lisp#readme][Lisps]]
 
 The Lisp family contains some of the most flexible general purpose high-level
-languages. See [[https://github.com/GregDavidson/on-lisp#readme][my Lisp experience]] for more information. Lisps in the Scheme
-family are among the most elegant, where elegance refers to a combination of
-power and simplicity.
+languages. See [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]] for more depth. Lisps in the Scheme family are among the
+most elegant, where elegance refers to a combination of power and simplicity.
 
 - [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Some Scheme Systems]]
       - [[https://racket-lang.org][Racket]]
@@ -112,7 +111,7 @@ correct answers. This is powerful Computing Magic!
       - [[https://en.wikipedia.org/wiki/Ciao_(programming_language)][Ciao Prolog]] - also great for constraint logic programming
       - [[https://en.wikipedia.org/wiki/XSB][XSB Prolog]] - the host of Flora-2
 
-**** [[https://en.wikipedia.org/wiki/Knowledge-based_systems][- Knowledge-Based]] Programming
+**** [[https://en.wikipedia.org/wiki/Knowledge-based_systems][Knowledge-Based]] Programming
 
 In Knowledge-Based Logic Programming you represent the knowledge of a rich
 domain with definite and probabilistic rules. The Knowledge Engine uses
@@ -171,7 +170,7 @@ follow the Relational Model and use the standard query language SQL.
 
 - [[SQL/SQL-README.org][SQL]]
 
-**** Amazing anguagealternative
+**** Some Truly Extraordinary Languages
 
 ***** [Array-Oriented Languages
 
