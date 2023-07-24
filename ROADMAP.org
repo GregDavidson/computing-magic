@@ -8,3 +8,5 @@ Glorious things to work on:
 
 Current Active Projects
 - Shell Scripting
+
+Push languages, platform, tools into subdirectories
