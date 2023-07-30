@@ -59,7 +59,7 @@ Some Keys to Software Project Success:
             - Have a Relational Database Expert in your team
             - Write your own SQL with Good Schemas
             - Probably use [[https://www.postgresql.org][PostgreSQL]]
-      - Use powerful, well-chosen [[https://github.com/GregDavidson/computing-magic/blob/main/languages-which-matter.org][Languages]] and [[https://en.wikipedia.org/wiki/Programming_paradigm][Paradigms]]
+      - Use powerful, well-chosen [[https://github.com/GregDavidson/computing-magic/blob/main/Languages-And-Platforms/choosing-languages.org][Languages]] and [[https://en.wikipedia.org/wiki/Programming_paradigm][Paradigms]]
             - Prefer strong lexical typing!
       - Generalizing a problem often makes it easier!
 - Keep reducing the amount and complexity of your code!
