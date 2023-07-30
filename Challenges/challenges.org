@@ -44,7 +44,7 @@ You will get the most value out of these challenges if you iteratively
              - Partial ideas are fine, this is all iterative!
        - Consider different
              - [[https://en.wikipedia.org/wiki/Programming_paradigm][Programming Paradigms]]
-             - [[https://github.com/GregDavidson/computing-magic/blob/main/languages-which-matter.org][Interesting Programming Languages]]
+             - [[https://github.com/GregDavidson/computing-magic/blob/main/Languages-And-Platforms/choosing-languages.org][Interesting Programming Languages]]
 3. Select a strategy which interests you
        - The goal is to stretch your skills
        - Having fun is very important!
