@@ -36,7 +36,7 @@ documents!
   different kinds]]. Some interesting or popular examples are: [[https://github.com/GregDavidson/on-lisp#readme][Lisp]], [[https://xpqz.github.io/learnapl/intro.html][APL]], [[https://github.com/GregDavidson/C-By-Example#readme][C]],
   [[https://github.com/GregDavidson/computing-magic/blob/main/Prolog/README.org][Prolog]], [[https://github.com/GregDavidson/computing-magic/blob/main/SQL/SQL-README.org][SQL]], [[https://en.wikipedia.org/wiki/Java_%28programming_language%29][Java]] and [[https://en.wikipedia.org/wiki/Python_(programming_language)][Python]]. Code in different languages can [[https://rosettacode.org/wiki/Category:Programming_Languages][look very
   different]] and have [[https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html][very different performance]]. There are many criteria for
-  [[https://github.com/GregDavidson/computing-magic/blob/main/languages-which-matter.org][choosing a programming language]].
+[[https://github.com/GregDavidson/computing-magic/blob/main/Languages-And-Platforms/choosing-languages.org][choosing a programming language]].
 
 *** Scripting Terms                                          :scripting_term:
 
