@@ -56,7 +56,7 @@ Computing Magic for those who yearn for such!
 
 We'll be trying to keep the Computer Programming Languages which we use to a
 practical minimum.
-- See [[file:languages-which-matter.org][Which Computer Languages Matter?]]
+- See [[file:Languages-And-Platforms/choosing-languages.org][Which Computer Languages Matter?]]
 
 We have additional material in some related Repositories
 - [[https://github.com/GregDavidson/on-computing#readme][On Computing]]
