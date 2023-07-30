@@ -475,3 +475,5 @@ Ray Tracing is very computationally intensive, but recent high-end consumer
 graphics hardware increasingly has support for it. A number of people are
 working on providing support for Ray Tracing in Graphics Libraries for Racket
 and other languages and development environments.
+
+The [[https://docs.racket-lang.org/images][Racket Images Library]] has emerging support for Ray Tracing.
