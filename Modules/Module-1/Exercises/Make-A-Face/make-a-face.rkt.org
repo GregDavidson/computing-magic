@@ -1,6 +1,6 @@
 * Exercise: Make A Face in Racket
 
-This exercise is part of [[https://github.com/GregDavidson/computing-magic/blob/main/Modules/Module-1/module-1.org][Computing Magic Module-1]]
+This exercise is part of [[https://github.com/GregDavidson/computing-magic/blob/main/Modules/Module-1/README.org][Computing Magic Module-1]]
 
 Learn
 - Progressive Development
