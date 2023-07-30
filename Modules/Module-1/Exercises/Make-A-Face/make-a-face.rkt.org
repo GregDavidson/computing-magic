@@ -6,17 +6,19 @@ Learn
 - Progressive Development
 - Parameterization
 - Use of Libraries
+- and more!
 
 Prerequisites
 - [[https://docs.racket-lang.org/quick][Racket Quick Tutorial]]
 
-*This is a progressive exercise: Look at only *one step at a time!*
-- You might read this OrgMode version with Emacs
-      - Fold and Unfold sections with TAB
-- Or a /Folding Version/ as a WebPage.
-      - Not yet available for this document
-- Otherwise, try not to look at the example solutions
-      - Until you've tried to make your own
+/This is a progressive exercise:/
+- *Look at only one step at a time!*
+      - Best: Read this document with Emacs Org Mode
+            - Fold and Unfold sections with TAB
+      - Or a /Folding Version/ as a WebPage.
+            - Not yet available for this document
+      - Otherwise, try not to look ahead
+            - Until you've tried things yourself!
 
 ** Step 1: Make an Eye Interactively
 
@@ -33,7 +35,7 @@ pupil.
 First make the parts of the picture one at a time, then nest them with
 cc-superimpose to create the desired result.
 
-** Step 1: Example Solution
+*** Step 1: Example Solution
 
 This is only an example illustrating a possible solution. Your solution might be
 different from this example and still be just as good or better. The important
@@ -42,22 +44,19 @@ forms.
 
 #+begin_src racket
   (cc-superimpose
-   (filled-ellipse 100 50 #:color (light"lightyellow"))
+   (filled-ellipse 100 50 #:color "lightyellow")
    (disk 45 #:color "lightblue")
    (disk 15 #:color "black") ) 
 #+end_src
 
-** Step 2: Make Using A Parameterized Procedure
+** Step 2: Using A Parameterized Procedure
 
 Turn a solution to Step 1 into a Parameterized Procedure.
 - Turn all numbers into parameters
-- Would it be nicer to make any of them be ratios?
+- Would it be nicer to make any of the numbers be ratios?
 - Try using let or let* to temporarily bind values
 
 Turn at least one of the colors into a parameter.
-
-Call your procedure with different values for its parameters.
-- How convenient is it to have so many parameters?
 
 #+begin_src racket
   (define (make-eye YOUR PARAMETERS HERE)
@@ -67,7 +66,7 @@ Call your procedure with different values for its parameters.
      (disk YOUR ARGUMENTS HERE) ) )
 #+end_src
 
-** Step 2: Example Solution
+*** Step 2: First Example Solution
 
 Usual Caveat that this is only one way to do it.
 
@@ -87,13 +86,155 @@ Usual Caveat that this is only one way to do it.
   (make-eye 100 2 4/5 2/5 "brown")
 #+end_src
 
-** Step 3: Leverage Named and Optional Parameters
+Call your procedure with different values for its parameters.
+- How convenient is it to have so many parameters?
 
-It is considered good style to generalize procedures by replacing any arbitrary
-values with parameters. Yet it is awkward to work with a procedure which has
-lots of positional parameters
-- Specifying values for all parameters is tedious
-- Remembering what each parameter does is difficult
+*** Step 2: Second Example Solution
+
+Parameters make procedures more powerful and flexible. Yet during incremental
+development lots of parameters can be awkward to work with, especially when
+we're creating multiple procedures needing many of the same parameters.
+
+Let's temporarily replace most parameters with global bindings:
+
+#+begin_src racket
+  ;; Define defaults for eye procedures
+  (define eye-ratio 2)
+  (define eye-iris-ratio 4/5)
+  (define eye-pupil-ratio 2/5)
+  (define eye-color "brown")
+  (define eye-sclera-color "lightyellow")
+
+  ;; Make 1 eye
+  (define (make-eye eye-height)
+    (let* ( [eye-width (* eye-ratio eye-height)]
+            [iris-size (* eye-iris-ratio eye-height)]
+            [pupil-size (* eye-pupil-ratio iris-size)] )
+      (cc-superimpose
+       (filled-ellipse eye-width eye-height #:color eye-sclera-color)
+       (disk iris-size #:color eye-color)
+       (disk pupil-size #:color "black") ) ) )
+#+end_src
+
+** Step 3: Build up to Making A Face
+
+You're going to create a series of procedures. Later procedures will call some
+of your earlier procedures. You will need to propagate parameter values
+appropriately to the procedures which you're calling.
+
+Suggested flow:
+- Create a procedure for making two eyes.
+      - optional first argument of append functions specifies spacing
+- Create a procedure for making a nose
+      - make it simple for now, e.g. a disk
+- Create a procedure for making eyes + a nose
+      - It should call your earlier two procedures
+- Create a procedure for making a mouth
+      - make it simple for now, e.g. a filled-ellipse
+- Create a procedure for making eyes+nose+mouth
+      - Calling your earlier procedures
+
+Procedures you may find useful:
+- pict-width from [[https://docs.racket-lang.org/pict/Pict_Datatype.html][Pict Datatype]]
+- pin-over from [[https://docs.racket-lang.org/pict/Pict_Combiners.html][Pict Combiners]]
+
+Some of these procedures will be
+- taking the same optional arguments as the procedures they're calling
+- passing these arguments on unchanged
+We should not repeat default values
+- we'll store them in global bindings for now
+- this will create some redundancy
+- but will allow us test each part separately
+      - this is an example of *loose coupling*
+
+Here's an example starting point:
+
+#+begin_src racket
+  ;; Define defaults for eye procedures
+  (define eye-ratio 2)
+  (define eye-iris-ratio 4/5)
+  (define eye-pupil-ratio 2/5)
+  (define eye-color "brown")
+  (define eye-sclera-color "lightyellow")
+  (define eye-spacing-ratio 1/3)
+
+  (define (make-eye eye-height #:ratio [eye-ratio eye-ratio]
+                    #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-pupil-ratio]
+                    #:color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color] )
+    (let* ( [eye-width (* eye-ratio eye-height)]
+            [iris-size (* iris-ratio eye-height)]
+            [pupil-size (* pupil-ratio iris-size)] )
+      (cc-superimpose
+       (filled-ellipse eye-width eye-height #:color sclera-color)
+       (disk iris-size #:color iris-color)
+       (disk pupil-size #:color "black") ) ) )
+
+  (define (make-eyes eye-height
+                     #:spacing-ratio [spacing-ratio eye-spacing-ratio]
+                     #:ratio [eye-ratio eye-ratio]
+                     #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-pupil-ratio]
+                     #:color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color] )
+    'YOUR-CODE-GOES-HERE! )
+#+end_src
+
+
+*** Step 3: Example Solution with Loose Coupling
+
+Usual Caveat that this is only one way to do it:
+- [[file:make-face-globals.rkt][make-face-globals.rkt]]
+A solution like this would not be produced all at once!!!
+- How is this different from what you did?
+- What do you like about it?
+- What don't you like about it?
+
+** Step 4: Leveraging Named and Optional Parameters
+
+Global bindings make it difficult to call our procedures with different
+parameter values. Normally, we'd refactor our global bindings into parameters
+for each procedure which needs those values. Because we have many procedures
+which are only called from draw-face, we do something easier
+- Move those procedures into the scope of draw-face
+- Refactor the globals into parameters for procedure draw-face only!
+
+We have an additional issue of how we can manage so many parameters.
+Suppose we were to refactor draw-face like this:
+
+#+begin_src racket
+  (define (make-face face-height face-ratio color border-width
+                     nose-mouth-ratio content-ratio face-eye-ratio
+                     eye-ratio eye-spacing-ratio iris-ratio
+                     pupil-ratio eye-color sclera-color nose-ratio
+                     eye-nose-spacing face-mouth-ratio mouth-ratio
+                     mouth-color)
+  body-of-make-face )
+#+end_src
+
+and call it like this:
+
+#+begin_src racket
+  (draw-face 100 3/4 "tan" 2
+             1/8 1/3 1/7
+             2 1/3 4/5
+             2/5 "brown" "lightyellow" 1/8
+             0 1/8 1/4 "red" )
+#+end_src
+
+*** Problem 4.1: Too Many Positional Parameters!
+
+These are /positional parameters/, so called because the parameter values match
+up match up with their respective parameters by their position in the form. It's
+considered /poor practice to have more than approximately 2 positional
+paramters/ because people tend to mix them up!
+
+- Strategy 4.1 :: Make most of them keyword parameters!
+
+*** Problem 4.2: We Have To Specify Too Many Values!
+
+Most of these parameters have good default values which
+we'll usually want them to have.  We should only have to supply a value
+for those parameters we want to change from its usual value.
+
+- Strategy 4.2 :: Give default values where appropriate!
 
 Look at the sections on
 - Declaring Optional Arguments
@@ -105,16 +246,24 @@ Good practice is to
 - Use keywords to name additional parameters
 - Make parameters optional where there's a single common default value
 
+*** Step 4 Instructions
+
+Starting with either your solution or the example solution above
+1. Move the defintion of all of the procedures other than make-face inside the
+   body of make-face.
+2. Refactor the global bindings into named parameters of make-face with default
+   values the same as they had when they were global bindings.
+
 Define your procedure so that these are both legitimate calls:
 #+begin_src racket
   (make-eye 100)
   (make-eye 100 #:color "brown" #:ratio 2 #:pupil 1/5)
 #+end_src
 
+**** Step 4 Hint 1: Named Parameters With Defaults
 
-** Step 3: Example Solution
-
-Usual Caveat that this is only one way to do it.
+If we were only going to do this for procedure make-eye it might look something
+like this:
 
 #+begin_src racket
   (define (make-eye eye-height #:ratio [eye-ratio 2]
@@ -130,308 +279,108 @@ Usual Caveat that this is only one way to do it.
      (disk pupil-size #:color "black") ) ) )
 #+end_src
 
-** Step 4: Build up to Making A Face
+But if we do this for each of our procedures, we're going to have a lot of
+boiler plate passing lots of named parameters from one procedure to another.
 
-You're going to create a series of procedures. Each will have some parameters.
-Later procedures will call some of your earlier procedures. You will need to
-propagate parameter values appropriately to the procedures which you're calling.
+**** Step 4 Hint 2: Structure of Nested Procedures
 
-Suggested flow:
-- Create a procedure for making two eyes.
-      - optional first argument of append functions specifies spacing
-- Create a procedure for making a nose
-      - make it simple for now, e.g. a disk
-- Create a procedure for making eyes+nose
-      - Calling your earlier two procedures
-- Create a procedure for making a mouth
-      - make it simple for now, e.g. a filled ellipse
-- Create a procedure for making eyes+nose+mouth
-      - Calling your earlier two procedures
-
-Procedures you may find useful:
-- pict-width from [[https://docs.racket-lang.org/pict/Pict_Datatype.html][Pict Datatype]]
-- pin-over from [[https://docs.racket-lang.org/pict/Pict_Combiners.html][Pict Combiners]]
-
-Some of these procedures will be
-- taking the same optional arguments as the procedures they're calling
-- passing these arguments on unchanged
-We should not repeat default values
-- we'll store them in global bindings for now
-- this will create some redundancy
-- but will allow us test each part separately
-      - this is an example of *loose coupling*
+Your solution will probably look like this:
 
 #+begin_src racket
-  ;; Define defaults for eye procedures
-  (define eye-ratio 2)
-  (define eye-iris-ratio 4/5)
-  (define eye-iris-pupil-ratio 2/5)
-  (define eye-color "brown")
-  (define eye-sclera-color "lightyellow")
-  (define eye-spacing-ratio 1/3)
-
-  (define (make-eye eye-height #:ratio [eye-ratio eye-ratio]
-                    #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-iris-pupil-ratio]
-                    #:color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color] )
-    (let* ( [eye-width (* eye-ratio eye-height)]
-            [iris-size (* iris-ratio eye-height)]
-            [pupil-size (* pupil-ratio iris-size)] )
-      (cc-superimpose
-       (filled-ellipse eye-width eye-height #:color sclera-color)
-       (disk iris-size #:color iris-color)
-       (disk pupil-size #:color "black") ) ) )
-
-  (define (make-eyes eye-height
-                     #:spacing-ratio [spacing-ratio eye-spacing-ratio]
-                     #:ratio [eye-ratio eye-ratio]
-                     #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-iris-pupil-ratio]
-                     #:color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color] )
-    'YOUR-CODE-GOES-HERE! )
-#+end_src
-
-
-** Step 4: Example Solution with Loose Coupling
-
-Usual Caveat that this is only one way to do it.
-
-A solution like this would not be produced all at once!!!
-
-#+begin_src racket
-  ;; Define defaults for eye procedures
-  (define eye-ratio 2)
-  (define eye-iris-ratio 4/5)
-  (define eye-iris-pupil-ratio 2/5)
-  (define eye-color "brown")
-  (define eye-sclera-color "lightyellow")
-  (define eye-spacing-ratio 1/3)
-  ;; Define defaults for eyes+nose+mouth and face
-  (define face-color "tan")
-  (define face-border-width 2)
-  (define face-border-color "black")
-  (define face-ratio 3/4)
-  (define face-eye-ratio 1/7)
-  (define face-nose-ratio 1/8)
-  (define face-mouth-ratio 1/3)
-  (define face-nose-mouth-ratio 1/8)
-  (define face-content-ratio 1/3)
-  (define mouth-ratio 1/4)
-  (define mouth-color "red")
-
-  (define (make-eye eye-height
-                    #:ratio [eye-ratio eye-ratio]
-                    #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-iris-pupil-ratio]
-                    #:color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color] )
-    (let* ( [eye-width (* eye-ratio eye-height)]
-            [iris-size (* iris-ratio eye-height)]
-            [pupil-size (* pupil-ratio iris-size)] )
-      (cc-superimpose
-       (filled-ellipse eye-width eye-height #:color sclera-color)
-       (disk iris-size #:color iris-color)
-       (disk pupil-size #:color "black") ) ) )
-
-
-  (define (make-eyes eye-height
-                     #:spacing-ratio [spacing-ratio eye-spacing-ratio]
-                     #:ratio [eye-ratio eye-ratio]
-                     #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-iris-pupil-ratio]
-                     #:color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color] )
-    (let ([eye (make-eye eye-height #:ratio eye-ratio #:iris iris-ratio #:pupil pupil-ratio
-                         #:color iris-color #:sclera-color sclera-color )])
-      (hc-append (* spacing-ratio eye-ratio eye-height) eye eye) ) )
-
-  (define (make-nose size) (disk size))
-
-  (define (make-eyes+nose face-height
-                          #:face-eye-ratio [face-eye-ratio face-eye-ratio]
-                          #:ratio [eye-ratio eye-ratio]
-                          #:spacing-ratio [eye-spacing-ratio eye-spacing-ratio]
-                          #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-iris-pupil-ratio]
-                          #:color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color]
-                          #:face-nose-ratio [face-nose-ratio face-nose-ratio] #:eye-nose-spacing [eye-nose-spacing 0] )
-    (printf "~a\n" `(vc-append ,eye-nose-spacing
-                               (make-eyes ,(* face-height face-eye-ratio))
-                               (make-nose ,(* face-height face-nose-ratio)) ))
-    (vc-append eye-nose-spacing
-               (make-eyes (* face-height face-eye-ratio)
-                          #:ratio eye-ratio #:spacing-ratio eye-spacing-ratio
-                          #:iris iris-ratio #:pupil pupil-ratio
-                          #:color iris-color #:sclera-color sclera-color )
-               (make-nose (* face-height face-nose-ratio)) ) )
-
-  (define (make-mouth width #:ratio [ratio mouth-ratio] #:color [color mouth-color])
-    (filled-ellipse width (* ratio width) #:color color) )
-
-  (define (make-eyes+nose+mouth face-height
-                                #:nose-mouth-ratio [nose-mouth-ratio face-nose-mouth-ratio]
-                                #:face-eye-ratio [face-eye-ratio face-eye-ratio]
-                                #:eye-ratio [eye-ratio eye-ratio]
-                                #:eye-spacing-ratio [eye-spacing-ratio eye-spacing-ratio]
-                                #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-iris-pupil-ratio]
-                                #:color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color]
-                                #:face-nose-ratio [face-nose-ratio face-nose-ratio] #:eye-nose-spacing [eye-nose-spacing 0]
-                                #:face-mouth-ratio [face-mouth-ratio face-mouth-ratio] #:mouth-color [mouth-color mouth-color] )
-    (let* ( [spacing (* nose-mouth-ratio face-height)] )
-      (vc-append spacing
-                 (make-eyes+nose face-height
-                                 #:face-eye-ratio face-eye-ratio
-                                 #:ratio eye-ratio #:spacing-ratio eye-spacing-ratio
-                                 #:iris iris-ratio #:pupil pupil-ratio
-                                 #:color iris-color #:sclera-color sclera-color
-                                 #:face-nose-ratio face-nose-ratio #:eye-nose-spacing eye-nose-spacing
-                                 )
-                 (make-mouth (* face-height face-mouth-ratio) #:ratio face-mouth-ratio #:color mouth-color) ) ) )
-
-  (define (make-face height  #:ratio [ratio face-ratio]
-                #:color [color face-color]
-                #:border-width [border-width face-border-width]
-                #:nose-mouth-ratio [nose-mouth-ratio face-nose-mouth-ratio]
-                #:content-ratio [content-ratio face-content-ratio]
-                #:face-eye-ratio [face-eye-ratio face-eye-ratio]
-                #:eye-ratio [eye-ratio eye-ratio]
-                #:eye-spacing-ratio [eye-spacing-ratio eye-spacing-ratio]
-                #:iris [iris-ratio eye-iris-ratio] #:pupil [pupil-ratio eye-iris-pupil-ratio]
-                #:eye-color [iris-color eye-color] #:sclera-color [sclera-color eye-sclera-color]
-                #:nose-ratio [nose-ratio face-nose-ratio] #:eye-nose-spacing [eye-nose-spacing 0]
-                #:mouth-ratio [mouth-ratio face-mouth-ratio] #:mouth-color [mouth-color mouth-color] )
-    (let* ( [width (* ratio height)]
-            [content (make-eyes+nose+mouth height
-                                           #:nose-mouth-ratio nose-mouth-ratio #:face-eye-ratio face-eye-ratio
-                                           #:eye-ratio eye-ratio #:eye-spacing-ratio eye-spacing-ratio
-                                           #:iris iris-ratio #:pupil pupil-ratio
-                                           #:color iris-color #:sclera-color sclera-color
-                                           #:face-nose-ratio nose-ratio #:eye-nose-spacing eye-nose-spacing
-                                           #:face-mouth-ratio mouth-ratio #:mouth-color mouth-color )]
-            [margin (/ (- width (pict-width content)) 2)] )
-      (printf "~a\n" `(filled-ellipse ,width ,height #:color ,color #:border-width ,border-width))
-      (printf "dx: ~s, dy: ~s\n" margin (* content-ratio height))
-      (pin-over
-       (filled-ellipse width height #:color color #:border-width border-width)
-       margin (* content-ratio height) content ) ) )
-
-#+end_src
-
-** Step 4: A Prettier Solution with Tight Coupling
-
-If we define each procedure inside of the scope of the procedure which calls us,
-we can get rid of all of this redundancy. However, we also get rid of the ease
-of running and testing each piece independently.
-
-Here it is, do you like it?  Do the comments help you see the scopes?
-
-#+begin_src racket
-   #lang slideshow
-
   (define (make-face face-height
                      #:ratio [face-ratio 3/4]
-                     #:color [color "tan"]
-                     #:border-width [border-width 2]
-                     #:nose-mouth-ratio [nose-mouth-ratio 1/8]
-                     #:content-ratio [content-ratio 1/3]
-                     #:face-eye-ratio [face-eye-ratio 1/7]
-                     #:eye-ratio [eye-ratio 2]
-                     #:eye-spacing-ratio [eye-spacing-ratio 1/3]
-                     #:iris [iris-ratio 4/5]
-                     #:pupil [pupil-ratio 2/5]
-                     #:eye-color [eye-color "brown"]
-                     #:sclera-color [sclera-color "lightyellow"]
-                     #:nose-ratio [nose-ratio 1/8]
-                     #:eye-nose-spacing [eye-nose-spacing 0]
-                     #:face-mouth-ratio [face-mouth-ratio 1/8]
-                     #:mouth-ratio [mouth-ratio 1/4]
-                     #:mouth-color [mouth-color "red"] )
+                     ; the rest of the parameters go here
+                     )
 
-    ;; we're still inside the scope of make-face
+    (define (make-eye eye-height)
+       'BODY-OF-MAKE-EYE )
 
-    (define (make-mouth width #:ratio [ratio mouth-ratio] #:color [color mouth-color])
-      (filled-ellipse width (* ratio width) #:color color) )
+    (define (make-eyes eye-height)
+      (let ( [eye (make-eye eye-height)] )
+        (hc-append (* eye-spacing-ratio eye-ratio eye-height) eye eye) ) )
+ 
+    ;; internal defines of the rest of the procedures go here
 
-    (define (make-eyes+nose+mouth)
-
-      ;; we're inside the scope of make-eyes+nose+mouth
-
-      (define (make-eyes+nose)
-
-        ;; we're inside the scope of make-eyes+nose
-
-        (define (make-eyes eye-height)
-
-          ;; we're inside the scope of make-eyes
-
-          (define (make-eye)
-            (let* ( [eye-width (* eye-ratio eye-height)]
-                    [iris-size (* iris-ratio eye-height)]
-                    [pupil-size (* pupil-ratio iris-size)] )
-              (cc-superimpose
-               (filled-ellipse eye-width eye-height #:color sclera-color)
-               (disk iris-size #:color eye-color)
-               (disk pupil-size #:color "black") ) ) )
-
-          ;; make-eyes body
-          (let ( [eye (make-eye)] )
-            (hc-append (* eye-spacing-ratio eye-ratio eye-height) eye eye) ) )
-
-        (define (make-nose size) (disk size))
-
-        ;; make-eyes+nose body
-        (vc-append eye-nose-spacing
-                   (make-eyes (* face-height face-eye-ratio))
-                   (make-nose (* face-height nose-ratio)) ) )
-
-      (define (make-mouth width)
-        (filled-ellipse width (* mouth-ratio width) #:color mouth-color) )
-
-      ;; make-eyes+nose+mouth body
-      (let* ( [spacing (* nose-mouth-ratio face-height)] )
-        (vc-append spacing
-                   (make-eyes+nose)
-                   (make-mouth (* face-height face-mouth-ratio) ) ) ) )
-
-    ;; make-face body
-    (let* ( [width (* face-ratio face-height)]
-            [content (make-eyes+nose+mouth)]
-            [margin (/ (- width (pict-width content)) 2)] )
-      (pin-over
-       (filled-ellipse width face-height #:color color #:border-width border-width)
-       margin (* content-ratio face-height) content ) ) )
-
-  ;; Example Call
-  (make-face 100)
+    ;; body of make-face procedure goes here
+    )
 #+end_src
 
-** Step 4: Discussion: Can we have it all?
+** Step 4 Example Solution: A Prettier Solution with Tighter Coupling
 
-The first example solution is very /hackable/
-- You can explore the solution space experimentally in the repl
+Usual Caveat that this is only one way to do it:
+- [[file:make-face-nested-scopes.rkt][make-face-nested-scopes.rkt]]
+- How is this different from what you did?
+- What do you like about it?
+- What don't you like about it?
+
+** Step 4 Discussion: How can we have it all?
+
+The example solution for Step 3 with most bindings global is very /hackable/
+- You can explore the solution space experimentally in the REPL
 - The parameters and their defaults are easy to modify
 - Each function is easy to call independently
 
-The problem is that there's a lot of repeated boilerplace
-- Many similar keyword arguments are repeated across multiple functions
-- The global bindings with the argument defaults also seem syntactically repetitious
+*** Using Racket and DrRacket Debuggers and REPL-based Development
 
-How can we have the hackability without the rigidity of nested scopes?
+One of the best things about Lisp (and some other interactive languages) is the
+*REPL*
+- *Reads* an S-Expression
+- *Evaluates* the S-Expression in the Current Environment
+- *Prints* its value
+- in a *Loop*
+- /generally the *Read* follows a *Prompt*, so maybe it's a *PREPL*!/
 
-1. Modify the repl or debugger to allow issuing commands inside nested scopes
-       - Has anyone already done this?
-2. Write a macro to allow defining a named group of
-   keyword/parameter-names/default-values compactly and reusing it flexibly
-       - Macros are one of Lisp's superpowers
-       - This might wind up being a very useful language extension!
-       - With set operations for such argument groups, relationships among
-         procedure APIs could be made both more explicit and more compact!
-       - Such should also allow easy delegation of groups of applicable
-         arguments to sub-procedures!
-3. Use class objects with inheritance to store the groups of arguments.
-       - Advantage: Such is already be provided in Racket and most other Lisps
-       - Disadvantage: Some runtime overhead and possibly additional complexity.
+DrRacket is great for beginners
+- DrRacket's /Interaction Window/ is a *REPL*.
+- DrRacket also provides a simple [[https://docs.racket-lang.org/drracket/debugger.html][Graphical Debugging Interface]].
 
-Questions:
-1. What might these approaches look like?
-2. What other approaches can you think of?
-3. What's already been done in this design space?
-4. Would you like to learn about
-       - Racket (or other Lisp) macros?
-       - Racket (or other Lisp) class and object systems?
+You can get a /Racket REPL/ by running the racket application at a /Command Prompt/
+- *racket*
+- the experience will be primitive!
+ 
+You can get the most powerful /Racket REPL/ in an /Emacs Window/
+- This is what the Racket developers use!
+- As usual with Emacs, there's a learning curve!
+      - [[https://docs.racket-lang.org/guide/Emacs.html][Emacs Modes for Racket]]
+      - [[https://racket-mode.com/][Detailed Racket Mode Documentation]]
+
+Traditional Lisps allow you to do
+- full development from the REPL
+- including in the middle of debugging
+Racket is a bit more limited, but /Racket Mode/ in /Emacs/ gets close!
+
+Racket also provides the [[https://docs.racket-lang.org/debug/index.html#%28part._debug-repl%29][debug/repl library and debug-repl function]]
+- Gives you a REPL where you explicitly call =(debug-repl)=.
+- Example: [[file:make-face-nested-debug-repl.rkt][make-face-nested-debug-repl.rkt]]
+
+*** Class Objects
+
+A different solution to the problem of lots of parameters is to group them into
+/Class Objects/.
+- /parameters/ are encapsulated into /fields/ in /objects/
+- field values can be /inherited/ and /overridden/
+This is usually called /Object-Oriented Programming/.
+
+If you wind up using Racket for serious development projects
+- you will want to learn about [[https://docs.racket-lang.org/guide/classes.html][Racket Classes and Objects]]
+
+The Racket Graphics Toolkits uses these techniques and features.
+
+*** More Extreme Nesting
+
+Our example solution still has several bindings available in scopes where
+they're not needed.
+
+Instead of defining all of the subprocedures in the scope of make-face
+- we could define them only in the scope of the procedure which calls them
+
+Can you refactor your solution or our example solution to do that?
+
+Here's an example solution to this challenge: [[file:make-face-maximally-nested.rkt][make-face-maximally-nested.rkt]]
+
+The number of levels of nesting to use is a coding choice.
+- When might multiple levels of nesting be beneficial?
+- When is it more complexity than it's worth?
 
 ** Step Infinity: Complex Objects, e.g. Noses, Mouths, Eyelids, etc.
 
@@ -460,6 +409,9 @@ describe many complex curves and surfaces:
 - [[https://docs.racket-lang.org/metapict/index.html#%28part._ref-bez%29][Bezier Curves]] in the [[https://docs.racket-lang.org/metapict/index.html][MetaPict Library]]
 - [[https://docs.racket-lang.org/manual-sketching/Examples.html#%28part._example_bezier%29][Bezier]] in the [[https://docs.racket-lang.org/manual-sketching/index.html][Sketching Library/Language]]
 
+See the second example in
+- [[file:towards-a-better-nose.rkt][towards-a-better-nose.rkt]]
+
 *** Learning the Lower-Level Racket Drawing Toolkit
 
 Racket's high-level libraries are based on the lower level [[https://docs.racket-lang.org/draw/index.html][Racket Drawing Toolkit]]
@@ -475,35 +427,8 @@ Programming/ to manage the complexity of low level graphics.
 
 Here's the [[https://docs.racket-lang.org/draw/overview.html][Racket Drawing Toolkit Overview]]
 
-Here's an example you can run in DrRacket:
-
-#+begin_src racket
-  #lang racket
-
-  (require pict)
-  (require racket/draw)
-
-  (define (make-fancy-triangle w h)
-    (dc (λ (dc dx dy)
-          (define old-brush (send dc get-brush))
-          (define old-pen (send dc get-pen))
-          (send dc set-brush
-                (new brush% [style 'fdiagonal-hatch]
-                     [color "darkslategray"] ) )
-          (send dc set-pen
-                (new pen% [width 3] [color "slategray"]) )
-          (define path (new dc-path%))
-          (send path move-to 0 0)
-          (send path line-to 50 0)
-          (send path line-to 25 50)
-          (send path close)
-          (send dc draw-path path dx dy)
-          (send dc set-brush old-brush)
-          (send dc set-pen old-pen) )
-        w h ) )
-
-  ;; try: (make-fancy-triangle 50 50)
-#+end_src
+See the first example in
+- [[file:towards-a-better-nose.rkt][towards-a-better-nose.rkt]]
 
 Notice that we're still using our familiar pict library so we can mix and match
 high-level pict functions with the low-level Racket Drawing Toolkit features.
@@ -532,3 +457,21 @@ The Racket Making Tookit can use SVGs by using the [[https://docs.racket-lang.or
 
 The making methods are the same as making on a bitmap, but the result is often
 nicer.
+
+** Consider 3D and Ray-Tracing
+
+There are many techniques to give the appearance of 3D objects on flat screens,
+including the flat screens built into "3D" Virtual Reality Headsets.
+
+The best way to get excellent rendering of 3D objects is
+- have the computer do it!
+- try the Racket Library [[https://docs.racket-lang.org/pict3d/index.html][Pict3D]]
+
+How might you make a 3D Face with Pict3D?
+
+The latest and greatest technology for 3D graphics is [[https://en.wikipedia.org/wiki/Ray_tracing_(graphics)][Ray Tracing (Wikipedia)]]
+
+Ray Tracing is very computationally intensive, but recent high-end consumer
+graphics hardware increasingly has support for it. A number of people are
+working on providing support for Ray Tracing in Graphics Libraries for Racket
+and other languages and development environments.
