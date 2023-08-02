@@ -52,13 +52,12 @@ Computing Magic for those who yearn for such!
 - [[cm-curriculum.org]]
 - [[cm-distinctions.org]]
 - [[cm-quotes.org]]
-- [[https://github.com/GregDavidson/on-computing/blob/main/computing-glossary.org][computing-glossary.org]]
 
 We'll be trying to keep the Computer Programming Languages which we use to a
 practical minimum.
 - See [[file:Languages-And-Platforms/choosing-languages.org][Which Computer Languages Matter?]]
 
-We have additional material in some related Repositories
+Highly recommended related Repositories
 - [[https://github.com/GregDavidson/on-computing#readme][On Computing]]
 - [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]]
 
