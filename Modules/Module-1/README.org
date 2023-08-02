@@ -4,14 +4,14 @@
 
 Based on a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[file:mars-beta-notes.org][Beta Course]] Meeting.
 
+** The Context (you can read this later if you like)
+
 This Module introduces programming using
 - a *Functional Programming Paradigm*
 - writing Functional *Programs which Draw Pictures!*
 - the programs and the pictures become progressively more interesting!
 - This module provides much of interest
       - whether you're new to programming or an expert!
-
-** Learning by Exploring
 
 Programming is best learned by Exploring, that is to say
 1. Read a bit, e.g. from a Tutorial
@@ -29,33 +29,30 @@ See if you can line up some fellowship:
 - A /Peer Facilitator/ who's done this course recently
       - they're more useful than an "expert"
 
-Explore the [[https://docs.racket-lang.org/quick/][Quick Tutorial]]
-- As you try each example
-      - Try variations
-      - Play and Explore
-- Allow yourself to get lost and confused
-      - but don't stay that way!
+** The Plan
 
-** What else might you do?
+1. Explore the [[https://docs.racket-lang.org/quick/][Quick Tutorial]]
+2. As you try each example
+       - Try variations
+       - Play and Explore
+3. Allow yourself to get lost and confused
+       - but don't stay that way!
 
-After you've completed the tutorial through at least through Step 8
-- Trying variations
-- Looking up the features you've used
-You now have some some impressive skills
-- You can divide and conquer large complex problems
-- You /get/ the #1 key to most advanced computing: functions
+4. You're now staring to /get/ the #1 key to most advanced computing:
+   /Functional Procedures/!
 
-*** Do you want to get better at Racket or Lisp?
+5. Now try this [[file:Exercises/Make-A-Face/make-a-face.rkt.org][Exercise: Make A Face in Racket]]
 
-The program [[file:../../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]] shows some variations on the code you explored with
-the /Quick Tutorial/.
+6. Study the program [[file:../../Racket/Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]] which shows some variations on the code you
+   explored with the /Quick Tutorial/.
 
-If you'd like to explore Functional Graphics more, try this
-- [[file:Exercises/Make-A-Face/make-a-face.rkt.org][Exercise: Make A Face in Racket]]
+** Learning More Racket or Lisp
 
-You might also want to [[file:../../Racket/learn-racket.org][Learn (More) Racket]]!
+Here are resources to [[file:../../Racket/learn-racket.org][Learn (More and Better) Racket Programming]]!
 
-I've written about my long-term love affair with Lisp [[https://github.com/GregDavidson/on-lisp#readme][elsewhere]]!
+I've written about my long-term love affair with Lisp [[https://github.com/GregDavidson/on-lisp#readme][HERE]]!
+
+** Assisting Others Helps You Learn!
 
 Once you know a bit more, a really great way to gain more mastery is to
 volunteer as a /Peer Facilitator/ for this course and/or this curriculum.
@@ -64,8 +61,10 @@ volunteer as a /Peer Facilitator/ for this course and/or this curriculum.
       - to immerse in the material
       - to find more related learning resources
       - and to get unstuck when they're unproductively stuck!
-/Peer Facilitators/ are /not/ teachers!
 
-*** Do you want to learn other kinds of Computing?
+/Peer Facilitators/ are /not/ teachers or experts!
 
-This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
+** Continue With More /Computing Magic/
+
+This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]] as soon
+as you feel ready!
