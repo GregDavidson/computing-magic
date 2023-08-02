@@ -17,8 +17,9 @@ Let's start with =git=, /GitHub/ and =emacs=.
 - Git is similarly eating software-development
 - GitHub is the biggest /watering-hole/ for sharing Git Projects
 - /resistance is futile!/
-      - not really, there are alternatives to both
-      - it's still a good idea to learn these popular tools!
+      - /not really, there are alternatives to both/
+      - but these tools are both powerful and very popular
+      - so let's learn them!
 
 If you don't yet have a GitHub account
 - [[https://github.com/join][Create a GitHub Account]]
