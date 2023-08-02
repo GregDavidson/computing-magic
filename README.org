@@ -52,7 +52,7 @@ Computing Magic for those who yearn for such!
 - [[cm-curriculum.org]]
 - [[cm-distinctions.org]]
 - [[cm-quotes.org]]
-- [[file:computing-glossary.org][computing-glossary.org]]
+- [[https://github.com/GregDavidson/on-computing/blob/main/computing-glossary.org][computing-glossary.org]]
 
 We'll be trying to keep the Computer Programming Languages which we use to a
 practical minimum.

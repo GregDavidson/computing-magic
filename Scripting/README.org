@@ -1,6 +1,6 @@
 * Scripting Notes for Computing Magic
 
-From our [[file:../computing-glossary.org][Computing Glossary]]
+From our [[https://github.com/GregDavidson/on-computing/blob/main/computing-glossary.org][Computing Glossary]]
 
 - Scripts :: Programs written in /Scripting Languages/ which are generally
   easier to create, understand and modify than programs written in /General

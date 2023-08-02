@@ -14,7 +14,7 @@ internal links, fold and unfold content and much more! Using =GitHub= or other
 emulations will only provide a small subset of OrgMode capabilities.
 
 Note: Many of the /Italicized/ or =verbatim= terms have a short explanation in
-our [[file:../../computing-glossary.org][Computing Glossary]].
+our [[https://github.com/GregDavidson/on-computing/blob/main/computing-glossary.org][Computing Glossary]].
 
 This document is specifically about /Shell Scripting/. For more general
 scripting, please see [[../README.org][Scripting README]].
