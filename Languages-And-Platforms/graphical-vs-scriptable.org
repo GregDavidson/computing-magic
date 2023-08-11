@@ -163,6 +163,19 @@ Accessing Windows 10 Files under WSL Linux
 - They're under a subdirectory of =/mnt=
       - e.g. =/mnt/c= for the Microsoft /C Drive/
 
+If network access with WSL in Windows 10 seems broken
+- check the nameserver with =cat /etc/resolv.conf=
+- try changing the nameserver to 8.8.8.8
+      - sudo nano /etc/resolv.conf
+- if this works, automate the fix at login time
+      - learn scripting!
+
+The Graphical Terminal Program provided by Microsoft for WSL is /terrible!/
+- It doesn't support copy & paste!
+- Use it to install Emacs and Profile
+- Master the Emacs Tutorial =C-h t=
+- Then use the Emacs =M-x shell= environment instead!
+
 We don't use WSL, do you?
 - Do our Windows 10 tips also apply to Windows 11?
 - Can you give us some more tips for this section?
