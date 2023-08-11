@@ -156,7 +156,7 @@ Posix notes:
       - =.= to copy to current directory
 
 Accessing Linux (WSL) Files in Windows 10
-- They're under a subdirectory of \\wsl$
+- They're under a subdirectory of =\\wsl$=
       - e.g. =\\wsl$\Ubuntu-22.04=
 
 Accessing Windows 10 Files under WSL Linux
