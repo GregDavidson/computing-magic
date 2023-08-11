@@ -53,14 +53,17 @@ Typical Disadvantages:
 
 Typical advantages:
 - The built-in features are typically more advanced and general
-- Creative, unanticipated uses are expected and highly productive
+- Creative, unanticipated uses are possible and highly productive
 - /Anything you can do manually you can automate with scripts!/
 
 Also
 - It's easy to launch any desired Graphical Applications by name
 - Some Graphical Applications are designed to work well with commands
-      - e.g. Emacs
-      - Though some would call Emacs the /Worst of Both Worlds!/
+      - =emacs= has many functions for working with /Shell Commands/
+      - Though some would call =emacs= the /Worst of Both Worlds!/
+      - You might be amused by [[https://en.wikipedia.org/wiki/Editor_war][the Editor Wars]]
+      - and [[https://xkcd.com/378/][the Real Programmers xkcd comic]]
+      - which inspired the Emacs Command =M-x butterfly=
 
 ** How To Become Most Productive
 
