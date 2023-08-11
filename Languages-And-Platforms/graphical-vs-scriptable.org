@@ -5,7 +5,7 @@
 ** TL;DR
 
 If you don't want to read through a lot of context
-- /Skip to *How To Become Most Productive* below!/
+- /Skip to/ *How To Become Most Productive* /below!/
 
 ** Use of Graphical Applications
 
@@ -37,7 +37,7 @@ Typical Advantages:
 
 Typical Disadvantages:
 - Unanticipated uses can be difficult or impossible
-Scripting (automation) is typically awkward or impossible
+- Scripting (automation) is typically awkward or impossible
 - Sophisticated applications still need significant training
       - e.g. effective use of Spreadsheet Programs
 
@@ -93,7 +93,7 @@ By /Posix Systems/ we mean /Operating Systems/ inspired by /Unix/ and /BSD/
 - [[https://en.wikipedia.org/wiki/POSIX][Wikipedia: POSIX]]
 - [[https://en.wikipedia.org/wiki/Linux_distribution][Wikipedia: Linux Distributions]] based on [[https://www.gnu.org/][Gnu/Linux]]
 - [[https://en.wikipedia.org/wiki/List_of_BSD_operating_systems][versions of BSD]]
-- See https://distrowatch.com/ for lots of choices!
+- See https://distrowatch.com for lots of choices!
 
 The author of this document prefers
 - The Mate Edition of [[https://www.linuxmint.com/download.php][Linux Mint]]
@@ -139,17 +139,21 @@ Could you meet your needs by running Microsoft Windows on top of Linux?
 
 ** WSL Tips
 
-WSL uses Posix Syntax
-- like every other Operating System
+WSL uses Posix Syntax - like every other Operating System!
 
-| Purpose                 | Windows | Posix   |
-|-------------------------+---------+---------|
-| Path Separator          | \       | /       |
-| Prefix Command Option   | /       | - or -- |
-| PATH variable separator | ;       | :       |
-| list directory          | dir     | ls      |
-| make directory          | md      | mkdir   |
-| copy                    | copy    | cp      |
+| Purpose                 | Windows | Posix |
+|-------------------------+---------+-------|
+| Path Separator          | \       | /     |
+| Prefix Command Option   | /       | -     |
+| PATH variable separator | ;       | :     |
+| list directory          | dir     | ls    |
+| make directory          | md      | mkdir |
+| copy                    | copy    | cp    |
+Posix notes:
+- =-= for single letter options
+- =--= for long options
+- cp always requires a destination argument
+      - =.= to copy to current directory
 
 Accessing Linux (WSL) Files in Windows 10
 - They're under a subdirectory of \\wsl$
