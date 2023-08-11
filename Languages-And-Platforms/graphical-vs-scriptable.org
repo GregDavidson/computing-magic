@@ -59,11 +59,11 @@ Typical advantages:
 Also
 - It's easy to launch any desired Graphical Applications by name
 - Some Graphical Applications are designed to work well with commands
-      - =emacs= has many functions for working with /Shell Commands/
+      - Many /Emacs Functions/ working with /Shell Commands/
       - Though some would call =emacs= the /Worst of Both Worlds!/
       - You might be amused by [[https://en.wikipedia.org/wiki/Editor_war][the Editor Wars]]
-      - and [[https://xkcd.com/378/][the Real Programmers xkcd comic]]
-      - which inspired the Emacs Command =M-x butterfly=
+      - and the [[https://xkcd.com/378/][Real Programmers xkcd comic]]
+      - which inspired the /Emacs Command/ =M-x butterfly=
 
 ** How To Become Most Productive
 
@@ -72,11 +72,11 @@ Also
 - you are unlikely to ever become highly productive
 
 *If you mostly use /Command Tools/*
-- It will take /a little bit longer/ to become productive
-- You will want to do a lot of /steady, gradual learning/
+- Beginning proficiency will take /a little bit longer/
+- You will want to make a habit of /steady, gradual learning/
 - You will probably want to /take notes on what you learn/
 - If you keep at it, /you will become highly productive/
-      - If you still keep at it, you will become a wizard
+      - If you still keep at it, /you will become a wizard!/
 - *There will be no limit to how productive you become!*
       - The highest-level wizards are called Gurus!
 
