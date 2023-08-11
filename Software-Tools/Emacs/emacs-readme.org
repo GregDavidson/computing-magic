@@ -61,6 +61,8 @@ Some select Video Tutorials:
 Suggestion: *Start keeping your notes and resources using Emacs Orgmode.*
 - Start as soon as you've learned the most basic Emacs and Org-Mode features
 - /Keep learning and exploiting more Emacs and Org-Mode features/
+- I've been doing this for years and it's become a lifesaver
+      - Here's a link to my [[https://github.com/GregDavidson/Public-Notes#readme][Public Notes]] if you're curious!
 
 *** OrgMode Sub-Topics
 
