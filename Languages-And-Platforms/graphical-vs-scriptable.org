@@ -1,0 +1,164 @@
+#+TITLE: Computing Magic
+#+SUBTITLE: Graphical vs. Scriptable Environments
+* Graphical vs. Scriptable Environments
+
+** TL;DR
+
+If you don't want to read through a lot of context
+- /Skip to *How To Become Most Productive* below!/
+
+** Use of Graphical Applications
+
+All modern Desktop Operating Systems support a similar broad range of graphical
+applications such as
+- [[https://en.wikipedia.org/wiki/Productivity_software#Office_suite][Office Suites]] for Office Work
+- Graphical Software Development via [[https://en.wikipedia.org/wiki/Integrated_development_environment][IDEs]]
+- Games
+- etc.
+
+The Apple Macintosh provides a Graphical Desktop and is strongly oriented
+towards doing everything with Graphical Applications, despite being implemented
+on a BSD system.
+
+Microsoft Windows replaced MS-DOS in imitation of the Apple Macintosh.
+
+Most Linux Desktop Distributions, e.g. Ubuntu and Mint also initially install a
+Graphical Desktop and a broad range of Graphical Applications are easily
+installed, usually free of charge!
+
+Graphical applications are elaborate menu-driven systems
+- Mouse actions or =keyboard shortcuts= invoke pre-programmed functions
+- Touch and gesture input is increasingly supported
+
+Typical Advantages:
+- Uses anticipated by the designers are often easy.
+- Features are usually relatively discoverable
+      - reading a manual is often not necessary
+
+Typical Disadvantages:
+- Unanticipated uses can be difficult or impossible
+Scripting (automation) is typically awkward or impossible
+- Sophisticated applications still need significant training
+      - e.g. effective use of Spreadsheet Programs
+
+** Non-Graphical Scripting Environments
+
+Computer Experts usually prefer using non-graphical scripting tools and
+non-graphical commands with only the occasional use of graphical programs.
+
+Typical Disadvantages:
+- You have to know what commands are available
+- You often have to look up obscure options and syntax
+- /Both of these are less of an issue for experts!/
+
+Typical advantages:
+- The built-in features are typically more advanced and general
+- Creative, unanticipated uses are expected and highly productive
+- /Anything you can do manually you can automate with scripts!/
+
+Also
+- It's easy to launch any desired Graphical Applications by name
+- Some Graphical Applications are designed to work well with commands
+      - e.g. Emacs
+      - Though some would call Emacs the /Worst of Both Worlds!/
+
+** How To Become Most Productive
+
+*If you mostly use /Graphical Tools/*
+- you will likely become moderately productive
+- you are unlikely to ever become highly productive
+
+*If you mostly use /Command Tools/*
+- It will take /a little bit longer/ to become productive
+- You will want to do a lot of /steady, gradual learning/
+- You will probably want to /take notes on what you learn/
+- If you keep at it, /you will become highly productive/
+      - If you still keep at it, you will become a wizard
+- *There will be no limit to how productive you become!*
+      - The highest-level wizards are called Gurus!
+
+Key things to help you on this path
+- [[https://github.com/GregDavidson/computing-magic/blob/main/Software-Tools/Emacs/emacs-readme.org][Learn Emacs and OrgMode!]]
+- [[https://github.com/GregDavidson/computing-magic/blob/main/Scripting/README.org][Learn Scripting!]]
+
+- Bottom line :: If you want to become highly productive, play the game of
+  trying to do as much as possible with Scriptable, non-graphical tools.
+
+- Extra value :: Learning to automate tasks with scripting will also make you a
+  better software developer!
+
+** If You Can, Use A Posix System
+
+By /Posix Systems/ we mean /Operating Systems/ inspired by /Unix/ and /BSD/
+- [[https://en.wikipedia.org/wiki/POSIX][Wikipedia: POSIX]]
+- [[https://en.wikipedia.org/wiki/Linux_distribution][Wikipedia: Linux Distributions]] based on [[https://www.gnu.org/][Gnu/Linux]]
+- [[https://en.wikipedia.org/wiki/List_of_BSD_operating_systems][versions of BSD]]
+- See https://distrowatch.com/ for lots of choices!
+
+The author of this document prefers
+- The Mate Edition of [[https://www.linuxmint.com/download.php][Linux Mint]]
+- More people prefer the Cinnamon Edition
+
+** What If You're On An Apple Macintosh?
+
+You're in luck:
+- MacOS on the Apple Macintosh is based on [[https://en.wikipedia.org/wiki/History_of_the_Berkeley_Software_Distribution][BSD]]
+- You can [[https://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/][easily install the traditional BSD command tools]]
+- But a few components may be missing or out of date
+
+Consider [[https://brew.sh/][installing Homebrew]]
+- =brew install bash= gets you an up-to-date [[https://www.gnu.org/software/bash/manual/bash.html#Introduction][bash]]!
+- =brew install emacs-head --with-cocoa= should install Emacs
+- /Most/ popular Posix tools will be easy to install and update
+
+If you have trouble installing Emacs with brew
+- [[https://emacsformacosx.com/][Download a pre-built Emacs for Macs]]
+
+** What If You Want to Run Microsoft Windows?
+
+Microsoft Windows is incompatible with the other major Operating Systems
+- Apple, BSD, Linux and Google are all Posix-Based
+
+Until recently it was a lot of work to add a Posix-compatible environment to
+Microsoft Windows.
+
+Microsoft now offers their [[https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux][Windows Subsystem for Linux]]
+- It runs as part of the Kernel in Microsoft Windows 10
+- It runs as a VM (Virtual machine) on Microsoft Windows 11
+- It's free of charge!
+- It's has a few rough edges but /it's not terrible!/
+
+Another alternative is to run a Posix Distribution of your choice in a Virtual
+Machine on top of Microsoft Windows
+- This will give you more freedom
+- At the cost of less integration between the two systems
+
+Could you meet your needs by running Microsoft Windows on top of Linux?
+- For maximum security, consider [[https://www.qubes-os.org/][Qubes OS]]
+- For maximum integration, consider [[https://www.winehq.org/][Wine for Windows Applications]]
+
+** WSL Tips
+
+WSL uses Posix Syntax
+- like every other Operating System
+
+| Purpose                 | Windows | Posix   |
+|-------------------------+---------+---------|
+| Path Separator          | \       | /       |
+| Prefix Command Option   | /       | - or -- |
+| PATH variable separator | ;       | :       |
+| list directory          | dir     | ls      |
+| make directory          | md      | mkdir   |
+| copy                    | copy    | cp      |
+
+Accessing Linux (WSL) Files in Windows 10
+- They're under a subdirectory of \\wsl$
+      - e.g. =\\wsl$\Ubuntu-22.04=
+
+Accessing Windows 10 Files under WSL Linux
+- They're under a subdirectory of =/mnt=
+      - e.g. =/mnt/c= for the Microsoft /C Drive/
+
+We don't use WSL, do you?
+- Do our Windows 10 tips also apply to Windows 11?
+- Can you give us some more tips for this section?
