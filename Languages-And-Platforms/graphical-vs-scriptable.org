@@ -1,32 +1,31 @@
 #+TITLE: Computing Magic
-#+SUBTITLE: Graphical vs. Scriptable Environments
-* Graphical vs. Scriptable Environments
+#+SUBTITLE: Graphical User Interfaces vs. Scriptable Tools
+* Graphical User Interfaces svs. Scriptable Tools
 
 ** TL;DR
 
 If you don't want to read through a lot of context
 - /Skip to/ *How To Become Most Productive* /below!/
 
-** Use of Graphical Applications
+** Use of Applications with Graphical User Interfaces
 
-All modern Desktop Operating Systems support a similar broad range of graphical
-applications such as
+All modern Desktop Operating Systems support a similar broad range of
+applications with GUIs (Graphical User Interfaces) such as
 - [[https://en.wikipedia.org/wiki/Productivity_software#Office_suite][Office Suites]] for Office Work
-- Graphical Software Development via [[https://en.wikipedia.org/wiki/Integrated_development_environment][IDEs]]
+- GUI Software Development via [[https://en.wikipedia.org/wiki/Integrated_development_environment][IDEs]]
 - Games
 - etc.
 
-The Apple Macintosh provides a Graphical Desktop and is strongly oriented
-towards doing everything with Graphical Applications, despite being implemented
-on a BSD system.
+The Apple Macintosh provides a GUI Desktop and is strongly oriented towards
+doing everything with GUIs, despite being implemented on a BSD system.
 
 Microsoft Windows replaced MS-DOS in imitation of the Apple Macintosh.
 
 Most Linux Desktop Distributions, e.g. Ubuntu and Mint also initially install a
-Graphical Desktop and a broad range of Graphical Applications are easily
-installed, usually free of charge!
+Graphical Desktop and a broad range of GUI Applications are easily installed,
+usually free of charge!
 
-Graphical applications are elaborate menu-driven systems
+GUIs are elaborate menu-driven systems
 - Mouse actions or =keyboard shortcuts= invoke pre-programmed functions
 - Touch and gesture input is increasingly supported
 
@@ -41,10 +40,10 @@ Typical Disadvantages:
 - Sophisticated applications still need significant training
       - e.g. effective use of Spreadsheet Programs
 
-** Non-Graphical Scripting Environments
+** Non-GUI Scripting Environments
 
-Computer Experts usually prefer using non-graphical scripting tools and
-non-graphical commands with only the occasional use of graphical programs.
+Computer Experts usually prefer using non-GUI scripting tools and
+non-GUI commands with only the /occasional use/ of GUI Applications.
 
 Typical Disadvantages:
 - You have to know what commands are available
@@ -57,8 +56,8 @@ Typical advantages:
 - /Anything you can do manually you can automate with scripts!/
 
 Also
-- It's easy to launch any desired Graphical Applications by name
-- Some Graphical Applications are designed to work well with commands
+- It's easy to launch any desired GUI Applications by name
+- Some GUI Applications are designed to work well with commands
       - Many /Emacs Functions/ working with /Shell Commands/
       - Though some would call =emacs= the /Worst of Both Worlds!/
       - You might be amused by [[https://en.wikipedia.org/wiki/Editor_war][the Editor Wars]]
@@ -67,7 +66,7 @@ Also
 
 ** How To Become Most Productive
 
-*If you mostly use /Graphical Tools/*
+*If you mostly use /GUI Tools/*
 - you will likely become moderately productive
 - you are unlikely to ever become highly productive
 
@@ -85,7 +84,7 @@ Key things to help you on this path
 - [[https://github.com/GregDavidson/computing-magic/blob/main/Scripting/README.org][Learn Scripting!]]
 
 - Bottom line :: If you want to become highly productive, play the game of
-  trying to do as much as possible with Scriptable, non-graphical tools.
+  trying to do as much as possible with Scriptable, non-GUI tools.
 
 - Extra value :: Learning to automate tasks with scripting will also make you a
   better software developer!
@@ -173,8 +172,8 @@ If network access with WSL in Windows 10 seems broken
 - if this works, automate the fix at login time
       - learn scripting!
 
-The Graphical Terminal Program provided by Microsoft for WSL is /terrible!/
-- It doesn't support copy & paste!
+The GUI Terminal Program provided by Microsoft for WSL is /terrible!/
+- It doesn't support standard copy & paste!
 - Use it to install Emacs and Profile
 - Master the Emacs Tutorial =C-h t=
 - Then use the Emacs =M-x shell= environment instead!
