@@ -1,6 +1,6 @@
 #+TITLE: Computing Magic
 #+SUBTITLE: Graphical User Interfaces vs. Scriptable Tools
-* Graphical User Interfaces svs. Scriptable Tools
+* Graphical User Interfaces vs. Scriptable Tools
 
 ** TL;DR
 
