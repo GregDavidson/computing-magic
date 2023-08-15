@@ -1,0 +1,41 @@
+* Simple Game Protocol version 1
+
+** Goal
+
+** Alternatives
+
+If we should want to send arbitrary racket values between
+client and server, we should use the racket/serialize package
+https://docs.racket-lang.org/reference/serialization.html
+
+** Strategy
+
+Let's instead create a very simple protocol based on sending
+messages which have
+- a type :: a symbol saying what kind of data the message contains
+- a tag :: a symbol saying the purpose (or why) of the message
+- an optional value :: consistent with the type
+Let's start out with only sending messages with
+- just a tag :: the type will be 'tag
+- a number :: the type will be 'number
+- a string :: the type will be 'string
+
+If any message doesn't parse, we'll throw an error
+The server and client applications will need to deal with it!
+
+see https://docs.racket-lang.org/guide/exns.html
+for Exceptions, with-handlers, error
+
+** Roadmap
+
+- TODO Rewrite the test code
+- TODO Generalize the Recv Functions
+      - Adding homogeneous composite types should be easy
+            - With Strings just one example
+      - Adding hierarchical composite types should also be easy
+
+
+** Issues, Questions, Concerns
+
+We assume Racket is using utf encoding over its TCP I/O ports
+At the moment I don't know how to check if this is the case!!
