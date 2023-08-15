@@ -1,0 +1,89 @@
+* Racket HTTP Server Exercises
+
+** What's This?
+
+This directory contains Racket HTTP Servers
+- example solutions
+- constructive criticism
+- alternative solutions
+inspired by the /Excellent Tutorial/
+- [[https://docs.racket-lang.org/more][More: Systems Programming with Racket]]
+Along with a simple example
+- Non-Web Client/Server Domain-Specific Protocol
+- applied to a very simple game domain
+
+The /More/ Tutorial is teaching and demonstrating
+- general systems and application programming techniques
+- including how to create a framework
+
+If you're specifically interested in creating web servers
+- See this tutorial: [[https://docs.racket-lang.org/continue/index.html][Continue: Web Applications in Racket]]
+- which uses the excellent [[https://docs.racket-lang.org/web-server][Racket Web Framework]]
+
+** What's Here?
+
+The example solutions from the tutorial
+#+begin_src sh
+  ls http-serve-*.rkt | sort | sed 's/\(.*\)/[[file:\1][\1]]/'
+#+end_src
+
+#+RESULTS:
+| [[file:http-serve-1.rkt][http-serve-1.rkt]] |
+| [[file:http-serve-2.rkt][http-serve-2.rkt]] |
+| [[file:http-serve-3.rkt][http-serve-3.rkt]] |
+| [[file:http-serve-4.rkt][http-serve-4.rkt]] |
+| [[file:http-serve-5.rkt][http-serve-5.rkt]] |
+| [[file:http-serve-6.rkt][http-serve-6.rkt]] |
+| [[file:http-serve-7.rkt][http-serve-7.rkt]] |
+| [[file:http-serve-8.rkt][http-serve-8.rkt]] |
+| [[file:http-serve-9.rkt][http-serve-9.rkt]] |
+
+/Alternative Example Solutions/ inspired by the tutorial
+#+begin_src sh
+  ls http-server-*.rkt | sort | sed 's/\(.*\)/[[file:\1][\1]]/'
+#+end_src
+
+#+RESULTS:
+: [[file:http-server-1.rkt][http-server-1.rkt]]
+
+** Constructive Criticism
+
+The Tutorial Servers can be improved in many ways
+- This is true for all interesting software systems!
+
+Code is missing for
+- Sanitizing and normalizing input
+- Throwing errors on invalid input
+- Handling exceptions
+
+Coding Improvements
+- Use of appropriate =let= forms instead of internal defines
+- One or more macros to reduce boilerplate and ease refactoring
+      - Especially for defining handlers
+
+The scope of this ad hoc framework is unnecessarily limited
+
+We'd like handlers to be able to
+- examine input headers
+- generate output headers
+- generate non 200 responses
+- generate output without xhtml
+without complicating the most common case!
+
+These issues are all addressed by
+- the /Alternative Example Solutions/
+
+** A Non-Web Client/Server Framework
+
+Exploratory work on creating
+- a non-web client/server protocol
+- with an example of a very simple game
+
+#+begin_src sh
+  ls game-*.{rkt,org} | sort | sed 's/\(.*\)/[[file:\1][\1]]/'
+#+end_src
+
+#+RESULTS:
+| [[file:game-protocol-1.org][game-protocol-1.org]] |
+| [[file:game-protocol-1.rkt][game-protocol-1.rkt]] |
+| [[file:game-serve-1.rkt][game-serve-1.rkt]]    |
