@@ -5,7 +5,7 @@
 ;; ** Introduction
 
 ;; This example solution is an alternative
-;; to the last example in the Tutorial
+;; to the last example in the tutorial
 ;; More: Systems Programming with Racket
 ;; https://docs.racket-lang.org/more/
 
@@ -20,29 +20,38 @@
 ;; Comments beginning with a space and one or more asterisks
 ;; structure this program into Multi-Level Sections which
 ;; may help structure the code and are also used by Emacs for
-;; code (un)folding if you load, e.g. =Outshine= Mode.
+;; code (un)folding with Outshine Mode.
 
 ;; ** How to Run and Test the Server
+
+;; If you'd like to see more of what's going on in the server,
+;; remove the #; prefix from some of the (eprintf ...) lines.
 
 ;; Run the server at a Racket REPL by calling procedure =serve=
 ;; with an unbound /port number/, e.g.
 
-#; (serve 8080)
+#; (define stopper (serve 8080))
 
 ;; After the server starts with no errors, run a test request
 ;; from a Web Browser with a suitable url, e.g.
 
 ;; http://localhost:8080/hello
 
-;; Note that ports may stay bound for a little while after a program using them
-;; quits, so you may sometimes want to use a different port number, e.g. 8081,
-;; 8082, etc.
+;; When you're done with the server, call
 
-;; ** Packages Required
+#; (stopper)
+
+;; The server runs in a separate thread so the port will stay bound until you
+;; call the stopper procedure. If something goes wrong and this doesn't happen
+;; you can just use a different port, e.g. 8081, 8082, etc.
+
+;; ** Required Packages
 
 (require xml net/url racket/control)
+(require racket/date)
+(require pretty-format)                 ; only for debugging
 
-;; ** Network Boilerplate
+;; ** Serving Clients
 
 ;; Create
 ;; - custodian to manage server resources
@@ -68,11 +77,14 @@
 ;; - timeout thread to abort client after max-time
 ;; Delegate
 ;; - client connection to procedure handle-client
-(define (accept-and-handle listener [max-seconds 10] [max-bytes (* 50 1024 1024)])
+(define (accept-and-handle listener
+                           [max-seconds 10]
+                           [max-bytes (* 50 1024 1024)] )
   (define cust (make-custodian))
   (custodian-limit-memory cust max-bytes)
   (parameterize ( [current-custodian cust] )
     (define-values (in out) (tcp-accept listener))
+    (eprintf "accept-and-handle: We got a client!\n")
     (thread (λ ()
               (with-handlers            ; catch any thrown exceptions
                 ([exn:fail?             ; error thrown while handling client?
@@ -84,6 +96,19 @@
                 (close-output-port out) ))) )
   (thread (λ () (sleep max-seconds)     ; timeout thread
             (custodian-shutdown-all cust) )) )
+
+;; [TODO] Allow handler to supply their own
+;; - content as a string if they don't want to use xhtml
+;; - response headers, status-code, status-string
+(define (handle-client in out)
+  (let ( [req (read-resource in)]
+         [headers (read-headers in)] )
+    (let-values ( [(code xexpr) (prompt (dispatch req headers))] )
+      #;(pretty-eprintf "handle-client got code: ~s xexpr: ~s\n" code xexpr)
+      (write-http-response
+       out #:code code
+       '()                    ; handler-supplied headers should go here!
+       (xexpr->string xexpr) ) ) ) )
 
 ;; ** Utility Procedures
 
@@ -98,68 +123,159 @@
         (let ( [num-matches (length matches)] )
           (cond [(< num-matches 2) #f]  ; no sub-expression match!
                 [(> num-matches 2)      ; too many sub-expressions!
-                 (error (format "regexp-match-1 bad regexp: ~a target: ~a\n"
+                 (error (format "regexp-match-1 bad regexp: ~s target: ~s"
                                 regexp target )) ]
                 ;; return what the sub-expression matched
                 [#t (cadr matches)] ) ) ) ) )
 
+;; ** HTTP Resource Line
+
+;; HTTP Resources are on first line of HTTP Request
+;; In the example: GET mouse/laboratory HTTP/1.0
+;; - the HTTP Resource is: mouse/laboratory
+;; - as that's the Resource the GET Request is requesting
+
+;; [TODO] Remove this procedure?
+;; - It may be redundant now that we're using
+;; - string->url,url-path and path/param-path
+;; from the Racket web framework in dispatch.
+;;
 ;; [TODO] Check that there are no weird bytes!!
 ;; Trim off any leading or trailing [:/[:space:]] characters
 ;; Replace [[:space:]] sequences with a single regular space
 (define (normalize-resource str)
-  (let* ( [left-trimmed (regexp-replace #rx"^[:/[:space:]]*" str "")]
-          [trimmed (regexp-replace #rx"[:/[:space:]]*$" left-trimmed "")] )
-    (regexp-replace #rx"[[:space:]]+" trimmed " ") ) )
+  (string-trim str) ; remove whitespace from the edges
+  #;(let* ( [left-trimmed (regexp-replace #rx"^[:/[:space:]]*" str "")]
+          [trimmed (regexp-replace #rx"[\r:/[:space:]]*$" left-trimmed "")]
+          [normalized (regexp-replace* #rx"[[:space:]]+" trimmed " ")] )
+    (eprintf "normalize-resource str ~s left-trimmed ~s right-trimmed ~s normalized ~s\n"
+             str left-trimmed trimmed normalized )
+    normalized ) )
 
-;; Read HTTP request line and return the
-;; requested resource as a string,
-;; "" if empty or error if malformed
-(define (get-resource in)
+;; Read HTTP request line
+;; return requested resource as a string,
+;; return "" if none
+;; raise error if malformed
+(define (read-resource in)
   (let* ( [first-line (read-line in)]
           [regexp #rx"^GET (.+) HTTP/[0-9]+\\.[0-9]+"]
-          [matches (regexp-match-1 regexp first-line )] )
-    (if (false? matches)
-        (error (format "get-resource regexp: ~a first-line: ~a"
+          [match (regexp-match-1 regexp first-line )] )
+    (if (false? match)
+        (error (format "read-resource regexp: ~s first-line: ~s"
                        regexp first-line ) )
-        (normalize-resource (cadr matches)) ) ) )
+        (let ( [resource (normalize-resource match)] )
+          (eprintf "read-resource returning ~s\n" resource)
+          resource ) ) ) )
 
-;; [TODO] Check that there are no weird bytes!!
+;; ** HTTP Headers
+
+;; For now we'll represent headers as a list of
+;; (header-key header-value) lists where
+;; - header-key is a symbol normalized to lower case
+;;   - should be on standard list of HTTP header keys
+;; - header-value is a string -- should be LATIN-1 encoded
+;; Note: This makes a list of headers into an Association List
+;;       which can be searched using the assoc function!
+
+(define default-headers '( [content-type "text/html; charset=utf-8"] ) )
+;; Good headers to add
+;; content-length: size of content in bytes
+;; date: date and time we sent the content in RFC 9110 format
+;; - e.g. Tue, 15 Nov 1994 08:12:31 GMT
+
+;; [TODO] How should we handle illegal header keys??
+;; - some of which might be illegal symbols??
+(define (normalize-header-key str)
+  (string->symbol (string-downcase (string-trim str))) )
+
+;; [TODO] How should we handle
+;; - Charset encoding issues??
+;; - Multiple lines??
+(define (normalize-header-value str)
+   (string-trim str) )
+
 ;; Trim off any leading or trailing [[:space:]] characters
-;; Replace [[:space:]] sequences with a single regular space
-;; Replace first ": " with a single :
-(define (normalize-headers str)
-  (let* ( [left-trimmed (regexp-replace #rx"^[[:space:]]*" str "")]
-          [trimmed (regexp-replace #rx"[[:space:]]*$" left-trimmed "")]
-          [spaced (regexp-replace #rx"[[:space:]]+" trimmed " ")] )
-    (regexp-replace #rx": *" trimmed ":") ) )
+(define (normalize-headers str) (string-trim str) )
 
-;; get the HTTP headers
-;; return them as an association list
-(define (get-headers in [accum '()])
+;; Read the HTTP headers
+;; return them as an Association List
+;; [TODO] how shall we deal with
+;; - malformed headers??
+;; - unknown header keys??
+;; - duplicate header keys??
+(define (read-headers in [accum '()])
   (let ( [line (normalize-headers (read-line in))] )
     (if (not (non-empty-string? line))
-          (reverse accum)               ; no more headers
-          (let ( [matches (regexp-replace #rx"^([^:]+):(.+)$" line)] )
+          (begin
+            #;(pretty-eprintf "read-headers returning ~v\n" accum)
+            (reverse accum)               ; no more headers
+            )
+          (let ( [matches (regexp-match #rx"^([^:]+):(.+)$" line)] )
             (if (or (false? matches) (not (= 3 (length matches))))
-                (error (format "get-headers line: ~a"))
-                (get-headers (cons (cons (cadr matches) (caddr matches)))) ) ) ) ) )
+                (error (format "read-headers line: ~s ghe-matches: ~s" line matches))
+                (let ( [key (normalize-header-key (cadr matches))]
+                       [value (normalize-header-value (caddr matches))] )
+                  #;(eprintf "read-headers line ~v\n" line)
+                  (read-headers in (cons (list key value) accum)) ) ) ) ) ) )
 
-(define (send-http-response out headers content
+(define (write-headers out headers)
+  (if (null? headers)
+      (display "\r\n" out)  ; blank line indicating end of headers
+      (begin
+        (fprintf out "~a: ~a\r\n" (caar headers) (cadar headers))
+        (write-headers out (cdr headers)) ) ) )
+
+;; return headers augmented with any of the defaults
+;; for which headers has no corresponding key
+(define (merge-headers-defaults headers defaults)
+  (if (null? defaults)
+      headers
+      (let* ( [rest (cdr defaults)]
+              [first (car defaults)]
+              [key (car first)]
+              [match (assoc key headers)] )
+        (merge-headers-defaults (if match headers (cons first headers)) rest) ) ) )
+
+;; ** Writing Responses
+
+;; [TODO] What's a more efficient alternative??
+(define (padded-digits num [min-digits 2])
+  (let* ( [digits (number->string num)]
+          [num-digits (string-length digits)] )
+    (if (>= num-digits min-digits)
+        digits
+        (string-append (make-string (- min-digits num-digits) #\0) digits) ) ) )
+
+;; [TODO] What's more efficient for the Weekdays and Months??
+;; - consider (... #"SunMonTueWedThuFriSat")
+;; returns date-and-time in RFC 9110 format
+;; - e.g. Tue, 15 Nov 1994 08:12:31 GMT
+(define (http-timestamp)
+  (let ( [date (seconds->date (current-seconds) #f)] )
+    (format "~a, ~a ~a ~a ~a:~a:~a GMT"
+            (vector-ref #("Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun") (date-week-day date))
+            (date-day date)
+            (vector-ref #("Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec") (date-month date))
+            (date-year date)
+            (padded-digits (date-hour date))
+            (padded-digits (date-minute date))
+            (padded-digits (date-second date)) ) ) )
+
+(define (write-http-response out headers content
                             #:protocol [protocol "HTTP/1.0"]
                             #:code [code 200]
                             #:message [message "Okay"] )
-  (fprintf out "~a ~a ~a\r\n" protocol code message) )
-
-;; ** Procdure Handle-Client
-
-(define (handle-client in out)
-  (let ( [req (get-resource in)]
-         [headers (get-headers in)] )
-    (let-values ( [(code xexpr) (prompt (dispatch req headers))] )
-      (send-http-response
-       out #:code code
-       '( ("Serve" "k") ("Content-Type" "text/html") )
-       (xexpr->string xexpr) ) ) ) )
+  (let* ( [content-bytes (string->bytes/utf-8 content)]
+          [content-length (bytes-length content-bytes)]
+          [with-content-length (cons (list 'content-length content-length) default-headers)]
+          [with-date (cons (list 'date (http-timestamp)) with-content-length)] )
+    #;(eprintf "write-http-response protocol ~s code ~s message ~s\n"
+               protocol code message )
+    #;(eprintf "write-http-response content ~s\n" content)
+    (fprintf out "~a ~a ~a\r\n" protocol code message)
+    ;; [todo] add date field to default-headers
+    (write-headers out (merge-headers-defaults headers with-date))
+    (display content-bytes out) ) )
 
 ;; ** Dispatching 
 ;; *** Dispatch Protocol
@@ -178,17 +294,6 @@
 ;; Dictionaries are a kind of dictionary
 ;; which can use the generic dictionary operations
 
-;; return headers augmented with any of the defaults
-;; for which headers has no corresponding key
-(define (merge-headers-defaults headers defaults)
-  (if (null? defaults)
-      headers
-      (let* ( [rest (cdr defaults)]
-              [first (car defaults)]
-              [key (car first)]
-              [match (assoc key headers)] )
-        (merge-headers-defaults (if match headers (cons first headers)) rest) ) ) )
-
 ;; *** Dispatch Table
 
 ;; Pair url paths to handler procedures with
@@ -197,14 +302,17 @@
 ;; Adding a new handler procedure without syntactic sugar
 
 (hash-set! dispatch-table "hello"
-           (λ (query headers) `(html (body "Hello, World!"))) )
+           (λ (query [headers '()])
+             #;(eprintf "hello query: ~a\n" query)
+             #;(eprintf "hello returning some xhtml now\n")
+             `(html (body "Hello, World!")) ) )
 
 ;; *** Syntactic Sugar
 
 ;; nicer syntax for defining handler procedures
 (define-syntax-rule (define-handler name body ...)
   (hash-set! dispatch-table (symbol->string 'name)
-             (λ (query headers) body ...) ) )
+             (λ (query [headers '()]) body ...) ) )
 
 ;; Adding a new handler procedure with syntactic sugar
 
@@ -226,10 +334,15 @@
 ;; - content as an xhtml expression
 ;; - [TODO] response headers
 (define (dispatch request [headers '()])
+  (eprintf "dispatch request ~s\n" request)
+  #;(pretty-eprintf "dispatch headers ~s\n" headers)
   (let* ( [url (string->url request)] ; Parse request as URL
           [path (map path/param-path (url-path url))] ; Extract the path part
           ;; Find handler from path's first element
           [handler (hash-ref dispatch-table (car path) #f)] )
+    (eprintf "dispatch url ~s\n" url)
+    (eprintf "dispatch url-query ~s\n" (url-query url))
+    (eprintf "dispatch path ~s\n" path)
     (if handler
         (values 200 (handler (url-query url)))
         (values 404
@@ -290,6 +403,7 @@
 
 ;; Helper to grab a computation and generate a handler for it:
 
+;; Whats with tag ???
 (define (send/suspend mk-page)
   (let/cc k
     (define tag (format "k~a" (current-inexact-milliseconds)))
