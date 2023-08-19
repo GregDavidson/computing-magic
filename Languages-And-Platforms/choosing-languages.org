@@ -78,7 +78,6 @@ With experience, you can pick up a language in a familiar family and be
 productive in a few hours and masterful in a few days - I stopped counting
 languages after I'd used 60 languages for significant projects.
 
-Currently just a list of important languages. More content coming!
 
 *** [[https://github.com/GregDavidson/on-lisp#readme][Lisps]]
 
@@ -86,13 +85,31 @@ The Lisp family contains some of the most flexible general purpose high-level
 languages. See [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]] for more depth. Lisps in the Scheme family are among the
 most elegant, where elegance refers to a combination of power and simplicity.
 
-- [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Some Scheme Systems]]
-      - [[https://racket-lang.org][Racket]]
-      - [[https://www.gnu.org/software/guile][Guile]]
-- [[https://clojure.org][Clojure compiles to the JVM]]
+Lisp systems are Multi-Paradigm with good support for
+- Functional Programming
+- Object-Oriented Programming
+- Imperative Programming
+
+Pros:
+- Programmer Freedom to Mix&Match Styles and Paradigms
+- Lisp Programs are also Lisp Data
+- Good for Meta-Programming and Syntactic Macros
+Cons:
+- Mixing&Matching can make programs hard to understand!
+
+- [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme invented Lisp Killer Features]]
+      - All Scheme Procedures are Lambda Procedures
+      - End-Calls aka Tail-Calls are Compiled Away
+      - Delimited Continuations provide Ultimate Control!
+      - The Numeric Tower
+- Languages based on or evolved from Scheme
+      - [[https://racket-lang.org][Racket - builds a rich ecosystem around Scheme]]
+      - [[https://www.gnu.org/software/guile][Guile - Scheme with Pragmatic Extensions]]
+- Clojure aims for minimalism and pulls it off!
+      - [[https://clojure.org][Clojure compiles to the JVM]]
       - [[https://clojurescript.org][ClojureScript compiles to JavaScript]]
-- [[https://en.wikipedia.org/wiki/Common_Lisp][Common Lisp is the largest Lisp]]
-- [[Emacs/elisp-vs-scheme.org][Emacs Lisp is what makes Emacs so powerful]]
+- [[https://en.wikipedia.org/wiki/Common_Lisp][Common Lisp is the most featureful Lisp]]
+- [[Emacs/elisp-vs-scheme.org][Emacs Lisp is the source of Emacs power]]
 
 *** [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic]] [[https://en.wikipedia.org/wiki/Constraint_logic_programming][and]] [[https://en.wikipedia.org/wiki/Constraint_programming][Constraint]] Programming
 
@@ -107,7 +124,7 @@ correct answers. This is powerful Computing Magic!
 - There are [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][many Logic-Programming Languages]]
       - [[https://en.wikipedia.org/wiki/SWI-Prolog][SWI-Prolog]] - very popular
       - [[https://en.wikipedia.org/wiki/Ciao_(programming_language)][Ciao Prolog]] - also great for constraint logic programming
-      - [[https://en.wikipedia.org/wiki/XSB][XSB Prolog]] - the host of Flora-2
+      - [[https://en.wikipedia.org/wiki/XSB][XSB Prolog]] - the language underlying the [[https://github.com/ErgoAI][ErgoAI Platform]]
 
 *** [[https://en.wikipedia.org/wiki/Knowledge-based_systems][Knowledge-Based]] Programming
 
@@ -136,9 +153,13 @@ Knowledge-Based Programming is a natural extension of Constraint Logic
 Programming
 
 Many frameworks have been created for Knowledge-Based Programming
-- [[https://en.wikipedia.org/wiki/Flora-2][Wikipedia: Flora-2]], [[http://flora.sourceforge.net/][Flora-2 Website]]
+- [[https://github.com/ErgoAI][ErgoAI Platform]]
 
 *** Systems Programming Languages
+
+Paradigms
+- Imperative Programming
+- Limited Functional Programming - especially with Rust
 
 Systems Programming is the art of writing programs which directly control
 hardware devices, called device drivers and programs which directly control
@@ -170,7 +191,12 @@ follow the Relational Model and use the standard query language SQL.
 
 *** Some Extraordinary Languages
 
-**** [Array-Oriented Languages
+Paradigms
+- These languages have their own special Paradigm
+      - In some ways like Functional Programming
+      - with extraordinary power yet less abstraction
+
+**** Array-Oriented Languages
 
 The Iverson family of Languages use elegant compact notations allowing for
 remarkably short and powerful programs. These languages are very powerful and
@@ -189,21 +215,20 @@ Object Oriented Languages. They are especially good for art and multi-media
 simulations. They will teach you how to think in the Object Oriented paradigm
 which you can then use in other languages.
 
-- [[https://squeak.org][Squeak Smalltalk]] is the most popular
-- [[ttps://pharo.org][Pharo Smalltalk]] is the most elealternative
--
-**** [Typed Functional Languages
+Paradigms
+- Pure Object-Oriented with Inheritance
 
-Haskell is the poster-child for developing programs by first expressing
+- [[https://squeak.org][Squeak Smalltalk]] is the most popular
+- [[ttps://pharo.org][Pharo Smalltalk]] is an elegant and fast-moving alternative
+
+**** Typed Functional Languages
+
+[[https://www.haskell.org][Haskell]] is the poster-child for developing programs by first expressing
 the types and relationships in the program.  Haskell will teach you powerful
 ways of thinking about programming and how to create programs that are much
 more reliable than usual.
 
-- [[https://www.haskell.org][Haskell]]
-
 *** Web and XML Languages
-
-**** Web Programming Languages
 
 - JavaScript
       - Famously powerful, famously flawed!
@@ -213,7 +238,7 @@ more reliable than usual.
       - Clojure Lisp compiled to JavaScript
       - Use ClojureScript if you use Clojure on your server
 
-**** Document Languages
+*** Document Languages
 
 These languages structure and present your information. They also provide hooks
 for programming language to manipulate your documents in creative ways.
@@ -222,7 +247,10 @@ for programming language to manipulate your documents in creative ways.
       - [[https://html.spec.whatwg.org/multipage/][Features]] and [[https://www.w3.org/TR/][Standards]]
       - CSS
 - [[https://en.wikipedia.org/wiki/XML][XML]], [[https://en.wikipedia.org/wiki/XHTML][XHTML]], [[https://en.wikipedia.org/wiki/XSLT][XSLT]]
-- [[https://orgmode.org][OrgMode]], [[https://en.wikipedia.org/wiki/TeX][ΤΕΧ]], [[https://www.libreoffice.org/discover/what-is-opendocument/][Open Document]]
+- [[https://orgmode.org][OrgMode]] - an Emacs /Killer-App/ for creating /Active Documents/
+- [[https://en.wikipedia.org/wiki/TeX][ΤΕΧ]] - a Turning-Complete markup language for printed documents
+- [[https://www.libreoffice.org/discover/what-is-opendocument/][Open Document]] - the basis for [[https://www.libreoffice.org][LibreOffice]] and [[https://www.fsf.org/campaigns/opendocument/][More]]
+- [[https://docs.racket-lang.org/scribble][Scribble: A Racket-based Documentation Language]]
 
 *** Shells and [[https://en.wikipedia.org/wiki/Domain-specific_language][Domain Specific Languages]]
 
@@ -246,7 +274,10 @@ Text-Oriented DSLs
 Automated development tools are like Shells for Shells
 - [[https://en.wikipedia.org/wiki/Make_(software)][make: automate file processing]]
 
-** Comparing Languages
+** Comparing Languages and Paradigms
+
+Some good videos
+- [[https://www.youtube.com/watch?v=QyJZzq0v7Z4][Why Isn't Functional Programming the Norm? – Richard Feldman]]
 
 The [[https://rosettacode.org/wiki/Category:Programming_Languages][Rosetta Code]] site has brief explanations and examples of over 900
 programming languages. Choice of language can have a big impact on ease of
@@ -259,3 +290,64 @@ It's hard to compare languages objectively. Many programs on Rosetta Code or
 Competitive Programming Sites are not written the way one would usually program
 in those languages. You have to be able to think in a language before you
 understand it properly. This takes time but can be very rewarding!
+
+** Programming Productivity
+
+Support the various powerful Programming Paradigms only accounts for some
+aspects of Programming Productivity.
+
+This section may be the most important but it's too dry - can you help?
+
+*** Aspects of programming Productivity
+
+Expressivity
+- How easily can you express your ideas?
+      - After you've learned a language well!
+      - And how hard was that?
+- Can the code evolve as your ideas evolve?
+      - See maintainability below!
+
+Reliability
+- Can you easily avoid
+      - Security Issues
+            - Data Leeks, Privilege Escalation,
+            - Malware intrusion, etc.
+      - Unexpected and undesirable behavior
+            - Race Conditions
+            - Allocation Issues
+                  - Use after Free
+                  - Memory Leaks
+- Can you /Prove/ bad things can't happen?
+
+Maintainability
+- How easily can you
+      - add features
+            - with minimum added complexity
+      - generalize features
+            - adding capability while reducing complexity
+            - gracefully accommodating increased abstraction
+      - refactor complex code
+            - to make it less clumsy
+            - to prepare for improvements
+      - debug undesired behavior
+            - and properly fix rather than merely patch such?
+
+Performance
+- Are your great ideas limited by your language's performance?
+
+Software Design Patterns
+- Can you easily use well-known solutions to common problems?
+
+Libraries, Frameworks, Tools
+- Can you leverage existing well-designed and well-written code?
+      - What is available for your language?
+      - Can you easily find what would help you?
+      - How easy is it to use and incorporate these things?
+- Are the libraries and frameworks readable in your language?
+      - Or do you need to learn another, lower level language?
+            - Python libraries tend to be written in C!
+      - If they're written in the same language you know
+            - Are they understandable given normal skill in your language?
+            - Can you easily extend them, debug them, learn from them?
+- Can you package your ideas into a reusable form?
+      - I.e. write your own libraries and frameworks?
