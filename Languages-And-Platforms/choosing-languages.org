@@ -281,7 +281,7 @@ Some good videos
 
 The [[https://rosettacode.org/wiki/Category:Programming_Languages][Rosetta Code]] site has brief explanations and examples of over 900
 programming languages. Choice of language can have a big impact on ease of
-solving various kinds of problems.
+solving particular problems.
 
 Choice of language can also have a big impact on [[https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html][how fast your programs run]] and
 other performance criteria.
@@ -317,7 +317,7 @@ Reliability
             - Allocation Issues
                   - Use after Free
                   - Memory Leaks
-- Can you /Prove/ bad things can't happen?
+- Can you /Prove/ [[https://en.wikipedia.org/wiki/Correctness_(computer_science)][your program will be well-behaved]]?
 
 Maintainability
 - How easily can you
