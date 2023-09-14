@@ -5,13 +5,6 @@
 Create a Client/Server Communication and Coordnation Protocol for a simple
 Guessing Game
 
-This document started out describing a naive implementation of such a protocol
-with hand-written Racket Code.
-
-It is currently in transition to describe an approach based on the guidance in
-our new document
-- [[file:client-server-protocol-design.org][Client Server Protocol Design]]
-
 ** High-Level View of Application Protocol
 
 #+begin_src plantuml :results verbatim
@@ -51,28 +44,14 @@ Client -> Server : Disconnect
      `------'                   `------'
 #+end_example
 
-** Strategy 0: Automatic Serialization
+** Strategy
 
-In version 0 we simply used one of Racket's serialization
-mechanisms to send tagged structures between Client and Server.
+Create a record type or class type for each 
 
-** Strategy 1: Design a Text Protocol from Scratch
 
-Let's instead create a very simple protocol based on sending
-messages which have
-- a type :: a symbol saying what kind of data the message contains
-- a tag :: a symbol saying the purpose (or why) of the message
-- an optional value :: consistent with the type
-Let's start out with only sending messages with
-- just a tag :: the type will be 'tag
-- a number :: the type will be 'number
-- a string :: the type will be 'string
-
-If any message doesn't parse, we'll throw an error
-The server and client applications will need to deal with it!
-
-see https://docs.racket-lang.org/guide/exns.html
-for Exceptions, with-handlers, error
+If we should want to send arbitrary racket values between
+client and server, we should use the racket/serialize package
+https://docs.racket-lang.org/reference/serialization.html
 
 ** Roadmap
 

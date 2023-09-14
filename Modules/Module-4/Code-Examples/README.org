@@ -22,7 +22,7 @@ If you're specifically interested in creating web servers
 
 ** What's Here?
 
-The example solutions from the tutorial
+The example solutions from the tutorial are here
 #+begin_src sh
   ls http-serve-*.rkt | sort | sed 's/\(.*\)/[[file:\1][\1]]/'
 #+end_src
@@ -44,7 +44,8 @@ The example solutions from the tutorial
 #+end_src
 
 #+RESULTS:
-: [[file:http-server-1.rkt][http-server-1.rkt]]
+| [[file:http-server-1.rkt][http-server-1.rkt]] |
+| [[file:http-server-2.rkt][http-server-2.rkt]] |
 
 ** Constructive Criticism
 
@@ -67,23 +68,68 @@ We'd like handlers to be able to
 - examine input headers
 - generate output headers
 - generate non 200 responses
-- generate output without xhtml
-without complicating the most common case!
+- generate output with or without xhtml
+without complicating the most common cases!
 
-These issues are all addressed by
-- the /Alternative Example Solutions/
+The coding issues are addressed by the
+- [[file:http-server-1.rkt][http-server-1.rkt]] :: first alternative example
+The scope and design issues by the
+- [[file:http-server-2.rkt][http-server-2.rkt]] :: second alternative example
 
-** A Non-Web Client/Server Framework
+** Design Considerations for Second Alternative Example
 
-Exploratory work on creating
-- a non-web client/server protocol
-- with an example of a very simple game
+Can we generalize the interface to our handler functions?
+- Their parameter signatures
+      - each either positional or named, required or optional
+      - required/optional and position vs. named/positional
+- Their return arities
+      - ideally returning only 1 value
 
-#+begin_src sh
-  ls game-*.{rkt,org} | sort | sed 's/\(.*\)/[[file:\1][\1]]/'
-#+end_src
+We can either
+- Give all Handler Functions the same interface
+- Group or Tag the Handler Functions by their interface
 
-#+RESULTS:
-| [[file:game-protocol-1.org][game-protocol-1.org]] |
-| [[file:game-protocol-1.rkt][game-protocol-1.rkt]] |
-| [[file:game-serve-1.rkt][game-serve-1.rkt]]    |
+Generalizing the Handler Function Parameters
+- Required Parameters: path
+- Optional Parameters: query-string/form-data, headers
+      - We can use the same data structure for
+            - Query Strings from GET ?var=val settings
+            - Form Data from GET form fields
+- Any miscellaneous data can be passed as a pseudo-header
+      - PUT vs. GET, HTTP Version, etc.
+
+We could allow Handler Functions to return any of
+1. a simple string
+       - send it with default headers
+2. an XHTML S-Expression
+3. Output Headers
+       - Including pseudo-headers specifying
+             - status-code, status-string
+             - content as either strings or xhtml
+
+Output Pseudo-Headers would be ignored by write-header.
+- Type or Spelling convention of their header-keys.
+
+This design is very Lispy, i.e.
+- it uses easy runtime detection of intent
+- rather than using more formal static datatypes
+
+An especially lispy technique is to define the Handler Functions
+with a macro so that
+- they're especially easy to read and write
+- the interface is easy to centrally change
+      - e.g. an optional named parameter could be added in the macro
+            - new handler functions could use it
+            - old handler functions are free to ignore it
+
+** A Non-HTTP Client/Server Network Protocol
+
+There are many ways to enable Clients and Servers to /Connect and Coordinate/ over a network.
+
+General-Purpose Protocols include
+- [[https://en.wikipedia.org/wiki/HTTP][HTTP]] without or without elements of [[https://www.w3.org/][Web Standards]] such as [[https://en.wikipedia.org/wiki/XHTML][XHTML]]
+- [[https://en.wikipedia.org/wiki/Remote_procedure_call][Remote Procedure Call]] libraries and frameworks
+- etc.
+
+It's also possible and sometimes valuable to
+- [[file:client-server-protocol-design.org][Design a Custom Client/Server Protocol]]!
