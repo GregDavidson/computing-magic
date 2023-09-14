@@ -1,4 +1,4 @@
-* Simple Game Protocol version 1
+* Simple Game Protocol version 0
 
 ** Goal
 
