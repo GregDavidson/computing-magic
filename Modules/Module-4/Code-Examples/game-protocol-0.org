@@ -7,6 +7,9 @@ Guessing Game
 
 ** High-Level View of Application Protocol
 
+Note: With PlantUML, Emacs and Org-Babel you can turn this description into a
+nice diagram.
+
 #+begin_src plantuml :results verbatim
 Client -> Server : Connect
 Client -> Server : Authenticate
@@ -49,21 +52,21 @@ Client -> Server : Disconnect
 Create a record type or class type for each 
 
 
-If we should want to send arbitrary racket values between
-client and server, we should use the racket/serialize package
-https://docs.racket-lang.org/reference/serialization.html
+If we want to send arbitrary racket values between client and server,
+we can use [[https://docs.racket-lang.org/reference/serialization.html][Racket Serialization]].
 
-** Roadmap
+You might start with this initial example:
 
-- TODO Rewrite the test code
-- TODO Generalize the Recv Functions
-      - Adding homogeneous composite types should be easy
-            - With Strings just one example
-      - Adding hierarchical composite types should also be easy
+- [[file:game-protocol-0.rkt][game-protocol-0.rkt]]
+- [[file:game-serve-0.rkt][game-serve-0.rkt]]
+- [[file:game-client-0.rkt][game-client-0.rkt]]
 
-** Issues, Questions, Concerns
+** Roadmap for Improvement
 
-We assume Racket is using utf encoding when sending Strings over I/O Ports
-- How could we check this?
-- And does it matter?
-Would it be better to send Byte Vectors instead?
+- Add more error detection and reporting
+- Add authentication
+      - Use [[https://docs.racket-lang.org/openssl/][OpenSSL for Secure Commmunication]]
+      - Modify the protocol to provide a game /Token/
+            - Something to use to join an existing game
+- Add guidance and Example Solutions for better games
+      - Multi-Person Games

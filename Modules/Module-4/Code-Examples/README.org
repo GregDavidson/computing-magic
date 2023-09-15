@@ -1,28 +1,59 @@
-* Racket HTTP Server Exercises
+* Racket Network Programming
 
-** What's This?
+This directory contains Servers and Clients demonstrating
+- /Systems Programming/ Techniques
+- /Network Programming/ with /Sockets/
+- in the high-level language [[https://racket-lang.org][Racket]]
 
-This directory contains Racket HTTP Servers
-- example solutions
-- constructive criticism
-- alternative solutions
-inspired by the /Excellent Tutorial/
-- [[https://docs.racket-lang.org/more][More: Systems Programming with Racket]]
-Along with a simple example
-- Non-Web Client/Server Domain-Specific Protocol
-- applied to a very simple game domain
+** HTTP (i.e. Web) Servers
 
-The /More/ Tutorial is teaching and demonstrating
-- general systems and application programming techniques
-- including how to create a framework
+The excellent tutorial [[https://docs.racket-lang.org/more][More: Systems Programming with Racket]] introduces
+- General systems and application programming techniques
+      - including use of sockets and threads
+- General Web Programming
+- Some powerful Scheme & Racket Technologies
 
-If you're specifically interested in creating web servers
+Examples from the tutorial
+- [[file:http-serve-1.rkt][http-serve-1.rkt]]
+- [[file:http-serve-2.rkt][http-serve-2.rkt]]
+- [[file:http-serve-3.rkt][http-serve-3.rkt]]
+- [[file:http-serve-4.rkt][http-serve-4.rkt]]
+- [[file:http-serve-5.rkt][http-serve-5.rkt]]
+- [[file:http-serve-6.rkt][http-serve-6.rkt]]
+- [[file:http-serve-7.rkt][http-serve-7.rkt]]
+- [[file:http-serve-8.rkt][http-serve-8.rkt]]
+- [[file:http-serve-9.rkt][http-serve-9.rkt]]
+
+And some practical development improvements post-tutorial
+- [[file:http-server-1.rkt][http-server-1.rkt]]
+- [[file:http-server-2.rkt][http-server-2.rkt]]
+
+If you're interested in creating better web servers in Racket
 - See this tutorial: [[https://docs.racket-lang.org/continue/index.html][Continue: Web Applications in Racket]]
 - which uses the excellent [[https://docs.racket-lang.org/web-server][Racket Web Framework]]
 
-** What's Here?
+** A simple example and framework for non-HTTP Socket Programming
 
-The example solutions from the tutorial are here
+Note: This code is not quite in a finished state as of [2023-09-15].
+
+- [[file:game-protocol-0.org][game-protocol-0.org]]
+- [[file:game-protocol-0.rkt][game-protocol-0.rkt]]
+- [[file:game-serve-0.rkt][game-serve-0.rkt]]
+- [[file:game-client-0.rkt][game-client-0.rkt]]
+
+** Custom Protocol Designs for Network Programming
+
+Note: This is a deep and complex topic and these materials need significantly
+work to be useful! [2023-09-15]
+
+- [[file:client-server-protocol-design.org][client-server-protocol-design.org]]
+- [[file:game-protocol-1.org][game-protocol-1.org]]
+- [[file:game-protocol-1.rkt][game-protocol-1.rkt]]
+- [[file:game-serve-1.rkt][game-serve-1.rkt]]
+
+** TODO Working Area
+
+The example solutions from the tutorial
 #+begin_src sh
   ls http-serve-*.rkt | sort | sed 's/\(.*\)/[[file:\1][\1]]/'
 #+end_src
@@ -124,7 +155,8 @@ with a macro so that
 
 ** A Non-HTTP Client/Server Network Protocol
 
-There are many ways to enable Clients and Servers to /Connect and Coordinate/ over a network.
+There are many ways to enable Clients and Servers to /Connect and Coordinate/
+over a network.
 
 General-Purpose Protocols include
 - [[https://en.wikipedia.org/wiki/HTTP][HTTP]] without or without elements of [[https://www.w3.org/][Web Standards]] such as [[https://en.wikipedia.org/wiki/XHTML][XHTML]]
