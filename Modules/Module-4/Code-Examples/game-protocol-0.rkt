@@ -1,5 +1,9 @@
 #lang racket
 
+;; * A Simple Game Protocol
+
+;; ** About The Protocol
+
 ;; This Racket Package provides functions which implement a communications
 ;; protocol between a Client Program and a Server Program which together
 ;; implement a game
@@ -22,6 +26,8 @@
 ;; - more resistant to errors?
 ;; - more graceful in the face of errors?
 
+;; ** Provided Bindings
+
 (provide (struct-out game)
          write-game
          read-game
@@ -35,6 +41,8 @@
          serialize-write
          deserialize-read )
 
+;; ** Serialization Support
+
 (require racket/serialize)
 
 (define (serialize-write item out)
@@ -47,11 +55,7 @@
     (unless (serializable? item) (raise (unexpected 'serializable item)))
     (deserialize item) ) )
 
-;; for guesses and for mininum of allowed range
-(define (integer>=0? n) (and (integer? n) (>= n 0)))
-
-;; for maximum of allowed range
-(define (integer>0? n) (and (integer? n) (>= n 0)))
+;; ** serializable-struct game
 
 ;; A game record has
 ;; - a player's name, currently unused, available for
@@ -77,6 +81,8 @@
     (printf "Got ~a\n" item)
     item ) )
 
+;; ** serializable-struct guess
+
 ;; A guess record simply contains a guess
 (serializable-struct guess (number)
                       #:transparent
@@ -94,6 +100,8 @@
     (unless (guess? item) (raise (unexpected 'guess item)))
     (printf "Got ~a\n" item)
     item ) )
+
+;; ** serializable-struct feedback
 
 ;; A feedback record contains the server's feedback
 ;; '< when the guess was too large
@@ -117,4 +125,12 @@
     (printf "Got ~a\n" item)
     item ) )
 
+;; ** struct unexpected and utility functions
+
 (struct unexpected (expected got))
+
+;; for guesses and for mininum of allowed range
+(define (integer>=0? n) (and (integer? n) (>= n 0)))
+
+;; for maximum of allowed range
+(define (integer>0? n) (and (integer? n) (>= n 0)))

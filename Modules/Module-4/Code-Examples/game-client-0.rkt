@@ -1,11 +1,16 @@
 #lang racket
 
+;; * A Simple Game Client Application
+
 ;; See this required module for ideas on how to evolve the game
 (require "game-protocol-0.rkt")
 
+;; These bindings will be MODIFIED during play!
 (define our-min 0)   ; guess must be >= than this
 (define our-max 100) ; guesses must be less that this
 (define our-player "player")
+
+;; ** Connect to Server and Initiate Game
 
 (define (play host port-num)
   ;; Connect to a game server
@@ -31,6 +36,8 @@
         (close-input-port in)
         (close-output-port out) ) ) ) )
 
+;; ** Play the Game
+
 (define (play-game in out)
   (let ( [n (get-guess our-min our-max)] )
     (write-guess (guess n) out)
@@ -42,6 +49,8 @@
                         ((=) "You guessed it") ))
       (unless (eq? '= f)
         (play-game in out) ) ) ) )
+
+;; ** Utility Functions
 
 (define (read-nonempty-line)
   (let ( [line (read-line)] )

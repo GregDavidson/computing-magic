@@ -1,12 +1,14 @@
 #lang racket
 
-;; See this required module for ideas on how to evolve the game
+;; * A Simple Game Server
+
+;; See this module for ideas on how to evolve the game
 (require "game-protocol-0.rkt")
 
 #; (define stop-serve (serve 8080)) ; start the server
 #; (stop-serve) ; stop the server
 
-;; Create a server and return a shutdown thunk
+;; ** Create a server and return a shutdown thunk
 (define (serve port-num)
   ;; Ensure all resources are managed by main-custodian
   (define main-custodian (make-custodian))
@@ -22,7 +24,7 @@
     (thread loop)
     (λ () (custodian-shutdown-all main-custodian)) ) )
 
-;; Accept and Handle a new client from the Rendezvous Socket
+;; ** Accept and Handle a new client from the Rendezvous Socket
 (define (accept-and-handle listener)
   ;; Receive the I/O connections for a new client
   ;; - this will suspend until a client comes along
@@ -34,7 +36,7 @@
   (close-input-port in)
   (close-output-port out) )
 
-;; Get game information then play the game
+;; ** Get game information then Play the Game
 (define (handle in out)
   (with-handlers
     ( ; standard failures derive from struct exn:fail
@@ -55,6 +57,7 @@
       (printf "Target: ~a\n" target)
       (play-game in out player min max target) ) ) )
 
+;; ** Play the Game
 (define (play-game in out player min max target)
     (let* ( [g (read-guess in)]
             [n (guess-number g)] )
