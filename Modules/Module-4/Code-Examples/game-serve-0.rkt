@@ -3,17 +3,24 @@
 ;; See this required module for ideas on how to evolve the game
 (require "game-protocol-0.rkt")
 
-;; Should we return a shutdown thunk?
-(define (serve port-no)
-  ;; Create a rendezvous socket associated with the given port-no
-  ;; which can queue up to 5 clients before we get to them.
-  (define listener (tcp-listen port-no 5 #t))
-  ;; Define an infinite loop of accepting and handling clients
-  (define (loop)
-    (accept-and-handle listener)
-    (loop) )
-  ;; Start that loop!
-  (loop) )
+#; (define stop-serve (serve 8080)) ; start the server
+#; (stop-serve) ; stop the server
+
+;; Create a server and return a shutdown thunk
+(define (serve port-num)
+  ;; Ensure all resources are managed by main-custodian
+  (define main-custodian (make-custodian))
+  (parameterize ( [current-custodian main-custodian] )
+    ;; Create a rendezvous socket associated with the given port-num
+    ;; which can queue up to 5 clients before we get to them.
+    (define listener (tcp-listen port-num 5 #t))
+    ;; Define an infinite loop of accepting and handling clients
+    (define (loop)
+      (accept-and-handle listener)
+      (loop) )
+    ;; Start that loop!
+    (thread loop)
+    (λ () (custodian-shutdown-all main-custodian)) ) )
 
 ;; Accept and Handle a new client from the Rendezvous Socket
 (define (accept-and-handle listener)
@@ -29,30 +36,33 @@
 
 ;; Get game information then play the game
 (define (handle in out)
-  (with-handlers ([exn:fail? (λ (e) (send-string out 'expected (exn-message e))
-                                    (close-input-port in)
-                                    (close-output-port out) )])
-    (let ([ss (read in)])
-      (unless (game? ss)
-        (error (format "expected game structure instead of: ~s" ss)) )
-      (let* ( [player (game-player ss)]
-              [min (game-min ss)]
-              [max (game-max ss)]
-              [target (+ min (random (- max min)))] )
-        (play-game in out player min max target) ) ) ) )
+  (with-handlers
+    ( ; standard failures derive from struct exn:fail
+     [exn:fail? (λ (e) (fprintf out "Error: ~a" (exn-message e))
+                  (close-input-port in)
+                  (close-output-port out) )]
+     ; our protocol failures use struct unexpected
+     [unexpected? (λ (e) (fprintf out "Expected ~a got ~a"
+                                     (unexpected-expected e)
+                                     (unexpected-got e) )
+                       (close-input-port in)
+                       (close-output-port out) )] )
+    (let* ( [g (read-game in)]
+            [player (game-player g)]
+            [min (game-min g)]
+            [max (game-max g)]
+            [target (+ min (random (- max min)))] )
+      (printf "Target: ~a\n" target)
+      (play-game in out player min max target) ) ) )
 
 (define (play-game in out player min max target)
-  (with-handlers ([exn:fail? (λ (e) (send-string out 'expected (exn-message e))
-                               (close-input-port in)
-                               (close-output-port out) )])
-    (let ( [ss (read in)] )
-      (unless (guess? ss)
-        (error (format "expected guess structure instead of: ~s" ss)) )
-      (let ( [n (guess-number ss)] )
-        (write (feedback (cond ([< n min] '!)
-                               ([>= n max] '!)
-                               ([< n target] '<)
-                               ([> n target] '>)
-                               (#t '=) )) out ) ) ) )
-  (when (not (= n target))
-    (play-game in out player min max target) ) )
+    (let* ( [g (read-guess in)]
+            [n (guess-number g)] )
+      (printf "Guess: ~a\n" n)
+      (write-feedback (feedback (cond ([< n min] '!)
+                                      ([>= n max] '!)
+                                      ([< n target] '<)
+                                      ([> n target] '>)
+                                      (#t '=) )) out )
+      (unless (= n target) ; this is always false??
+        (play-game in out player min max target) ) ) )

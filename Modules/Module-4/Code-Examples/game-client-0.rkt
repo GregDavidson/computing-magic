@@ -3,26 +3,56 @@
 ;; See this required module for ideas on how to evolve the game
 (require "game-protocol-0.rkt")
 
-(define (play host port-no)
+(define our-min 0)   ; guess must be >= than this
+(define our-max 100) ; guesses must be less that this
+(define our-player "player")
+
+(define (play host port-num)
+  ;; Connect to a game server
   (with-handlers
-    ( [exn:fail-network?
-       (λ (e) (send-string out 'no-game-server (exn-message e))) ]
-      [exn:fail?
-       (λ (e) (send-string out 'expected (exn-message e))
-         (close-input-port in)
-         (close-output-port out) ) ] )
-    ;; Connect to a game server
-    (define-values (in out) (tcp-connect host port-no))
-    ;; Get game info from Player
-    ;; Send game info to Server
-    (play-game in out)
-  (close-input-port in)
-  (close-output-port out) )
+      ( [exn:fail:network?
+         (λ (e) (printf "no game server: ~n\n" (exn-message e))) ] )
+    (let-values ( [(in out) (tcp-connect host port-num)] )
+      (with-handlers
+          ( [exn:fail?
+             (λ (e) (printf "error: ~a\n" (exn-message e))
+               (close-input-port in)
+               (close-output-port out) ) ]
+            [unexpected?
+             (λ (e) (printf "Expected ~a, got: ~a\n" (unexpected-expected e) (unexpected-got e))
+               (close-input-port in)
+               (close-output-port out) ) ] )
+        ;; Get game info from Player
+        (set! our-player (get-name))
+        ;; Send game info to Server
+        (write-game (game our-player our-min our-max) out)
+        ;; Play 1 game
+        (play-game in out)
+        (close-input-port in)
+        (close-output-port out) ) ) ) )
 
 (define (play-game in out)
-  ;; get guess from user
-  ;; send guess to server
-  ;; get feedback from server
-  ;; give feedback to user
-  ;; unless they guessed correctly, call play-game to continue
-)
+  (let ( [n (get-guess our-min our-max)] )
+    (write-guess (guess n) out)
+    (let ( [f (feedback-message (read-feedback in))] )
+      (printf "~a!\n" (case f
+                        ((!) "Bad guess") ; shouldn't be possible!
+                        ((<) (set! our-min (+ n 1)) "Too low")
+                        ((>) (set! our-max n) "Too high")
+                        ((=) "You guessed it") ))
+      (unless (eq? '= f)
+        (play-game in out) ) ) ) )
+
+(define (get-name)
+  (write "What's your name: ")
+  (read-line) )
+
+ (define (get-guess min max)
+   (printf "What's your guess? [~a .. ~a) " min max)
+   (let* ( [line (read-line)]
+           [n (string->number line)] )
+     (if (and (integer? n) (>= n min) (< n max))
+         n
+         (begin (printf "You entered ~v\n" line)
+                (printf "Please enter an integer >= ~a and < ~a\n" min max)
+                (get-guess min max) ) ) ) )
