@@ -43,9 +43,15 @@
       (unless (eq? '= f)
         (play-game in out) ) ) ) )
 
+(define (read-nonempty-line)
+  (let ( [line (read-line)] )
+    (if (> (string-length line) 0)
+        line
+        (read-nonempty-line) ) ) )
+
 (define (get-name)
-  (write "What's your name: ")
-  (read-line) )
+  (display "What's your name: ")
+  (read-nonempty-line) )
 
  (define (get-guess min max)
    (printf "What's your guess? [~a .. ~a) " min max)
