@@ -1,11 +1,11 @@
-* Getting Help From A Command Shell
+* Getting Help on Commands and other Operating System Features
 
 /Power Users/, people who expect the most from their computer systems, generally
 make extensive use of /Command Shells/, programs which allow for the open-ended
 execution of diverse programs, the control of those programs and of the ways
 that data flows through those programs stage by stage.
 
-Modern /Command Shells/, the /Programs/ they control and the /Operating Systems
+Modern /Command Shells/, the /Commands/ they control and the /Operating Systems
 and Platforms/ which underlie them have lots of complex features. When you are
 working with a /Command Shell/ under a /Posix Operating System/ such as Unix,
 BSD, MacOS or Gnu/Linux, a lot of help is readily available to assist you in
@@ -16,6 +16,9 @@ things out. We assume that you're using the standard /GNU Shell/ =bash=,
 compatible with Stephen Bourne's =sh=, on a =GNU/Linux= platform. If instead,
 you are using, e.g. =zsh= on a =MacOS= platform, your system's behavior will
 deviate somewhat from what we describe.
+
+This tutorial document is designed to have you learn by exploring. If you'd like
+more context, you can read about the [[https://diataxis.fr][Grand Unified Theory of Documentation]].
 
 As you work though this tutorial we recommend that you take notes about what you
 discover and learn!
