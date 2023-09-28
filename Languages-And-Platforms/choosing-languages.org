@@ -114,7 +114,7 @@ Cons:
 *** [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic]] [[https://en.wikipedia.org/wiki/Constraint_logic_programming][and]] [[https://en.wikipedia.org/wiki/Constraint_programming][Constraint]] Programming
 
 Logic and Constraint programming is the highest-level of Declarative
-Programming, i.e. programming where you way what is true in your domain and what
+Programming, i.e. programming where you say what is true in your domain and what
 you want (this is called the specification of your problem) and the computer
 figures out an effective procedure to compute what you want. Your specification
 is typically much smaller than a traditional program and easier to verify. If
