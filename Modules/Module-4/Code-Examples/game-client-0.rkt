@@ -16,7 +16,7 @@
   ;; Connect to a game server
   (with-handlers
       ( [exn:fail:network?
-         (λ (e) (printf "no game server: ~n\n" (exn-message e))) ] )
+         (λ (e) (printf "no game server: ~a\n" (exn-message e))) ] )
     (let-values ( [(in out) (tcp-connect host port-num)] )
       (with-handlers
           ( [exn:fail?
@@ -43,7 +43,7 @@
     (write-guess (guess n) out)
     (let ( [f (feedback-message (read-feedback in))] )
       (printf "~a!\n" (case f
-                        ((!) "Bad guess") ; shouldn't be possible!
+                        ((!) "Bad guess") ; shouldn't be possible!!
                         ((<) (set! our-min (+ n 1)) "Too low")
                         ((>) (set! our-max n) "Too high")
                         ((=) "You guessed it") ))
@@ -64,7 +64,7 @@
 
  (define (get-guess min max)
    (printf "What's your guess? [~a .. ~a) " min max)
-   (let* ( [line (read-line)]
+   (let* ( [line (read-nonempty-line)]
            [n (string->number line)] )
      (if (and (integer? n) (>= n min) (< n max))
          n

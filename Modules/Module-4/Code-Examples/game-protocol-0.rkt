@@ -45,15 +45,24 @@
 
 (require racket/serialize)
 
-(define (serialize-write item out)
+(define (serialize-write item out [type-proc #f] [type-name #f])
+  (when type-proc
+    (unless (type-proc item)
+      (raise (unexpected
+              (or type-name (object-name type-proc) 'specific-type)
+              item )) ) )
   (printf "Sending ~a\n" item)
   (write (serialize item) out )
   (flush-output out) )
 
-(define (deserialize-read in)
-  (let ( [item (read in)] )
-    (unless (serializable? item) (raise (unexpected 'serializable item)))
-    (deserialize item) ) )
+(define (deserialize-read in [type-proc #f] [type-name #f])
+  (let ( [item (deserialize (read in))] )
+    (when type-proc
+      (unless (type-proc item)
+        (raise (unexpected
+                (or type-name (object-name type-proc) 'specific-type)
+                item )) ) )
+    item ) )
 
 ;; ** serializable-struct game
 
@@ -67,19 +76,16 @@
                       #:guard
                       (λ (player min max type-name)
                         (unless (integer>=0? min)
-                          (error type-name "bad min ~e" min) )
+                          (error type-name "bad min ~a" min) )
                         (unless (integer>0? max)
-                          (error type-name "bad max ~e" max) )
+                          (error type-name "bad max ~a" max) )
                         (values player min max) ) )
 
 (define (write-game game out)
-  (serialize-write game out) )
+  (serialize-write game out game?) )
 
 (define (read-game in)
-  (let ( [item (deserialize-read in)] )
-    (unless (game? item) (raise (unexpected 'game item)))
-    (printf "Got ~a\n" item)
-    item ) )
+  (deserialize-read in game?) )
 
 ;; ** serializable-struct guess
 
@@ -89,17 +95,14 @@
                       #:guard
                       (λ (number type-name)
                         (unless (integer>=0? number)
-                          (error type-name "bad number: ~e" number) )
+                          (error type-name "bad number: ~a" number) )
                         number ) )
 
 (define (write-guess guess out)
-  (serialize-write guess out) )
+  (serialize-write guess out guess?) )
 
 (define (read-guess in)
-  (let ( [item (deserialize-read in)] )
-    (unless (guess? item) (raise (unexpected 'guess item)))
-    (printf "Got ~a\n" item)
-    item ) )
+  (deserialize-read in guess?) )
 
 ;; ** serializable-struct feedback
 
@@ -113,17 +116,14 @@
                       #:guard
                       (λ (message type-name)
                         (unless (member message '(< > = !))
-                          (error type-name "bad message: ~e" message) )
+                          (error type-name "bad message: ~a" message) )
                         message ) )
 
 (define (write-feedback feedback out)
-  (serialize-write feedback out) )
+  (serialize-write feedback out feedback?) )
 
 (define (read-feedback in)
-  (let ( [item (deserialize-read in)] )
-    (unless (feedback? item) (raise (unexpected 'feedback item)))
-    (printf "Got ~a\n" item)
-    item ) )
+  (deserialize-read in 'feedback) )
 
 ;; ** struct unexpected and utility functions
 
@@ -133,4 +133,4 @@
 (define (integer>=0? n) (and (integer? n) (>= n 0)))
 
 ;; for maximum of allowed range
-(define (integer>0? n) (and (integer? n) (>= n 0)))
+(define (integer>0? n) (and (integer? n) (> n 0)))
