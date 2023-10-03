@@ -43,6 +43,7 @@ thing is that you're learning what you can do with nesting these and similar
 forms.
 
 #+begin_src racket
+  #lang slideshow
   (cc-superimpose
    (filled-ellipse 100 50 #:color "lightyellow")
    (disk 45 #:color "lightblue")
@@ -71,6 +72,7 @@ Turn at least one of the colors into a parameter.
 Usual Caveat that this is only one way to do it.
 
 #+begin_src racket
+  #lang slideshow
   (define (make-eye eye-height eye-ratio iris-ratio pupil-ratio iris-color)
     (let* ( [eye-width (* eye-ratio eye-height)]
             [iris-size (* iris-ratio eye-height)]
@@ -98,6 +100,7 @@ we're creating multiple procedures needing many of the same parameters.
 Let's temporarily replace most parameters with global bindings:
 
 #+begin_src racket
+  #lang slideshow
   ;; Define defaults for eye procedures
   (define eye-ratio 2)
   (define eye-iris-ratio 4/5)
@@ -150,6 +153,7 @@ We should not repeat default values
 Here's an example starting point:
 
 #+begin_src racket
+  #lang slideshow
   ;; Define defaults for eye procedures
   (define eye-ratio 2)
   (define eye-iris-ratio 4/5)
@@ -266,6 +270,7 @@ If we were only going to do this for procedure make-eye it might look something
 like this:
 
 #+begin_src racket
+  #lang slideshow
   (define (make-eye eye-height #:ratio [eye-ratio 2]
                 #:iris [iris-ratio 4/5] #:pupil [pupil-ratio 2/5]
                 #:color [iris-color "brown"]
