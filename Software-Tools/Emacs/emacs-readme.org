@@ -25,7 +25,10 @@ rest of this document as soon as possible!
 You don't have to build a nice Emacs environment from scratch!
 
 There are many [[https://www.emacswiki.org/emacs/StarterKits][Emacs Starter Kits]]!
-- Which one is best for you?
+
+Some excellent Starter Kits
+- [[https://github.com/bbatsov/prelude][Prelude: A powerful kit compatible with traditional Emacs commands]]
+- [[https://sr.ht/~ashton314/emacs-bedrock/][Bedrock: An extremely minimal kit requiring the latest Emacs (now 29.1)]]
 
 *Are you inclined towards Evil?*
 - I.e. Do you know and love the command set of the =vi= editor family?
@@ -34,11 +37,6 @@ There are many [[https://www.emacswiki.org/emacs/StarterKits][Emacs Starter Kits
 Two excellent starter kits which add =vi= compatible commands to =emacs=
 - [[https://github.com/hlissner/doom-emacs][Doom: modest yet Evil]]
 - [[https://www.spacemacs.org][Spacemacs: Ambitious and Evil]]
-
-*Or Non-Evil*
-
-An excellent Non-Evil Starter Kit
-- [[https://github.com/bbatsov/prelude][Prelude: Powerful yet compatible with default emacs]]
 
 ** Best Emacs Feature: OrgMode
 
@@ -171,12 +169,13 @@ windows!
 
 ** Why Emacs Matters
 
-Emacs is much more than just a /Text Editor/. Emacs is a platform for doing
-creative work as long as the work-flow is based on sort of text or can be
-converted to or from a text format.
+Emacs is much more than just a /Text Editor/. *Emacs is a platform for
+creativity* centered on human readable text formats (files or communication
+protocols). Non-text formats, e.g. binary multimedia formats can often be
+accommodated very well through conversion to or from text formats.
 
 Text formats include
-- Code of nearly every programming language
+- The source code of nearly every programming language
 - Scripts for command tools
 - Notations for generating visual art
 - Notations for generating music
@@ -207,4 +206,4 @@ capabilities while maintaining compatibility with the past.
 Learning Emacs takes awhile as you gradually learn how Emacs works and how to
 exploit its power.
 
-It would be nice if there were anything comparable!
+It would be nice if something more modern was as powerful and flexible as Emacs!
