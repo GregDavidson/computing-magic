@@ -8,5 +8,16 @@ Glorious things to work on:
 
 Current Active Projects
 - Shell Scripting
+- Sockets
+- Animation & Games
+      - Study the great tools in [[file:/home/greg/Data/Racket-Others/racket-examples-master][Racket Multimedia Game Examples]]
+            - Derive some learning-paths from them
+      - Study Racket Game Frameworks
 
-Push languages, platform, tools into subdirectories
+** Refactoring Folders, Adding TAGS
+
+Push languages, platforms, tools into subdirectories
+
+Add OrgMode TAGS to all files
+
+Add links to all OrgMode files from INDEX.org files
