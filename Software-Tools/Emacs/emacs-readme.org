@@ -1,4 +1,16 @@
-* Becoming An Emacs Wizard for Computing Magic!
+* Become An Emacs Wizard for Computing Magic and More!
+
+Part of the [[file:/Data/Greg/Gits-Ours/Computing-Magic/README.org][Computing Magic]] curriculum.
+- You can help improve this and other documents using Emacs
+- See the section /Emacs, Git and Participation/ below
+
+[[https://www.gnu.org/software/emacs][Gnu Emacs]] is a ridiculously powerful tool for creative projects such as
+- Software Development - in any language
+- Creative Writing - books, articles, etc.
+- Time and Project Management
+- /and much more!/
+
+Alas, getting started with Emacs takes more work than less powerful tools.
 
 ** TL;DR Just get me started!
 
@@ -7,18 +19,47 @@
 2. Start the application.
 
 3. Start the built-in tutorial by typing
-- Control-h t
-      - hold down the =Control Key= while typing the letter =h=
-      - release the =Control Key=
-      - type the letter =t=
-- on Macintoshes =Control Key= might be =Command Key=
+4. Control-h t
+       - hold down the =Control Key= while typing the letter =h=
+       - release the =Control Key=
+       - type the letter =t=
+5. on Macintoshes =Control Key= might be =Command Key=
 
-- Important :: Work through the Tutorial until your fingers know these basics.
-  Start using Emacs for something that matters to you. /There's a suggestion
-  below involving OrgMode./
+6. Work through the Tutorial until your fingers start to know these basics.
+7. Now you need to start using Emacs for something that matters to you, but first:
+       - See the sections below on
+             - See the sections below on
+                   - /Add An Emacs Starter Kit!/
+                   - /Learn OrgMode ASAP!/
 
-Emacs is well worth your effort to learn to use well. I recommend reading the
-rest of this document as soon as possible!
+Emacs is well worth your effort to learn to use well. I recommend reading all
+the sections of this document as soon as possible.
+
+** What's Emacs good for again?
+
+Emacs began as a tool for software development. Emacs now has /modes/ which
+support more computer programming languages and configuration formats than any
+other tool. The /modes/ are highly configurable so you can adapt them to your
+work style.
+
+Emacs now has modes for a much larger number of tasks, including
+- Creative Writing
+- Personal and Project Scheduling and Time Management
+- Computer System Administration
+- Music Composition
+- Graphic Design
+- Playing Games
+- Science, Engineering, Mathematics
+- /and so much more!/
+
+Many of these modes are built alongside other powerful modes, e.g. /OrgMode/
+giving an extremely rich combination of features. And for many tasks, there's a
+choice of modes!
+
+The downside is that until you install the modes you like and configure them the
+way you want them, Emacs will seem clunky.
+
+But help is available: /Read the Next Section!/
 
 ** Add An Emacs Starter Kit!
 
@@ -28,7 +69,7 @@ There are many [[https://www.emacswiki.org/emacs/StarterKits][Emacs Starter Kits
 
 Some excellent Starter Kits
 - [[https://github.com/bbatsov/prelude][Prelude: A powerful kit compatible with traditional Emacs commands]]
-- [[https://sr.ht/~ashton314/emacs-bedrock/][Bedrock: An extremely minimal kit requiring the latest Emacs (now 29.1)]]
+- [[https://sr.ht/~ashton314/emacs-bedrock/][Bedrock: An extremely minimal kit based on Emacs version 29.1]]
 
 *Are you inclined towards Evil?*
 - I.e. Do you know and love the command set of the =vi= editor family?
@@ -38,7 +79,7 @@ Two excellent starter kits which add =vi= compatible commands to =emacs=
 - [[https://github.com/hlissner/doom-emacs][Doom: modest yet Evil]]
 - [[https://www.spacemacs.org][Spacemacs: Ambitious and Evil]]
 
-** Best Emacs Feature: OrgMode
+** Learn OrgMode ASAP!
 
 /OrgMode/ is unbelievably awesome.
 - Really, you won't believe it,
@@ -182,17 +223,27 @@ Text formats include
 - HTML, CSS, Javascript
 - EMail formats
 - Document Markup Languages
+- SQL and Table Formats for Relational Databases
 - and /much more!/
 
-All of these things can be intelligently managed by Emacs under the control of
-collections of Lisp functions. Vast amounts of such collections, called
-/packages/ have been written by others and are freely available. You can augment
-and/or replace any of those functions to customize Emacs to your will. Emacs is
-a platform which can be infinitely customized and extended.
+Emacs can work with files in any of these formats on your local computer or any
+computer on the Internet where you have an account.
+
+Emacs can also start or connect to processes (other programs) which communicate
+via text formats. These processes can be running on your computer or anywhere on
+the Internet. This lets you be the conductor of a vast orchestra of powerful
+instruments.
+
+All of these capabilities can be intelligently /managed and automated/ by Emacs
+under the control of Emacs Lisp functions. A vast number of collections of such
+functions, called /packages/ have been written by Power Users in the Emacs
+Community and are freely available. You can augment and/or replace any of those
+functions to adapt Emacs as you please. Emacs is a platform which can be
+infinitely extended and customized.
 
 While some other tools and platforms have some of these characteristics, Emacs
 is more complete and flexible than any other currently available system. Emacs
-can work with more Languages and practices than any other editor or development
+can work with more Languages and Tools than any other editor or development
 platform.
 
 ** Emacs Criticism
@@ -207,3 +258,20 @@ Learning Emacs takes awhile as you gradually learn how Emacs works and how to
 exploit its power.
 
 It would be nice if something more modern was as powerful and flexible as Emacs!
+
+** Emacs, Git and Participation
+
+This document is part of a curriculum hosted in the the [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] GitHub
+Repository.
+
+Most of our materials are written and maintained in OrgMode files, although
+they're often automatically exported (translated) to other file formats, e.g.
+Web Pages, Image Formats, etc.
+
+To participate with this or any other project using Git, you'll want to
+- [[file:/Data/Greg/Gits-Ours/Computing-Magic/Software-Tools/Git/README.org][Get familiar with Git and GitHub]]
+- You can issue regular Git Commands from an Emacs Shell
+      - =M-x shell= opens an Emacs Shell
+- Once you understand Git, you can use [[https://magit.vc][Magit]]
+      - Magit is the awesome /Emacs interface to Git/
+      - =M-x magit= opens a Magit Window on the current repository
