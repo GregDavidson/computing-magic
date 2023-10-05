@@ -14,28 +14,40 @@ Current Active Projects
             - Derive some learning-paths from them
       - Study Racket Game Frameworks
 
-** Add FAQ Drawers!
-
-Use the Drawers feature of OrgMode to add FAQ nodes liberally through the
-documents!
-
-** Refactoring Folders, Files Adding TAGS
+** Refactor Folders, Update & Check Links
 
 Push languages, platforms, tools into subdirectories
 
-Add OrgMode TAGS to all files
+Use tools to fix up the links!
+
+Write a script to check the validity of all links!
 
 Add links to all OrgMode files from INDEX.org files
 List everything which links to them!
-
-Write a script to check the validity of all links!
 
 Cross Reference links in RESOURCES with external links in the curriculum files.
 - The RESOURCES should have all the curriculum links and more
 - Where else should the RESOURCES links be used?
 
+** Exploit OrgMode more fully!
+
+*** Add FAQ Drawers!
+
+Use the Drawers feature of OrgMode to add FAQ nodes liberally through the
+documents!
+
+*** Add TAGS
+
+Add OrgMode TAGS to all files
+
+*** Use Transclusion
+
 DRY, use [[https://nobiot.github.io/org-transclusion/][Transclusion]]!
+
+** Improve GitHub and GitLab's OrgMode support!
 
 Instigate upgrades to GitHub and GitLab OrgMode support!
 
-Move some of these items up to LOEL!
+** Move LOEL items from here to LOEL's ROADMAP
+
+Move some of these items to the LOEL ROADMAP!
