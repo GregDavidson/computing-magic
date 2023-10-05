@@ -29,3 +29,7 @@ Add links to all OrgMode files from INDEX.org files
 List everything which links to them!
 
 Write a script to check the validity of all links!
+
+Cross Reference links in RESOURCES with external links in the curriculum files.
+- The RESOURCES should have all the curriculum links and more
+- Where else should the RESOURCES links be used?
