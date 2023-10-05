@@ -33,3 +33,9 @@ Write a script to check the validity of all links!
 Cross Reference links in RESOURCES with external links in the curriculum files.
 - The RESOURCES should have all the curriculum links and more
 - Where else should the RESOURCES links be used?
+
+DRY, use [[https://nobiot.github.io/org-transclusion/][Transclusion]]!
+
+Instigate upgrades to GitHub and GitLab OrgMode support!
+
+Move some of these items up to LOEL!
