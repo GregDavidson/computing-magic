@@ -14,10 +14,18 @@ Current Active Projects
             - Derive some learning-paths from them
       - Study Racket Game Frameworks
 
-** Refactoring Folders, Adding TAGS
+** Add FAQ Drawers!
+
+Use the Drawers feature of OrgMode to add FAQ nodes liberally through the
+documents!
+
+** Refactoring Folders, Files Adding TAGS
 
 Push languages, platforms, tools into subdirectories
 
 Add OrgMode TAGS to all files
 
 Add links to all OrgMode files from INDEX.org files
+List everything which links to them!
+
+Write a script to check the validity of all links!
