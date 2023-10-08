@@ -29,16 +29,17 @@ Racket is best learned by Exploring, that is to say
 
 ** A Fast Path for Learning Racket
 
-Here's a good Tutorial Path
-1. Follow the tutorial [[https://docs.racket-lang.org/quick/][Quick: An Introduction to Racket with Pictures]]
-2. Explore the [[Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]] program
-3. Read and Explore [[https://github.com/GregDavidson/on-lisp/blob/main/lisp-simplicity.org][Lisp Simplicity]]
-4. Possibly explore more materials in the [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]] repository
-5. Explore [[http://www.htdp.org/][How to Design Programs]]
-6. Explore the other [[https://docs.racket-lang.org][Racket Tutorials]]
-   - especially [[https://docs.racket-lang.org/more/index.html][More: Systems Programming with Racket]]
-7. Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
-8. Pull ideas from [[https://docs.racket-lang.org/guide/index.html][The Racket Guide]]
+Here's a good Learning Path
+1. Work through the module [[file:~/Gits/Computing-Magic/Modules/Module-1][Acquiring A Lisp]]
+2. Explore the [[file:Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]] program
+3. Assimilate this [[https://learnxinyminutes.com/docs/racket][Racket Overview Tutorial]]
+4. Read and Explore [[https://github.com/GregDavidson/on-lisp/blob/main/lisp-simplicity.org][Lisp Simplicity]]
+5. Possibly explore more materials in the [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]] repository
+6. Work through [[http://www.htdp.org/][How to Design Programs]]
+7. Work through the other [[https://docs.racket-lang.org][Racket Tutorials]]
+       - especially [[https://docs.racket-lang.org/more/index.html][More: Systems Programming with Racket]]
+8. Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
+9. Pull ideas from [[https://docs.racket-lang.org/guide/index.html][The Racket Guide]]
 
 If you'd like to understand Racket (and Scheme) macros really well
 - I recommend Greg Hendershott's /excellent/ tutorial [[https://www.greghendershott.com/fear-of-macros][Fear of Macros]]!
