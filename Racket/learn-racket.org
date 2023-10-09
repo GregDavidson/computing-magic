@@ -72,4 +72,17 @@ Study the games at Eric Clack's wonderful [[https://github.com/ericclack/racket-
       - Modify the last version in ways that you find interesting
 - Using your new understanding, write some cool games!
 
-You can follow this path and also add material in the /Fast Path/ above!
+** More Great Resources for Learning Racket
+
+[[https://dev.to/goober99/learn-racket-by-example-gui-programming-3epm][Learn Racket with Examples of Graphical User Interfaces]]
+- Learn to create programs with beautiful Graphical User Interfaces!
+
+[[https://github.com/zyrolasting/racket-koans/tree/master#readme][Racket Koans: Make these programs pass their Unit Tests!]]
+- Hone your Racket understanding through these programming puzzles!
+
+** Mix and Match and tell us what you liked best!
+
+You can mix and match these different resources.
+
+It would be great to hear from you what resources you found most helpful - and
+why!
