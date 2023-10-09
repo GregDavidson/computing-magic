@@ -41,10 +41,6 @@ Here's a good Learning Path
 8. Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
 9. Pull ideas from [[https://docs.racket-lang.org/guide/index.html][The Racket Guide]]
 
-If you'd like to understand Racket (and Scheme) macros really well
-- I recommend Greg Hendershott's /excellent/ tutorial [[https://www.greghendershott.com/fear-of-macros][Fear of Macros]]!
-- Scheme-Family macros are /much more powerful/ than macros in other Lisps!
-
 ** An alternative Path via Writing Games in Racket
 
 *** Realm of Racket
@@ -74,11 +70,33 @@ Study the games at Eric Clack's wonderful [[https://github.com/ericclack/racket-
 
 ** More Great Resources for Learning Racket
 
+Master Racket (and Scheme) Macros!
+- I recommend Greg Hendershott's /excellent/ tutorial [[https://www.greghendershott.com/fear-of-macros][Fear of Macros]]!
+- Scheme-Family macros are /much more powerful/ than macros in other Lisps!
+
 [[https://dev.to/goober99/learn-racket-by-example-gui-programming-3epm][Learn Racket with Examples of Graphical User Interfaces]]
 - Learn to create programs with beautiful Graphical User Interfaces!
 
+Learn [[https://web.mit.edu/racket_v612/amd64_ubuntu1404/racket/doc/ts-guide/][Typed Racket]]!
+- Add compile-time checked types to some of your other programs
+- Good typing will prevent many kinds of bugs in your programs
+- The Types also deepen your understanding of your programs
+
 [[https://github.com/zyrolasting/racket-koans/tree/master#readme][Racket Koans: Make these programs pass their Unit Tests!]]
 - Hone your Racket understanding through these programming puzzles!
+- Unit Tests can automate program testing
+
+Ideally you'll use Typed/Racket plus Unit Tests to
+- Improve the design of your programs
+- Eliminate nearly all bugs
+
+Typed/Racket Macros can examine types at compile time allowing for advanced
+metaprogramming - short simple programs which automatically expand into custom
+code!
+
+Create your own programming languages with [[https://beautifulracket.com/][Beautiful Racket]]
+- This is a (non-free) book
+- and a website full of excellent free articles
 
 ** Mix and Match and tell us what you liked best!
 
