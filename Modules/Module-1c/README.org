@@ -10,12 +10,72 @@ Based on notes from a [[https://github.com/GregDavidson/computing-magic#readme][
 
 Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:../Module-1/module-1.org][Module 1]].
 
-** I'm Ready to Build Games!
+** I'm Ready to Create Games!
 
-Explore Game Programming with  
-- [[http://realmofracket.com/][Realm of Racket]]
-- Look at some of the videos and example games
-- If you start on the book, let us know and you may have collaborators!
+Racket is blessed with a great deal of Tutorials, Libraries and other resources
+to leverage in designing and creating your own games.
+
+*** How to Design Programs (HtDP) covers Game Basics!
+
+The highly-recommended book [[https://htdp.org/2020-8-1/Book/index.html][How to Design Programs (2nd Edition)]] covers
+fundamental techniques of how to write Games, namely
+- Creating and manipulating images to use
+- Animation (Generating Frames synched with time)
+- Responding to Events (keyboard & Pointer events)
+
+Game programming techniques start at the end of the Prologue. If you're already
+familiar with the basics of Racket or any other Lisp, I recommend skimming over
+the early material until you get to the first use of the image datatype. (You
+can search for 2htdp/image to find where that is.) Read and try out the code
+from that point to the end of the Prologue.
+
+While the Prologue gives you some initial exposure, you'll want to keep
+following the book as there's more you'll need to learn to write games.
+
+You'll be making extensive use of the powerful [[file:///usr/share/doc/racket/teachpack/2htdp2htdp.html][HtDP/2e Teachpacks]].
+
+By the way, HtDP doesn't initially use the full Racket Language. It has you
+start with a subset of Racket called BSL: the /Beginning Student Language/ which
+you can access from the Languages menu in DrRacket. BSL is intended to make
+creating your early programs easier so you can get ready for the more advanced
+techniques sooner. This and a few other important points are explained in the
+/Preface/.
+
+* How to Design Worlds Continues the Adventure
+
+[[https://world.cs.brown.edu/1][How to Design Worlds]] builds on the material in /How to Design Programs/
+- [[https://world.cs.brown.edu/1/htdw-v1.pdf][PDF of Booklet]]
+- [[https://world.cs.brown.edu/1/projects][Project Materials]]
+
+After working through the exercises in /How to Design Worlds/ you should be able
+to design some truly awesome games!
+
+*** Realm of Racket
+
+Realm of Racket is a (non-free) book and a curriculum
+- [http://realmofracket.com/
+
+Realm of Racket has you
+- Write a series of game programs
+- the games gradually increase in sophistication
+- writing each game teaches you more skills
+
+[[https://www.youtube.com/@realmofracket/videos][Short and kinda silly Realm of Racket Videos]]
+
+*** Eric Clack's Example Games
+
+Study the games at Eric Clack's wonderful [[https://github.com/ericclack/racket-examples#racket-examples][racket-examples]] repository
+- He provides the series of versions in the development of each game!
+- git clone https://github.com/ericclack/racket-examples.git
+- For each game
+      - Run the final version, then some earlier versions
+      - For each version, from first to last
+            - Study the code and its evolution
+            - Make sure you understand how everything works
+      - Modify the last version in ways that you find interesting
+- Using your new understanding, write some cool games!
+
+** More Game-Relevant Resources
 
 Learn game-relevant [[https://docs.racket-lang.org/index.html][Racket Resources]] including
 - More 2-D Graphics
@@ -43,3 +103,7 @@ You might want to explore creating games using other languages
 As your game project gets more complex, you might want
 - [[file:../Module-2/module-2.org][Module-2: Software Development Power Tools]]
 - with Emacs, Git, OrgMode, Scripting!
+
+If you start building client/server games, you may want to study the
+Socket-based and Web-based client-server examples and exercises in [[file:~/Gits/Computing-Magic/Modules/Module-4/Code-Examples/README.org][Racket
+Client/Server Programming]]

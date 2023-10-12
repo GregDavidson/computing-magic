@@ -41,32 +41,13 @@ Here's a good Learning Path
 8. Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
 9. Pull ideas from [[https://docs.racket-lang.org/guide/index.html][The Racket Guide]]
 
-** An alternative Path via Writing Games in Racket
 
-*** Realm of Racket
+** An alternative Path via Creating Games in Racket
 
-Realm of Racket is a book and a curriculum
-- [http://realmofracket.com/
+Designing and creating computer games is one of the best all-around paths to learning
+diverse computing skills.  We have a whole module which takes this path:
 
-Realm of Racket has you
-- Write a series of game programs
-- the games gradually increase in sophistication
-- writing each game teaches you more skills
-
-[[https://www.youtube.com/@realmofracket/videos][Short and kinda silly Realm of Racket Videos]]
-
-*** Eric Clack's Example Games
-
-Study the games at Eric Clack's wonderful [[https://github.com/ericclack/racket-examples#racket-examples][racket-examples]] repository
-- He provides the series of versions in the development of each game!
-- git clone https://github.com/ericclack/racket-examples.git
-- For each game
-      - Run the final version, then some earlier versions
-      - For each version, from first to last
-            - Study the code and its evolution
-            - Make sure you understand how everything works
-      - Modify the last version in ways that you find interesting
-- Using your new understanding, write some cool games!
+[[file:~/Gits/Computing-Magic/Modules/Module-1c/README.org][Module 1c: Creating Games With Racket]]
 
 ** More Great Resources for Learning Racket
 

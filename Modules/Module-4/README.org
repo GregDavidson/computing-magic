@@ -1,7 +1,7 @@
 * Computing Magic Beta Module 4
-  
+
 /Meeting the Computer and its Operating System/
-  
+
 /Mars, Monday 14 February 2022/
 
 Notes from a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
@@ -15,7 +15,7 @@ Start exploring [[https://docs.racket-lang.org/more/index.html][Systems Programm
 Interleave your explorations with some of the reading below!
 
 *** Computing, Small to Large
- 
+
 Computing operates on many scales:
 
 Explore [[https://gregdavidson.github.io/on-computing/what-computers-are/][What Computers Are]]
@@ -34,7 +34,7 @@ The first
 - System Call :: An Application request for some kernel service
       - Applications are generally frozen during a System Call, making them very expensive!
 
-Some Key Kernel Resources, aka Kernel Abstractions 
+Some Key Kernel Resources, aka Kernel Abstractions
 - Tasks :: aka Heavyweight Processes, consisting of:
       - Program :: an application's code + static data + starting point
       - Memory Immage :: volatile main memory - virtualized
