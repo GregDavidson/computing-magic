@@ -75,6 +75,37 @@ Study the games at Eric Clack's wonderful [[https://github.com/ericclack/racket-
       - Modify the last version in ways that you find interesting
 - Using your new understanding, write some cool games!
 
+** Everything's Changing: AR/VR/XR & Ray Tracing & Distributed Worlds
+
+Most of today's computer games and user environments use flat display screens
+and keyboards, mice (or trackpads, etc.) and maybe game controllers.
+
+Today's bitmapped graphics uses labor-intensive artistic imaging techniques to
+look good.
+
+All of this is becoming obsolete!
+
+[[https://youtu.be/TX9qSaGXFyg?si=eHRj5jeutv84RTJS][Apple's Vision Pro]] is the first of many all-around decent Augmented Reality
+displays soon to come. The main drawback to the Vision Pro is its bulk. Within a
+year of its release we should see comparable devices with half the bulk and
+wearable for a full working day. Soon after that we should have AR devices
+comparable to a pair of sport sunglasses.
+
+Simultaneously we are experiencing the emergence of affordable [[https://www.digitaltrends.com/computing/what-is-ray-tracing][Real-Time Ray
+Tracing]]. Creators of games and other visual content can now concentrate almost
+exclusively on their world modeling, leaving most of the work of rendering the
+graphics for the eyes of the viewers to these advanced algorithms. The cost of
+this technology is rapidly decreasing. Games being created now are already
+counting on it.
+
+The advantages of these technologies are well known as they've been available
+- at a very high price point - for decades. What's new is their rapid decrease
+in price and their refinement for ease of use as they move into the mainstream.
+
+The best way to get ready for these new technologies is to study the basics of
+World Design and keep an eye on (or help out with) the recreation of frameworks
+similar to [[https://en.wikipedia.org/wiki/Croquet_Project][Open Croquet]].
+
 ** More Game-Relevant Resources
 
 Learn game-relevant [[https://docs.racket-lang.org/index.html][Racket Resources]] including
