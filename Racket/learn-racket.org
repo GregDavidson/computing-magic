@@ -1,23 +1,23 @@
 * Learning More & Better Racket
 
-** What is Racket and Why is Racket Special?
+** What Is Racket and Why Is Racket Special?
 
-In Computing we call something /elegant/ when it achieves great power with
-minimal complexity.
+In Computing we call something [[https://en.wikipedia.org/wiki/Mathematical_beauty][elegant]] when it achieves great power with minimal
+complexity.
 
-Racket is one of the most /elegant/ modern programming languages and
+[[https://racket-lang.org][Racket]] is one of the most /elegant/ modern programming languages and
 environments.
 
-- Racket started out as a fleshed-out variant of Scheme
-      - Scheme was primarily a teaching language
+- Racket started out as a fleshed-out variant of [[https://www.scheme.org][Scheme]]
+      - [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]] was primarily a research and teaching language
       - Racket added features needed for practical programming
-- Racket provides extensive tools and libraries
+- Racket provides [[https://docs.racket-lang.org][extensive tools and libraries]]
 - Racket provides a system for creating new languages
       - Customized to a specific domain
       - With special syntax and semantics
       - Use the best Racket Language for each Module of a complex system
             - Racket links the Modules together into your solution!
-- Racket is all /Open Source Free Software!/
+- Racket is all [[https://download.racket-lang.org/license.html][Open Source]] [[https://en.wikipedia.org/wiki/Free_software][Free Software]]!
 
 ** Paths to Learning (More) Racket?
 
@@ -83,5 +83,5 @@ Create your own programming languages with [[https://beautifulracket.com/][Beaut
 
 You can mix and match these different resources.
 
-It would be great to hear from you what resources you found most helpful - and
-why!
+It would be great to hear from you what resources you found most helpful
+- and why!
