@@ -21,7 +21,7 @@ platforms.
 
 ** Learning (More) Racket
 
-[[file:learn-reacket.org][Learn Racket via Exploration!]]
+[file:learn-racket.org][Learn Racket via Exploration!]]
 
 ** List of Racket Resources
 
