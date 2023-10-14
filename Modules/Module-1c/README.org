@@ -33,7 +33,7 @@ If you're already familiar with the basics of Racket or any other Lisp:
       - learn how to animate your images!
 
 Now work though the rest of HtDP to deepen your understanding.
-- You'll be leveraging the powerful [[file:///usr/share/doc/racket/teachpack/2htdp2htdp.html][HtDP/2e Teachpacks]].
+- You'll be leveraging the powerful [[https://docs.racket-lang.org/teachpack/2htdp2htdp.html][HtDP/2e Teachpacks]].
 
 By the way, HtDP doesn't initially use the full Racket Language. It has you
 start with a subset of Racket called BSL: the /Beginning Student Language/ which
@@ -54,8 +54,7 @@ awesome games!
 
 *** Realm of Racket
 
-Realm of Racket is a (non-free) book and a curriculum
-- [http://realmofracket.com/
+[[http://realmofracket.com][Realm of Racket]] is a (non-free) book and a curriculum
 
 Realm of Racket has you
 - Write a series of game programs
