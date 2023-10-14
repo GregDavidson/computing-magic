@@ -19,14 +19,13 @@ environments.
             - Racket links the Modules together into your solution!
 - Racket is all [[https://download.racket-lang.org/license.html][Open Source]] [[https://en.wikipedia.org/wiki/Free_software][Free Software]]!
 
-** Paths to Learning (More) Racket?
+** Racket is best learned by Exploring
 
-Racket is best learned by Exploring, that is to say
-1. Read a bit about it, e.g. from a Tutorial or other Guidebook
-2. Replicate the examples or similar examples
+1. Read a bit about it, e.g. from a Tutorial or other media
+2. Replicate the examples
 3. Experiment beyond the examples
-4. Look up interesting or mysterious features in the Reference Manual
-5. Write up some notes about what you found
+4. Look up interesting or mysterious features in the [[https://docs.racket-lang.org/guide/index.html][Guide]] or [[https://docs.racket-lang.org/reference/index.html][Reference]]
+5. Create some notes about what you found
 6. Repeat with step 1!
 
 ** A Path for Learning Racket
@@ -44,8 +43,8 @@ Racket is best learned by Exploring, that is to say
 
 ** Another Path - via Creating Game Programs in Racket
 
-Designing and creating computer games is one of the best all-around paths to learning
-diverse computing skills.  We have a whole module which takes this path:
+Designing and creating computer games is one of the best all-around paths to
+learning diverse computing skills. We have a whole module which takes this path:
 
 [[file:~/Gits/Computing-Magic/Modules/Module-1c/README.org][Module 1c: Creating Games With Racket]]
 

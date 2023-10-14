@@ -6,7 +6,9 @@ Based on notes from a [[https://github.com/GregDavidson/computing-magic#readme][
 
 ** What to do before this module
 
-Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:../Module-1/module-1.org][Module 1]].
+Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.
+
+Optionally do all of [[file:../Module-1/module-1.org][Module 1]].
 
 ** I'm Ready to Create Games!
 
