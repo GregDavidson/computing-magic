@@ -15,7 +15,8 @@ environments.
 - Racket provides a system for creating new languages
       - Customized to a specific domain
       - With special syntax and semantics
-      - Use one or more Racket Languages to solve complex problems
+      - Use the best Racket Language for each Module of a complex system
+            - Racket links the Modules together into your solution!
 - Racket is all /Open Source Free Software!/
 
 ** Paths to Learning (More) Racket?
@@ -23,13 +24,13 @@ environments.
 Racket is best learned by Exploring, that is to say
 1. Read a bit about it, e.g. from a Tutorial or other Guidebook
 2. Replicate the examples or similar examples
-3. Experiment a bit beyond the examples
-4. Look up a few things in the Reference Manual
-5. Repeat with step 1!
+3. Experiment beyond the examples
+4. Look up interesting or mysterious features in the Reference Manual
+5. Write up some notes about what you found
+6. Repeat with step 1!
 
-** A Fast Path for Learning Racket
+** A Path for Learning Racket
 
-Here's a good Learning Path
 1. Work through the module [[file:~/Gits/Computing-Magic/Modules/Module-1][Acquiring A Lisp]]
 2. Explore the [[file:Tutorial-1-Pictures/after-quick.rkt][after-quick.rkt]] program
 3. Assimilate this [[https://learnxinyminutes.com/docs/racket][Racket Overview Tutorial]]
@@ -41,8 +42,7 @@ Here's a good Learning Path
 8. Explore other [[https://docs.racket-lang.org/index.html][Racket Resources]]
 9. Pull ideas from [[https://docs.racket-lang.org/guide/index.html][The Racket Guide]]
 
-
-** An alternative Path via Creating Games in Racket
+** Another Path - via Creating Game Programs in Racket
 
 Designing and creating computer games is one of the best all-around paths to learning
 diverse computing skills.  We have a whole module which takes this path:

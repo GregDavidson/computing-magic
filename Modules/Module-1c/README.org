@@ -1,8 +1,6 @@
 * Computing Magic Beta Module 1c
 
-/Animating Your Lisp/
-
-Mars, Monday 24 January 2022
+*Creating Games with Racket!* /Animating your Lisp!/
 
 Based on notes from a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
 
@@ -17,22 +15,23 @@ to leverage in designing and creating your own games.
 
 *** How to Design Programs (HtDP) covers Game Basics!
 
-The highly-recommended book [[https://htdp.org/2020-8-1/Book/index.html][How to Design Programs (2nd Edition)]] covers
-fundamental techniques of how to write Games, namely
-- Creating and manipulating images to use
-- Animation (Generating Frames synched with time)
-- Responding to Events (keyboard & Pointer events)
+The excellent book [[https://htdp.org/2020-8-1/Book/index.html][How to Design Programs (2nd Edition)]] aka HtDP/2e
+- covers fundamental techniques of how to write Games!
+      - Creating and manipulating images to use
+      - Animation (Generating Frames synched with time)
+      - Responding to Events (keyboard & Pointer events)
 
-Game programming techniques start at the end of the Prologue. If you're already
-familiar with the basics of Racket or any other Lisp, I recommend skimming over
-the early material until you get to the first use of the image datatype. (You
-can search for 2htdp/image to find where that is.) Read and try out the code
-from that point to the end of the Prologue.
+Game programming techniques start near the end of [[https://htdp.org/2020-8-1/Book/part_prologue.html][the HtDP Prologue]].
 
-While the Prologue gives you some initial exposure, you'll want to keep
-following the book as there's more you'll need to learn to write games.
+If you're already familiar with the basics of Racket or any other Lisp:
+- Skim over the first part of the HtDP
+- until you get to the material using the image datatype
+      - it's in the HtDP Prologue, maybe search for 2htdp/image
+- Read and experiment with the code from there to the end of the Prologue
+      - learn how to animate your images!
 
-You'll be making extensive use of the powerful [[file:///usr/share/doc/racket/teachpack/2htdp2htdp.html][HtDP/2e Teachpacks]].
+Now work though the rest of HtDP to deepen your understanding.
+- You'll be leveraging the powerful [[file:///usr/share/doc/racket/teachpack/2htdp2htdp.html][HtDP/2e Teachpacks]].
 
 By the way, HtDP doesn't initially use the full Racket Language. It has you
 start with a subset of Racket called BSL: the /Beginning Student Language/ which
@@ -41,14 +40,15 @@ creating your early programs easier so you can get ready for the more advanced
 techniques sooner. This and a few other important points are explained in the
 /Preface/.
 
-* How to Design Worlds Continues the Adventure
+* Continue Your Adventure
 
 [[https://world.cs.brown.edu/1][How to Design Worlds]] builds on the material in /How to Design Programs/
-- [[https://world.cs.brown.edu/1/htdw-v1.pdf][PDF of Booklet]]
-- [[https://world.cs.brown.edu/1/projects][Project Materials]]
 
-After working through the exercises in /How to Design Worlds/ you should be able
-to design some truly awesome games!
+- [[https://world.cs.brown.edu/1/htdw-v1.pdf][PDF of Booklet]] - start reading here
+- [[https://world.cs.brown.edu/1/projects][Project Materials]] - work through the projects here
+
+The exercises in /How to Design Worlds/ will teach you how to create some
+awesome games!
 
 *** Realm of Racket
 
@@ -66,7 +66,8 @@ Realm of Racket has you
 
 Study the games at Eric Clack's wonderful [[https://github.com/ericclack/racket-examples#racket-examples][racket-examples]] repository
 - He provides the series of versions in the development of each game!
-- git clone https://github.com/ericclack/racket-examples.git
+- If you understand git:
+      - git clone https://github.com/ericclack/racket-examples.git
 - For each game
       - Run the final version, then some earlier versions
       - For each version, from first to last
@@ -119,8 +120,6 @@ Learn game-relevant [[https://docs.racket-lang.org/index.html][Racket Resources]
 - Graphical Application Frameworks
       - [[https://docs.racket-lang.org/framework/index.html][Framework]]
       - [[https://docs.racket-lang.org/gui/][Graphical Interface Toolkit]]
-- Game Frameworks
-      - [[https://docs.racket-lang.org/rilouworld/][Rilouworld Decentralized Game Universe]]
 
 ** What else might you do?
 
