@@ -46,7 +46,7 @@ environments.
 Designing and creating computer games is one of the best all-around paths to
 learning diverse computing skills. We have a whole module which takes this path:
 
-[[file:~/Gits/Computing-Magic/Modules/Module-1c/README.org][Module 1c: Creating Games With Racket]]
+[[file:../Modules/Module-1c/README.org][Module 1c: Creating Games With Racket]]
 
 ** More Great Resources for Learning Racket
 
