@@ -117,7 +117,12 @@ The best way to get ready for these new technologies is to
 - keep an eye on (or help out with)
       - frameworks similar to [[https://en.wikipedia.org/wiki/Croquet_Project][Open Croquet]].
 
-** More Game-Relevant Resources
+A superb resource for learning Ray Tracing is
+- [[https://pbr-book.org/][Physically Based Rendering]]
+      - It uses and teaches a fair amount of the relevant mathematics
+      - It uses C++ for the code examples
+
+** More Racket Game-Relevant Resources
 
 Learn game-relevant [[https://docs.racket-lang.org/index.html][Racket Resources]] including
 - More 2-D Graphics
@@ -129,16 +134,53 @@ Learn game-relevant [[https://docs.racket-lang.org/index.html][Racket Resources]
       - [[https://docs.racket-lang.org/rsound/index.html][RSound Sound Engine]]
 - Graphical Application Frameworks
       - [[https://docs.racket-lang.org/framework/index.html][Framework]]
-      - [[https://docs.racket-lang.org/gui/][Graphical Interface Toolkit]]
+      - [[https://docs.racket-lang.org/gui/][Graphical Interface Toolkit]Game Development
+
+*** Resources from [[https://github.com/avelino/awesome-racket#game-development][Awesome Racket, Game Development]]
+
+**** Racket game development libraries.
+
+    [[https://github.com/jeapostrophe/apse][apse]] - A Pixel Sprite Editor.
+    [[https://github.com/srfoster/game-engine][game-engine]] - Scratchpad for racket game stuff.
+    [[https://github.com/get-bonus/get-bonus][get-bonus]] - An experimental video game development environment.
+    [[https://github.com/jeapostrophe/mode-lambda][mode-lambda]] - Sprite-based 2D graphics engine.
+    [[https://github.com/jeapostrophe/pict3d][pict3d]] - A 3D engine with a purely functional API.
+    [[https://github.com/Metaxal/towers][towers]] - Towers is an original 2-player board game.
+    [[https://github.com/thoughtstem/vr-lang][vr-lang]] - Racket Lang for Virtual Reality (Aframe).
+
+**** Games written in Racket
+
+    [[https://github.com/racket/games][Racket games]] - games in main distribution.
+    [[https://github.com/massung/r-cade][r-cade]] - Retro Game Engine for Racket.
+    [[https://github.com/soegaard/space-invaders][space-invaders]] - A Racket remake of Mary Rose Cook's JavaScript version of Space Invaders.
+    [[https://github.com/Halfwake/web-sweeper][web-sweeper]] - Stateless Server Side Mine Sweeper.
+
+**** Racket Libraries for manipulating images.
+
+    [[https://github.com/lehitoskin/png-image][png-image]] - Library to view and modify PNG chunks.
+    [[https://github.com/wingo/racket-jpeg][racket-jpeg]] - JPEG parsing, transformation, and codec library for Racket.
+    [[https://github.com/simmone/racket-simple-qr][simple-qr]] - a qr code tool for racket-lang.
+    [[https://github.com/videolang/video][video]] - Video is a DSL for describing videos.
+
+** Alternatives to Racket for Game Development
+
+As lovely as Racket is, Racket is not a major language for game development.
+
+Most game development is done using lower-level semi Object Oriented Languages,
+especially C++. But these development environments are exceedingly complex.
+
+Some of the newest, most powerful and most elegant game development environments
+are being built with Rust.
+
+- [[https://arewegameyet.rs/][State of Game Development Resources for Rust]]
+- [[https://blog.logrocket.com/5-rust-game-engines-consider-next-project/][5 Rust Game Engines]]
+- [[https://www.libhunt.com/l/rust/topic/game-engine][Top 23 Rust Game Engine Projects]]
 
 ** What else might you do?
 
 This course is self-paced, so feel free to continue on to [[file:../README.org][other modules]]!
 
 You might also want to [[file:../../Racket/learn-racket.org][Learn (More) Racket]]!
-
-You might want to explore creating games using other languages
-- [[https://blog.logrocket.com/5-rust-game-engines-consider-next-project/][5 Rust Game Engines]]
 
 As your game project gets more complex, you might want
 - [[file:../Module-2/module-2.org][Module-2: Software Development Power Tools]]
