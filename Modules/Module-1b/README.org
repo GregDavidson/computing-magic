@@ -9,11 +9,8 @@ Notes from a [[https://github.com/GregDavidson/computing-magic#readme][Computing
 Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:../Module-1/module-1.org][Module 1]].
 
 ** 2D Imperative Art
-   
+
 Explore [[https://docs.racket-lang.org/turtles/Traditional_Turtles.html][Turtle Graphics]]
-- =pseudo= is a great resource for this!
-- The source code for the examples is at
-      - [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/turtle-examples.rkt][turtle-examples.rkt]]
 
 Limit yourself to the three key turtle commands
 - =(move distance)=
@@ -38,8 +35,10 @@ Limit yourself to the three key turtle commands
 Create your own fancy procedures to
 - Draw Polygons
 - Draw Mars
-  - Build it up from parameterized pieces
+      - Build it up from parameterized pieces
 - Draw /wild things!/
+
+Some more examples are at [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/turtle-examples.rkt][turtle-examples.rkt]].
 
 Imperative vs. Functional
 - An /Imperative/ is a /Command/ to change something in the world
