@@ -42,10 +42,10 @@ Some more examples are at [[https://github.com/racket/htdp/blob/master/htdp-lib/
 
 Imperative vs. Functional
 - An /Imperative/ is a /Command/ to change something in the world
-- /Functional Procedures/ create /Values/.
+- /Functional Procedures/ return /Values/.
       - the Pict library uses Functional Procedures
 - /Imperative Procedures/ cause /effects/
-      - traditional Turtle Graphics uses Imperative procedured
+      - traditional Turtle Graphics uses Imperative Procedures
 
 In Imperative Turtle Graphics
 - A /Turtle/ living in a /Canvas/ is given /Commands/
