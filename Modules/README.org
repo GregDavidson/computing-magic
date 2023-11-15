@@ -26,15 +26,15 @@ We begin an Open Lab with a Tutorial for *learning Lisp / Scheme / Racket by
 writing functions which compute pictures*.  You should do this module before any
 others, regardless of your current level of computing skills.
 
-**** [[file:Module-1a/README.org][Module 1a: 2D and 3D Functional Art]]
+**** [[file:Module-1a/README.org][New Module 1a: 2D and 3D Functional Art]]
 After a brief presentation, this will be an Open Lab for *Making Functional
 Visual Art* with the =pict= and =pict3d= packages
 
-**** [[file:Module-1b/README.org][Module 1b: Imperative 2D Art]]
+**** [[file:Module-1b/README.org][New Module 1b: Imperative 2D Art]]
 After a brief presentation, this will be an Open Lab for *Creating Visual Art
 using Imperative Turtle Graphics!*
 
-**** [[file:Module-1c/README.org][New Module 1c: Animation and Game Design]]
+**** [[file:Module-1c/README.org][Module 1c: Animation and Game Design]]
 Exploring techniques for *Animation & Interactive Graphics & Game Design!*
 
 **** [[file:Module-2/README.org][Module 2: Software Development Power Tools]]
@@ -69,7 +69,7 @@ module aims to give you experience with some of the most central and powerful AI
 technologies and leans towards Hybrid AI, i.e. combining Explicit Knowledge and
 Strategies with Heuristics.
 
-**** [[file:Module-8/README.org][In Development Module 8: Maximum Ambition]]
+**** [[file:Module-8/README.org][New Module 8: Maximum Ambition]]
 What if your project looks inherently large and complex? And some parts seem
 risky? And you seem to need a large team of developers and expert project
 management?
