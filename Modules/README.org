@@ -13,29 +13,30 @@ trodden path!/ if you choose to explore them be prepared to get stuck and please
 readily ask for assistance - you will thereby be helping in that module's
 development!
 
-All of these modules are undergoing revision and (hopefully) improvements -
-especially the ones marked NEW. *If you explored one of the modules some time
-ago, check back to see the improvements!* At some point I intend to create
-some short videos to replicate some of the enrichment pieces that were a part of
-the meetings which led to these modules.
+All of these modules are undergoing continuous revision. *If you explored one of
+the modules some time ago, check back to see the improvements!* At some point we
+intend to create some short videos to replicate some of the enrichment pieces
+that were a part of the classrooms which led to these modules.
 
 *** Module and Session Notes
 
 **** [[file:Module-1/README.org][Module 1: Functional Programming]]
-We begin an Open Lab with a Tutorial for *learning Lisp / Scheme / Racket by
-writing functions which compute pictures*.  You should do this module before any
-others, regardless of your current level of computing skills.
+We begin with a Tutorial for *learning Lisp / Scheme / Racket by writing
+functions which compute pictures*. You should do this module before any others,
+regardless of your current level of computing skills.
 
 **** [[file:Module-1a/README.org][New Module 1a: 2D and 3D Functional Art]]
-After a brief presentation, this will be an Open Lab for *Making Functional
-Visual Art* with the =pict= and =pict3d= packages
+We continue with an open-ended exploration of *Making Functional Visual Art*
+with the =pict= and =pict3d= packages
 
 **** [[file:Module-1b/README.org][New Module 1b: Imperative 2D Art]]
-After a brief presentation, this will be an Open Lab for *Creating Visual Art
-using Imperative Turtle Graphics!*
+We take a side trip into the /Imperative Programming Style/ *Creating Visual Art*
+using *Imperative Turtle Graphics*!
 
 **** [[file:Module-1c/README.org][Module 1c: Animation and Game Design]]
-Exploring techniques for *Animation & Interactive Graphics & Game Design!*
+Creating interactive computer games is a great way to learn advanced programming
+skills! We learn techniques for *Animation & Interactive Graphics & Game
+Design* by creating games!
 
 **** [[file:Module-2/README.org][Module 2: Software Development Power Tools]]
 Exploring more powerful software development tools. *Installing and setting up a
