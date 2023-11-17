@@ -25,11 +25,11 @@ We begin with a Tutorial for *learning Lisp / Scheme / Racket by writing
 functions which compute pictures*. You should do this module before any others,
 regardless of your current level of computing skills.
 
-**** [[file:Module-1a/README.org][New Module 1a: 2D and 3D Functional Art]]
+**** [[file:Module-1a/README.org][NEW Module 1a: 2D and 3D Functional Art]]
 We continue with an open-ended exploration of *Making Functional Visual Art*
 with the =pict= and =pict3d= packages
 
-**** [[file:Module-1b/README.org][New Module 1b: Imperative 2D Art]]
+**** [[file:Module-1b/README.org][NEW Module 1b: Imperative 2D Art]]
 We take a side trip into the /Imperative Programming Style/ *Creating Visual Art*
 using *Imperative Turtle Graphics*!
 
@@ -70,7 +70,7 @@ module aims to give you experience with some of the most central and powerful AI
 technologies and leans towards Hybrid AI, i.e. combining Explicit Knowledge and
 Strategies with Heuristics.
 
-**** [[file:Module-8/README.org][New Module 8: Maximum Ambition]]
+**** [[file:Module-8/README.org][NEW Module 8: Maximum Ambition]]
 What if your project looks inherently large and complex? And some parts seem
 risky? And you seem to need a large team of developers and expert project
 management?
