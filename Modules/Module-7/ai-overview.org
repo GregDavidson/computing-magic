@@ -23,34 +23,89 @@ Review [[https://github.com/GregDavidson/on-computing/tree/main#readme][On Compu
             - When to use AI Techniques and
             - *Why AI tends to produce the worst solutions!*
 
-In conventional computer programming, the knowledge and understanding which the
-programmer used to design the computer system is /implicit/ in the program.
+It is useful to contrast
+(1) Conventional Computer Programming
+(2) Machine Learning AI
+(2) Explicit Knowledge-Based AI
 
-In /Artificial Intelligence Programming/, /Knowledge/ is a form of
-/Understanding/ which can be captured in special data structures and flexibly
-applied within a domain.
-- Human experts generally have lot of knowledge about their domain of expertise.
-- Knowledge-Based "Expert" Systems can represent and apply /Explicit Knowledge/.
-      - The knowledge is in the form of rules and procedures.
-      - The rules and procedures were mostly created by human experts.
-      - But they can be flexibly applied using /Automated Reasoning/.
-- Machine Learning Systems can capture and apply large amounts of /Implicit Knowledge/.
-      - The knowledge is implicit in generalized pattern structures.
-      - The pattern structures were "trained" using a very large number of examples.
-      - They will tend to match anything similar to the training data.
+In all cases there's some sort of Application Domain
+- Recognizing Faces
+- Driving Vehicles
+- Tax Accounting
+- Computer Gaming
+- Spaceship Design
+- etc., etc.
 
-Explicit Knowledge-Based Systems and Machine Learning Systems
-- Act like experts when they're working well.
-      - Giving an appearance of understanding
-      - Performing valuable work
-- Act like bizarre and insane people when they fail
-      - Revealing that their understanding is quite shallow!
+Different domains present wildly differing challenges for Programmers
+- Different domains may require very different programming techniques.
+- Many (most?) domains are beyond current abilities.
+- AI techniques may or may not be helpful.
 
-Hybrid AI Systems combine the strengths of the two approaches
+*** Conventional Computer Programming
+
+tl/dr: Programmers translate domain knowledge into code. Depending on the
+techniques used the behavior of the code may be easy to predict, hard to predict
+or nearly impossible to predict without actually running the code on each
+specific set of input data.
+
+Programmers translate their understanding of a desired application in a domain
+into programming code.
+- This translation may be manual or partially automated
+- Code is represented in one or more Computer Programming Languages.
+- Code consists of Algorithms and Data
+      - Algorithms consist of Expressions and/or Statements
+      - Data is encoded as Data Structures
+- /Understanding/ or /Knowledge/ is more-or-less /implicit/ in the code.
+- Code is often accompanied by /comments/ and other /documentation/.
+      - The code may behave differently than those descriptions!
+
+The behavior of code may be fairly easy to predict when
+- Designed using a /Declarative Programming Paradigm/
+- Using /Static Typing/ and other /Static Constraints/
+- Automated proof checking systems have checked then constraints
+      - e.g. Compilers, Linters, Theorem Provers
+- Good design and maintenance practices have been followed
+
+The behavior of code may be difficult or impossible to predict
+- other than by running it with each input data set
+especially given
+- Imperative Programming Paradigms
+      - Complex control flow
+      - Statements with side-effects
+- Dynamic Typing
+- Casual Maintenance
+      - Bugs fixed and features added with patches
+      - Programs growing greatly in size and complexity
+
+*** Machine Learning: the "New AI"
+
+In successful /Machine Learning/ Systems
+- aka ML, LLMs (Large Language Models), "Artificial Neural Networks", etc.
+- "Knowledge" is /implicit/ in the weights between nodes
+- The weights are "trained" using a very large number of examples
+- It is not possible to precisely predict the competence of such systems on novel input
+      - Even when a human would find the input similar to the training data
+
+*** Knowledge-Based Systems: the "Good Old-Fashioned AI"
+
+In /Knowledge-Based Systems/ or KBS
+- /Understanding/ of a domain consists of Knowledge
+- /Knowledge/ is represented explicitly
+      - often as rules of probabilitistic logic
+      - along with explicit constraints
+- The knowledge is often derived from that used by human experts
+      - Hence the term "Expert Systems"
+- The KBS interprets the knowledge to solve problems
+      - This is called /Automated Reasoning/
+      - All KBS behavior should be logical and explainable
+
+*** Hybrid AI Systems
+
+Hybrid AI Systems combine the strengths of ML and a KBS's AR
 - Machine Learning is used for
       - Generation of Hypotheses and Plans
       - Efficient search of large domain spaces
-- Logical processing of explicit knowledge is used for
+- /Automated Reasoning/ is used for
       - Verification of hypotheses and plans
       - Organizing strategies for solving problems
 
@@ -75,6 +130,33 @@ entities to understand
 So far true understanding seems to be
 - a capacity which only human beings exhibit
 - which we don't understand very well!
+
+*** AI Winters
+
+A number of powerful and successful Expert Systems were built back in the 1970s
+to the 1980s.  Some of these systems exceeded human performance at
+- Diagnosis and treatment recommendations for serious human diseases
+- Chemical analysis
+- Some very important areas of mathematics
+- etc.
+
+This led to a great deal of excitement which led to a number of people selling
+systems which claimed to be Knowledge-Based Systems but which were not based on
+reliable forms of Logic or Automated Reasoning.
+
+Many people with no understanding of KBSs or AR attempted to build expert
+systems and failed. This caused a collapse of confidence. For this and other
+reasons funding for research and development of all expert systems and AI in
+general was reduced and projects were canceled. AI was suddenly unfashionable.
+
+In 2023 we are currently at a very high level of excitement about machine
+learning, large language models and related technologies. Many people are
+touting such technologies as perfect solutions to a broad range of challenging
+problems. Understanding of KBSs, AR and Hybrid AI is becoming rare. We are in
+danger of another AI Winter.
+
+We can best prevent another AI Winter by spreading an understanding of the power
+and limitations of these technologies and how they can be best used.
 
 ** Areas of Artificial Intelligence
 
