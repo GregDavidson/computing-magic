@@ -6,9 +6,9 @@ Based on a [[https://github.com/GregDavidson/computing-magic#readme][Computing M
 
 ** What Would You Like To Build?
 
-The activity for this module is to conceive of something which you'd love to
-build. And then to Plan it and Design it. If those go well, you'll be well on
-your way towards implementing your idea!
+The activity for this module is to *conceive of something which you'd love to
+build*. And then to *Plan it* and *Design it*. If those go well, you'll be well
+on your way towards implementing your idea!
 
 ** Planning your desired project
 Does it involve
@@ -26,12 +26,12 @@ Will it need a
 - client/server architecture?
       - with network connections?
 
-Can it be solved with 
-  - well-known algorithms and data structures?
-    - /I can assist you with figuring that out!/
+Can it be solved with
+- well-known algorithms and data structures?
+      - /I can assist you with figuring that out!/
 
 Might it need some form of /Intelligence/?
-    - /I can assist you with that, too!/
+- /I can assist you with that, too!/
 
 ** Designing Software Systems
 Read and explore [[http://www.htdp.org/][How to Design Programs]], an excellent text by the principal
