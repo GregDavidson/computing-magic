@@ -1,4 +1,4 @@
-* Computing Magic, Module 8, Maximum Ambition!
+* Computing Magic Module 8: Maximum Ambition!
 
 ** The Most Ambitious and Challenging Problems
 
@@ -14,7 +14,7 @@ How do we get computers to tackle the biggest and most challenging problems?
 ** Buzzwords and Consultants
 
 These days, many people will suggest the solution is
-- *AI!* (they mean /Machine Learning/)
+- *AI!* (by which they usually mean /Machine Learning/)
 In reality
 - [[https://github.com/GregDavidson/on-computing/blob/main/what-is-computing.org#what-is-ai-programming][AI tends to produce worse results than conventional programming!]]
 
@@ -28,7 +28,7 @@ Countless hyped
       - Programming Languages
       - Web Frameworks
       - No-Programming-Needed Tools
-which never fail to disappoint!
+are seen as poor choices once the hype is gone!
 
 [[https://en.wikipedia.org/wiki/List_of_failed_and_overbudget_custom_software_projects][Most Ambitious Software Projects Fail!]]
 
@@ -40,7 +40,9 @@ The failed projects are often
 
 Challenging problems are generally best addressed by
 - using the *Best Techniques*
+      - not the most hyped!
 - for *Each Part of the Problem*
+      - striving for both local and global simplicity!
 
 As a Lead in a Software Development Project, you need to
 - Have a good overview of the field
@@ -51,8 +53,11 @@ As a Lead in a Software Development Project, you need to
 Some Keys to Software Project Success:
 - Use an appropriate Analysis and Design Process
       - Example: [[https://en.wikipedia.org/wiki/Unified_Process][The (highly flexible) Unified Process]]
-      - Know how to adapt and apply it!
-      - Understand Use Cases vs. User Stories!
+            - Know how to adapt and apply it!
+      - Understand /Use Cases/ vs. /User Stories/!
+            - User Stories are /first cut/ Use Cases
+            - Learn how to design more complete Use Cases
+                  - then do so selectively!
 - Pursue Elegance: Simplicity, Generality, Power
       - https://en.wikipedia.org/wiki/Rule_of_least_power
       - If you have much data, maximally Leverage Relational Databases
@@ -82,6 +87,7 @@ Some Keys to Software Project Success:
 ** Plan for Failure and/or Success!
 
 Plan for failure!
+- What are your most likely failures?
 - What will you learn from failures along the way?
 - It's better to work incrementally
       - What sub-goals will constitute partial success?
@@ -90,5 +96,6 @@ Plan for failure!
       - Mostly write FLOSS!
 
 Plan for success
-- Lay a good foundation!
-- Create powerful, lasting relationships!
+- Lay a good technical foundation!
+- Have each level of the project increase your capabilities!
+- Create powerful, lasting relationships with your creative partners!
