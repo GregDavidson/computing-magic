@@ -34,8 +34,8 @@ Limit yourself to the three key turtle commands
 
 Create your own fancy procedures to
 - Draw Polygons
-- Draw Mars
-      - Build it up from parameterized pieces
+- Draw Buildings and Neighborhoods
+      - Build them up from parameterized pieces
 - Draw /wild things!/
 
 Some more examples are at [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/turtle-examples.rkt][turtle-examples.rkt]].
