@@ -1,3 +1,371 @@
-* Typed Racket
+* Type Checking, Typed Racket and Related Integrity Issues
 
-A huge split in programming languages and programming philosophy is
+This document is not going to teach you Typed Racket. It is intended to make you
+understand why, *if you like and use Racket, you will want to learn and use
+Typed Racket*. We cover some related issues along the way.
+
+** Errors, Type Errors, Typed Racket
+
+It's all too easy for programmers to make mistakes in writing and/or modifying
+programs. These mistakes are traditionally called /bugs/. Finding and fixing
+such bugs is called /debugging/. It is common in the Software Industry for
+programmers to spend more time /debugging/ than writing functional code!
+
+The focus in this document and the other materials in its folder are
+- an explanation of the mistakes called /Type Errors/
+- how /Type Errors/ can be caught automatically
+- a taste of how this is done in the language /Typed Racket/
+- why automated /Type Checking/ is sometimes controversial
+
+There are other kinds of useful automated program analysis, e.g.
+- automated checking of correctness proofs
+- static evaluation for domain errors
+- etc.
+which we hope to provide resources for elsewhere.
+
+We assume you have some familiarity with the Lisp family of Languages. A short
+overview is [[https://github.com/GregDavidson/on-lisp/blob/main/lisp-simplicity.org][Lisp Simplicity]].
+
+** Controversy and Choices in the Racket Community
+
+Many computer languages support /Automated Type Checking/, e.g.
+- Typed Racket
+- Typescript
+- Java, C++, Rust
+Many programmers enthusiastically embrace this feature and prefer these
+languages.
+
+Many popular languages /do not/ support /Automated Type Checking/, e.g.
+- Racket (and most other Lisps)
+- Python
+- Javascript
+- Smalltalk
+Many programmers prefer these languages and the imagined "freedom" from such
+automated error checking.
+
+The Racket Community cleverly straddles this controversial decision by providing
+multiple programming languages, including
+- Racket :: a Dynamically Typed lisp in the Scheme Subfamily
+- Typed Racket :: Racket extended with Static Type Checking
+
+Type Racket requires more discipline to use than regular Racket, but ensures
+that /Type Errors/ simply cannot occur. This greatly reduces the time that
+programmers need to spend debugging.  As a bonus, the machine code created from
+Typed Racket modules is typically smaller and typically runs somewhat faster than machine code
+created from regular Racket modules.
+
+Large programs are generally divided up into multiple /Modules/ containing
+/Source Code/, i.e. code written in High-Level Languages which must be
+/Compiled/ (translated to /Machine Code/) before it can be run. Modules are
+typically stored in separate files as human-readable text.
+
+The Racket System allows programmers to use different Racket System Languages
+for different modules, merely by beginning the module file with a ~#lang~ line.
+The Racket System compiles each module with its designated language and then
+combines the resulting /Machine Code/ into the complete program. Thus,
+programmers who prefer Dynamic Typing for certain purposes can put such code in
+~#lang racket~ modules and link it with other modules which use ~#lang
+typed/racket~.
+
+** What is Type Checking Again?
+
+Computer programs consist of expressions and statements in which procedures
+(sometimes called functions, operators, methods, etc. in different programming
+languages) operate on data (sometimes called values or objects) to create new
+data or to cause /Effects/ on /Devices/, e.g. /Input/Output Devices/.
+
+Procedures only work correctly when they are given data of the right types, e.g.
+- an arithmetic procedure might expect 1-word integers but not strings
+- a graphical procedure might expect bitmap images but not SVG expressions
+- etc.
+
+When the wrong kind of data is passed to a procedure it could arbitrarily
+misbehave.  There are two philosophies for how this should be handled:
+
+- Dynamic Type Checking :: Ensure that there's code in all
+  procedures to check the validity of any required data and halt that part
+  of the program with an error before anything bad can happen.
+- Static Type Checking :: Have an automated tool analyze all places where
+  procedures are given data (what Lisps call /Forms/) in the program and report
+  any possible errors. If there are errors, the program is not translated to
+  machine code. This forces all errors to be fixed before the program can be run
+  at all.
+
+** What's a Type and What's a Type Error?
+
+In /Machine Code/ there are no types, there's just /Bits/ grouped into /Bytes/
+grouped into /Words/. Here's a great explanation of [[https://gregdavidson.github.io/on-computing/what-computers-are][What Data Really Is]].
+
+High-Level Computer Languages allow programmers to think of data in more
+familiar terms, such as
+- Numbers, e.g. 1-Word Integers
+- Strings, e.g. sequences of Unicode characters
+- Images, e.g. Bitmaps in PNG format
+- etc.
+
+Lisp is a Family of especially High-Level languages, including
+- Scheme :: one of the simplest practical computer programming languages
+- Racket :: based on Scheme but with a few complex extensions
+- Clojure :: an elegant Lisp designed to interoperate with Java and JavaScript
+- Common Lisp :: a large and complex lisp
+      - borrows many features from older Lisps
+      - builds-in many features which other Lisps leave to external Libraries
+
+Note: Some /Common Lisp/ people think that /Lisp/ refers only to /Common Lisp/
+whereas in actuality /Common Lisp/ is a relative newcomer in the large and
+ancient Lisp family.  Scheme is older; Clojure and Racket are newer.
+
+All Lisps have an underlying simplicity and generality, especially those based
+on /Scheme/ as described in [[https://github.com/GregDavidson/on-lisp/blob/main/lisp-simplicity.org][List Simplicity]].
+
+*** Handling a Type Error Dynamically
+
+Here's a simple form with a type error:
+- (+ 12 "three")
+where the ~+~ function won't understand the argument "three"
+
+We can describe the types informally in English as
+- + :: a procedure expecting 0 or more numbers
+- 12 :: a 1-word binary integer
+- "three" :: a string of 5 Unicode characters
+
+Since Racket is Dynamically Typed, it happily compiles this form to Machine
+Language. But when you try to run it, you get:
+#+begin_example
++: contract violation
+  expected: number?
+  given: "three"
+#+end_example
+
+In other words, the Racket procedure ~+~ contains code which checks the type of
+the arguments passed to it dynamically, i.e. at runtime, and issues an error if
+they're of the "wrong" type. The machine code of the ~+~ procedure in Racket is
+longer and more complex than would be required if it could trust that the
+arguments were numbers as expected.
+
+*** Handling a Type Error Statically
+
+Typed Racket has a notation for types. In most cases, it will automatically
+figure out the most specific type of a Symbolic Expression.
+
+| Expression | Type                 |
+|------------+----------------------|
+| 12         | Integer              |
+| "three"    | String               |
+| +          | (-> Number * Number) |
+
+A key feature of the Typed Racket system is that it can generalize types, e.g.
+it knows that ~Integer~ is a special case of ~Number~.
+
+| Type Expression                    | Meaning                                |
+|------------------------------------+----------------------------------------|
+| (-> Argument-Types... Return-Type) | a procedure type                       |
+| Argument-Type *                    | 0 or more occurrences of Argument-Type |
+
+So then ~+~ is /a procedure which takes 0 or more Numbers and returns a Number/.
+
+| Expression | Value |
+|------------+-------|
+| (+)        |     0 |
+| (+ 123)    |   123 |
+| (+ 1 2 3)  |     6 |
+| (+ 1 2 3)  |     6 |
+
+When we try to run
+#+begin_src racket
+ #lang typed/racket
+ (+ 12 "three")
+#+end_src
+
+we get
+
+#+begin_example
+ Type Checker: type mismatch
+  expected: Number
+  given: String in: "three"
+#+end_example
+
+This is different from regular Racket because
+- The errors came from the Type Checker
+      - which is part of the Compiler
+- The program was /not/ translated to Machine Code
+- There was no program to run
+
+In the correct program
+#+begin_src racket
+ #lang typed/racket
+ (+ 12 3)
+#+end_src
+
+the machine code program is shorter or faster. It contains no instructions to
+check that the arguments are numbers.
+
+*Ok, but so what, these kinds of errors are obvious, right?*
+
+** When is this worth it?
+
+Automatic type checking offers little to small simple programs. Its value comes
+when programs get larger, more abstract, and especially when conditional
+expressions make testing expensive.
+
+*** The Y2K Problem
+
+Millions of lines of code in critical software infrastructure written in the
+middle of the 20th century assumed that dates only needed 2 digits. All of that
+code was just waiting to fail in the year 2000. This is the famous [[https://en.wikipedia.org/wiki/Year_2000_problem][Y2K Problem]].
+Billions of dollars were spent to pay thousands of programmers in the
+mind-numbing task of spent tracking down these problems and "fixing" them -
+generally with ugly patches. It couldn't be fixed automatically because dates
+were not a reliably distinguishable datatype.
+
+In any statically typed system, such as a modern relational database, the fix
+would be trivial and mostly automatic and the fix would be clean. And by the
+way, it would have been far more cost effective to replace those old systems
+which were (and still are) full of many other bugs with modern relational
+database systems.
+
+*** Units and Dimensions
+
+Nasa's [[https://en.wikipedia.org/wiki/Mars_Climate_Orbiter][Mars Climate Orbiter]] was lost in 1998 because one part of the team
+expressed a key value in international (metric) units while others expressed the
+same values using traditional non-metric units and so the spaceship was lost in
+space. Units can be easily encoded as types. Confusions of dimensions, e.g.
+length vs. area or power vs. energy signal a compile error. Confusion of units
+can either be coded to signal an error or they can automatically generate the
+correct conversion code, as desired.
+
+Type libraries for doing this are available for many languages, including C++,
+Rust and Julia. Sadly, Scientists and Engineers programming in these languages
+rarely use such libraries!
+
+Some languages, such as [[https://numbat.dev/articles/intro.html][Numbat]] build in these features.
+
+The extraordinary [[https://www.postgresql.org][PostgreSQL]] database system provides a rich [[https://www.postgresql.org/docs/current/datatype.html][set of builtin
+types]] along with a command for [[https://www.postgresql.org/docs/current/sql-createtype.html][defining new types]] and other features for
+ensuring the integrity of systems built with it which go well beyond the SQL
+standard. If you use these features well, you have can be guaranteed that many
+common errors of data entry and incorrect operations are impossible.
+
+*** Rarely executed code
+
+Consider some code like this, deep within a banking system consisting of
+thousands of lines of code:
+#+begin_src racket
+  (define (try-fix-overdraw acct)
+    ;; figure out fees, credit-line, amount to fix overdraw
+    (when credit-line (transfer overdraw-fix credit-line acct) 'overdraw-fix)
+    (transfer fees acct fee-collection-acct 'overdraw-fees) )
+  (map try-fix-overdraw (filter overdrawn? *account-datbase*))
+#+end_src
+
+A customer account is undoubtedly a very complex data structure.  It will reflect
+- the many kinds of accounts commonly available in this institution
+- some rare kinds of accounts available to special clients
+- many kinds of account-type and customer-category policies on overdrafts
+- linkages to other accounts
+
+Some of the overdraw scenarios might never have occurred with certain account types.  And somewhere in that program there might be an accidental type error
+#+begin_src racket
+  (define (overdrawn? acct)
+    (cond ; lots of common clauses
+      ; then this rare one:
+      [(overseas-military-account? acct)
+       (freeze-account acct (business-days 3))
+       (notify (branch-manager acct) 'urgent-priority) ]
+      ; some more rare clauses
+    ) )
+#+end_src
+
+But here's the definition of ~freeze-account~ in the account library:
+#+begin_src racket
+  (define (freeze-account days acct)
+    ; set a flag to freeze the given account
+    ; for the given number of days
+    )
+#+end_src
+
+With a /dynamically typed/ language
+- Will testing be able to find this problem in advance?
+- When will we discover a problem?
+- What will happen to our banking system until the problem is fixed?
+- What's the appropriate fix?
+      - are Days and Business-Days the same type?
+
+An old adage applies to dynamically typed programs:
+- "Testing can only reveal the presence of bugs, not their absence."
+
+With a /statically typed/ language
+- The incorrect order of the arguments will be caught early
+- It will be never make it into the banking system
+- Making Days and Business-Days be different types adds more security
+
+** Some Infamous Bugs
+
+These lists provide some good examples yet the true list is much larger and
+involves much more serious consequences.
+
+- [[https://en.wikipedia.org/wiki/List_of_software_bugs][Wikipedia List of software bugs]]
+- [[https://www.wired.com/2005/11/historys-worst-software-bugs][Wired article on "History's Worst Software Bugs"]]
+
+- [[http://www.catb.org/jargon/html/P/phase-of-the-moon.html][The Infamous Phase of the Moon Bug]]
+
+Once upon a time there was a program bug that depended on the phase of the moon.
+There was a little subroutine that had traditionally been used in various
+programs at MIT to calculate an approximation to the moon's true phase. GLS
+incorporated this routine into a LISP program that, when it wrote out a file,
+would print a timestamp line almost 80 characters long. Very occasionally the
+first line of the message would be too long and would overflow onto the next
+line, and when the file was later read back in the program would barf. The
+length of the first line depended on both the precise date and time and the
+length of the phase specification when the timestamp was printed, and so the bug
+literally depended on the phase of the moon!
+
+** Should I Really Use Typed Racket?
+
+So, should you write most of your code, especially anything large and complex in
+/Typed Racket/ instead of /regular, dynamic Racket/?
+- Yes, but...
+
+The Typed Racket type system is particularly complex because it tries to retain
+maximum compatibility with dynamic Racket. And dynamic Racket is an unusually
+flexible and open-ended language.
+
+If you specify the types for your procedures, Typed Racket will automatically
+infer most of the types necessary to compile the expressions within those
+procedures. Except sometimes.
+
+The Typed Racket type inference system is sometimes unable to infer the correct types when you're using
+nested generic procedures.
+
+Here's an example which came up with nesting ~filter~ inside of ~foldl~
+- [[file:typing-filter-for-foldl.rkt][typing-filter-for-foldl.rkt]]
+
+If you're going to seriously use Typed Racket you're going to have to
+- study [[https://docs.racket-lang.org/ts-guide][The Typed Racket Guide]]
+- reference the other Typed Racket materials
+      - in the [[https://docs.racket-lang.org][Racket Documentation Collection]]
+- encounter and solve typing problems with real programs
+
+** Opinion Section
+
+Over my career I've had many systems suddenly crash because of a type error that
+wasn't caught in testing because of an unexpected combination of features.
+Finding and fixing bugs in such systems is so tedious that most large programs
+written without advanced type checking and other automated integrity checking
+practices are full of bugs which will never be fixed.
+
+Having programs crash is far from the worst consequence of a bug. The worst
+consequences are generally when the program continues to run but generates bad
+data. This has led to horrible medical errors, disastrous mechanical failures
+and more.
+
+Making good use of modern type systems is one of the easiest ways to make
+programming better, for the programmers and for all of the users. Wise
+programmers will therefore prefer Statically Typed Languages and will learn to
+use those features and other integrity features well. What can you encode as
+types? Dimensions and Units are just the beginning!
+
+I can happily say that I spend far less time debugging than most other
+programmers and my systems are far more reliable and easier to maintain and
+evolve than comparable systems. Part of the reason is I encode a lot of
+integrity checking into static types.
