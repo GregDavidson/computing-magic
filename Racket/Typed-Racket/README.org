@@ -40,7 +40,7 @@ Many popular languages /do not/ support /Automated Type Checking/, e.g.
 - Python
 - Javascript
 - Smalltalk
-Many programmers prefer these languages and the imagined "freedom" from such
+Many programmers prefer these languages and the imagined "freedom" from
 automated error checking.
 
 The Racket Community cleverly straddles this controversial decision by providing
@@ -82,9 +82,9 @@ Procedures only work correctly when they are given data of the right types, e.g.
 When the wrong kind of data is passed to a procedure it could arbitrarily
 misbehave.  There are two philosophies for how this should be handled:
 
-- Dynamic Type Checking :: Ensure that there's code in all
-  procedures to check the validity of any required data and halt that part
-  of the program with an error before anything bad can happen.
+- Dynamic Type Checking :: Ensure there's code in all procedures to check the
+  validity of all required data and abort that part of the computation with an
+  error before anything bad can happen.
 - Static Type Checking :: Have an automated tool analyze all places where
   procedures are given data (what Lisps call /Forms/) in the program and report
   any possible errors. If there are errors, the program is not translated to
