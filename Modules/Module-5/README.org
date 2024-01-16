@@ -8,18 +8,22 @@ Based on a [[https://github.com/GregDavidson/computing-magic#readme][Computing M
 
 Main memory is /volatile/, it disappears when your computer is turned off or
 your program (application) terminates. If you want your data to last beyond
-that, you have to store it in /persistent/ memory; typically, that means in
-/files/ or /databases/. Databases allow for the more flexible persistent storage
-of data.
+that, you have to store it in /persistent/ memory; almost always that means
+storing it in /files/ or /databases/. Databases have huge advantages over files
+but have a longer learning curve.
 
-I recommend the [[https://www.postgresql.org/][PostgreSQL Object-Relational Database System]] for Ambitious
-Applications
+There are many popular database systems. We recommend the [[https://www.postgresql.org/][PostgreSQL
+Object-Relational Database System]] for almost all applications!
 
 Here are two PostgreSQL Tutorials:
 - [[https://www.postgresql.org/docs/current/tutorial.html][A Quick Tutorial]]
-      - Ideal if this is not your first Rodeo
+      - Worth doing even if you've already used SQL with Relational Databases.
 - [[https://www.postgresqltutorial.com/][A More Extensive Tutorial]]
       - With [[https://www.postgresqltutorial.com/postgresql-getting-started/][Handy Installation Instructions for Windows, Linux and MacOS]]
+- If you've already used SQL with other Relational Databases
+      - Notice how PostgreSQL is more general and more flexible!
+
+Now design a PostgreSQL Schema for one of your projects and then implement it!
 
 ** What else might you do?
 

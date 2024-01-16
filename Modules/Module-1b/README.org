@@ -9,33 +9,54 @@ Notes from a [[https://github.com/GregDavidson/computing-magic#readme][Computing
 Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.  See [[file:../Module-1/module-1.org][Module 1]].
 
 ** 2D Imperative Art
-   
-Explore [[https://docs.racket-lang.org/turtles/Traditional_Turtles.html][Turtle Graphics]]
-- =pseudo= is a great resource for this!
-- The source code for the examples is at
-      - [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/turtle-examples.rkt][turtle-examples.rkt]]
 
-Focus on the three key turtle commands
+Explore [[https://docs.racket-lang.org/turtles/Traditional_Turtles.html][Turtle Graphics]]
+
+Limit yourself to the three key turtle commands
 - =(move distance)=
 - =(draw distance)=
 - =(turn angle)=
 
-Create your own fancy functions to
+#+begin_src racket
+  ;; Setup
+  #lang racket
+  (require graphics/turtles)
+  (turtles)
+
+  ;; Turtle Commands
+  (draw 50)
+  (turn 360/3)
+  (draw 50)
+  (turn 360/3)
+  (draw 50)
+  (turn 360/3)
+#+end_src
+
+Create your own fancy procedures to
 - Draw Polygons
 - Draw Mars
-  - Build it up from parameterized pieces
+      - Build it up from parameterized pieces
 - Draw /wild things!/
 
-Why is this called /Imperative/?
-- Each function is a /Command/, i.e. an /Imperative/ to something outside of itself
-      - Specifically, a command to a /Turtle/ living in a /Canvas/
-- Turtle commands change the /state/ of the Turtle and the Canvas
-      - Repeating a function doesn't do the same thing!
+Some more examples are at [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/turtle-examples.rkt][turtle-examples.rkt]].
+
+Imperative vs. Functional
+- An /Imperative/ is a /Command/ to change something in the world
+- /Functional Procedures/ return /Values/.
+      - the Pict library uses Functional Procedures
+- /Imperative Procedures/ cause /effects/
+      - traditional Turtle Graphics uses Imperative Procedures
+
+In Imperative Turtle Graphics
+- A /Turtle/ living in a /Canvas/ is given /Commands/
+- Which change the /state/ of the Turtle and of the Canvas
+      - The Turtle's location or orientation change
+      - The Canvas acquires drawings
 
 Most graphics programming models and libraries are /Imperative/.
- 
+
 ** How can this be made /Functional?/
-   
+
 The hip geeks say that Functional Programming is better, but what is it?
 - [[https://www.cs.nott.ac.uk/~pszgmh//faq.html#functional-languages][Functional Programming FAQ]]
 
