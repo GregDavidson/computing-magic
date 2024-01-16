@@ -1,0 +1,3 @@
+* Typed Racket
+
+A huge split in programming languages and programming philosophy is
