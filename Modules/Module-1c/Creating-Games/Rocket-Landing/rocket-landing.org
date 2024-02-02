@@ -1,0 +1,23 @@
+* Landing A 2D Rocket Spaceship
+
+**** Step 1: Getting the needed image(s)
+
+Here's an image to start with: [[file:rocket-with-flame.png]].
+- Where did that image come from?
+      - [[file:rocket-with-flame.svg]]
+- What are good ways to create such images?
+      - Check out [[file:../creating-2d-images.org][Creating 2D Images for Games]]
+
+We'd like, at least
+- A Rocket Spaceship in flight, with flames
+Maybe we'd also like
+- The same Rocket Spaceship, without flames
+- The same Rocket Spaceship, standing on landing legs
+
+**** Step 2: Animating its descent
+
+Here's a simple program to get started with
+- 
+- 
+
+**** Step 3: Making it more interesting

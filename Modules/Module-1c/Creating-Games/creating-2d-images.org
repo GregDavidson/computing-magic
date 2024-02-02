@@ -1,0 +1,77 @@
+* Creating 2D Images for Games
+
+** Criteria for 2D Images
+
+2D games need 2D images
+- Usually a 3D effect is desired
+- Using shading, textures, etc.
+
+We might need multiple images
+- Views from different perspectives
+- With different effects
+- With separate parts in different orientations
+
+** Best method: Create a 3D Model
+
+Advantages: Allows us to
+- scale the image
+- rotate the image
+- adjust object composition during game play
+- view the image from different perspectives
+Disadvantages:
+- Requires sophisticated graphics programming skills.
+
+** Alternative method: Create it using a 2D Graphics Toolkit
+
+Advantages: Allows us to
+- scale the image
+- rotate the image
+- adjust object composition during game play
+Disadvantages:
+- Requires graphics programming skills.
+      - but try out [[https://docs.racket-lang.org/quick][An Introduction to Racket with Pictures]]
+- Can't automatically provide multiple 3D perspectives.
+
+Racket has several powerful 2D drawing toolkits
+- How To Design Programs, 2nd Edition
+      - [[https://docs.racket-lang.org/teachpack/2htdpimage-guide.html][Image Guide]]
+      - [[https://docs.racket-lang.org/teachpack/2htdpimage.html][Image Module]]
+- Pict Library
+      - [[https://docs.racket-lang.org/pict/index.html][Pict Library]]
+      - [[https://docs.racket-lang.org/quick][An Introduction to Racket with Pictures]]
+- And others available from
+      - [[https://docs.racket-lang.org][Documentation on Racket Website]]
+      - [[https://pkgs.racket-lang.org][Racket Package Catalog]]
+
+** Good Manual method: Create an SVG Image
+
+Advantages:
+- SVG images are
+      - scalable
+      - rotatable
+      - fairly easy to edit
+Disadvantages:
+- SVG images are only 2D
+      - 3D effects in SVGs only work for one perspective
+      - Animation through editing is limited
+
+A good Open Source Free Software SVG Image editor is
+- [[https://inkscape.org][Inkscape]]
+
+** Easiest method: Import existing Bitmaps
+
+- Advantage: We can get started right away
+      - And switch to more sophisticated images later.
+- Disadvantages:
+      - Not fully scalable or rotatable
+            - Resolution is fixed
+            - Jagged edges emerge when scaling
+      - Animation is limited
+            - Images can be broken up into parts
+            - Images can be switched in and out
+      - We have to find or create suitable bitmap images
+            - Harder to edit than SVG images
+
+Two good Open Source Free Software Bitmap Image editors are
+- [[https://krita.org][Krita]] :: Excellent and fairly easy to learn and use
+- [[https://www.gimp.org][The GIMP]] :: More sophisticated but more difficult to learn and use

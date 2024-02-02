@@ -1,0 +1,52 @@
+* Let's Create a Video Game!
+
+** What's Our Plan?
+
+Creating /Interactive Computer Games/ is a great way to learn /GeneraL
+Programming Skills/, including /Program Design/ - so let's do it!
+
+Wait, doesn't this require learning a lot of complicated things first?
+- Not so much with [[https://racket-lang.org][Racket]]
+- and the [[https://docs.racket-lang.org/teachpack][How to Design Programs Teachpacks]]
+created by the wonderful Racket Developers!
+
+Creating games with Racket and the Racket Teachpacks will prepare you to
+- Create challenging programs using any decent computer language
+- Exploit any reasonable programming libraries or frameworks
+
+The Initial Path
+1. Animate some 2D graphics
+2. Create a single-player interactive video game
+3. Add some interesting features
+
+Optional Advanced Paths
+- Add advanced features
+      - Complex objects
+      - Multimedia
+      - etc.
+- Create a 3D Graphics Game
+- Create a multi-player game
+
+** Prerequisites
+
+Prerequisite for this tutorial: [[https://github.com/GregDavidson/computing-magic/tree/main/Modules/Module-1#readme][Computing Magic Module 1]]
+- The essential part of which is completing the [[https://docs.racket-lang.org/quick][Racket Quick Tutorial]] through Step 8.
+- and we recommend you complete the whole of Module 1 including [[https://github.com/GregDavidson/computing-magic/blob/main/Modules/Module-1/Exercises/Make-A-Face/make-a-face.rkt.org][Making A Face]].
+
+** Acknowledgements
+
+This tutorial is inspired by the material in the two books
+- [[https://htdp.org][How To Design Programs]]
+- [[https://world.cs.brown.edu][How To Design Worlds]]
+The main differences in this tutorial is that
+- We mostly present code first and explain the theory afterwards.
+- We use the full Racket Language rather than a limited Student Language.
+
+We also owe a great debt to
+- The wonderful [[https://racket-lang.org][Racket]] developers
+- The pioneers who made /Computing Magic/ possible
+
+** Let's Go!
+
+** First Animation: [[file:Rocket-Landing/rocket-landing.org][Landing A Rocket Spaceship]]
+** First Interactive Games: [[file:Airplane-Landing-Games/airplane-landing-games.org][Airplane Landing Games]]
