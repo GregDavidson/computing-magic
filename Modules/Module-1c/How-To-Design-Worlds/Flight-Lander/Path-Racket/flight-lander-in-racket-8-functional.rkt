@@ -6,7 +6,6 @@
 ;; Functional Programming Paradigm used throughout.
 ;; All data structures are immutable values.w
 
-
 ;; *** Exercises
 
 ;; Throughout the code there are several suggested
