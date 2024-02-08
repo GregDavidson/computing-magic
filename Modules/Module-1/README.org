@@ -38,8 +38,8 @@ See if you can line up some fellowship:
 3. Allow yourself to get lost and confused
        - but don't stay that way!
 
-4. You're now staring to /get/ the #1 key to most advanced computing:
-   /Functional Procedures/!
+4. You're now starting to /get/ the #1 key to most advanced computing:
+   - /Functional Procedures/!
 
 5. Now try this [[file:Exercises/Make-A-Face/make-a-face.rkt.org][Exercise: Make A Face in Racket]]
 
