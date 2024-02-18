@@ -21,7 +21,8 @@
 
 ;; set! is the infamous procedure which changes an existing binding.
 ;; set! can cause surprises and is best avoided in large
-;; scopes, e.g. global bindings!
+;; scopes, e.g. global bindings!  In Racket you can only use set! on
+;; bindings which were originally established by define.
 
 (define greet 'hello)
 
@@ -118,8 +119,15 @@
 
 (printf "tally-list is now bound to\n\t~a\n" tally-list)
 
+;; ** The Racket Procedure for-each
+
+(for-each tally-inc! tally-list)
+
+(printf "tally-list is now bound to\n\t~a\n" tally-list)
+
 ;; ** A Degenerate foldl
 
+;; The second argument is ignored.
 (foldl (λ (t _) (tally-inc! t)) #f tally-list)
 
 (printf "tally-list is now bound to\n\t~a\n" tally-list)
