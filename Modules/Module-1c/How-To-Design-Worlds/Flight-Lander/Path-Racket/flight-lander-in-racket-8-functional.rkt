@@ -443,10 +443,10 @@
 ;; The plane's horizontal velocity needs to be less than
 ;; the width of the plane, lest it wrap in a single tick
 ;; before its new position can be checked by game-over?
-(define PLANE-AIR-DX 5)
-(define PLANE-AIR-DY 5)
+(define PLANE-FLYING-DX 5)
+(define PLANE-FLYING-DY 5)
 (define PLANE-SINKING-DY 1)             ; plane sink rate in water
-(define PLANE-TAXI-DX 1)                ; plane horizontal taxi speed
+(define PLANE-TAXIING-DX 1)                ; plane horizontal taxi speed
 
 ;; update-plane parameters
 (define (update-plane plane)
@@ -469,7 +469,7 @@
                             ;; it will stay on the land
                             #:y (+ 1 BASE-TOP)
                             ;; it will taxi smoothly to the end of the land
-                            #:dx PLANE-TAXI-DX
+                            #:dx PLANE-TAXIING-DX
                             ;; and it will not sink or rise
                             #:dy 0 ) ]
             [else (update-sprite plane
@@ -481,7 +481,7 @@
 (define PLANE (sprite PLANE-IMAGE
                       0 ; x: plane at left edge of scene
                       (image-height PLANE-IMAGE) ; y: plane at top edge of scene
-                      5 5 ; dx dy
+                      PLANE-FLYING-DX PLANE-FLYING-DY
                       update-plane ) )
 
 ;; Tests
