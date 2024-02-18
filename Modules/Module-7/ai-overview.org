@@ -4,12 +4,11 @@ Part of [[https://github.com/GregDavidson/computing-magic#readme][Computing Magi
 
 ** What is Artificial Intelligence?
 
-/Artificial Intelligence/ is any computing technology which exhibits skills
-which, were they to be employed by a Human Being, we would consider a sign of
-Intelligence. We do not count any behavior which is programmed in detail in
-advance. The behavior should emerge from any program in a flexible and
-appropriate manner similar to the emergence of intelligent behavior in a human
-being.
+/Artificial Intelligence/ is any computing technology which exhibits behavior
+which would be considered a sign of intelligence were it exhibited by a Human
+Being. Any behavior which is programmed in detail in advance does not count. The
+behavior must emerge from the program in a flexible and appropriate manner,
+similar to the emergence of intelligent behavior in a human being.
 
 /Intelligence/ in computer systems is as diverse as intelligence is in human
 beings. I recommend reading [[https://en.wikipedia.org/wiki/Artificial_intelligence][Wikipedia on Artificial Intelligence]] and exploring
@@ -38,7 +37,8 @@ In all cases there's some sort of Application Domain
 
 Different domains present wildly differing challenges for Programmers
 - Different domains may require very different programming techniques.
-- Many (most?) domains are beyond current abilities.
+- Many (most?) domains are too hard to /totally/ automate
+      - but computers can usually do /some useful parts/
 - AI techniques may or may not be helpful.
 
 *** Conventional Computer Programming
