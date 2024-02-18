@@ -7,8 +7,9 @@ Part of [[https://github.com/GregDavidson/computing-magic#readme][Computing Magi
 /Artificial Intelligence/ is any computing technology which exhibits behavior
 which would be considered a sign of intelligence were it exhibited by a Human
 Being. Any behavior which is programmed in detail in advance does not count. The
-behavior must emerge from the program in a flexible and appropriate manner,
-similar to the emergence of intelligent behavior in a human being.
+behavior must emerge from the computer system in a flexible and appropriate
+manner, as it does with us when we're paying attention and applying our
+understanding.
 
 /Intelligence/ in computer systems is as diverse as intelligence is in human
 beings. I recommend reading [[https://en.wikipedia.org/wiki/Artificial_intelligence][Wikipedia on Artificial Intelligence]] and exploring
