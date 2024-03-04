@@ -1,0 +1,20 @@
+* Variations of the Code from the Quick Tutorial
+
+The Racket files in this Directory are variations of the code from
+- [[https://docs.racket-lang.org/quick][Quick: An Introduction to Racket with Pictures]]
+
+*You should do the tutorial first!* and then perhaps read [[file:quick-annotated.rkt][quick-annotated.rkt]].
+
+The variations
+
+- [[file:quick-0.rkt][quick-0.rkt]] :: The original code with a few comments.
+      - It uses #lang slideshow
+- [[file:quick-annotated.rkt][quick-annotated.rkt]] :: The original code with lots of explanatory comments.
+      - It still uses #lang slideshow
+- [[file:quick-racket-base.rkt][quick-racket-base.rkt]] :: Using #lang racket/base + (require pict)
+- [[file:quick-scheme.rkt][quick-scheme.rkt]] :: Using #lang scheme + (require pict)
+
+See some related resources in this repository's Racket Directory
+
+- racket-macros.org :: related to Section 10 on Macros
+- racket-oop.org :: related to Section 11 on Object Oriented Programming

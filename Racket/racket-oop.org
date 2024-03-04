@@ -1,0 +1,410 @@
+* Object Oriented Programming, Lisp and Racket
+
+You can study [[https://docs.racket-lang.org/guide/classes.html][Racket's support for OOP]] in the Racket Guide
+
+Alas, it doesn't explain that
+- Modern Lisp systems don't have much need for OOP
+- Racket's support for OOP is weird!
+      - Awkward, Weak and Nonstandard
+
+This is an opinionated criticism of
+- Racket's OOP
+- OOP in other Lisp Family Languages
+- Contrasted with the Imperative & Functional Paradigms
+
+tl;dr:
+- Avoid using [[https://docs.racket-lang.org/guide/classes.html][Racket's OOP]] in your designs.
+- Prefer [[https://docs.racket-lang.org/racket-glossary/index.html#%28part._.Functional_programming_.F.P_%29][Functional Programming]]
+- Prefer [[https://docs.racket-lang.org/ts-guide][Typed Racket]]
+- Learn more [[https://www.info.ucl.ac.be/~pvr/VanRoyChapter.pdf][Programming Paradigms]]!
+
+** What Is OOP Anyway?
+
+*** Origin of OOP in Diverse Forms
+
+Object Oriented Programming is a Computing Paradigm, i.e. a way of organizing
+computation which originated primarily from two early languages
+1. Simula 1967
+        - The Simula style of OOP was imitated by C++, Java, C# and most other
+          popular mainstream OOP languages.
+2. Smalltalk 1976 and Smalltalk 1980
+        - The Smalltalk language was inspired by Lisp but organizes things
+          differently. While Lisp is more general, learning Smalltalk is a very
+          good way to learn the OOP Paradigm. I'm partial to the Pharo dialect.
+
+The [[https://en.wikipedia.org/wiki/Lisp_(programming_language)][Lisp Family]] of programming Languages goes back at least as far as 1960 and
+was originally inspired by the mathematical model of computation called the
+[[https://en.wikipedia.org/wiki/Lambda_calculus][Lambda Calculus]] introduced in the 1930s by Alonzo Church. The Lambda Calculus is
+also the foundation for the modern [[https://en.wikipedia.org/wiki/Functional_programming][Functional Programming Paradigm]]. Lisp and the
+Lambda Calculus should therefore fit together verywell! Unfortunately the early
+Lisps had design flaws which made Function Programming awkward.
+
+The 1975 [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]] dialect tried to strengthen Lisp by simplifying and purifying
+it. Scheme became much more suitable for Functional Programming but also for
+other [[https://en.wikipedia.org/wiki/Programming_paradigm][Programming Paradigms]] Despite having fewer features and less complexity
+than the other popular Lisps of its time, Scheme is an excellent language for
+writing code using almost all programming paradigms. While acknowledging
+Scheme's power, language designers have attempted to further strengthen Scheme
+by adding a few features, leading to a series of [[https://standards.scheme.org][Revised Standards for Scheme]].
+
+The 1984 [[https://en.wikipedia.org/wiki/Common_Lisp][Common Lisp]] dialect tried to strengthen Lisp adding features from many
+earlier Lisps and some other languages. Common Lisp adopted Lexical Scope from
+Scheme but ignored Scheme's other innovations. Common Lisp has an extremly
+sophisticated, flexible and complex implementation of Object Oriented
+Programming. Common Lisp is the most feature-full Lisp, at the opposite end of
+the complexity scale from Scheme.
+
+[[https://racket-lang.org][Racket]] is one of several Lisp dialects based on Scheme. Racket supports the
+scheme standards through R6RS and adds additional features going beyond any
+Scheme standard, including nonstandard support for Object Oriented Programming.
+Racket's OOP system is very primitive compared to that of Common Lisp but it has
+the basic features of Objects being Instances of Classes and communicating with
+Messages. While Scheme programmers can easily implement efficient support needed
+for nearly any programming paradigm, Racket has built-in features, libraries or
+[[https://docs.racket-lang.org/guide/more-hash-lang.html][Racket Family Languages]] which immediately support [[https://en.wikipedia.org/wiki/Comparison_of_multi-paradigm_programming_languages][most powerful programming
+paradigms]].
+
+*** Distinguishing Object Oriented Computing
+
+Let's distinguish Object Oriented Computing by comparing it with the simpler
+Imperative Computing and Functional Computing Paradigms.
+
+**** Imperative Computing Paradigm
+
+In Imperative Computing, Procedures are Applied to Values aka Data. A Value
+stored at a specific memory location is often called a Data Object.
+
+Imperative Procedures can
+- ~mutate~ (modify) parts of existing Data Objects
+- Create new Values (which might be Data Objects)
+- Return new or old Values (which might be Data Objects)
+
+Values are often managed via their location in memory.
+- Pointer :: an /explicit/ memory address for a Value
+- Reference :: a Value /implicitly/ represented by its memory address
+A Pointer or a Reference is required in order to ~mutate~ a Data Object.
+
+Lisps, like most other high level languages, manage Values too large to fit into
+a machine word with references. Early Lisps allowed any Data Object to be
+~mutated~ in whole or in part. In this and in other ways, early dialects of were
+mostly oriented towards Imperative Computing.
+
+**** Functional Computing Paradigm
+
+In Functional Computing, a Function is a restricted Procedure which
+- can Operate on Values to produce new Values
+- is not allowed to ~mutate~ any existing Data Value or Binding
+- and Functions can be Data Values as well as Operate on Values!
+
+The key distinguishing characteristic of Functional Programming is that
+*mutation is not allowed*. References are treated as Values, not as Data
+Objects. The one exception in Function Programming Languages is Input/Output
+which is a kind of mutation in the sense that reading consumes data from an
+input stream and writing adds data to an output stream. Generally this is seen
+as OK since I/O takes place on the boundary between the program and the external
+world. Mutation within the program is the unforgivable sin.
+
+Functional Computing is a simpler computing model than Imperative Computing.
+Nevertheless it has been mathematically proved that *Functional Computing is
+just as powerful as Imperative Computing.* Experienced programmers generally
+find that *Functional Procedures and Programs are typically simpler, shorter,
+easier to create, more reliable and easier to understand* than equivalent
+Imperative Procedures and Programs!
+
+In early implementations of Functional Languages, Procedures were often not as
+computationally efficient as equivalent Imperative Procedures. This
+significantly reduced the popularity of Functional Programming, especially as
+computational resources were once very limited. Developments in Functional
+Languages and Compilers have now mostly eliminated this efficiency difference
+and as a result many authorities now recommend programmers to use Functional
+Programming over Imperative Programming for most purposes.
+
+**** Object-Oriented Computing Paradigm
+
+Object-Oriented Programming is based on Imperative Programming but the
+terminology used in OOP is different and sounds more complex.
+
+In the Object-Oriented Programming Paradigm
+- Procedures belong to Classes and are called Methods or Function Members
+- Data Objects belong to Objects aka Class Instances and are called Fields or Data members
+- Applying a Method to Arguments is called /Sending a Message/
+      - A Message is a Method Name and some Values
+      - One of the Values must be an Object which Receives and Handles the Message
+      - Fancy OOP systems allow multiple Objects in the Message to Handle it
+            - Common Lisp supports this but not Racket
+
+In OOP Objects have four key properties
+- Identity :: usually the memory address of a Data Object
+- Mutable State :: methods can change the values of data members
+- Behavior :: side effects, e.g. I/O, direct or indirect mutation
+- Associations :: Connections to other Objects
+      - References stored in Data Members
+      - Connections often form a cyclic graph
+      - Connections are often modified
+      - Messages can be sent to associated objects
+
+OOP methods often cause mutation
+- Constructor methods assign an initial value to object fields
+- Methods can directly or indirectly mutate Fields
+      - Directly Mutating their own Object's Fields
+            - Which might hold connections to objects
+      - Indirect Mutation
+            - Sending a mutating message to associated objects
+            - A single message can cause a cascade of mutations
+                  - Throughout the association graph
+                  - And all accessible variable binding scopes
+
+OOP programs tend to have more bugs than FP programs
+- Mutation, especially when indirect, is difficult to model
+OOP tends to be less flexible than FP
+- There are lots of Classes, each with a custom design
+- Each Class has several custom Methods
+- Each Class may have any number of Instances, i.e. OOP Objects
+- So there will be a lot of Methods in total
+- But most of them are not usable with most Objects!
+OOP causes problems with Parallel Processing
+- Modern computing is increasingly oriented towards Parallel Processing
+- i.e. Using multiple CPUs each with multiple cores
+
+Despite all of these disadvantages
+- OOP can be a good model for some systems
+- OOP is more efficient than earlier FP systems
+
+**** How Does OOP actually work?
+
+OOP Objects and Classes are similar to, and based on structures.
+
+The struct macro creates some procedures which manage multiple fields
+- Fields can contain any kind of Lisp Data, including Procedures
+- The struct Fields are typically stored as Elements of a Vector
+- But the vector is hidden, you have to use the provided procedures.
+- Racket structures can be an extension of a base structure
+      - In OOP this is called Inheritance and works between Classes
+      - In Prototype Languages this is called Delegation and works between Objects.
+            - JavaScript and Self (which inspired JavaScript) use Prototypes
+            - JavaScript has recently added Classes and Class Inheritance too
+
+An OOP Object is just a mutable struct
+- Object Fields are just struct fields
+- One Field is a Reference to the Object's Class
+
+An OOP Class is another struct
+- Immutable Class Fields hold Method Procedures
+- There may also be mutable Class Data Member Fields
+
+The ~send~ macro sends messages
+      - by calling a Method procedure stored in the first argument's class
+
+Racket's OOP features are just syntactic sugar over structures.
+
+Racket's features for structures are just syntactic sugar over vectors.
+
+None of the Scheme standards have any built-in features OOP or for structures!
+- It's easy and common to implement these things in Standard Scheme
+- But a single common implementation is good for quality and portability
+- So Racket provides such
+
+OOP tends to create a complex design with the problems of Imperative Programming
+and should generally be avoided in new designs.
+
+Immutable Racket structures, the default, are nicely compatible with Functional
+Programming.
+
+** Why Learn and Use Racket's OOP?
+
+Many important Racket facilities, e.g. Racket's implementation of Graphics and
+Graphical Interfaces are implemented using Racket's OOP system.
+
+To use those facilities you either need to
+- Learn Racket's OOP system sufficiently to use them directly
+- Use one of the higher-level packages which abstract over them
+
+For example, the nicest Racket graphics packages
+- /image/, /pict/, /MetaPict/, /Pict3D/
+- provide a Functional Programming interface
+- even though they're implemented on top of Racket's OOP facilities
+
+If however, you get seriously invested in one of those higher-level
+packages, you'll probably eventually want to extend them which will
+require you to learn Racket's OOP system pretty well.
+
+If it seems like OOP would be a good architecture for a new design
+- You might be biased from more OOP experience than FP experience
+- Explore what an FP architecture might be like
+- Maybe consult an FP expert
+
+There are design situations for which OOP is the best solution, just not many!
+
+** Prefer Functional Programming
+
+In our opinion, you should use the FP instead of OOP or any Imperative
+Programming Paradigm in almost all situations.
+
+Even if your program deviates slightly from pure FP, it shouldn't do so enough
+to require you to use the complexity of OOP. You might just need a simple
+mutable structure.
+
+The Scheme and Racket convention of spelling any procedure which modifies data
+with a trailing exclamation mark, e.g. set! and append! helps you track and
+minimize ~mutation~.
+
+** Prefer Typed Racket
+
+Once you've gotten a good feel for Racket Programming and you're ready to create
+some new and more ambitious programs, learn and use Typed Racket.
+
+- [[https://docs.racket-lang.org/ts-guide][The Typed Racket Guide]]
+- [[https://docs.racket-lang.org/ts-reference][The Typed Racket Reference]]
+
+Why is Typed Racket superior for ambitious programs?
+
+**** Kinds, Shapes, Types of Values
+
+Racket provides many different types of values, e.g.
+- Numbers: Exact/Inexact, Integer, Rational, Real, Complex, etc.
+- Containers: Lists, Vectors, Structures, Sets, Dictionaries, etc.
+      - Each struct creates a new unique type!
+- Text Strings, Byte Strings, Bit Strings, etc.
+- Procedures, Ports, Continuations, etc.
+- and more!
+
+Complex "types" can have different "shapes", e.g.
+- A list of integers vs. a list of strings
+- A complex shape of nested lists and other Containers
+- Structures whose fields are various kinds with various shapes
+- Ports serializing particular complex structures
+- etc.
+
+Numeric types can represent different kinds of
+- Dimensions: Length, Weight, Current, Areas, Volumes
+- In various units: Feet, Meters, Seconds, Days, etc.
+- Representing Amounts of: Fresh Water, Sea Water, Beer, Iron Ore, Steel, etc.,
+  etc.
+
+What does it mean when you accidentally
+- Add a length to an area?
+- Add a length in feet to a length in meters?
+- Multiply a Date by an amount of Sea Water?
+
+What regular Racket calls a /type/ only scratches the surface of what you need
+to know about /every single value in your program/ in order to avoid
+catastrophic mistakes!
+
+In order to understand whether a particular expression in your program is
+correct or not, you need to know the every value you're passing to every
+argument of every procedure is what that procedure expects. But those values are
+typically coming out of other procedures whose arguments are coming out of other
+procedures, etc.
+
+How do you avoid mistakes
+- as a program grows large and complex
+- and is being modified by
+      - multiple programmers
+      - some who haven't looked at it for months
+      - some who are sleepy or distracted
+
+**** Runtime Typing and Checking
+
+Regular Racket provides
+- type checking functions like integer?, string?, image?, procedure?, etc.
+- matching forms which can examine the shape of nested data
+- a contract system which can police your data.
+Why isn't this enough?
+- You have to put all of these checks into your code by hand.
+- You have to run your program with diverse test data simulate all possible
+  situations that may occur when the program is released.
+In practice
+- The checks bloat the program code making it harder to work with.
+- Executing all of the checks makes the program run slower.
+- Adding all of the checks is laborious.
+- Lots of things don't get checked.
+- The test data fails to cover some cases which occur in the real world.
+
+**** Manifest Typing
+
+Typed Racket lets you describe what kind of values each procedure requires and
+provides as a Type Signature.
+
+You can add additional Type Declarations for variables and expressions, but for
+the most part the Typed Racket compiler is smart enough to infer most of the
+Types, so you rarely need these, and the compiler will tell you when you do.
+
+The Type Declarations in a Typed Racket Program require much less code than in a
+regular Racket Program with checks and contracts yet cover all of the
+expressions of the program more completely.
+
+In addition, the Type Declarations are /Manifest/ which means that they can be
+examined and checked /by reading the program/, not by running the code. Thus,
+they are also called /static types and checks/ rather than the /dynamic types
+and checks/ of regular Racket.
+
+A large and complex Typed Racket program may take longer to compile than a
+regular Racket program, but every time it finds an error it's saved the cost of
+testing and debugging. And once you get a clean compile, the program runs much
+faster since the compiled code doesn't have (or need) much checking code.
+
+Typed Racket will save you from a vast number of bugs
+- including the labor of finding and fixing them
+- or the danger of failing to find them!
+Typed Racket will also prevent many kinds of design mistakes.
+
+Typed Racket works very well with the Functional Programming Paradigm. It does
+not work well with the Object Oriented Programming Paradigm.
+
+Typed Racket won't save you from all bugs and design mistakes, but it will help
+a lot!
+
+**** Combining Static and Dynamic Tests
+
+Not all checks can be done at compile time. But you can judiciously use all of
+regular Rackets dynamic checks in Typed Racket. You can and should still create
+tests for your programs. There's a whole discipline of Test-Driven-Development,
+how to write Test Cases, etc. With regular Racket, testing is a huge part of the
+development effort. With Typed Racket, most of the Test Cases are not needed
+because those tests are being done thoroughly at compile time.
+
+But what if some of the Racket Modules (package, libraries, etc.) you need to use are
+not available in Typed Racket?
+
+Part of what's great about the Racket System is that you can link modules
+(packages, libraries, etc.) written Typed Racket with modules written regular
+Racket with modules written in other Racket Languages. Any one of your modules
+will be written in a single well-define language, but different parts of
+ambitious program may be using diverse languages!
+
+When a typed Racket program requires a module in an untyped language, it simply
+adds Type Signatures for any of the procedures it's importing. The details
+are in the Typed Racket documentation and also this Blog Post
+- [[https://blog.racket-lang.org/2022/11/shallow-typed-racket.html][Shallow and Optional Typed Racket]]
+
+
+** Other Great Paradigms
+
+Many of the most powerful programming Paradigms and techniques interoperate
+better with FP than with OOP, e.g.
+- Constraint Programming
+- Relational and Logic Programming
+- Metaprogramming
+
+Most programmers think of computation in a limited, inflexible way, usually the
+way their first language worked, or possibly all of the languages they've used.
+For example, C, C++, C#, Java and Python were all originally designed for and
+are still biased towards Imperative Programming.
+
+The best programmers understand many Computation Paradigms. They can use the
+ones which best fit a given problem and even mix and match paradigms to tackle
+complex situations with ease.
+
+Here are some great introductory materials
+- [[https://en.wikipedia.org/wiki/Programming_paradigm][Wikipedia on Programming Paradigms]]
+- [[https://www.info.ucl.ac.be/~pvr/VanRoyChapter.pdf][What Every Programmer Should Know by Peter Van Roy]]
+
+Instead of trying to always use the most powerful tool possible
+- Consider [[https://en.wikipedia.org/wiki/Rule_of_least_power][The Rule of Least Power]]
+- Less powerful mechanisms with limitations are easier to understand
+      - Immutable data structures
+      - Regular Expressions
+      - SQL and Relational Algebra
+      - etc.
+Such things are usually more efficient too!
+- Prefer the simplest tool which can do the job well
