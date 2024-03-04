@@ -2,7 +2,7 @@
 
 You can study Racket Macros in the Racket Guide
 - https://docs.racket-lang.org/guide/macros.html
-- But pretty difficult to understand!
+- But it's pretty difficult to understand!
 
 tl;dr
 - It's great that there are some built-in Special Forms
@@ -27,7 +27,7 @@ A lot of books, articles, videos, etc. tell you that
 And there's almost never any advantage to new macros
 - The existing Special Forms are almost always sufficient
 
-Just write regular procedures and suppress unwanted evaluation with
+Just write regular procedures.  If you need to control evaluation
 - Quote data with ' or quote
       - ~'(hello world)~        ; with the ' reader macro suger
       - ~(quote (hello world))~ ; same thing without the sugar
@@ -43,7 +43,6 @@ Just write regular procedures and suppress unwanted evaluation with
            (yell) ) ) )
  #+end_src
 
-
 ** What's a Special Form
 
 A Special Form is any Form which deviates from Normal Evaluation
@@ -57,7 +56,7 @@ FIRST: All elements of a form are evaluated
 SECOND: the procedure value is "applied" to its arguments
 - a temporary nested environment is created
 - and extended with the procedure's parameters bound to the arguments
-- the procedure's body is evaluated in that environment
+- then the procedure's body is evaluated in that environment
 
 *** Example Normal Form Evaluation
 
@@ -69,27 +68,27 @@ SECOND: the procedure value is "applied" to its arguments
 #+end_src
 
 Evaluate ~(sum-of-squares 3 4)~ in top-level environment
-- Evaluate of each element
-      - ~sum-of-squares~ ==> ~(λ x y) (+ (* x x) (* y y))~
-      - 3 ==> 3
-      - 4 ==> 4
+- Evaluate each element
+      - ~sum-of-squares~ => ~(λ x y) (+ (* x x) (* y y))~
+      - 3 => 3
+      - 4 => 4
 - Apply ~(λ x y) (+ (* x x) (* y y))~ to ~(3 4)~
 - An temporary nested environment is created
       - It's nested, so + and * are still bound to the usual procedures
       - But we add bindings for ~(x . 3)~ and ~(y . 4)~
 - Evaluate ~(+ (* x x) (* y y))~ in nested environment
       - Evaluate each element
-      - ~+~ ==> ~<addition procedure>~
-      - Evaluate ~(* x x)~ ==> 9 in nested environment
+      - ~+~ => ~<addition procedure>~
+      - Evaluate ~(* x x)~ in nested environment
             - Evaluate each element
-            - ~*~ ==> ~<multiplcation procedure>~
-            - ~x~ ==> 3
-            - ~x~ ==> 3
+                  - ~*~ => ~<multiplcation procedure>~
+                  - ~x~ => 3
+                  - ~x~ => 3
             - Apply ~<multiplication procedure>~ to ~(3 3)~
-      - ==> 9
-      - ~(* y y)~ ==> 16 similarly
+      - => 9
+      - ~(* y y)~ => 16 similarly
       - Apply ~<addition procedure>~ to ~(9 16)~
-      - ==> 25
+      - => 25
 
 ** Why Is Normal Evaluation Ever A Problem?
 
@@ -130,16 +129,17 @@ Macro forms are evaluated before normal evaluation
 - there's a /macro transformer/ procedure associated with the macro
 - which translates the macro form into a different expression
 - This is called *Macro Expansion*
-      - And it's recursive, since forms can be nested!
+      - It's recursive, since forms can be nested
+      - It's also iterative, since the expansion might introduce new macros!
 
 Macro Expansion is done before your code runs
 - E.g. When your program is compiled to native code
 - Macro Expansion doesn't slow your program down
-- The code which runs when your program runs is the Expansion Code!
+- The code which runs when your program runs is the fully Expanded Code!
 
 ** How Are Scheme Macros Special?
 
-You're really unlike to ever need to know these things
+You're really unlikely to ever need to know these things
 - but *if you must* know
 - *read on!*
 
@@ -152,8 +152,8 @@ Lisp has the functions and control structures that make it easy to
 - create different S-Expressions from those parts
 
 Here's an ordinary scheme function doing this without any special machinery. It
-doesn't create a macro, but it shows the idea without the conveniences and
-complications we're about to get into.
+doesn't create a macro, but it shows the idea without the complications we're
+about to get into.
 
 #+begin_src racket :results output
   #lang scheme
@@ -173,8 +173,8 @@ complications we're about to get into.
 #+end_src
 
 RESULTS:
-~(set (quote greeting) hello world)~
-~(set (quote greet) (lambda (name) (format Hello ~a, how do you do? name)))~
+- ~(set (quote greeting) hello world)~
+- ~(set (quote greet) (lambda (name) (format Hello ~a, how do you do? name)))~
 
 For convenience, traditional lisps provide a special form which
 1. Defines the new symbol as a marker for a special form
@@ -194,8 +194,8 @@ Here's a simplified example in Emacs Lisp
 #+end_src
 
 RESULTS:
-~(set 'greeting "hello world")~
-~(set 'greet (lambda (name) (format "Hello ~a, how do you do?" name)))~
+- ~(set 'greeting "hello world")~
+- ~(set 'greet (lambda (name) (format "Hello ~a, how do you do?" name)))~
 
 *** Scheme Is Fancier!
 
@@ -204,7 +204,7 @@ Remember our general advice:
 - There's almost never a need for more macros!
 
 So you almost certainly don't need to know any of this stuff. But in the rare
-case you need it, or the much more likely case you're simply perversely
+case you need it, or the much more likely case that you're simply perversely
 interested, here's an executive overview!
 
 Scheme Family Lisps (such as Racket) use a special data type called a [[https://docs.racket-lang.org/guide/stx-obj.html][Syntax
@@ -295,7 +295,7 @@ Macros, schmacros!
 
 Not all Special Forms are macros!
 
-All Lisp systems need to have a small number built-in Special Forms, typically
+All Lisp systems need to have a small number of built-in Special Forms, typically
 - ~quote~ for suppressing evaluation
 - Either ~lambda~ or ~λ~ for creating procedures
       - the other can be a macro
@@ -304,8 +304,6 @@ All Lisp systems need to have a small number built-in Special Forms, typically
       - all other conditional constructs can be macros
 
 ** Reader Macros
-
-*** Reader Macros
 
 Special Forms are still Forms
 - They must be enclosed in parentheses [or brackets in Racket]
@@ -325,17 +323,18 @@ Can you tell ~read~ to treat some characters specially?
 As an extreme example, you could completely redefine the ~read~ function
 - That's part of how people create new Racket Languages with non-lisp syntaxes
 
-Lisp Readers encode a lot of a lot of knowledge
+Lisp Readers encode a lot of knowledge
 - The syntax of all atom literals
 - How to parse nested lists and other container types
 - How to ignore comments
 - To expand 'x to (quote x) for any expression x
+- etc.
 
 Most programming languages reserve most ASCII special characters
-- Programmers can't use special characters for their own purposes
+- Programmers can't use special characters for their own purposes 😞
 
 Lisp family languages leave most special characters alone
-- Lisp programmers are free to use them as they like!
+- Lisp programmers are free to use them as they like! 😀
 
 Lisp manages to do without many special characters by overloading #.
 - # doesn't mean anything by itself
