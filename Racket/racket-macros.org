@@ -86,7 +86,7 @@ Evaluate ~(sum-of-squares 3 4)~ in top-level environment
                   - ~x~ => 3
             - Apply ~<multiplication procedure>~ to ~(3 3)~
       - => 9
-      - ~(* y y)~ => 16 similarly
+      - ~(* y y)~ => 16, similarly
       - Apply ~<addition procedure>~ to ~(9 16)~
       - => 25
 
@@ -98,11 +98,10 @@ If define were a regular procedure in
 #+begin_src scheme
 (define c (circle 10))
 #+end_src
-then c would be evaluated BEFORE define was applied to it
 - We'd be trying to evaluate c BEFORE it was defined!
-So define has to suppress the evaluation of its first argument
+~define~ has to suppress the evaluation of its first argument
 
-Define also gives us syntactic sugar for defining functions
+~define~ also gives us syntactic sugar for defining functions
 #+begin_src scheme
 (define (square n) (filled-rectangle n n))
 #+end_src
