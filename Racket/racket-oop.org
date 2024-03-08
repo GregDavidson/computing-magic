@@ -89,6 +89,8 @@ a machine word with references. Early Lisps allowed any Data Object to be
 ~mutated~ in whole or in part. In this and in other ways, early dialects of were
 oriented towards Imperative Computing.
 
+See the examples in [[file:imperative-racket.rkt][imperative-racket.rkt]]
+
 **** Functional Computing Paradigm
 
 In Functional Computing, a Function is a restricted Procedure which
