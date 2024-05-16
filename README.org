@@ -1,6 +1,6 @@
-* Computing Magic
+* ==> START HERE FOR Computing Magic <==
 
-A [[https://github.com/GregDavidson/loel/blob/main/Devel/creating-curricula.org][Curriculum]] of the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]].
+Computing Magic is a [[https://github.com/GregDavidson/loel/blob/main/Devel/creating-curricula.org][Curriculum]] of the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]].
 
 This curriculum is under continuous development by its participants!
 
@@ -8,20 +8,25 @@ This curriculum is under continuous development by its participants!
 
 The main path through this curriculum is a set of Modules. After completing the
 first module, the other modules can be explored in a flexible order.
-- [[file:Modules/README.org][Go to the Modules]]
+
+- [[file:Modules/README.org][Go immediately to the Modules]]
+- Or continue reading for more context!
 
 ** What is Computing Magic?
 
-Fasten your seat-belt and watch the first 40 minutes of [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]]!
-- This amazing video barely scratches the surface of what's available from
-  Computing Magic!
+Fasten your seat-belt and watch [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code]] video on YouTube!
+- The first parts of this amazing video may blow your mind!
+- Computing Magic gives you the power to create and explore Infinite Worlds!
 
-/Computing Magic/ is leveraging the power of computers and software to do with
-ease what would be hopelessly difficult in the real world. With Computing Magic
-we can design
+Mastering /Computing Magic/ will allow you to get computers to do with ease what
+would be hopelessly difficult to do using ordinary technologies.
+
+With Computing Magic we can design
 - Fabulous Machines
 - Customized Biological Organisms
-- Immersive Games
+- Fascinating and Enlightening Immersive Games
+- Intelligent assistants to handle all the boring things
+- Applications which Make You More Intelligent
 - and much more!
 
 We can explore our creations with /Virtual Reality/, share them with
@@ -29,21 +34,24 @@ We can explore our creations with /Virtual Reality/, share them with
 - 3D Printers
 - DNA sequencers
 - Hybrid AI Frameworks
+- Robots
+- Networks
 - etc.
 
-A key ingredient of the magic: Instead of creating digital artifacts manually,
-e.g. with /Graphical User Interfaces/ and/or /Interactive Editors/, we supply
-specifications and let the computer do the hard work. Specifications say /what/
-we want and the computer figures out /how/ to do it.
+Instead of creating digital artifacts manually, e.g. with /Graphical User
+Interfaces/ and/or /Interactive Editors/, Computing Magic we can often tell a
+Computer Program /what we want/ (the specification) and have the Computer
+Program figure out /how to do it/.
 
-Many of the Pioneers of computing were Computing Magicians - by necessity! The
-modern surfeit of ready-made solutions and the mind-numbing complexity of most
-current software obscures the possibility of Magic and Mastery from most of
-today's /Users/ and /Programmers/. Yet the power of today's tools makes
-Computing Magic potentially more accessible!
+Many of the Pioneers of computing were Computing Magicians - by necessity!
+Almost nothing existed so they had to invent what they needed to fulfill their
+visions. The vast number of tools, e.g. apps and libraries available today tend
+to suppress the vision of most users and developers. But used creatively, with
+the right understandings, the best of those tools can make Computing Magic more
+accessible than it's ever been!
 
 This repository contains the beginning of a fast-path curriculum for learning
-Computing Magic for those who yearn for such!
+Computing Magic for those who yearn for unlimited possibilities!
 
 ** Curriculum Resources
 
@@ -57,7 +65,7 @@ We'll be trying to keep the Computer Programming Languages which we use to a
 practical minimum.
 - See [[file:Languages-And-Platforms/choosing-languages.org][Which Computer Languages Matter?]]
 
-Highly recommended related Repositories
+Recommended related Repositories
 - [[https://github.com/GregDavidson/on-computing#readme][On Computing]]
 - [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]]
 
