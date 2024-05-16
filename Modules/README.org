@@ -1,12 +1,27 @@
-* Computing Magic -- A Modular Curriculum
-  
-A [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Project]] Curriculum.
+* Find Your Own Path Through Computing Magic!
 
-Think of this as a Montessori-style classroom for learning. The material is
-broken up into Modules which contain activities along with opportunities to
-create your own projects. After the first module you can do the others in any
-order that makes sense to you. There are many links to additional enriching
-content.
+** TL;DR:
+
+- Start with [[file:Module-1/README.org][Module 1]]
+
+- Or go to the [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Main Page]] for a Computing Magic Overview
+
+- Or continue reading about the Modules to /Design Your Own Adventure/!
+
+** About the Computing Magic Modules
+
+The [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic Curriculum]] consists of a set of Modules. Each module is
+designed to let you master a significant piece of the domain of Computing Magic.
+You can mostly do the modules in any order which interests you /and/ we
+recommend that you start with [[file:Module-1/README.org][Module 1]]. When a module has an earlier module as a
+prerequisite, the =README= file of that module will let you know.
+
+The modules are designed to have you learn primarily from examples and by
+engaging in projects. In some cases you will be encouraged to create your own
+projects. There will also be links to additional content which will add
+enrichment after you complete each piece of the module. Finally, the module will
+suggest a choice of modules you might want to tackle next.
+
 
 Modules marked with NEW have had less testing by learners - they are the /less
 trodden path!/ if you choose to explore them be prepared to get stuck and please
@@ -18,59 +33,74 @@ the modules some time ago, check back to see the improvements!* At some point we
 intend to create some short videos to replicate some of the enrichment pieces
 that were a part of the classrooms which led to these modules.
 
-*** Module and Session Notes
+** All The Computing Magic Modules
 
 **** [[file:Module-1/README.org][Module 1: Functional Programming]]
-We begin with a Tutorial for *learning Lisp / Scheme / Racket by writing
-functions which compute pictures*. You should do this module before any others,
-regardless of your current level of computing skills.
+We begin with a Tutorial for *learning Functional Programming* by writing
+increasingly sophisticated functional procedures - often just called functions.
+As your functions become more sophisticated they stay comprehensible because
+each one computes and displays a picture! The picture makes it easy to
+understand how the function works, including when it doesn't do what you
+intended! /The techniques you will master here are so useful that we recommend
+you complete this module before any of the others, regardless of your current
+level of computing skills./
 
 **** [[file:Module-1a/README.org][NEW Module 1a: 2D and 3D Functional Art]]
-We continue with an open-ended exploration of *Making Functional Visual Art*
-with the =pict= and =pict3d= packages
+If you'd like to learn more about Graphics Programming, this module provides
+suggestions for an open-ended exploration of *Functional Visual Art*. This is a
+rich domain which you can explore without limit!
 
-**** [[file:Module-1b/README.org][NEW Module 1b: Imperative 2D Art]]
-We take a side trip into the /Imperative Programming Style/ *Creating Visual Art*
-using *Imperative Turtle Graphics*!
+**** [[file:Module-1b/README.org][NEW Module 1b: Imperative Programming through 2D Art]]
+If you'd like to understand /Imperative Programming/, this module will help you
+master writing Imperative Procedures which use techniques impossible for
+Functions.  Good programmers know how and when to use Imperative Procedures vs.
+Functions to solve complex problems.
 
-**** [[file:Module-1c/README.org][Module 1c: Animation and Game Design]]
-Creating interactive computer games is a great way to learn advanced programming
-skills! We learn techniques for *Animation & Interactive Graphics & Game
-Design* by creating games!
+**** [[file:Module-1c/README.org][NEW Module 1c: Animation and Game Design]]
+*Creating interactive computer games* is one of the best ways to learn advanced
+programming skills! Would you like to learn techniques for *Animation &
+Interactive Graphics & Game Design* along with many other skills while creating
+increasingly interesting games of your own design?
 
 **** [[file:Module-2/README.org][Module 2: Software Development Power Tools]]
 Exploring more powerful software development tools. *Installing and setting up a
 more powerful development environment!* The material here has a longer learning
-curve than much of the rest before it pays off.  *It will pay off in a big
-way if you start doing larger and more complex projects!*
+curve than much of the rest before it pays off. *These skills will pay off in a
+big way when you're working with larger and more complex projects!*
 
 **** [[file:Module-3/README.org][Module 3: Using the Power Tools with Your Projects]]
-Incorporating the New Tools for your Art or other projects. This is a
-continuation of Module 2.
+Would you like to go further with Power Tools? Try them out to tackle
+challenging aspects of your own projects. This module is a continuation of
+Module 2.
 
 **** [[file:Module-4/README.org][NEW Module 4: Web, Systems and Network Programming]]
-Learning *Systems and Network Programming* by writing a Web Server using the
-Software Tools learned so far. /Uncovering the secrets behind being able to
-write advanced computer programs!/
+Are you interested in *Systems and Network Programming* including *Custom Web
+Servers*? You can master these areas while writing increasingly sophisticated
+Custom Web Servers. You will learn many secrets behind the creation of advanced
+computer programs!
 
 **** [[file:Module-5/README.org][NEW Module 5: SQL and Relational Design]]
-Learning the power of *SQL* and the /Relational Model/ for Programming and
-Persistence! This will greatly simplify any of your programs which need to work
-with large amounts of data!
+Would you like to be able to work with amounts of data which are way too large
+to fit in your computer's memory? Would you like your data to last a long time -
+maybe forever? Would you like the way your data is stored to be able to evolve
+to serve new objectives without breaking programs which used it in its previous
+form(s)? This module will help you apply simple and advanced *SQL* and the
+/Relational Model/ to do these things are more!
 
 **** [[file:Module-6/README.org][NEW Module 6: Putting it All Together]]
-Creating an ambitious Project to use Web, Graphics, Lisp and SQL. An opening for
-*Creativity and Software Design*. This is very much a /build your own adventure/
-module. Consider doing this module with a group or with partners.
+Are you ready to design and implement an ambitious project? Perhaps one which
+uses the techniques of many - perhaps all - of the other modules in this course?
+And learn the techniques of *Software Design*? This is a /build your own
+adventure/ module within our /build your own adventure/ curriculum. You might
+want to do this module in partnership with partners.
 
 **** [[file:Module-7/README.org][Module 7: Artificial Intelligence Programming Techniques]]
-*Getting computers to understand your domain:* AI is one of the most magical
-areas of computing with many diverse and powerful technologies to offer. This
-module aims to give you experience with some of the most central and powerful AI
-technologies and leans towards Hybrid AI, i.e. combining Explicit Knowledge and
-Strategies with Heuristics.
+*Would you like your programs to understand what they're doing?* AI is one of
+the most magical areas of computing with many diverse and powerful technologies
+to offer. This module leans towards Hybrid AI, i.e. combining Explicit Knowledge
+with Automated Reasoning with Heuristics.
 
 **** [[file:Module-8/README.org][NEW Module 8: Maximum Ambition]]
 What if your project looks inherently large and complex? And some parts seem
-risky? And you seem to need a large team of developers and expert project
+risky? And you seem to need a team of developers along with effective project
 management?
