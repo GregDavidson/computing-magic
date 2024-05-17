@@ -15,7 +15,7 @@ This module concentrates on 2D games
 
 ** What to do before this module
 
-Completing all of [[file:../Module-1/module-1.org][Module 1]] is recommended, but at least
+We recommend completing all of [[file:../Module-1/module-1.org][Module 1]], but at least
 - Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.
 
 ** The Tools We'll Be Using
