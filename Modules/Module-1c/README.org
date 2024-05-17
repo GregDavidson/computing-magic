@@ -1,0 +1,54 @@
+* Computing Magic Beta Module 1c
+
+*Creating Games with Racket!* /Animating your Lisp!/
+
+Based on notes from a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
+
+This Module is designed to assist you in learning how to
+- design and create interactive multi-user computer games
+and as a bonus, you'll learn
+- powerful general purpose programming skills!
+
+This module concentrates on 2D games
+- Another module is in preparation for 3D games
+- Some 3D material is in [[file:../Module-1a/README.org][Module 1a: 2D and 3D Functional Art]]
+
+** What to do before this module
+
+Completing all of [[file:../Module-1/module-1.org][Module 1]] is recommended, but at least
+- Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.
+
+** I'm Ready to Create Games!
+
+Racket is blessed with a great deal of Tutorials, Libraries and other resources
+to leverage in designing and creating your own games. Some of these are
+described in the [[file:OLD-README.rkt][OLD-README.rkt]] file.
+
+This module was inspired by
+- the book [[https://htdp.org/2020-8-1/Book/index.html][How to Design Programs (2nd Edition)]] aka 2htdp
+- and the [[https://world.cs.brown.edu/1][How to Design Worlds]] tutorials
+and /we're going to try to make things simpler!/
+
+We're going to
+- temporarily drop the [[https://docs.racket-lang.org/pict][pict]] library from the [[https://docs.racket-lang.org/quick][Quick Tutorial]] in [[file:../Module-1/module-1.org][Module 1]]
+- and use two other libraries instead
+      - [[https://docs.racket-lang.org/teachpack/2htdpimage-guide.html][2htdp/image]] an image library similar to pict
+      - [[https://docs.racket-lang.org/teachpack/2htdpuniverse.html][2htdp/universe]] a games library designed to work with 2htdp/image
+
+** Starting Points
+
+In each Starting Point, you'll begin with a very simple but complete game and
+you'll enhance it. Guidance will be given and you should feel free to ignore any
+of the guidance in favor of your own ideas. When you've accomplished something
+similar to our suggestions, feel free to move on to the next Starting Point!
+
+
+1. [[file:Falling-To-Flying/README.org][Falling To Flying]] :: Animation, Interaction, World Physics
+
+2. [[file:Flight-Lander/README.org][Flight Lander]] :: Multiple Interacting Sprites!
+
+3. [[Network-Volley/README.org][Network Volley]] :: Multi-User Competition and Cooperation
+
+After you've learned the basic techniques through these Starting Points you can
+start creating games of your dreams. You can learn more techniques from the
+other [[file:../README.org][Computing Magic Modules]] as you write your own programs!
