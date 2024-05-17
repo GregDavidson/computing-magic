@@ -1,4 +1,4 @@
-* ==> START HERE FOR Computing Magic <==
+* ==> START HERE for Computing Magic
 
 Computing Magic is a [[https://github.com/GregDavidson/loel/blob/main/Devel/creating-curricula.org][Curriculum]] of the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]].
 
