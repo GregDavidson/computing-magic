@@ -18,7 +18,7 @@ This module concentrates on 2D games
 Completing all of [[file:../Module-1/module-1.org][Module 1]] is recommended, but at least
 - Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.
 
-** I'm Ready to Create Games!
+** The Tools We'll Be Using
 
 Racket is blessed with a great deal of Tutorials, Libraries and other resources
 to leverage in designing and creating your own games. Some of these are
@@ -35,13 +35,17 @@ We're going to
       - [[https://docs.racket-lang.org/teachpack/2htdpimage-guide.html][2htdp/image]] an image library similar to pict
       - [[https://docs.racket-lang.org/teachpack/2htdpuniverse.html][2htdp/universe]] a games library designed to work with 2htdp/image
 
-** Starting Points
+** Use these Starting Points to Create Games!
 
-In each Starting Point, you'll begin with a very simple but complete game and
-you'll enhance it. Guidance will be given and you should feel free to ignore any
-of the guidance in favor of your own ideas. When you've accomplished something
-similar to our suggestions, feel free to move on to the next Starting Point!
+Each /Starting Point/ will present a simple but complete game which you'll
+enhance into several better games. We'll provide some guidance. You are welcome
+to use your own ideas instead of our guidance. If you do deviate from our
+suggested approach and get your solution to work, we recommend you compare your
+approach with our solutions to see what you can learn from the comparison. When
+you've accomplished something similar to our suggestions for all of the enhanced
+games you can move on to the Starting Point for the next series of games!
 
+The Starting Points:
 
 1. [[file:Falling-To-Flying/README.org][Falling To Flying]] :: Animation, Interaction, World Physics
 
@@ -50,5 +54,5 @@ similar to our suggestions, feel free to move on to the next Starting Point!
 3. [[Network-Volley/README.org][Network Volley]] :: Multi-User Competition and Cooperation
 
 After you've learned the basic techniques through these Starting Points you can
-start creating games of your dreams. You can learn more techniques from the
-other [[file:../README.org][Computing Magic Modules]] as you write your own programs!
+start creating games of your dreams. And you can continue to learn more
+Computing Magic from the [[file:../README.org][other modules]] as you pursue your new projects!
