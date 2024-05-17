@@ -1,0 +1,142 @@
+* Falling To Flying - Adding State
+
+** Richer Behavior Requires A Richer State
+
+If we'd like our ball to exhibit more interesting behavior, e.g.
+- accelerate it's fall based on gravity
+- change shape when it hits the bottom
+- bounce!
+- move horizontally as well as vertically
+
+Then we'll need to give our ball a richer state. Our current "world state" is
+just a single number representing the height of the ball. We can create a richer
+state using a list of attributes or more conveniently by using a struct.
+
+** Defining Functions to Manage A Richer State
+
+A richer state using a list of attributes
+#+begin_src racket
+  (define (make-ball shape y dy)
+    (list shape y dy) )
+  (define ball-shape first) ; fetches first element of the list
+  (define ball-y second ball) ; fetches second element of the list
+  (define ball-dy third) ; etc.
+  (define world (make-ball BALL SCENE-HEIGHT DROP-RATE))
+#+end_src
+
+another (longer) way to write the selector functions would be like this
+#+begin_src racket
+  (define (ball-shape ball) (first ball))
+  (define (ball-y ball ) (second ball))
+  (define (ball-dy ball ) (third ball))
+#+end_src
+Do you see that either way, this makes our selector functions synonyms for the
+existing list functions first, second and third?
+
+** Using the =struct= Macro to Manage A Richer State
+
+A shorter and more efficient way to write all of the ball functions is to have
+the Racket macro =struct= write these functions for us:
+#+begin_src racket
+  (struct ball (shape y dy)
+    #:constructor-name make-ball )
+#+end_src
+The =struct= macro also automatically creates a /recognizer function/
+- =ball?= :: returns =#t= for balls, =#f= for anything else
+The default constructor function name would have been =ball= but
+- =#:constructor-name make-ball=
+changes it to the (possibly more clear) =make-ball=
+
+Lisp does nearly everything with functions. A well-designed macro can often
+write many of the functions we need automatically. Macros are functions which
+run when your program is being prepared (compiled) so they don't slow your
+program down. You can learn to write new macros.
+
+** Your Program with a Richer State
+
+Using one of the methods presented above
+- Create a new version of the falling-to-flying program
+- You'll need to change =next-world= and =draw=world=
+
+#+begin_src racket
+(define (next-world world)
+  (make-ball (ball-shape world) ; same shape
+              (remainder (+ (ball-y world) (ball-dy world)) SCENE-HEIGHT) ; new y
+              (ball-dy world) ; same dy
+              ) )
+
+     (define (draw-world world)
+       (place-image BALL HALF-SCENE-WIDTH world EMPTY-SCENE) )
+#+end_src
+
+Your new version of the programs should work just as before, but with the richer
+state, you can get it to do more tricks!
+
+Ideally you won't need to look at our solution until
+you have your own working solution to compare it with.
+If you get stuck, reach out to someone who's solved this
+problem already and see if they can give you some feedback
+that will help you get the new version with richer state
+working.
+
+Here's our new version with the richer state:
+- [[file:Solutions/falling-to-flying+state.rkt][falling-to-flying+state.rkt]]
+It's fine if you did it differently, and what can
+you learn from comparing your solution with this one?
+
+** Adding Gravity
+
+Try having your ball accelerate due to gravity as soon as it
+emerges onto the scene.  Here's are some utility function and
+constants which you may find helpful in getting your main functions
+working right.
+
+
+#+begin_src racket
+(define (half num-pixels) (quotient num-pixels 2))
+
+(define SCENE-WIDTH 400) ; pixels
+(define HALF-SCENE-WIDTH (half SCENE-WIDTH))
+(define SCENE-HEIGHT 400) ; pixels
+(define EMPTY-SCENE (empty-scene SCENE-WIDTH SCENE-HEIGHT))
+
+
+;; have the ball move at a fixed slow speed until it fully
+;; emerges into the scene.  Then let gravity accelerate it!
+(define EMERGING-DY -1)
+;; Gravity near the earth creates an acceleration which adds
+;; about 10 meters/second to the downwards velocity of an object.
+;; If y is the height above ground, dy is the downwards velocity
+;; and gravity is then a ddy, i.e. a change in dy.
+;; If we let every pixel equal a meter, then gravity would be a
+;; ddy of 10 every 30 ticks, since we tick 30 times a second.
+(define GRAVITY (- (/ 10 30)))
+;; A non-integer gravity will mean that dy and y won't always
+;; be an integer, so be sure to round y before placing the ball!
+
+;; is the ball emerging from the top of the scene?
+(define (emerging? ball)
+(< (- SCENE-HEIGHT (ball-y ball)) HALF-BALL-HEIGHT) )
+
+;; is the ball bouncing?
+(define (bouncing? ball)
+(< (ball-y ball) HALF-BALL-HEIGHT) )
+#+end_src
+
+Ideally you won't need to look at our solution until
+you have your own working solution to compare it with.
+If you get stuck, reach out to someone who's solved this
+problem already and see if they can give you some feedback
+on what you've done so far or how you're going about solving
+the problem.
+
+If you're stuck on just one of the functions you need
+and you want to see just that one from our solution,
+here they are:
+- [[file:Solutions/falling-to-flying+gravity-next-world.rkt][next-world]]
+- [[file:Solutions/falling-to-flying+gravity-draw-world.rkt][draw-world]]
+
+And finally, here's our solution
+- [[file:Solutions/falling-to-flying+gravity.rkt][falling-to-flying+gravity.rkt]]
+It's fine if you did it differently, and
+what can you learn from comparing the two?

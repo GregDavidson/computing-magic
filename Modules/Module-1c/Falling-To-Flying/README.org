@@ -1,0 +1,29 @@
+* Falling To Flying
+
+This is the first Starting Point for writing 2D games.
+
+You can find the whole program in
+- [[file:falling-to-flying-0.rkt][falling-to-flying-0.rkt]]
+
+- Open it with DrRacket
+- Run it
+- Study the code
+- Use F1 to get help on the new functions and libraries
+- Change some things, e.g.
+      - Create something else to drop using 2htdp/image functions
+      - Or load a bitmap with =bitmap/file= or =bitmap/url=
+
+The =big-bang= function is our game engine and it has many features we're going
+to explore in further exercises. Most of its job is to call functions which you
+write. Look over its documentation. Don't be worried if you don't understand
+everything it does yet!
+
+Now let's make the program more sophisticated by:
+- [[file:falling-to-flying-state.org][Adding State]]
+- [[file:falling-to-flying-interaction.org][Adding Interaction]]
+- [[file:falling-to-flying-animation.org][Adding Animation]]
+- [[file:falling-to-flying-end-goal.org][Adding an End Goal]]
+
+Once you've finished these improvements and your own creative
+ideas, it's time to move on to
+- [[file:../Flight-Lander/README.org][Flight Lander]] :: Multiple Interacting Sprites!
