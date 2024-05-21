@@ -36,7 +36,7 @@
 ;; and gravity is then a ddy, i.e. a change in dy.
 ;; If we let every pixel equal a meter, then gravity would be a
 ;; ddy of 10 every 30 ticks, since we tick 30 times a second.
-(define GRAVITY (- (/ 10 30)))
+(define GRAVITY (- (/ 10.0 30.0)))
 ;; A non-integer gravity will mean that dy and y won't always
 ;; be an integer, so be sure to round y before placing the ball!
 
