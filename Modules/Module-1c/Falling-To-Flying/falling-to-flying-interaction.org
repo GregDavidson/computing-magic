@@ -1,15 +1,15 @@
 * Interacting with our Falling Ball
 
-The =big-bang= macro makes it easy to add interaction by providing functions of
-our own design for it to call when interaction events occur.
+The =big-bang= macro makes it easy to add user interaction by providing
+functions of our own design for it to call when user generated events occur.
 
 Let's have the up-arrow key give our ball an upwards velocity kick.
 
-We'll build on [[file:Solutions/falling-to-flying+gravity.rkt][Solution with Gravity]]  - b0e sure you understand that first!
+We'll build on [[file:Solutions/falling-to-flying+gravity.rkt][Solution with Gravity]]  - be sure you understand that first!
 
 ** Upgrading Our Single Sprite
 
-Here's the new code:
+Here's the new code to add:
 
 #+begin_src racket
   (define DY-KICK 10)                 ; DY of upwards kick
@@ -40,14 +40,17 @@ See if you can get it working before looking at the
 ** Discussion: The =big-bang= Macro
 
 Why is =big-bang= a macro rather than a procedure? It's so that =big-bang= can
-have lots of optional clauses distinguished by unevaluated symbols. Only macros
-can suppress evaluation of parts of a form. These clauses, [usually shown in
-square brackets] (even though in Racket you are free to put them in parentheses
-if you wish) are /not forms/. Other than the symbol identifying the meaning of
-the clause, the rest of the elements of the clause are evaluated normally.
+have optional clauses distinguished by unevaluated symbols. Only macros can
+suppress evaluation of parts of a form. These clauses, [usually shown in square
+brackets] (or in parentheses if you prefer) are /not forms/. Other than the
+symbol identifying the meaning of the clause, the rest of the elements of the
+clause are evaluated normally but the values are stored away within the
+=big-bang= implementation - probably in a hidden struct - for use by the /Game
+Engine/.
 
-Several of the =big-bang= clauses take one of your procedures for =big-bang= to
-call when needed. Here are some of the clauses involving interaction:
+Several of the =big-bang= clauses take one of your procedures for the =big-bang=
+/game engine/ to call when appropriate, e.g. in response to timers or events.
+Here are some of the clauses involving interaction:
 
 #+begin_src racket
   (big-bang state-expression state-expr
@@ -58,7 +61,7 @@ call when needed. Here are some of the clauses involving interaction:
             ... )
 #+end_src
 
-Let's look at the =on-key= clauses. (See [[https://docs.racket-lang.org/teachpack/2htdpuniverse.html#%28form._world._%28%28lib._2htdp%2Funiverse..rkt%29._big-bang%29%29][full big-bang documentation]] for more.)
+Let's look at the =on-key= clause. (See [[https://docs.racket-lang.org/teachpack/2htdpuniverse.html#%28form._world._%28%28lib._2htdp%2Funiverse..rkt%29._big-bang%29%29][full big-bang documentation]] for more.)
 
 #+begin_example
   (on-key key-expr)
@@ -70,3 +73,8 @@ A key-expression should be a procedure which takes two arguments
 - key-event :: represents a keyboard event [[https://docs.racket-lang.org/teachpack/2htdpuniverse.html#%28tech._world._keyevent%29][key-event documentation]]
 and which returns a
 - Handler-Result :: the new WorldState (possibly more if multiple worlds)
+
+Basically, the =on-key= clause registers one of your functions to be called when
+the user presses a key. When the user presses any key, your function is called
+with a code representing which key was pressed along with the current world
+state. Your function should return a (possibly updated) world state in response.
