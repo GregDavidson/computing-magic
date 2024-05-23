@@ -55,14 +55,22 @@ This =struct= form writes five functions for us:
 
 Structures are usually stored more efficiently than lists.
 
-Lisp does nearly everything with functions. A well-designed macro can often
-write many of the functions we need automatically. Macros are functions which
-run when your program is being prepared (compiled) so they don't slow your
-program down. You can learn to write new macros.
+Functions are procedures which take their inputs as arguments and return a
+single value as a result. Procedures can instead take some or all of their input
+from global state and modify global state instead of (or in addition to)
+returning one or more values. Functions are generally considered the best kind
+of procedures.
+
+Lisp does nearly everything with procedures, including functions. A
+well-designed macro can often write many of the procedures we need
+automatically. Macros are also procedures but they run when your program is
+being prepared (compiled) and their return value(s) replace the original form.
+If you find yourself writing a lot of obvious or repetitious code (often called
+boilerplate) you might want to generate it with a macro!
 
 ** Your Program with a Richer State
 
-Using one of the methods presented above
+Using one of the methods presented above to manage state
 - Create a new version of the falling-to-flying program
 - You'll need to change =next-world= and =draw-world=
 
