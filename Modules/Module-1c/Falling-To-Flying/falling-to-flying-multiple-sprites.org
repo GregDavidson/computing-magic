@@ -1,0 +1,97 @@
+* A Game Engine for Multiple Sprites
+
+It's time to change our program to allow multiple sprites
+- of any shape
+- with individual behavior
+
+Each sprite will need to be
+- updated on each tick
+- updated on interactive events, e.g. key-presses
+- drawn on a shared canvas
+Each in their own appropriate differing manners!
+
+To accommodate this, we can
+- change the world to be a list of sprites
+- give each sprite its own methods
+      - its own update and draw procedures
+- arrange to have each sprite's methods called
+
+Here's the new sprite definition:
+
+#+begin_src racket
+  (struct sprite (shape y dy on-tick on-key to-draw)
+  #:transparent ; show insides when printed
+  #:constructor-name make-ball ; instead of ball
+  )
+#+end_src
+
+The world is now a list of as many sprites as desired.
+
+There's a lot going on in getting ready for multiple sprites.
+- You might just study the solution:
+- [[file:Solutions/falling-to-flying-multiple-sprite-ready.rkt][falling-to-flying-multiple-sprite-ready.rkt]]
+
+** Now you can add some more sprites!
+
+One idea:
+- have each press of the up-arrow key cause the original sprite to emit
+  another sprite going downwards
+- a new sprite going downwards is the physical justification for the original ball to accelerate upwards
+- the new sprites could disappear when they reach the bottom
+      - they would have to have different on-tick and on-key methods!
+- while the original sprite resets to the top
+
+** Discussion
+
+*** We now have a simple but powerful game engine!
+
+You can create new kinds of sprites.
+- They can use the existing =struct sprite=
+- They can use a new =struct= which extends =struct sprite=
+- See [[https://docs.racket-lang.org/guide/define-struct.html][Programmer-Defined Datatypes]], especially section 5.3
+- They can share some methods and also use their own.
+- A do-nothing update method simply returns its sprite unchanged
+
+#+begin_src racket
+  (define (do-nothing-on-key sprite key) sprite)
+#+end_src
+
+Be sure you understand how the /world/ functions
+- update-world-on-tick
+- update-world-on-key
+- draw-world
+call the method functions and process their results.
+
+*** map and foldr
+
+We're using some fancy library functions, including
+- map :: apply a function to a list, returning a list of the results
+- foldr :: fold a list from the right using a two-element function
+      - this is a great way to collapse a list into one value
+
+While these functions may seem like magic, they're only in the library for your
+convenience. You could define them yourself like this:
+
+#+begin_src racket
+  (define (my-map func list-of-values)
+    (if (null? list-of-values)
+        '()
+        (cons (func (car list-of-values))
+              (my-map func (cdr list-of-values)) ) ) )
+
+  (my-map length '( (1 2) () (4) (5 6 7)))
+
+  (define (my-foldr func initial-value list-of-values)
+    (if (null? list-of-values)
+        '()
+        (func (car list-of-values)
+              (my-foldr func initial-value (cdr list-of-values)) ) ) )
+
+  (my-foldr append '() '((1 2) () (4) (5 6 7)))
+#+end_src
+
+Try these simple definitions and example calls.
+- Make sure you understand how they work
+- Compare with Racket's documentation.
+- Consult the web if it's not clear yet.
+      - [[https://stackoverflow.com/questions/42144068/how-do-foldl-and-foldr-work-broken-down-in-an-example][StackOverflow Explanation of foldr]]

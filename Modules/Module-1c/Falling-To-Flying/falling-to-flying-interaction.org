@@ -1,0 +1,72 @@
+* Interacting with our Falling Ball
+
+The =big-bang= macro makes it easy to add interaction by providing functions of
+our own design for it to call when interaction events occur.
+
+Let's have the up-arrow key give our ball an upwards velocity kick.
+
+We'll build on [[file:Solutions/falling-to-flying+gravity.rkt][Solution with Gravity]]  - b0e sure you understand that first!
+
+** Upgrading Our Single Sprite
+
+Here's the new code:
+
+#+begin_src racket
+  (define DY-KICK 10)                 ; DY of upwards kick
+
+  (define (update-on-key world key)
+  ;; cond handier than if when responding to multiple keys!
+  (cond
+    [(key=? key "up")
+     ;; struct-copy is a handy shorthand
+     (struct-copy ball world [dy (+ (ball-dy world) DY-KICK)]) ]
+    [#t world] ) )                       ; else world is unchanged
+
+  ;; add this clause to big-bang
+  [on-key update-on-key] 
+#+end_src
+
+The =struct-copy= macro form is a minor convenience
+#+begin_src racket
+  ;; instead of saying
+  (struct-copy ball world [dy (+ (ball-dy world) DY-KICK)])
+  ;; we could have said
+  (make-ball (ball-shape world) (ball-y world) (ball-dy world))
+#+end_src
+
+See if you can get it working before looking at the
+- [[file:Solutions/falling-to-flying+gravity+kick.rkt][Solution with Gravity+Kick]]
+
+** Discussion: The =big-bang= Macro
+
+Why is =big-bang= a macro rather than a procedure? It's so that =big-bang= can
+have lots of optional clauses distinguished by unevaluated symbols. Only macros
+can suppress evaluation of parts of a form. These clauses, [usually shown in
+square brackets] (even though in Racket you are free to put them in parentheses
+if you wish) are /not forms/. Other than the symbol identifying the meaning of
+the clause, the rest of the elements of the clause are evaluated normally.
+
+Several of the =big-bang= clauses take one of your procedures for =big-bang= to
+call when needed. Here are some of the clauses involving interaction:
+
+#+begin_src racket
+  (big-bang state-expression state-expr
+            [on-key key-expr]
+            [on-pad pad-expr]
+            [on-release release-expr]
+            [on-mouse mouse-expr]
+            ... )
+#+end_src
+
+Let's look at the =on-key= clauses. (See [[https://docs.racket-lang.org/teachpack/2htdpuniverse.html#%28form._world._%28%28lib._2htdp%2Funiverse..rkt%29._big-bang%29%29][full big-bang documentation]] for more.)
+
+#+begin_example
+  (on-key key-expr)
+	key-expr : (-> WorldState key-event? HandlerResult)
+#+end_example
+
+A key-expression should be a procedure which takes two arguments
+- WorldState :: the state of your World [[https://docs.racket-lang.org/teachpack/2htdpuniverse.html#%28tech._world._worldstate%29][WorldState documentation]]
+- key-event :: represents a keyboard event [[https://docs.racket-lang.org/teachpack/2htdpuniverse.html#%28tech._world._keyevent%29][key-event documentation]]
+and which returns a
+- Handler-Result :: the new WorldState (possibly more if multiple worlds)

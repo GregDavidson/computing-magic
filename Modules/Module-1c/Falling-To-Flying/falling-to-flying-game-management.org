@@ -1,0 +1,15 @@
+* NEW: Game Management
+
+Games can be managed through the =big-bang= clauses
+
+- (on-tick tick-expr ...)
+      - The tick-expr procedure should handle all game management
+      - It can do more than just call the on-tick methods of the game sprites
+      - The world state can hold more than just the sprite list
+- (stop-when last-world? ...)
+      - The last-world? procedure can stop the game based on the world state.
+- (close-on-stop cos-expr)
+      - Controls whether and for how long the game window remains visible after
+        the game has stopped.
+
+We'll explore some variations.

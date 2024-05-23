@@ -1,0 +1,16 @@
+* NEW: Adding Animation to our Game
+
+Currently our Sprites get their shape from a single image.
+
+Other possibilities include
+- Updating a sprite's shape
+- Replacing a sprite with a differently shaped sprite
+- Replacing the image with a function which draws a custom image
+      - Based on the sprite's state and the state of the world
+- Replacing the single shape with a set of shapes
+      - The complete shape is a combination of multiple component shapes
+      - e.g. hands, arms, legs, etc.
+      - Component shapes can change their positioning
+
+This is all very open-ended and we'll explore some of these options in projects
+and examples to come!

@@ -2,37 +2,32 @@
 
 This is the Starting Point for writing 2D games.
 
-You can find the initial complete program in
-- [[file:falling-to-flying-0.rkt][falling-to-flying-0.rkt]]
-
-- Open it with DrRacket
+- Open [[file:falling-to-flying-0.rkt][falling-to-flying-0.rkt]] with DrRacket
 - Run it
 - Study the code
-- Use F1 to get help on the new functions and libraries
+- Use the =F1= key to get help on the new functions and libraries
 - Change some things, e.g.
       - Create something else to drop using 2htdp/image functions
       - Or load a bitmap with =bitmap/file= or =bitmap/url=
 
-The =big-bang= function is our game engine and it has many features we're going
-to explore in further exercises. Most of its job is to call functions which you
-write. Look over its documentation. Don't be worried if you don't understand
-everything it does yet!
+The [[https://docs.racket-lang.org/teachpack/2htdpuniverse.html#%28form._world._%28%28lib._2htdp%2Funiverse..rkt%29._big-bang%29%29][big-bang]] function will be the heart of our game engine
+- Initially we'll only use a few of its features
+- Most of its job is to call your functions!
+- Look over [[https://docs.racket-lang.org/teachpack/2htdpuniverse.html#%28form._world._%28%28lib._2htdp%2Funiverse..rkt%29._big-bang%29%29][its documentation]]
+- Don't be worried if you don't understand everything it does yet!
 
 Now let's make the program more sophisticated by:
-- [[file:falling-to-flying-state.org][Adding State]]
-      - Sprites with custom properties
-- [[file:falling-to-flying-interaction.org][Adding Interactivity]]
-      - Self-Managing Interactive Sprites
-- [[file:falling-to-flying-multiple-sprites.org][Multiple Sprites]]
-      - A world of multiple interactive sprites
-            - each with their own appearance and behavior
-- [[file:falling-to-flying-animation.org][Adding Animation]]
-      - Sprites with Changeable Structure
-- [[file:falling-to-flying-end-goal.org][Adding an End Goal]]
-      - How do we bring a game to an end?
+- [[file:falling-to-flying-state.org][Adding State]] - Sprites with custom properties
+- [[file:falling-to-flying-interaction.org][Adding Interactivity]] - Self-Managing Interactive Sprites
+- [[file:falling-to-flying-multiple-sprites.org][Multiple Sprites]] - A world of multiple interactive sprites
+      - each with their own appearance and behavior
+- [[file:falling-to-flying-animation.org][Adding Animation]] - Sprites with Changeable Structure
+- [[file:falling-to-flying-game-management.org][Game Management]]
+      - How do we assess progress?
+      - How does a game end?
 
 Once you've finished these improvements and your own creative
 ideas, it's time to move on to
-- [[file:../Flight-Lander/README.org][Flight Lander]] :: Interacting Sprites!
+- [[file:../Flight-Lander/README.org][Flight Lander]]
       - Sprites which interact with one another
       - as well as with the user!
