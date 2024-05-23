@@ -1,5 +1,5 @@
 #lang racket
-;; Start with Falling, move towards Flying!
+;; Add gravitational acceleration!
 
 (require 2htdp/image) ; for drawing, image manipulation
 (require 2htdp/universe) ; animation and game framework
@@ -14,7 +14,7 @@
 ;; Scenes are like images but without keyholes.
 
 (define (half num-pixels) (quotient num-pixels 2))
- 
+
 (define SCENE-WIDTH 400) ; pixels
 (define HALF-SCENE-WIDTH (half SCENE-WIDTH))
 (define SCENE-HEIGHT 400) ; pixels
@@ -81,6 +81,6 @@
                EMPTY-SCENE ) )
 
 (big-bang initial-world
-  [on-tick next-world 1/30] ; update world 30 "ticks" a second
+  [on-tick next-world 1/30] ; call next-world 30 "ticks" a second
   [to-draw draw-world SCENE-WIDTH SCENE-HEIGHT] ; draw world in canvas
   )

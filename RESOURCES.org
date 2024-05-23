@@ -7,5 +7,52 @@
 - [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]]
 - [[https://gregdavidson.github.io/wicci-core-S0_lib/][Wicci Project]]
 
-** Books & Media
+** Artificial Intelligence
 
+*** Knowledge Representation and Reasoning
+
+**** TODO  [[https://github.com/ErgoAI][ErgoAI]]
+- todo :: Install, Study
+- github :: https://github.com/ErgoAI
+
+** Databases
+
+*** PostgreSQL Related
+
+**** [[https://hevodata.com/learn/mailchimp-to-postgresql][Mailchimp to PostgreSQL: 2 Easy Methods]]
+- by :: [[https://hevodata.com/learn/author/rashid][Rashid Y]]
+- date :: 2021-08-21
+
+**** [[https://hevodata.com/learn/sendgrid-to-postgresql][Sendgrid to PostgreSQL: 2 Easy Methods]]
+- by :: [[https://hevodata.com/learn/author/rashid][Rashid Y]]
+- date :: 2020-04-20
+
+**** [[https://web.archive.org/web/20220223072434/http://www.throwingbeans.org/tech/postgresql_and_xml.html][PostgreSql and XML]]
+- by :: Tom Dyson
+- date :: 2006
+
+*** Integrating Databases with Spreadsheets
+
+**** TODO [[https://mathesar.org][Mathesar: a spreadsheet-like interface to PostgreSQL]]
+- todo :: Download, Install, Study, Communicate, Collaborate?
+- GitHub :: [[https://github.com/mathesar-foundation/mathesar#readme][Mathesar GitHub]]
+
+**** [[https://hevodata.com/learn/google-sheets-to-postgresql][How to Migrate Google Sheets to Postgres in 2 Easy Methods]]
+- by :: [[https://hevodata.com/learn/author/rashid][Rashid Y]]
+- date :: 2024-02-08
+
+** Computer Languages
+
+*** Lisps
+
+**** Common Lisp
+
+[[https://awesome-cl.com][Common Lisp Awesome List]]
+
+** Graphics
+
+*** Raytracing, etc.
+
+****  Free EBook: [[https://pbr-book.org][Physically Based Rendering]]
+- subtitle :: From Theory To Implementation
+- authors :: Matt Pharr, Wenzel Jakob, Greg Humphreys

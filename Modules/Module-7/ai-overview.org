@@ -237,7 +237,8 @@ low error rates in intelligent systems.  While far from easy, this approach has
 produced some of the most successful systems ever developed.  It is the future.
 
 Examples
-- [[https://en.wikipedia.org/wiki/Blackboard_(design_pattern)][Blackboard Architecture]] in [[https://en.wikipedia.org/wiki/Natural-language_understanding][Natural Language Understanding]]
+- [[https://en.m.wikipedia.org/wiki/Blackboard_system][Blackboard]] [[https://en.wikipedia.org/wiki/Blackboard_(design_pattern)][Architecture]] in [[https://en.wikipedia.org/wiki/Natural-language_understanding][Natural Language Understanding]]
+      - Explore all three links and the links therein!
 - Hybrid AI in IBM /Watson/'s Jeopardy System
       - Rule-based AI plus Machine Learning
 

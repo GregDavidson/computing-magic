@@ -38,6 +38,7 @@
 (define HALF-BALL-HEIGHT (half (image-height (ball-shape initial-world))))
 
 ;; is the ball bouncing?
+;; i.e. is the ball within a 1/2 ball height of the bottom?
 (define (bouncing? ball)
   (< (ball-y ball) HALF-BALL-HEIGHT) )
 

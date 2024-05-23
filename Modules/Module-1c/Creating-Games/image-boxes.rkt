@@ -5,11 +5,10 @@
 (require 2htdp/image)
 (require rackunit) ; for checks
 
-;; We would like to have sprites represent scene-graphs
-;; at a location.
+;; We would like sprites to represent image-graphs at a location.
 
-;; We would like scene-graphs represent a tree of components
-;; which are either images or labels.
+;; We would like image-graphs to represent a tree of component parts which are
+;; either images or labels.
 
 ;; ** Our Type Functions and Structures
 
@@ -17,7 +16,11 @@
 (define (ratio? x) (and (real? x) (>= x 0) (< x 1)))
 
 ;; A part contains a list of subparts, i.e. component parts
-(struct/contract part ( [parts (recursive-contract part-list? #:flat #:extra-delay)] ) #:transparent)
+(struct/contract
+ part
+#; ( [parts (recursive-contract part-list? #:flat #:extra-delay)] )
+ ( [parts part?] )
+ #:transparent )
 
 (define (part-list? x) (and (list? x) (andmap part? x)))
 
@@ -32,8 +35,8 @@
 (struct/contract image-part part ( [image image?] ) #:transparent)
 
 ;; An area-part identifies a special area as a part
-;; This could be, e.g. a hurtbox or a killbox
-;; Should component parts be restricted to fitting within the image's area?       
+;; - This could be, e.g. a hurtbox or a killbox
+;; - Should component parts be restricted to fitting within the image's area?
 (struct/contract area-part part (
                   [width natural?] [height natural?] )
                  #:transparent )
