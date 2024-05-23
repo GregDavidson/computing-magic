@@ -21,7 +21,7 @@ Here's the new sprite definition:
 #+begin_src racket
   (struct sprite (shape y dy on-tick on-key to-draw)
   #:transparent ; show insides when printed
-  #:constructor-name make-ball ; instead of ball
+  #:constructor-name make-sprite ; instead of sprite
   )
 #+end_src
 
@@ -36,7 +36,8 @@ There's a lot going on in getting ready for multiple sprites.
 One idea:
 - have each press of the up-arrow key cause the original sprite to emit
   another sprite going downwards
-- a new sprite going downwards is the physical justification for the original ball to accelerate upwards
+- a new sprite going downwards is the physical justification for the original
+  sprite to accelerate upwards
 - the new sprites could disappear when they reach the bottom
       - they would have to have different on-tick and on-key methods!
 - while the original sprite resets to the top
