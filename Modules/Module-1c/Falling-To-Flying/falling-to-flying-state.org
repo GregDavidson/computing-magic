@@ -10,28 +10,30 @@ If we'd like our ball to exhibit more interesting behavior, e.g.
 
 Then we'll need to give our ball a richer state. Our current "world state" is
 just a single number representing the height of the ball. We can create a richer
-state using a list of attributes or more conveniently by using a struct.
+state using a list of attributes or more conveniently by using a =struct= form.
 
 ** Defining Functions to Manage A Richer State
 
-A richer state using a list of attributes
+We could define a richer state as a list of attributes managed by a collection
+of functions:
 #+begin_src racket
   (define (make-ball shape y dy)
     (list shape y dy) )
-  (define ball-shape first) ; fetches first element of the list
-  (define ball-y second ball) ; fetches second element of the list
-  (define ball-dy third) ; etc.
-  (define world (make-ball BALL SCENE-HEIGHT DROP-RATE))
-#+end_src
-
-another (longer) way to write the selector functions would be like this
-#+begin_src racket
   (define (ball-shape ball) (first ball))
   (define (ball-y ball ) (second ball))
   (define (ball-dy ball ) (third ball))
+  (define world (make-ball BALL SCENE-HEIGHT DROP-RATE))
 #+end_src
-Do you see that either way, this makes our selector functions synonyms for the
-existing list functions first, second and third?
+- =make-ball= is called a /constructor function/
+- =ball-shape=, =ball-y= and =ball-dy= are called /selector functions/
+
+Rather than creating new functions, the selector functions can be more easily
+defined as alternative names for the existing list functions:
+#+begin_src racket
+  (define ball-shape first) ; fetches first element of the list
+  (define ball-y second ball) ; fetches second element of the list
+  (define ball-dy third) ; etc.
+#+end_src
 
 ** Using the =struct= Macro to Manage A Richer State
 
@@ -41,11 +43,17 @@ the Racket macro =struct= write these functions for us:
   (struct ball (shape y dy)
     #:constructor-name make-ball )
 #+end_src
-The =struct= macro also automatically creates a /recognizer function/
-- =ball?= :: returns =#t= for balls, =#f= for anything else
-The default constructor function name would have been =ball= but
-- =#:constructor-name make-ball=
-changes it to the (possibly more clear) =make-ball=
+This =struct= form writes five functions for us:
+- a /selector function/ for each /field/
+      - =ball-shape=, =ball-y= and =ball-dy=
+- a recognizer function
+      - =ball?= :: returns =#t= for a ball structure, =#f= for anything else
+- a constructor function
+      - The default constructor function name would have been =ball=
+      - The optional clause =#:constructor-name make-ball=
+            - changes it to the (possibly more clear) =make-ball=
+
+Structures are usually stored more efficiently than lists.
 
 Lisp does nearly everything with functions. A well-designed macro can often
 write many of the functions we need automatically. Macros are functions which
@@ -56,7 +64,7 @@ program down. You can learn to write new macros.
 
 Using one of the methods presented above
 - Create a new version of the falling-to-flying program
-- You'll need to change =next-world= and =draw=world=
+- You'll need to change =next-world= and =draw-world=
 
 #+begin_src racket
 (define (next-world world)
