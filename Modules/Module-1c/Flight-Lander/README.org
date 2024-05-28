@@ -11,7 +11,7 @@ This the Second Starting Point for [[file:../README.org][Writing 2D Games]].
 
 ** Prepare Flight Lander for a Multi-User Game
 
-You'll want to have more than one interactively controllable sprite.
+*** Multiple Interactive Sprites
 
 Here are some ideas:
 
@@ -33,6 +33,41 @@ Here are some ideas:
 
 Can you see how each of these interactive Sprites could potentially
 be controlled by a separate user in a Multi-User game?
+
+*** Interactively Adding and Deleting Sprites
+
+The sprite methods of our existing game can only communicate changes to themselves.
+
+We need to have a richer protocol.
+
+Currently you have procedures called by big-bang calling your update procedures
+which return an updated sprite structure.
+
+Instead have your method procedures
+- Either return a sprite structure
+- or a list of sprite structures
+
+Here's the new understanding:
+- An update method returns a list of sprites to replace the old sprite.
+- Returning single structure instead of a list should be a shorthand for
+  return a list of a single structure.
+Our sprite can
+- Replace itself with a different sprite simply by returning that different sprite
+      - This was already possible in the old design!
+- Add one or more sprites by returning them in a list which may or may not include the original sprite.
+- Drop out by returning an empty list!
+
+Suggestions
+- Change the procedures which call the methods first.
+      - They should continue to work with the original methods.
+- Then change some of your methods to take advantage of the new protocol
+      - missile launchers can create missiles
+      - missiles can drop out when they leave the canvas
+
+Question:
+- How can sprites communicate with game-over?
+
+** Moving to a Client-Server Network Protocol
 
 As soon as you're ready, go to the [[file:../Network-Volley/README.org][Network Volley]] Starting Point to learn how to
 make games multi-user. Once you understand the techniques, you can make your
