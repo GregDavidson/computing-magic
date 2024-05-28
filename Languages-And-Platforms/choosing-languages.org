@@ -158,29 +158,39 @@ Many frameworks have been created for Knowledge-Based Programming
 *** Systems Programming Languages
 
 Paradigms
-- Imperative Programming
-- Limited Functional Programming - especially with Rust
+- Primarily Imperative Programming
+- Maybe also Functional Programming - especially with Rust
 
-Systems Programming is the art of writing programs which directly control
-hardware devices, called device drivers and programs which directly control
+Systems Programming includes the art of writing procedures which directly
+control hardware devices (device drivers) and procedures which directly control
 the low-level systems abstractions provided by operating system kernels, e.g.
 - Filesystems
 - File and Network Streams
 - Packet Switching
 - Low-level Graphics and Audio
 - etc.
+In a traditional Operating System, e.g. Unix, Microsoft Windows, Linux, MacOS
+these procedures are part of a special program called a /kernel/ which runs with
+special privileges. Security and reliability are essential for any code which is
+part of a kernel.
+
+Systems Programming can also be used to write libraries, service programs and
+software tools which both extend and leverage the features provided by the
+kernel.
 
 - [[https://github.com/GregDavidson/C-By-Example#readme][C]] is the lowest-level popular language
       - C is great for learning how computers work
-- [[https://www.rust-lang.org][Rust]] is a remarkably flexible and elegant systems programming language
+      - C++ extends C with a large number of features
+- [[https://www.rust-lang.org][Rust]] is a modern alternative to C and C++
       - higher-level than C
       - simpler and more reliable than C++
+      - remarkably flexible and expressive
       - advanced features for control of resources
       - great for parallelism, utilizing multiple CPUs and GPUs
 
 *** Relational Programming
 
-All data in primary memory (RAM) is volatile and is erased when a program
+All data in primary memory (RAM) is volatile and is lost when a program
 terminates, whether that was planned, caused by a crash or by a power loss.
 Secondary memory (SSDs, HDDs) will persist without power but are 1000 to
 1,000,000 times slower than primary memory. Database systems are the most
@@ -194,7 +204,7 @@ follow the Relational Model and use the standard query language SQL.
 Paradigms
 - These languages have their own special Paradigm
       - In some ways like Functional Programming
-      - with extraordinary power yet less abstraction
+      - with extraordinary power yet less generality
 
 **** Array-Oriented Languages
 
