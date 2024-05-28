@@ -1,0 +1,36 @@
+* Flight Lander
+
+This the Second Starting Point for [[file:../README.org][Writing 2D Games]].
+- It follows [[file:../Falling-To-Flying/README.org][Falling To Flying]]
+
+Run the program.  Explore the suggested exercises,
+questions and issues.
+
+** Preparing for a Multi-User Game
+
+You'll want to have more than one interactively controllable sprite.
+
+Here are some ideas:
+
+1. Make the Balloon into an Interactive Hot Air Balloon.
+       - Have a hot-key turn it's burner on and off.
+       - Show a flame when the burner is on.
+       - Give it an upwards thrust when the burner is on.
+       - When the burner is off, have it cool and lose altitude.
+       - Have winds at different elevations so you can navigate the balloon.
+
+2. Create a Missile Sprite.
+       - You can borrow ideas from
+             - our earlier  [[file:../Falling-To-Flying/README.org][Falling To Flying]] programs
+       - Our Airplane Sprite
+       - Our Balloon Sprite
+
+3. Create a Missile Launcher
+       - This could be part of another sprite!
+
+Can you see how each of these interactive Sprites could potentially
+be controlled by a separate user in a Multi-User game?
+
+As soon as you're ready, go to the [[file:../Network-Volley/README.org][Network Volley]] Starting Point to learn how to
+make games multi-user. Once you understand the techniques, you can make your
+Flight Lander program Multi-User!
