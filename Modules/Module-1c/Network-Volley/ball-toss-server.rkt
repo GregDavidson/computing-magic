@@ -59,4 +59,4 @@
                  '() ) ) )
 
 ;; Start the server
-(universe '() (on-new add-world) (on-msg switch))
+(universe '() [on-new add-world] [on-msg switch])

@@ -83,11 +83,11 @@
 (define (create-world a-name [server LOCALHOST])
   (when (symbol? a-name) (set! a-name (symbol->string a-name)))
   (big-bang INITIAL-STATE
-   (on-receive receive)
-   (to-draw    (render-for a-name) )
-   (on-tick    move 1/30)
-   (name       a-name)
-   (register   server) ) )
+   [on-receive receive]
+   [to-draw    (render-for a-name) ]
+   [on-tick    move 1/30]
+   [name       a-name]
+   [register   server] ) )
 
 (define (go [server LOCALHOST]) (launch-many-worlds (create-world "Eti" server)
                                  (create-world "Brandt" server)
