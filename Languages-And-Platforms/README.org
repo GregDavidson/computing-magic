@@ -7,12 +7,12 @@ Any sufficiently advanced technology is indistinguishable from magic.\\
 
 *DRAFT NOTES*
 - Need to
-- create great platform list
-- What about Magical Tools?
+- expand great platform list
+- should we include Magical Tools?
 
 ** TL;DR
 
-A [[file:awesome-computing-magic-languages.org][great programming language]] running on a [[file:awesome-computing-magic-platforms.org][great platform]] should amplify your
+A [[file:choosing-languages.org][great programming language]] running on a [[file:choosing-platforms.org][great platform]] should amplify your
 computing abilities, giving you seemingly /magical skills/.
 
 ** What Should Great Languages Provide?
@@ -66,4 +66,4 @@ A /Great Computing Platform/ should
       - Version management integrated with
       - Automated testing and deployment
 
-See this [[file:awesome-computing-magic-platforms.org][list of great programming platforms]].
+See this [[file:choosing-platforms.org][survey of programming platforms]].
