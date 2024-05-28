@@ -229,7 +229,7 @@ Paradigms
 - Pure Object-Oriented with Inheritance
 
 - [[https://squeak.org][Squeak Smalltalk]] is the most popular
-- [[ttps://pharo.org][Pharo Smalltalk]] is an elegant and fast-moving alternative
+- [[https://pharo.org][Pharo Smalltalk]] is an elegant and fast-moving alternative
 
 **** Typed Functional Languages
 
