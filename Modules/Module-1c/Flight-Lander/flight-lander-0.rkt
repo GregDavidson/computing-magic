@@ -64,16 +64,18 @@
 
 ;; Return our first argument, ignoring the rest.
 ;; Can be used as a do-nothing update method.
+;; How does this work?? Hint: There are no
+;; parentheses around arg-list!
 (define return-arg1 (λ arg-list (car arg-list)))
 
 ;; Let's have sprite
-(struct/contract sprite 
+(struct/contract sprite
                  ( [image image?]
                    ;; position: x and y coodinates
                    [x integer?] [y integer?]
                    ;; velocity: delta (change) of x and y
                    [dx integer?] [dy integer?]
-                   ;; methods: behavior procedures 
+                   ;; methods: behavior procedures
                    [on-tick procedure?]
                    [on-key procedure?]
                    [to-draw procedure?] )
@@ -105,7 +107,7 @@
 (define sprite-width (compose image-width sprite-image))
 (define sprite-height (compose image-height sprite-image))
 ;; Are the right and top edges part of the object or bounds??
-(define (sprite-x2 s) (+ (sprite-x s) (sprite-width s))) ; right edge
+(define (sprite-x2 s) (+ (sprite-x s) (sprite-width s)))  ; right edge
 (define (sprite-y2 s) (+ (sprite-y s) (sprite-height s))) ; top edge
 
 ;; ** Placing Sprites on Images
@@ -179,7 +181,7 @@
 ;; check that the bounds of one object are in ascending order
 (define (assert-ascending bound1 bound2 name)
   (unless (< bound1 bound2)
-    (error "Expected ~a in ascending order: ~a ~a" name bound1 bound2) ) 
+    (error "Expected ~a in ascending order: ~a ~a" name bound1 bound2) ) )
 
 ;; Does this handle all the possible cases??
 ;; Needs the bounds to be in ascending order.
@@ -271,24 +273,21 @@
 ;; The "Bounding Box" is either all or part of a canvas
 
 ;; We're going to have some geometry functions which all take and/or return
-;; the sprite and 10 geometry values: s x y x2 y2 dx dy xx yy xx2 yy2
-;; where the sprite is s -- only used by update-sprite!
-;; the sprite edges are x = left, y = bottom, x2 = right, y2 = top
-;; the sprite velocity is dx dy
-;; the "Bounding Box" edges are xx = left, yy = bottom, xx2 = right, yy2 = top
+;; 10 geometry values: x y x2 y2 dx dy xx yy xx2 yy2
+;;    sprite edges: x = left, y = bottom, x2 = right, y2 = top
+;;    sprite velocity: dx dy
+;;    canvas edges: xx = left, yy = bottom, xx2 = right, yy2 = top
 
 ;; These geometry functions will be composed so that
-;; 1. sprite+canvas creates the 11 values
-;; 2. various geometry functions process the geometry, ignoring the sprite object s
-;;    during this time the geometry values will diverge from those in sprite s
-;; 3. update-sprite! updates the sprite with the new geometry values
-;;    ==> why is procedure update-sprite! not a pure function??
+;; 1. sprite+canvas returns the 10 geometry values
+;; 2. various geometry functions transform the values
+;; 3. update-sprite! updates the sprite with the new values
+;;    ==> how does update-sprite! work??
 
 ;; Return the sprite, its geometry and the geometry of its "Bounding Box"
 ;; The "Bounding Box" is specified by a canvas and optional edge offsets
 (define (sprite+canvas s canvas #:x+ [x+ 0] #:y+ [y+ 0] [x- 0] #:y- [y- 0])
-  (values s ; the sprite
-          (sprite-x s)  ; sprite left edge
+  (values (sprite-x s)  ; sprite left edge
           (sprite-y s)  ; sprite bottom edge)
           (sprite-x2 s) ; sprite right edge
           (sprite-y2 s) ; sprite top edge
@@ -301,22 +300,22 @@
           ) )
 
 ;; transform sprite geometry with sprite velocity, ignoring bounds
-(define (preview-sprite s x y x2 y2 dx dy xx yy xx2 yy2)
-  (values s (+ x dx) (+ y dy) (+ x2 dx) (+ y2 dy) dx dy xx yy xx2 yy2) )
+(define (preview-sprite x y x2 y2 dx dy xx yy xx2 yy2)
+  (values (+ x dx) (+ y dy) (+ x2 dx) (+ y2 dy) dx dy xx yy xx2 yy2) )
 
 ;; clip x and x2 so that the sprite is within the horizontal bounds
-(define (clip-x s x y x2 y2 dx dy xx yy xx2 yy2)
+(define (clip-x x y x2 y2 dx dy xx yy xx2 yy2)
   (let ( [x- (max 0 (- x2 xx2 1))] ; extension of x2 to the right of) xx2
-         [x+ (max 0 (- xx x))] ; extension of x to the left of xx
+         [x+ (max 0 (- xx x))]     ; extension of x to the left of xx
          )
     (when (and (positive? x-) (positive? x+))
       (error "clip-x2 impossible ~a ~a ~a ~a" x x2 xx xx2) )
     (let ( [x-adjust (- x+ x-)] )
-      (values s (+ x x-adjust) y (+ x2 x-adjust) y2 dx dy xx yy xx2 yy2) ) ) )
+      (values (+ x x-adjust) y (+ x2 x-adjust) y2 dx dy xx yy xx2 yy2) ) ) )
 
 ;; what does this do??
-(define (flip-xy s x y x2 y2 dx dy xx yy xx2 yy2)
-  (values s y x y2 x2 dy dx yy xx yy2 xx2) )
+(define (flip-xy x y x2 y2 dx dy xx yy xx2 yy2)
+  (values y x y2 x2 dy dx yy xx yy2 xx2) )
 
 ;; why does this work??
 (define clip-y (compose flip-xy clip-x flip-xy))
@@ -328,36 +327,38 @@
 ;; - when sprite goes fully beyond the right bound, it appears at the left
 ;; - when sprite goes fully left of the left bound, it appears at the right
 ;; EXERCISE: How could we write this better??
-(define (wrap-x s x y x2 y2 dx dy xx yy xx2 yy2)
-  (cond [(>= x xx2) ; we've gone over at the right
-          (values s xx y (+ xx (- x2 x)) y2 dx dy xx yy xx2 yy2) ]
-          [(< x2 xx) ; we've gone over at the left
-          (values s (- xx2 (- x2 x 1)) y (- xx2 1) y2 dx dy xx yy xx2 yy2) ]
-          [else (values s x y x2 y2 dx dy xx yy xx2 yy2) ] ) )
+(define (wrap-x x y x2 y2 dx dy xx yy xx2 yy2)
+  (cond [(>= x xx2)                     ; we've gone over at the right
+          (values xx y (+ xx (- x2 x)) y2 dx dy xx yy xx2 yy2) ]
+          [(< x2 xx)                    ; we've gone over at -the left
+          (values (- xx2 (- x2 x 1)) y (- xx2 1) y2 dx dy xx yy xx2 yy2) ]
+          [else (values x y x2 y2 dx dy xx yy xx2 yy2) ] ) )
 
 ;; transform the geometry elements by reversing the velocity
 ;; and updating the x and y coordinates by the new velocity
-(define (bounce s x y x2 y2 dx dy xx yy xx2 yy2)
+(define (bounce x y x2 y2 dx dy xx yy xx2 yy2)
   (if (or (< x xx) (>= x2 xx2) (< y yy) (>= y2 yy2)) ;; we're out of bounds!
       ;; so bounce
-      (values s (- x dx) (- y dy) (- x2 dx) (- y2 dy) (- dx) (- dy) xx yy xx2 yy2)
+      (values (- x dx) (- y dy) (- x2 dx) (- y2 dy) (- dx) (- dy) xx yy xx2 yy2)
       ;; otherwise do nothing
-      (values s x y x2 y2 dx dy xx yy xx2 yy2) ) )
+      (values x y x2 y2 dx dy xx yy xx2 yy2) ) )
 
-;; update the sprite with the geometry elements which apply to it
-;; return the mutated sprite
-(define (update-sprite! s x y x2 y2 dx dy xx yy xx2 yy2)
-  (set-sprite-x! s x)
-  (set-sprite-y! s y)
-  (set-sprite-dx! s dx)
-  (set-sprite-dy! s dy)
-  s )
+;; returns a procedure which will update the sprite
+;; with the geometry values its given and returns
+;; the mutated sprite
+(define (update-sprite! s)
+  (λ (x y x2 y2 dx dy xx yy xx2 yy2)
+    (set-sprite-x! s x)
+    (set-sprite-y! s y)
+    (set-sprite-dx! s dx)
+    (set-sprite-dy! s dy)
+    s ) )
 
 ;; Update a sprite with x and y mutated based on dx and dy
 ;; wrap x value to stay within the scene
 ;; bounce if hit top or land or water by reversing velocity
 (define (update-sprite-with-bounce! s)
-  ( (compose update-sprite! bounce preview-sprite sprite+canvas) ; composite function
+  ( (compose (update-sprite! s) bounce preview-sprite sprite+canvas) ; composite function
     s BACKGROUND #:y+ BASE-HEIGHT ) )
 
 ;; *** Create The Plane
@@ -374,43 +375,44 @@
 (define PLANE-TAXI-DX 1)                ; plane horizontal taxi speed
 (define PLANE-WHEELS-X (half (image-width PLANE-IMAGE))) ; check with image!!
 
-(define (plane-edge-cases s x y x2 y2 dx dy xx yy xx2 yy2)
+(define (plane-edge-cases x y x2 y2 dx dy xx yy xx2 yy2)
   (let ( [wheels-x (+ x PLANE-WHEELS-X)] )
     (cond [(> y BASE-HEIGHT) ; we're flying, no special cases!
-           (values s x y x2 y2 dx dy xx yy xx2 yy2) ]
+           (values x y x2 y2 dx dy xx yy xx2 yy2) ]
           [(<= y yy) ; we're at the bottom of the ocean
-           (values s x yy x2 (- y2 y) 0 0 xx yy xx2 yy2) ]
+           (values x yy x2 (- y2 y) 0 0 xx yy xx2 yy2) ]
           [ (<= wheels-x WATER-WIDTH) ; we're gonna sink!
             (let ( [x- (max 0 (- x2 WATER-WIDTH))] )
-              (values s (- x x-) y (- x2 x-) y2 0 PLANE-SINKING-DY xx yy xx2 yy2) ) ]
+              (values (- x x-) y (- x2 x-) y2 0 PLANE-SINKING-DY xx yy xx2 yy2) ) ]
           [else ;; we'reg going to land!
            (let ( [taxi-dx (if (>= x2 xx2) 0 PLANE-TAXI-DX)]
                   [y-top (+ BASE-HEIGHT (- y2 y))] )
-             (values s x BASE-HEIGHT x2 y-top taxi-dx 0 xx yy xx2 yy2) ) ] ) ) )
+             (values x BASE-HEIGHT x2 y-top taxi-dx 0 xx yy xx2 yy2) ) ] ) ) )
 
 ;; updates the plane using mutation and returns it
 (define (update-plane-on-tick! plane)
-  ( (compose update-sprite! plane-edge-cases wrap-x preview-sprite sprite+canvas) ; composite function
+  ( (compose (update-sprite! plane) plane-edge-cases wrap-x preview-sprite sprite+canvas) ; composite function
     plane BACKGROUND ) )
-  
+
 ;; **** update-plane-on-key!
 
 (define KEY-DY 20) ; vertical movement on key press
 
 ;; updates the plane using mutation and returns it
 (define (update-plane-on-key! plane a-key)
-  (define (key-match s x y x2 y2 dx dy xx yy xx2 yy2)
-    (values s x (cond [(key=? a-key "up") (+ y KEY-DY)]
+  (define (key-match x y x2 y2 dx dy xx yy xx2 yy2)
+    (values x (cond [(key=? a-key "up") (+ y KEY-DY)]
                       [(key=? a-key "down") (- y KEY-DY)]
                       [else y])
              x2 y2 dx dy xx yy xx2 yy2) )
-  ( (compose update-sprite! clip-y key-match sprite+canvas) ; composite function
+  ( (compose (update-sprite! plane) clip-y key-match sprite+canvas) ; composite function
     plane BACKGROUND #:y+ BASE-HEIGHT ) )
 
 ;; Start plane fully visible at upper left
-(define the-plane (sprite PLANE-IMAGE
-                          0 (- SCENE-HEIGHT (image-height PLANE-IMAGE))
-                          5 -5 update-plane-on-tick! update-plane-on-key! draw-sprite) )
+(define the-plane
+  (sprite PLANE-IMAGE
+          0 (- SCENE-HEIGHT (image-height PLANE-IMAGE))
+          5 -5 update-plane-on-tick! update-plane-on-key! draw-sprite) )
 
 ;; *** Some Tests
 
@@ -514,11 +516,11 @@
 
 (define (play)
   ;; set up and run our game
-  (big-bang WORLD               ; our initial list of active sprites
-    (on-tick update-world-on-tick! 1/30) ; calling update-world 30 times a second
-    (to-draw draw-world         ; updating our scene with draw-world
-             SCENE-WIDTH SCENE-HEIGHT) ; why are these bounds needed??
-    (on-key update-world-on-key!)  ; our keystrokes handler
-    (stop-when game-over? draw-world) ) )  ; until (game-over? our-world)
+  (big-bang WORLD                         ; our initial list of active sprites
+    [on-tick update-world-on-tick! 1/30]  ; call procedure 30 times a second
+    [to-draw draw-world                   ; update scene with draw-world
+             SCENE-WIDTH SCENE-HEIGHT]    ; why are these bounds needed??
+    [on-key update-world-on-key!]         ; our keystrokes handler
+    [stop-when game-over? draw-world] ) ) ; when (game-over? world)
 
 (play)
