@@ -1,6 +1,6 @@
 * Falling To Flying
 
-This is the Starting Point for writing 2D games.
+This the first Starting Point for [[file:../README.org][Writing 2D Games]].
 
 - Open [[file:falling-to-flying-0.rkt][falling-to-flying-0.rkt]] with DrRacket
 - Run it
