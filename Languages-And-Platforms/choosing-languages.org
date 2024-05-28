@@ -52,7 +52,7 @@ For the more complete list and explanation, see /Families Of Great Languages/ be
       - PostgreSQL allows you to extend SQL and the Database
             - many powerful PostgreSQL extensions are freely available (FLOSS)
             - and you can create magic with your own PostgreSQL extensions!
-- [[https://duckduckgo.com/?t=ffab&q=posix+shell][Shell]], inside of [[https://www.gnu.org][Gnu/Linux]] or [[https://duckduckgo.com/?t=ffab&q=macintosh+command+line][Mac]] or [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows Subsystem for Linux]]
+- [[https://duckduckgo.com/?t=ffab&q=posix+shell][Posix Shells]], inside of [[https://www.gnu.org][Gnu/Linux]] or [[https://duckduckgo.com/?t=ffab&q=macintosh+command+line][Mac]] or [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows Subsystem for Linux]]
       - focused on customizing your tool stack
       - anything you can do manually, you can automated with a /Shell Script/!
 - Web Languages
