@@ -276,13 +276,14 @@ Shells
 
 Text-Oriented DSLs
 - [[https://en.wikipedia.org/wiki/Regular_expression][Regular Expressions]]
-      - [[https://en.wikipedia.org/wiki/Grep][grep: Global Regular Expression Print]]
-- [[https://en.wikipedia.org/wiki/Ed_(text_editor)][ed scriptable scripting editor]]
+      - a key feature of most text-oriented tools
+- [[https://en.wikipedia.org/wiki/Grep][grep: Global Regular Expression Print]]
+- [[https://en.wikipedia.org/wiki/Ed_(text_editor)][ed scriptable file editor]]
 - [[https://en.wikipedia.org/wiki/Sed][sed scriptable stream editor]]
 - [[https://en.wikipedia.org/wiki/AWK][awk powerful scriptable text processor]]
 
 Automated development tools are like Shells for Shells
-- [[https://en.wikipedia.org/wiki/Make_(software)][make: automate file processing]]
+- [[https://en.wikipedia.org/wiki/Make_(software)][make: automate complex file processing]]
 
 ** Comparing Languages and Paradigms
 
