@@ -1,0 +1,28 @@
+* Network Volley - Interactive Multi-User Games
+
+This the third Starting Point for [[file:../README.org][Writing 2D Games]].
+
+We're going to learn how to create games which
+- Consist of multiple Client Programs called /Worlds/
+- Worlds will be coordinated by a /Universe Server/
+- We can design and test it on a single computer
+- Given an accessible network Universe Server
+- Multiple Users can interact with Worlds running on their own machines
+
+Open these example programs in 2 DrRacket tabs or windows:
+- [[file:ball-toss-client.rkt][ball-toss-client.rkt]]
+- [[file:ball-toss-server.rkt][ball-toss-server.rkt]]
+
+Once you have the Universe Server running you can test the World Server
+as indicated at the bottom of the code.
+
+Explore both programs
+- By running them
+- By studying the code
+- Consulting the documentation on the new procedures
+
+Add some features!
+
+When you're ready, use the techniques from our earlier starting points to create
+a rich Multi-User Universe
+- See the last section of the [[file:../Flight-Lander/README.org][Flight Lander]] Starting Point!
