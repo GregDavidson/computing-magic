@@ -1,0 +1,183 @@
+* Computing Platforms
+
+In Computing, a Platform is something which you can build things on.
+- Hmm, not just in computing, huh?
+
+A Platform Provides
+- A /Reliable set of Capabilities/
+- Available through a /Stable Interface/
+      - Typically more than one interface is provided
+
+High-Level Platforms are abstractions layered on top of the idiosyncrasies and
+complexity of underlying Hardware and Software Platforms. High-Level Platforms
+are often portable across many different kinds of computers and computer
+operating systems.
+
+By carefully restricting themselves to the features of Well-Chosen Portable
+Higher-Level Platforms, developers can create applications and other systems
+which have a more coherent design than systems use all available features
+willy-nilly. In addition to the enormous advantage of portability, a more
+coherent design tends to improve the ease and speed of the development process
+as well as the quality and reliability of the resulting creation.
+
+This page is a /DRAFT/!
+- It is very incomplete.
+- Perhaps you can assist us in adding what's missing and otherwise improving it?
+
+** Operating Systems are Platforms
+
+*** The [[https://en.wikipedia.org/wiki/POSIX][POSIX]] Operating System Standard
+
+Posix is a standard for the features and interfaces of many operating systems, including
+- Unix
+- Gnu/Linux
+- The BSDs (including MacOS)
+
+The only popular operating system which does not adhere to the POSIX Standard is
+Microsoft Windows, although Microsoft Windows does provide some Posix
+Compatibility features.
+
+*** Unix and BSD Operating Systems
+
+Unix was developed in the 1970s and 1980s, primarily by two research groups
+- AT&T Bell Laboratories the proprietary /Research Unix/
+- The CSRG at UCB developed BSD
+      - /CSRG/ is the Computer Systems Research Group
+      - /UCB/ is the University of California, Berkeley
+      - /BSD/ is the /Berkeley Software Distribution/
+
+Unix and BSD Co-Evolved
+- The original BSD was based on Research Unix
+      - and was therefore restricted by AT&T
+- AT&T added much of the BSD developments to AT&T Unix System V
+- The Berkeley Group eventually replaced all code written within AT&T
+      - after a legal battle, BSD became Open Source Software
+
+*** The Gnu/Linux Operating System
+
+The GNU Project was create during the period of time when Unix and BSD were
+both proprietary.
+
+Richard Stallman created the [[https://www.gnu.org][GNU Project]] in 1983 to create a Freely Shareable, [[https://www.gnu.org/philosophy/free-sw.html][Free
+Software]] (Free/Libre Open Source Software aka FLOSS) alternative to the
+proprietary Operating Systems which were the dominant operating systems at that
+time. The Gnu project is part of the larger [[https://www.fsf.org][Free Software Mission]] to make all
+interesting software freely shareable.
+
+The Gnu/Linux system created or incorporated many subsystems
+- The Linux Kernel originally written by Linus Torvalds
+- GCC, THe Gnu Compiler Collective originally written by Richard Stallman
+- The Emacs Text Editor (originally written by Richard Stallman)
+- The X Window Graphics System
+- and much more
+
+Note that using the names GNU or Linux by themselves is ambiguous since a GNU
+System can run on kernels other than Linux, e.g. The Hurd and the Linux kernel
+underlies other operating systems, e.g. Google's Android. Still, most people
+just say Linux when they mean the Gnu/Linux system.
+
+The most important feature of the Gnu System and other Gnu Software may be their
+[[https://www.gnu.org/licenses/licenses.html][Licenses]], in particular the [[https://www.gnu.org/licenses/licenses.html#GPL][GPL]] and the idea of [[https://www.gnu.org/licenses/licenses.html#WhatIsCopyleft][CopyLeft]].
+
+The Gnu System, the Linux Kernel, the GPL and the idea of Free Software have
+been spectacularly successful
+- All modern supercomputers run Gnu/Linux
+- Most cloud servers run Gnu/Linux
+- Many sophisticated users, especially developers, use Gnu/Linux and similar
+[[https://distrowatch.com/][Open Source Operating System Distributions]] on their Desktops and Laptops
+
+The Linux Kernel has been successful beyond the Gnu/Linux System
+      - Android Smart Phones, Tablets and Appliances
+      - Google's Chrome Books
+
+** Software Tools are Platforms
+
+The idea of Software Tools was a key idea of the early Unix Community and
+accounted for much of its popularity. Software tools allow for the development
+of excellent solutions to problems which would traditionally have required
+development of complex custom computer programs.
+
+Many Software Tools are independent of the underlying operating system, allowing
+them to serve as more productive and portable platforms than using a
+conventional programming language on a conventional operating system.
+
+One of the best books on this philosophy is the timeless book [[https://en.wikipedia.org/wiki/The_Unix_Programming_Environment][The Unix
+Programming Environment]]. The first part of the book teaches you how to
+leverage software tools instead of writing new programs. The second part teaches
+you how to write new programs in C using the abstractions provided by the Unix
+kernel and standard libraries.
+
+Many brilliant developers are now updating traditional software tools using the
+modern language Rust.
+- [[https://github.com/unpluggedcoder/awesome-rust-tools][Awesome Rust Tools]]
+
+Leveraging Software Tools well depends on a particular type of thinking. Some
+great resources for learning that are
+- The first half of [[https://en.wikipedia.org/wiki/The_Unix_Programming_Environment][The Unix Programming Environment]]
+- [[file:Module-2/README.org][Computing Magic Module 2: Software Development Power Tools]]
+- [[file:Module-3/README.org][Computing Magic Module 3: Using the Power Tools with Your Projects]]
+
+*** The Emacs Environment
+
+Here's a Computing Magic [[https://github.com/GregDavidson/computing-magic/tree/main/Software-Tools/Emacs#readme][Mini-Module on Emacs]].
+
+Emacs is an extraordinarily productive and remarkably extensible Development
+Environment and a Platform for Releasing certain kinds of applications and
+tools.  Emacs has a great origin story!
+
+The [[https://en.wikipedia.org/wiki/Lisp_machine][Lisp Machines]] developed at MIT in the 1980s provided one of the most
+sophisticated and productive computer systems, operating systems and development
+environments of all time. Availability and development of these systems stopped
+when less powerful but much cheaper microcomputer-based systems became
+available. (Some strategic failures also contributed to their collapse.)
+
+One of the tools of those systems was a unusually flexible software development
+tool called Emacs. Richard Stallman created [[https://www.gnu.org/software/emacs/][Gnu/Emacs]] for the Gnu Project.
+Although the functionality of Gnu/Emacs is less than the Lisp Machine Emacs
+which could leverage all of the powerful features of the MIT Lisp Machines,
+Gnu/Emacs captures some of that extraordinary platform.
+
+Emacs is a mini-Lisp Machine you can run on any modern computer. Almost all of
+the Computing Magic materials were developed using Emacs. I run it on all of my
+devices, including my Android phone!
+
+*** Git and the Linux Kernel
+
+Here's a Computing Magic [[https://github.com/GregDavidson/computing-magic/tree/main/Software-Tools/Git][Mini-Module on Git]].
+
+The Linux Kernel is an extraordinarily successful Operating System Kernel
+created by Linus Torvalds. Git is an extraordinarily successful development
+tools created by Linux Torvalds which is used in the development of the Linux
+Kernel which is now used by thousands of developers of millions of diverse
+projects.
+
+[[https://en.wikipedia.org/wiki/Git][Git]] is a sophisticated Software Tool
+- coordinating collaborative development
+- tracking changes in the files of complex projects
+- and more
+
+Many Open Source projects are openly developed on and freely available from Git
+Repositories such as
+- [[https://github.com/][GitHub]]
+- [[https://about.gitlab.com/][GitLab]]
+
+Platform Plumbing vs. Porcelein Distinction
+- The Linux Kernel & Git Developers distinguish between
+      - the Plumbing - the platform with its stable API and semantics
+      - Porcelein - a comfortable user interface
+- This distinction can be usefully applied to all platforms!
+
+** Language-Based Systems are Platforms
+
+Many High-Level Provide Languages provide a sufficient set of
+- Libraries and Frameworks
+- Development Tools
+that you can program without knowing anything about the underlying Operating
+System supporting the Language Environment you're using.
+
+This creates that Language and associated components into a Platform.
+
+Many developers are careful to only use the features associated with their
+implementation language so that their software creations will be [[https://en.wikipedia.org/wiki/Software_portability][portable]].
+
+This is another important criterion in [[file:choosing-languages.org][Choosing Languages]].
