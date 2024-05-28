@@ -53,7 +53,7 @@ The Starting Points:
 
 2. [[file:Flight-Lander/README.org][Flight Lander]] :: Multiple Interacting Sprites!
 
-3. [[Network-Volley/README.org][Network Volley]] :: Multi-User Competition and Cooperation
+3. [[file:Network-Volley/README.org][Network Volley]] :: Multi-User Competition and Cooperation
 
 After you've learned the basic techniques through these Starting Points you can
 start creating games of your dreams. And you can continue to learn more
