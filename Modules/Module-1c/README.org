@@ -1,8 +1,15 @@
-* Computing Magic Beta Module 1c
+* Learn Programming by Creating Computer Games!
 
-*Creating Games with Racket!* /Animating your Lisp!/
+** TL/DR:
 
-Based on notes from a [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]] [[mars-beta-notes.org][Beta Course]] Meeting.
+- If you've at least completed the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Step 8.
+- You can skip to /The Starting Points/ below.
+
+For more context, you can read more of this page.
+
+** What is this Module?
+
+Computing Magic Beta Module 1c: /Animating your Lisp!/
 
 This Module is designed to assist you in learning how to
 - design and create interactive multi-user computer games
@@ -20,14 +27,14 @@ We recommend completing all of [[file:../Module-1/module-1.org][Module 1]], but 
 
 ** The Tools We'll Be Using
 
-Racket is blessed with a great deal of Tutorials, Libraries and other resources
-to leverage in designing and creating games. Some of these are described in the
-[[file:OLD-README.rkt][OLD-README.rkt]] file.
+The [[https://racket-lang.org][Racket]] System provides a great language along with a rich set of Tutorials,
+Libraries and other resources to leverage in designing and creating games. Some
+of these are described in the [[file:OLD-README.rkt][OLD-README.rkt]] file.
 
 This module was inspired by
-- the book [[https://htdp.org/2020-8-1/Book/index.html][How to Design Programs (2nd Edition)]] aka 2htdp
-- and the [[https://world.cs.brown.edu/1][How to Design Worlds]] tutorials
-and /we're going to try to make things simpler!/
+- the book [[https://htdp.org/2020-8-1/Book/index.html][How to Design Programs (2nd Edition)]] aka /2htdp/
+- and the [[https://world.cs.brown.edu/1][How to Design Worlds]] tutorial aka /htdw/
+/We'll try to make this approach simpler and better!/
 
 We're going to
 - temporarily drop the [[https://docs.racket-lang.org/pict][pict]] library we used in [[file:../Module-1/module-1.org][Module 1]]
