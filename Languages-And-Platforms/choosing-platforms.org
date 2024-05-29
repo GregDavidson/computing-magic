@@ -1,7 +1,9 @@
 * Computing Platforms
 
+Part of the [[https://github.com/GregDavidson/computing-magic/tree/main#readme][Computing Magic]] materials on [[https://github.com/GregDavidson/computing-magic/tree/main/Languages-And-Platforms#readme][Languages and Platforms]]
+
 In Computing, a Platform is something which you can build things on.
-- Hmm, not just in computing, huh?
+- (Not just in computing, huh?)
 
 A Platform Provides
 - A /Reliable set of Capabilities/
@@ -116,7 +118,7 @@ Many Software Tools are independent of the underlying operating system, allowing
 them to serve as more productive and portable platforms than using a
 conventional programming language on a conventional operating system.
 
-One of the best books on this philosophy is the timeless book [[https://en.wikipedia.org/wiki/The_Unix_Programming_Environment][The Unix
+One of the best books on this philosophy is the timeless [[https://en.wikipedia.org/wiki/The_Unix_Programming_Environment][The Unix
 Programming Environment]]. The first part of the book teaches you how to
 leverage software tools instead of writing new programs. The second part teaches
 you how to write new programs in C using the abstractions provided by the Unix
@@ -150,11 +152,11 @@ One of the tools of those systems was a unusually flexible software development
 tool called Emacs. Richard Stallman created [[https://www.gnu.org/software/emacs/][Gnu/Emacs]] for the Gnu Project.
 Although the functionality of Gnu/Emacs is less than the Lisp Machine Emacs
 which could leverage all of the powerful features of the MIT Lisp Machines,
-Gnu/Emacs captures some of that extraordinary platform.
+Gnu/Emacs captures some of the power and delight of that extraordinary platform.
 
-Emacs is a mini-Lisp Machine you can run on any modern computer. Almost all of
-the Computing Magic materials were developed using Emacs. I run it on all of my
-devices, including my Android phone!
+I think of Emacs as a mini-Lisp Machine I can run on any modern computer. Almost
+all of the Computing Magic materials were developed using Emacs on my Laptop. I
+run it on all of my devices, including my Android phone!
 
 *** Git and the Linux Kernel
 
@@ -176,11 +178,11 @@ Repositories such as
 - [[https://github.com/][GitHub]]
 - [[https://about.gitlab.com/][GitLab]]
 
-Platform Plumbing vs. Porcelein Distinction
+Plumbing vs. Porcelein Distinction
 - The Linux Kernel & Git Developers distinguish between
       - the Plumbing - the platform with its stable API and semantics
-      - Porcelein - a comfortable user interface
-- This distinction can be usefully applied to all platforms!
+      - the Porcelein - a comfortable user interface
+- This distinction can be applied to all platforms!
 
 ** Language-Based Systems are Platforms
 

@@ -1,5 +1,7 @@
 * Choosing Computer Languages
 
+Part of the [[https://github.com/GregDavidson/computing-magic/tree/main#readme][Computing Magic]] materials on [[https://github.com/GregDavidson/computing-magic/tree/main/Languages-And-Platforms#readme][Languages and Platforms]]
+
 ** Some Criteria for Choosing Languages
 
 Let's use *hack* in the /MIT/ sense, of an ability to bend something to your
