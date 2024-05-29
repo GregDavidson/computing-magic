@@ -7,6 +7,7 @@ A Platform Provides
 - A /Reliable set of Capabilities/
 - Available through a /Stable Interface/
       - Typically more than one interface is provided
+      - e.g. Libraries, Shells, Graphical Desktops
 
 High-Level Platforms are abstractions layered on top of the idiosyncrasies and
 complexity of underlying Hardware and Software Platforms. High-Level Platforms
@@ -14,15 +15,15 @@ are often portable across many different kinds of computers and computer
 operating systems.
 
 By carefully restricting themselves to the features of Well-Chosen Portable
-Higher-Level Platforms, developers can create applications and other systems
-which have a more coherent design than systems use all available features
+High-Level Platforms, developers can create applications and other systems which
+have a more coherent design than systems which use all available features
 willy-nilly. In addition to the enormous advantage of portability, a more
 coherent design tends to improve the ease and speed of the development process
 as well as the quality and reliability of the resulting creation.
 
-This page is a /DRAFT/!
-- It is very incomplete.
-- Perhaps you can assist us in adding what's missing and otherwise improving it?
+This is a new document
+- It is incomplete and may have infelicities.
+- Would you like to help improve it?
 
 ** Operating Systems are Platforms
 
@@ -31,7 +32,7 @@ This page is a /DRAFT/!
 Posix is a standard for the features and interfaces of many operating systems, including
 - Unix
 - Gnu/Linux
-- The BSDs (including MacOS)
+- The BSDs, including  [[https://en.wikipedia.org/wiki/MacOS][Apple's maxOS, iOS, etc.]]
 
 The only popular operating system which does not adhere to the POSIX Standard is
 Microsoft Windows, although Microsoft Windows does provide some Posix
@@ -55,13 +56,13 @@ Unix and BSD Co-Evolved
 
 *** The Gnu/Linux Operating System
 
-The GNU Project was create during the period of time when Unix and BSD were
-both proprietary.
+Richard Stallman founded the GNU Project in 1983 when Unix, BSD and most other
+Operating Systems were proprietary. The mission of the Gnu Project was to create
+the Gnu System: an Operating System consisting only of Freely Sharable [[https://www.gnu.org/philosophy/free-sw.html][Free
+Software]]. The Gnu system was designed to be compatible with the Posix Standard
+allowing for enormous portability.
 
-Richard Stallman created the [[https://www.gnu.org][GNU Project]] in 1983 to create a Freely Shareable, [[https://www.gnu.org/philosophy/free-sw.html][Free
-Software]] (Free/Libre Open Source Software aka FLOSS) alternative to the
-proprietary Operating Systems which were the dominant operating systems at that
-time. The Gnu project is part of the larger [[https://www.fsf.org][Free Software Mission]] to make all
+The Gnu project is part of the larger [[https://www.fsf.org][Free Software Mission]] to make all
 interesting software freely shareable.
 
 The Gnu/Linux system created or incorporated many subsystems
@@ -71,24 +72,38 @@ The Gnu/Linux system created or incorporated many subsystems
 - The X Window Graphics System
 - and much more
 
-Note that using the names GNU or Linux by themselves is ambiguous since a GNU
-System can run on kernels other than Linux, e.g. The Hurd and the Linux kernel
-underlies other operating systems, e.g. Google's Android. Still, most people
-just say Linux when they mean the Gnu/Linux system.
+Note that using the names /Gnu System/ or /Linux/ by themselves are ambiguous
+- a GNU System can run on kernels other than Linux
+      - e.g. The Gnu Hurd
+- the Linux kernel underlies other operating systems
+      - e.g. Google's Android
+When people say /Linux/, you have to guess from context whether they mean
+- the Gnu/Linux system
+- or the Linux Kernel
 
-The most important feature of the Gnu System and other Gnu Software may be their
-[[https://www.gnu.org/licenses/licenses.html][Licenses]], in particular the [[https://www.gnu.org/licenses/licenses.html#GPL][GPL]] and the idea of [[https://www.gnu.org/licenses/licenses.html#WhatIsCopyleft][CopyLeft]].
+The legal and philosophical foundations of the Gnu System and Gnu Software is
+- the [[https://www.gnu.org/licenses/licenses.html][Licenses]]
+- including the [[https://www.gnu.org/licenses/licenses.html#GPL][GPL]]
+- and the idea of [[https://www.gnu.org/licenses/licenses.html#WhatIsCopyleft][CopyLeft]]
 
 The Gnu System, the Linux Kernel, the GPL and the idea of Free Software have
 been spectacularly successful
 - All modern supercomputers run Gnu/Linux
 - Most cloud servers run Gnu/Linux
-- Many sophisticated users, especially developers, use Gnu/Linux and similar
-[[https://distrowatch.com/][Open Source Operating System Distributions]] on their Desktops and Laptops
+- Chromebooks run Gnu/Linux
+- Gnu/Linux on the Desktop and Laptop is very popular among
+      - Software Developers
+      - the Security Conscious
+      - Other sophisticated users
+
+See [[https://distrowatch.com][DistroWatch]] for a survey of Open Source Operating System Distributions.
 
 The Linux Kernel has been successful beyond the Gnu/Linux System
       - Android Smart Phones, Tablets and Appliances
       - Google's Chrome Books
+
+GNU CopyLeft licenses are also used for a great many projects outside of the Gnu
+Project.
 
 ** Software Tools are Platforms
 
