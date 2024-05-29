@@ -3,13 +3,21 @@
 This the Second Starting Point for [[file:../README.org][Writing 2D Games]].
 - It follows [[file:../Falling-To-Flying/README.org][Falling To Flying]]
 
-- Open the program [[file:flight-lander-0.rkt][flight-lander-0.rkt]] with DrRacket.
-- Run the program.
-- Study the Code
+1. Open the program [[file:flight-lander-0.rkt][flight-lander-0.rkt]] with DrRacket.
+      - You'll also need two images.  The program looks for
+            - [[file:Images/airplane-small-clipped-alpha.png][Images/airplane-small-clipped-alpha.png]]
+            - [[file:Images/balloon-small.png][Images/balloon-small.png]]
+      - /Feel free to use your own images!/
+2. Run the program.
+3. Study the Code
       - Use F1 to look up any unfamiliar features!
-- Explore the suggested exercises, questions and issues.
-
-Here are some [[file:flight-lander-0.org][Notes about flight-lander-0]] which you may find illuminating.
+4. Explore the suggested exercises, questions and issues.
+5. The REPL (in DrRacket's Interaction Window) is your friend!
+      - You can evaluate expressions interactively to better understand them!
+6. Read and Study these [[file:flight-lander-0.org][notes about flight-lander-0]]
+      - There's a lot to digest here!
+      - Maybe read it a bit at a time
+      - and experiment to further your understanding!
 
 ** Prepare Flight Lander for a Multi-User Game
 
