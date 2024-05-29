@@ -1,0 +1,491 @@
+* Notes on Flight Lander 0
+
+The program [[file:flight-lander-0.rkt][flight-lander-0.rkt]] illustrates a number of powerful programming
+techniques which you will be able to use in the programs you write.
+
+The Lisp Family of languages has always supported a broad range of ways to think
+about programming. Lisps have often been called /the programmable, programming
+languages/. [[https://racket-lang.org][Racket]] extends these /multi-paradigm/ and extensible capabilities
+even further than most Lisps.
+
+Let's look at some of the interesting features used in flight-lander-0.
+
+** Choosing Which Language To Use
+
+#+begin_src racket
+#lang racket
+#+end_src
+
+No language (or notation, if you prefer) is perfect for all purposes, so the
+Racket community gives us a set of alternative languages we can use for all or
+part of our projects. Each module (typically a file) in a project declares which
+of these languages is being used in this module. The Racket Development Tools
+translates the code each modules from its particular language to a common
+intermediate code which can then be combined with the other modules of your
+creation and compiled and linked into an efficient program for your computer.
+
+The original and probably the most general-purpose of these languages is Racket
+itself. So yes, we have to distinguish between the Racket System with all of its
+diverse languages and the individual languages including the Racket Language.
+
+** Bringing in Useful Packages
+
+#+begin_src racket
+(require 2htdp/universe) ; for big-bang
+(require 2htdp/image)
+(require rackunit) ; for checks
+#+end_src
+
+Racket provides a large collection of standardized and community-contributed
+[[https://pkgs.racket-lang.org][packages]], Open Source and written in Racket itself, to make it easier to create
+sophisticated new programs.
+
+Here we're bringing in /universe/ for creating distributed multi-user programs,
+e.g. multi-user games, along with one of Racket's many graphics libraries and a
+library for testing our program against our expectations.
+
+** Structuring Our Data: Lists and Vectors
+
+Traditional Lisps provide two fundamental ways to structure data: Lists and
+Vectors.  Originally there were only Lists.  In fact Lisp is an acronym for
+/List Processor/.
+
+Lists are flexible but somewhat inefficient on modern hardware
+- Lists are so flexible that they're used to represent Lisp Programs!
+- Languages whose programs are also valid data are called [[https://en.wikipedia.org/wiki/Homoiconicity][Homoiconic]] and
+  helps makes lisp
+      - A /Programmable, Programming Language/
+      - Highly Extensible, e.g. with [[https://docs.racket-lang.org/guide/macros.html][Macros]]
+      - supporting [[https://en.wikipedia.org/wiki/Metaprogramming][Metaprogramming]]
+            - arguably the most powerful of all [[https://en.wikipedia.org/wiki/Programming_paradigm][Programming Paradigms]]
+- Lists are OK for sequential access
+      - accessing all elements of the list in the order they appear
+- Lists are terrible for random access
+      - accessing an arbitrary element from somewhere in the list
+
+*** What Are Lists and Vectors, Exactly
+
+Essential Background
+- [[https://gregdavidson.github.io/on-computing/what-computers-are][What Computers Are]]
+      - Bits, Bytes, Words
+- [[https://github.com/GregDavidson/on-computing/blob/main/composites.org][Composite Data Structures]]
+      - Multi-Word Data Structures
+      - Contiguous, Linked, Volatile or Persistent
+
+A lists of =N= items is made of
+- =N= pairs of pointers (machine addresses) called /cons-cells/ or just /pairs/
+- The two pointers in a cons-cell are called /car/ and /cdr/
+- The /car/ pointer holds or points to the value of an element
+- The /cdr/ pointer points to the next /cons-cell/ in the list.
+- Given a /cons-cell/
+      - the function =car= will return the value of its /car/
+      - the function =cdr= will return the value of its /cdr/
+- Given an element value and a pre-existing list (possibly empty)
+- The =cons= function will allocate a new /cons-cell/ with it's
+      - /cons field/ holding (or pointing to) the new element
+      - /cdr field/ pointing to the pre-existing list
+- Thus, =cons= creates a new list, 1 element long than the pre-existing list
+      - The two lists are distinct yet they share all cons-cells but one.
+- To store 10 element, a list needs 10 cons cells requiring 20 worlds of memory
+- Each cons-cell could be stored anywhere in memory.
+      - Alas, modern memory is very slow for accessing non-contiguous values
+- Lisp's /Garbage Collector/ efficiently recycles cons-cells that are no longer
+  accessible by the program.
+
+Vectors
+
+A vector of =N= elements consists of =N= contiguous pointers
+- Half the storage required by a list
+- Since the pointers are contiguous
+      - Chunks can fit in a modern computer's cache memory
+            - access time can be about 10x vaster!
+      - You can efficiently access the items sequentially or at random
+- Vectors are more expensive to grow incrementally
+      - i.e. adding just one more element every once in awhile
+- Vectors can't share storage so they can sometimes require more storage
+- Lisp's /Garbage Collector/ recycles vectors as soon as no part of the vector
+  is accessible by the program.
+
+You can actually think of a =cons-cell= as a vector of two elements.
+- So you really only need vectors
+- The new Lisp Family language [[https://janet-lang.org][Janet]] only provides vectors
+      - is Janet the Lisp of the Future?
+      - it will have to catch up with other features first, though!
+
+** Structuring Our Data
+
+Metaprogramming can create higher-Level Data Structures on top of Lists and Vectors
+- structures (sometimes called records) are very popular
+
+Racket provides two main macros for creating structures, =struct= and =struct/contract=.
+- =struct/contract= let's you easily add contracts to each field
+- a simple contract might specify the required datatype for a field
+- [[https://docs.racket-lang.org/guide/contracts.html][Racket's Contracts]] can do much more than specify types!
+- contracts are checked whenever you store a value
+- Contracts help prevent errors and reduce debugging effort!
+
+#+begin_src racket
+(struct/contract sprite
+                 ( [image image?]
+                   ;; position: x and y coodinates
+                   [x integer?] [y integer?]
+                   ;; velocity: delta (change) of x and y
+                   [dx integer?] [dy integer?]
+                   ;; methods: behavior procedures
+                   [on-tick procedure?]
+                   [on-key procedure?]
+                   [to-draw procedure?] )
+                 #:mutable ; fields can be modifed
+                 #:transparent ; field values visible
+                 )
+#+end_src
+
+A reminder that in Racket [square brackets] mean the same thing (as parentheses).
+- It's to use (parentheses for forms) and sometimes use [square brackets for non-forms].
+- This practice can also help increase readability.
+
+This example of =struct/contract= creates a new type to manage the 8 named
+fields by creating 10 functions for us:
+
+#+begin_src racket
+;; A constructor function to create a new sprite from 8 suitable values
+;;   (sprite v1 v2 v3 v4 v5 v6 v7 v8)
+;; A predicate function to tell is if a value is a sprite
+;;   (sprite? v) ; #t if value v is a sprite, #f otherwise
+;; A selector functions for each field
+;; e.g. for field x we'll have
+;;   (sprite-x s) -- selects x value of sprite s
+#+end_src
+
+By default, once a structure is created you can't change the values of any of its fields.
+This is generally what you want as it makes your programs simpler and more reliable.
+However, if you need to, you add the keyword =#:mutable= and then struct will create a
+setter procedure for each field
+
+#+begin_src racket
+;; A setter procedure for each field, e.g. for field x we'll have
+;;   (set-sprite-x! s v) -- sets field x of sprite s to value v
+#+end_src
+
+Setters are procedures, not functions as they (1) modify something outside of
+themselves [this is called a "side effect"] and (2) they don't have to return a
+value.  The ! is part of the name of the procedure and follows the convention
+warning you that this procedure mutates something.
+
+What's does the #:transparent keyword do?
+
+*** What are structures at the machine level?
+
+Usually structures are implemented as vectors, hidden behind the functions and
+procedures generated by the =struct= or =struct/contract= macros. Therefore,
+structures are contiguous, compact and support efficient random access. Racket
+has both mutable and non-mutable vectors. When you use the #:mutable keyword
+with struct you're implementing your struct type with a mutable-vector,
+otherwise with a non-mutable vector.
+
+Each structures type is a unique new type, distinct from all other types. That's
+why the structure predicate function is useful. They are also, by default,
+opaque. The only way to see the field values of a structure is by applying the
+selector functions to it. This can make input and output of structures awkward,
+including during program development and maintenance. The keyword #:transparent
+allows the I/O functions to access the field values. Try printing a structure
+value at the REPL with and without the #:transparent option!
+
+**  Creating functions with =compose=
+
+The meta-function =compose= takes functions as its arguments and returns a new
+functions which performs all of the original functions sequentially.
+
+#+begin_src racket
+  ;; Use compose to create a function which applys image-width to the result of sprite-image
+  ;; Use define to name it sprite-width
+  (define sprite-width (compose image-width sprite-image))
+  ;; Use compose to create a function which applys image-height to the result of sprite-image
+  ;; Use define to name it sprite-height
+  (define sprite-height (compose image-height sprite-image))
+#+end_src
+
+We could instead have created these functions the regular way
+
+#+begin_src racket
+  (define (sprite-width s) (image-width (sprite-image s)))
+  (define (sprite-height s) (image-height (sprite-image s)))
+#+end_src
+
+It's a little bit simpler to use =compose=.  Later we'll see where =compose= can help much more.
+
+** Overlap And Collision Detection
+
+Determining whether a visible part of two (or more) images overlap is hard
+- Ideally =place-image= would tell us
+- Unfortunately, =place-image= doesn't tell us!
+
+This section of the program discusses various approaches and then goes with the
+easiest one.
+- Simply checking if the bounding boxes overlap.
+- Alas, the overlapping parts might be empty, which won't look to the user like
+  a collision occurred!
+- There are various alternative solutions for this problem
+      - Implementing something better is left to you, dear reader, as an EXERCISE!
+
+The function =show-overlap= may help you with
+- understanding
+- debugging
+
+There is one fancy new function
+
+#+begin_src racket
+;; Return a list of all collisions any sprite in the world list has with any
+;; sprite further along the world list. Each sublist begins with a sprite
+;; followed by all of those later sprites it collides with.
+(define (list-collisions world)
+  (if (null? world)
+      '() ; no collisions in an empty list
+      (let* (
+             ;; the first sprite in the world list
+             [s1 (car world)]
+             ;; everything it collides with later in the list
+             [collisions (filter (λ (s) (sprites-collide? s1 s))
+                                 (cdr world) )]
+             ;; any further collision lists later in the list
+             [later-collisions (list-collisions (cdr world))] )
+        (if (null? collisions)
+            later-collisions
+            (cons (cons s1 collisions) later-collisions) ) ) ) )
+#+end_src
+
+This is a classic example of /List Processing/, the kind of algorithm which
+was once an example of the power of /Lisp/.
+
+=list-collisions= checks for any collisions among any of the sprites in the
+world. It returns a list of lists showing what collides with what. It's what's
+called an =Order(sqr(n))= algorithm, or =O(n^2)= for short. Using Lisp notation:
+For a wold of =n= sprites =list-collisions= will call =sprites-collide?= (half
+(sqr =n=)) times. So if there are =100= sprites, we're going to call
+=sprites-collide?= =5000= times. =Order= notation (also called "Big-O" notation)
+generally ignores small multipliers like =half= as they don't change how the
+cost scales.
+
+** The BACKGROUND of Fixed Things
+
+It's not necessary to make the LAND and the WATER be sprites.
+- They have no behavior so most of the sprite fields won't be used.
+- It does, however, allow us to ask if they collide with a sprite
+- it makes things more uniform.
+- And wasting those fields for only two objects is no big deal!
+
+** Placing Sprites on Images
+
+#+begin_src racket
+;; Like place-image, but relative to the left-bottom corner
+;; of the sprite and the canvas.
+(define (draw-image image x y canvas)
+  (let ( [center-x (+ x (half (image-width image)))]
+         [center-y (+ y (half (image-height image)))] )
+    (place-image image center-x (- SCENE-HEIGHT center-y) canvas) ) )
+
+(define (draw-sprite sprite canvas)
+  (draw-image (sprite-image sprite)
+              (sprite-x sprite) (sprite-y sprite)
+              canvas ) )
+#+end_src
+
+
+Note that the =2htdp/image= library which we're using has some peculiarities
+- Images are different from Canvases
+- =place-image= can place one /image/ onto one /canvas/.
+- The location is relative to
+      - the upper left of the canvas
+      - the center of the image!
+We prefer to have all locations relative to the bottom left for images and canvases.
+
+** The World of Moving Sprites
+
+Now things get interesting. Remember when I said we were going to leverage
+=compose= more powerfully?
+- We need some interesting functions to play with
+- They need to take and return the same number and type of arguments
+
+This is the ugly function which starts it all.
+
+#+begin_src racket
+  ;; Return the sprite, its geometry and the geometry of its "Bounding Box"
+;; The "Bounding Box" is specified by a canvas and optional edge offsets
+(define (sprite+canvas s canvas #:x+ [x+ 0] #:y+ [y+ 0] [x- 0] #:y- [y- 0])
+  (values (sprite-x s)  ; sprite left edge
+          (sprite-y s)  ; sprite bottom edge)
+          (sprite-x2 s) ; sprite right edge
+          (sprite-y2 s) ; sprite top edge
+          (sprite-dx s) ; sprite horizontal velocity component
+          (sprite-dy s) ; sprite vertical velocity component
+          x+ ; left canvas boundary
+          y+  ; bottom canvas boundary
+          (- (image-width canvas) x-)  ; right canvas boundary
+          (- (image-height canvas) y-) ; top canvas boundary
+          ) )
+#+end_src
+
+Functions can easily take multiple arguments but usually only have one return value.
+- Functions can actually return as many values as you like
+- The =values= meta-function returns /all/ of its arguments as /separate values/
+- Let's try it at the REPL.  After crashing I got this:
+
+#+begin_example
+flight-lander-0.rkt> (sprite+canvas the-plane BACKGROUND)
+335
+133
+433
+165
+5
+-5
+0
+0
+800
+500
+#+end_example
+
+Here's another function to play with:
+
+#+begin_src racket
+  ;; transform sprite geometry with sprite velocity, ignoring bounds
+(define (preview-sprite x y x2 y2 dx dy xx yy xx2 yy2)
+  (values (+ x dx) (+ y dy) (+ x2 dx) (+ y2 dy) dx dy xx yy xx2 yy2) )
+#+end_src
+
+Let's compose them:
+
+#+begin_example
+flight-lander-0.rkt> ( (compose preview-sprite sprite+canvas) the-plane BACKGROUND )
+340
+128
+438
+160
+5
+-5
+0
+0
+800
+500
+#+end_example
+
+Notice how the dx and dy have affected the position coordinates x, y, x2, y2?
+
+Once you see how this works, look at
+- =clip-x=
+- =flip-xy=
+- =clip-y=
+- =clip-xy=
+- =wrap-x=
+- =bounce=
+
+Try out some combinations. You might want to create some sprites with
+interesting values to make it more fun.
+
+We didn't define =wrap-y= because we didn't need it.
+- Could you define it similarly how we defined =clip-y=?
+
+=sprite+canvas= extracted the values from a sprite and a canvas.
+- After changing some of the values, how can we store them back into the sprite?
+
+#+begin_src racket
+;; returns a procedure which will update the sprite
+;; with the geometry values its given and returns
+;; the mutated sprite
+(define (update-sprite! s)
+  (λ (x y x2 y2 dx dy xx yy xx2 yy2)
+    (set-sprite-x! s x)
+    (set-sprite-y! s y)
+    (set-sprite-dx! s dx)
+    (set-sprite-dy! s dy)
+    s ) )
+
+#+end_src
+
+We needed access to the sprite to update it, but we'd already committed to all
+of the functions taking exactly 10 arguments, none of which were a sprite. See
+how it's used in the next procedure!
+
+And now we're ready to do real work.
+- =update-sprite-with-bounce!= is the =on-tick= method of our balloon
+
+#+begin_src racket
+  ;; Update a sprite with x and y mutated based on dx and dy
+;; wrap x value to stay within the scene
+;; bounce if hit top or land or water by reversing velocity
+(define (update-sprite-with-bounce! s)
+  ( (compose (update-sprite! s) bounce preview-sprite sprite+canvas) ; composite function
+    s BACKGROUND #:y+ BASE-HEIGHT ) )
+#+end_src
+
+Wow, that was easy!
+
+Procedure =update-sprite!= takes the target sprite s as an argument and then
+returns an anonymous procedure. The anonymous procedure has access to the 10
+geometry values via its arguments, and to the sprite s because it was defined
+inside the scope of sprite s. Don't be surprised if you have to study this one a
+bit. You will find this pattern very useful once you get used to it!
+
+When you think you've got it, see if you can figure out
+- =update-plane-on-tick!=
+      - =plane-edge-cases= could have been nested, but that makes debugging harder.
+- =update-plane-on-key!=
+      - Why does =key-match= have to be nested?
+
+** Some Tests
+
+During program development, you'll generally test a lot of things interactively
+at the REPL. You can (and should) put some of those tests into your program so
+that when you (or someone else) is improving the program in some fashion and
+accidentally breaks something, one of the automated tests will tell you (or
+them) right away that something broke, what broke and where.
+
+Creating good tests is an art for you to learn. The more complex your program
+the more valuable tests become. The best thing is to make everything simple. But
+when you can't yet figure out how to do that, put in tests. Remember: A test is
+checking that your program agrees with your expectations.
+
+** The World State
+
+- The world state is a list of sprites.
+- Each sprite is a mutable struct.
+- The update functions alter the structs.
+- Following the =2htdp= style we call it WORLD
+      - The list named =WORLD= never changes
+      - But its elements /do/ change
+- So should we call it =world= instead?
+
+** Managing The Game
+
+Everything is managed by
+
+#+begin_src racket
+  (big-bang WORLD                         ; our initial list of active sprites
+    [on-tick update-world-on-tick! 1/30]  ; call procedure 30 times a second
+    [to-draw draw-world                   ; update scene with draw-world
+             SCENE-WIDTH SCENE-HEIGHT]    ; why are these bounds needed??
+    [on-key update-world-on-key!]         ; our keystrokes handler
+    [stop-when game-over? draw-world] )   ; when (game-over? world)
+#+end_src
+
+=big-bang- is calling our /management functions/
+- =update-world-on-tick!=
+- =update-world-on-key!=
+- =draw-world=
+- =game-over?=
+
+=update-world-on-tick!= and =update-world-on-key!= simply delegate the work to
+the each sprite's corresponding method returning the unchanged world list to
+=big-bang=.
+
+=draw-world= delegates the work to each sprite's =to-draw= method, but composes
+all of the results together using the metafunction =foldr=. The final canvas is
+returned to =big-bang=.
+
+Only =game-over= really has to work much. It needs to understand the rules of
+the game.
+
+In the exercise notes, we ask "How a sprite notify =game-over?= that it should
+end the game?" Delegating the work of =game-over= to the sprites would mean we'd
+need to make the values returned by our sprites to our /management functions/
+more sophisticated. It turns out that we need to do that anyway if we want to be
+able to add and delete sprites during the game. =WORLD= must become =world=!
