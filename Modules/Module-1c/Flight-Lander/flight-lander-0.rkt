@@ -89,7 +89,7 @@
 
 ;; Selector functions and Setter procedures for each field
 ;; e.g. for field x we'll have
-;;   (sprite-x s) -- selects x value of sprite x
+;;   (sprite-x s) -- selects x value of sprite s
 ;;   (set-sprite-x! s v) -- sets field x of sprite s to value v
 ;; Predicate function
 ;;   (sprite? v) -- #t if value v is a sprite structure, #f otherwise
@@ -492,12 +492,13 @@
   (for-each (λ (sprite) ((sprite-on-key sprite) sprite a-key)) world)
   world )
 
+;; ** Managing The Game
+
+
 ;; Compose all of the images of the sprites in the world
 ;; onto the background and return that composite image.
 (define (draw-world world)
   (foldr  (λ (s canvas) ( (sprite-to-draw s) s canvas ) ) BACKGROUND world) )
-
-;; ** Managing The Game
 
 ;; returns the bool
 ;; also displays the comment when bool is true
