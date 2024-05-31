@@ -48,12 +48,45 @@ environment.
       - Try it with =magit= within Emacs
 - Make changes to your project's files and
       - lather, rinse, repeat!
+*** Use OrgMode to Make Everything Come Alive!
+
+Use =git clone= to make your own copy of this [[https://github.com/GregDavidson/computing-magic/tree/main][Computing Magic Repository]]
+- It contains the very page you're reading right now!
+
+Using =Emacs=, navigate to this page in your own copy
+- Try using the TAB key when your cursor is on an [[https://orgmode.org/manual/Headlines.html][OrgMode Headline]]
+- Content should appear and disappear as you hit TAB repeatedly
+
+Continue to learn more Emacs and OrgMode as you follow these materials with your
+own copy.
+
+Anything you change is your copy is yours. And you can choose to share any of it
+with us by using GitHub Pull Requests!
+
+** Create Your Own Public and/or Private Notes Repositories
+
+There's so much to remember when learning things
+- Things I haven't yet internalized
+- Things I may forget
+
+OrgMode is really great for organizing *your personal notes!*
+
+I have two free GitHub repositories:
+- [[https://github.com/GregDavidson/Public-Notes#readme][My Public Notes]]
+      - These are most of my reference materials.
+      - Check them out and see if any of the topics interest you all all.
+- My Private Notes
+      - Notes on anything and everything personal
+      - Part of the OrgMode Philosophy of
+            - *Your Life In Plain Text*
+
+Create your own Repositories for your own notes.
+- Maybe with a free Repositories in a free GitHub account
+- Cloned (copied) to all of your devices
 
 Start keeping notes in OrgMode on things you would like to remember
 - E.g. Features of software tools and languages
 - Make sure anything sensitive in under your private Notes repository!
-
-Here an example: [[https://github.com/GregDavidson/Public-Notes][My Public Notes]]
 
 Make a habit of learning something a few new and useful features of Git and
 OrgMode every week and add those features to your OrgMode notes!
@@ -61,6 +94,10 @@ OrgMode every week and add those features to your OrgMode notes!
 ** What else might you do?
 
 Use [[file:../../Software-Tools/scripting-readme.org][Scripting README]] to install and learn powerful scripting tools
+- The idea is to learn how to
+      - *Automate Anything You Can Do With A Computer!*
+
+*** If You're Following The Computing Magic Curriculum
 
 Read more of the resources on my website, starting with
 - [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic README]]
