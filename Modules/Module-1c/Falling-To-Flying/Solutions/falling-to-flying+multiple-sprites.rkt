@@ -70,7 +70,7 @@
                canvas ) )
 
 (define initial-world
-  (list 
+  (list
    (make-sprite (circle 20 "solid" "blue") ; shape
               SCENE-HEIGHT ; y location = height-above-ground
               EMERGING-DY ; dy = drop rate

@@ -3,14 +3,16 @@
 ** Richer Behavior Requires A Richer State
 
 If we'd like our ball to exhibit more interesting behavior, e.g.
-- accelerate it's fall based on gravity
+- accelerate its fall based on gravity
 - change shape when it hits the bottom
-- bounce!
+- bounce
 - move horizontally as well as vertically
+- what do you think would make it more interesting??
 
-Then we'll need to give our ball a richer state. Our current "world state" is
-just a single number representing the height of the ball. We can create a richer
-state using a list of attributes or more conveniently by using a =struct= form.
+To do any of these things we'll need to give our ball a richer state. Our
+current "world state" is just a single number representing the height of the
+ball. We can create a richer state using a list of attributes or more
+conveniently by using a =struct= form.
 
 ** Defining Functions to Manage A Richer State
 
@@ -37,8 +39,8 @@ defined as alternative names for the existing list functions:
 
 ** Using the =struct= Macro to Manage A Richer State
 
-A shorter and more efficient way to write all of the ball functions is to have
-the Racket macro =struct= write these functions for us:
+An easier and probably more efficient way to write all of the ball functions is
+to have the Racket macro =struct= write these functions for us:
 #+begin_src racket
   (struct ball (shape y dy)
     #:constructor-name make-ball )
@@ -53,7 +55,9 @@ This =struct= form writes five functions for us:
       - The optional clause =#:constructor-name make-ball=
             - changes it to the (possibly more clear) =make-ball=
 
-Structures are usually stored more efficiently than lists.
+Our program is not currently concerned about efficiency, but some programs are.
+For details on the efficiency tradeoffs between lists, vectors and structures see
+[[
 
 Functions are procedures which take their inputs as arguments and return a
 single value as a result. Procedures can instead take some or all of their input

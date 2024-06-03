@@ -43,13 +43,13 @@
 
 ;; The state of our "World" is a ball with state attributes
 
-(define initial-world
+(define initial-ball
   (make-ball (circle 20 "solid" "blue") ; shape
              SCENE-HEIGHT ; y location = height-above-ground
              EMERGING-DY ; dy = drop rate
              ) )
 
-(define HALF-BALL-HEIGHT (half (image-height (ball-shape initial-world))))
+(define HALF-BALL-HEIGHT (half (image-height (ball-shape initial-ball))))
 
 ;; is the ball emerging from the top of the scene?
 (define (emerging? ball)
@@ -59,30 +59,39 @@
 (define (bouncing? ball)
   (< (ball-y ball) HALF-BALL-HEIGHT) )
 
-(define (next-world world)
+(define (update-ball-on-tick ball)
   (let* ( ;; when emerging (at the top) the ball maintains the emerging-dy
           ;; otherwise it accelerates due to gravity
-          [new-dy (if (emerging? world) EMERGING-DY (+ (ball-dy world) GRAVITY))]
+          [new-dy (if (emerging? ball) EMERGING-DY (+ (ball-dy ball) GRAVITY))]
           ;; a bouncing ball (at the bottom) will return to the top of the scene
-          [new-y (if (bouncing? world) SCENE-HEIGHT (+ (ball-y world) new-dy))] )
-    (make-ball (ball-shape world) ; not changing the shape, but we could!
+          [new-y (if (bouncing? ball) SCENE-HEIGHT (+ (ball-y ball) new-dy))] )
+    (make-ball (ball-shape ball) ; not changing the shape, but we could!
                new-y new-dy ) ) )
 
-;; Return a new scene with the world (the ball)
+(define (update-ball-on-key b k)
+  ;; should we wish to respond to multiple keys in the future
+  ;; cond will be handier than if.
+  (cond [(key=? k "up")
+         ;; return new ball with a new dy value, all else unchanged
+         (struct-copy ball b [dy (+ (ball-dy b) DY-KICK)]) ]
+        ; else return unchanged original ball
+        [else b] ) )
+
+;; Return a new scene with the ball (the ball)
 ;; centered horizontally and at its correct y height.
-(define (draw-world world)
-  (place-image (ball-shape world)
+(define (draw-ball ball)
+  (place-image (ball-shape ball)
                HALF-SCENE-WIDTH
                ;; Our y represents height above ground
                ;; so it goes from SCENE-HEIGHT down to 0.
                ;; place-image wants to know where to put
                ;; the center of the ball relative to the
                ;; upper-left corner of the scene.
-               (round (- SCENE-HEIGHT (ball-y world)))
+               (round (- SCENE-HEIGHT (ball-y ball)))
                EMPTY-SCENE ) )
 
-(big-bang initial-world
-  [on-tick next-world 1/30] ; call next world 30 "ticks" a second
-  [on-key on-key]           ; call on-keywhen user presses a key
-  [to-draw draw-world SCENE-WIDTH SCENE-HEIGHT] ; draw world in canvas
+(big-bang initial-ball                  ; our initial world
+  [on-tick update-ball-on-tick 1/30]    ; update world 30 "ticks" a second
+  [on-key update-ball-on-key]           ; update world when user presses a key
+  [to-draw draw-ball SCENE-WIDTH SCENE-HEIGHT] ; draw world in canvas
   )
