@@ -62,6 +62,12 @@ The Starting Points:
 
 3. [[file:Network-Volley/README.org][Network Volley]] :: Multi-User Competition and Cooperation
 
+As you work on these problems, you can learn more about key techniques, including
+- [[https://docs.racket-lang.org/guide/conditionals.html][Conditionals]] :: =if=, =cond=, =and=, =or=
+- [[https://docs.racket-lang.org/guide/let.html][Local Bindings]] :: =let=, =let*=, etc.
+-  :: 
+
+
 After you've learned the basic techniques through these Starting Points you can
 start creating games of your dreams. And you can continue to learn more
 Computing Magic from the [[file:../README.org][other modules]] as you pursue your own projects!
