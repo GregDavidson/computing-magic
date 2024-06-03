@@ -1,0 +1,603 @@
+* Racket and Scheme Composite Data Structures
+
+** Essential Background
+
+We have two other documents which will provide the necessary background to
+understand how the high-level concepts described by this document connect with
+the reality of your computer's hardware:
+
+- [[https://gregdavidson.github.io/on-computing/what-computers-are][What Computers Are]]
+      - Computer memory consists of contiguous Bits, Bytes and Words
+      - Words can hold /pointers/, i.e. addresses of any location in memory
+- [[https://github.com/GregDavidson/on-computing/blob/main/composites.org][Composite Data Structures]]
+      - Multi-Word Data Structures
+      - Contiguous, Linked, Volatile or Persistent
+
+In most languages the features and issues we are sharing with you would be
+unnecessarily complex. It is a pleasure to be able to share these things in the
+elegant Racket language.
+
+** Composite Data Structures
+
+A composite data structure is a data structure which can /contain/ or /manage/
+other data structures which are typically called
+- /elements/ or /members/ or /fields/
+
+Composites are considered to /contain/ their elements if the only way to get to
+those elements is by going through the composite
+- Such composites are ofte called /Container Types/
+Otherwise the composites are simply one way to /manage/ those elements
+- which might even be under the management of multiple composites!
+
+It's common to call non-composite data structures /scalars/
+- the classic example of /scalars/ is /numbers/.
+In many languages /strings/ are also considered scalars
+- because they /only/ contain /bytes or characters/
+- whereas the main composites can contain elements of any type.
+
+** Symbolic Expressions in Lisp
+
+Lisp data consists of *Symbolic Expressions*, which are either
+- an *Atom*
+- or a *List* of (0 or more) *Symbolic Expressions*
+
+#+begin_src racket
+  #lang racket
+  (define data '(1 two (buckle my shoe)))
+  (define (show s-exp value)
+    (printf "~a is ~a, the ~a ~a.\n"
+            s-exp
+            (cond [(list? value) "a list"]
+                  [else "an atom"])
+            (cond [(number? value) "number"]
+                  [(symbol? value) "symbol"]
+                  [(pair? value) "pair"]
+                  [(null? value) "empty list"]
+                  [else "value of unknown type"])
+            value ) )
+
+  (show 'data data)
+  (show '(car data) (car data))
+  (show '(cdr data) (cdr data))
+  (show '(car (cdr data)) (car (cdr data)))
+  (show '(cdr (cdr data)) (cdr (cdr data)))
+  (show '(car (cdr (cdr data))) (car (cdr (cdr data))))
+  (show '(cdr (cdr (cdr data))) (cdr (cdr (cdr data))))
+
+  (show '(car (car (cdr (cdr data)))) (car (car (cdr (cdr data)))))
+  (show '(cdr (car (cdr (cdr data)))) (cdr (car (cdr (cdr data)))))
+  ;; and so on!
+#+end_src
+
+#+RESULTS:
+- data is a list, the pair (1 two (buckle my shoe)).
+- (car data) is an atom, the number 1.
+- (cdr data) is a list, the pair (two (buckle my shoe)).
+- (car (cdr data)) is an atom, the symbol two.
+- (cdr (cdr data)) is a list, the pair ((buckle my shoe)).
+- (car (cdr (cdr data))) is a list, the pair (buckle my shoe).
+- (cdr (cdr (cdr data))) is a list, the empty list ().
+- (car (car (cdr (cdr data)))) is an atom, the symbol buckle.
+- (cdr (car (cdr (cdr data)))) is a list, the pair (my shoe).
+
+In the original Lisp
+- lists were the /only/ composites
+- atoms were all /scalars/
+  - hence the name atom, Greek for uncuttable
+
+Lists are very common in Lisp Programs
+- Lists are an extraordinarily versatile data structure.
+- Lisp Data can be entirely structured as (often nested) Lists
+- Lisp Programs are structured as nested Lists
+This one simple idea allows for very flexible processing.
+- The term /Lisp/ comes from /List Processor/!
+
+All modern general purpose programming languages provide several kinds of
+composite data structures, sometimes including lists and sometimes not. All
+Lisps provide Lists along with at least one other kind of composite data
+structures.
+
+To really understand the nature of Lists, Vectors and more, see
+- [[https://github.com/GregDavidson/on-computing/blob/main/composites.org][Composite Data Structures]]
+
+Although modern Lisps now provide more than one kind of Composite Data
+Structure, Lists are considered primary and the others are (illogically)
+classified as /atoms/!
+
+*** Constructing Lists
+
+#+begin_src racket
+  #lang racket
+  (displayln (cons 'Hello (cons 'world '())))
+  (displayln (list 'Hello 'world))
+  (displayln (quote (Hello world)))
+  (displayln '(Hello world))
+#+end_src
+
+#+RESULTS:
+- (Hello world)
+- (Hello world)
+- (Hello world)
+- (Hello world)
+
+The =cons-cells= of a list are always allocated by the function =cons=, but you
+don't have to call it directly.
+- The =list= function calls =cons= for each of its arguments.
+- The =quote= special form allows us to return a piece of the list structure of
+  the program (created by the /reader/) for use as data!
+- The /reader macro/ ' is a handy abbreviation for the =quote= special form.
+
+The /reader/, usually the builtin function =read=, is the function which reads
+bytes, parses them as /symbolic-expressions/ and stores them into memory. It's
+used to read both Lisp Programs and Lisp Data. It's part of every /Lisp System/
+and can be called just like any other input function. This means that it's
+trivial to write a Lisp Program to read another Lisp Program which it might want
+to analyze or transform. Lisp is perfect for metaprogramming, an extraordinarily
+powerful programming technique!
+
+** Lists and Vectors in Scheme and Racket
+
+Racket started out as a dialect of Scheme and can still be considered an
+extension of Scheme. Scheme provides only two general composite data structures:
+Lists and Vectors.
+
+| Name   | Consist of       | Access     | Size       |
+|--------+------------------+------------+------------|
+| List   | Cons-Cells       | Sequential | Extendable |
+| Vector | Contiguous Words | Random     | Fixed      |
+
+Lists are managed with three fundamental functions
+| Function | Argument(s)               | Return Value                  |
+|----------+---------------------------+-------------------------------|
+| cons     | an /element/ and a /list/ | a /pair/ holding those values |
+| car      | a /pair/                  | the first word of the pair |
+| cdr      | a /pair/                  | the second word of the pair |
+Pairs are often called /Cons-Cells/ since they're a small (2-word) "cell"
+created by the function =cons=.
+
+It's reasonable to think of a /Cons-Cell/ as just a two-element /Vector/,
+although Lisp treats them as a separate type. The two parts of a /pair/ are
+called /the car/ and /the cdr/ after the functions which return them.
+
+*** Using Vectors
+
+A /vector/ of =n= elements is simply =n= contiguous words of memory.  Because they're
+contiguous the computer can compute the location of any desired element and access it
+immediately.  This is what it means for a data structure to be /random access/.
+
+#+begin_src racket
+  #lang racket
+  (define data '#(1 two #(buckle my shoe)))
+  (define (show s-exp value)
+    (printf "~a is ~a, the ~a ~a.\n"
+            s-exp
+            (cond [(list? value) "a list"]
+                  [else "an atom"])
+            (cond [(number? value) "number"]
+                  [(symbol? value) "symbol"]
+                  [(pair? value) "pair"]
+                  [(vector? value) "vector"]
+                  [(null? value) "empty list"]
+                  [else "value of unknown type"])
+            value ) )
+
+  (show 'data data)
+  (show '(vector-ref data 0) (vector-ref data 0))
+  (show '(vector-ref data 1) (vector-ref data 1))
+  (show '(vector-ref data 2) (vector-ref data 2))
+  (show '(vector-ref (vector-ref data 2) 0) (vector-ref (vector-ref data 2) 0))
+  (show '(vector-ref (vector-ref data 2) 0) (vector-ref (vector-ref data 2) 1))
+  (show '(vector-ref (vector-ref data 2) 0) (vector-ref (vector-ref data 2) 2))
+#+end_src
+
+#+RESULTS:
+: data is an atom, the vector #(1 two #(buckle my shoe)).
+: (vector-ref data 0) is an atom, the number 1.
+: (vector-ref data 1) is an atom, the symbol two.
+: (vector-ref data 2) is an atom, the vector #(buckle my shoe).
+: (vector-ref (vector-ref data 2) 0) is an atom, the symbol buckle.
+: (vector-ref (vector-ref data 2) 0) is an atom, the symbol my.
+: (vector-ref (vector-ref data 2) 0) is an atom, the symbol shoe.
+
+*** How We Could Reimplement Pairs and Lists?
+
+If pairs didn't already exist in Racket we could implement them like this
+#+begin_src racket
+  (struct pair (car cdr) #:constructor-name cons )
+#+end_src
+
+Or like this
+#+begin_src racket
+  (define (cons x y) (vector x y))        ; return pair of words containing x and y
+  (define (car pair) (vector-ref pair 0)) ; return the first element of a pair
+  (define (cdr pair) (vector-ref pair 1)) ; return the second element of a pair
+#+end_src
+
+You can also define lists using only the =lambda= function once you understand
+/closures/. This is left for you as an EXERCISE!!
+
+If the predicate =list?= didn't already exist it could be written like this
+#+begin_src racket
+(define (list? value) (or (eq? value '()) (list? (cdr value))))
+#+end_src
+the list is either empty, or
+- =(cdr value)= has to be a list
+- =(car value)= can be anything
+
+*** Where Are The Famous Pointers?
+
+When Lisp places a value in a designated storage location
+- if the value will fit in a word, it will be stored directly in that location
+- otherwise
+      - it will be allocated somewhere (anywhere) in memory
+      - a pointer to it will be stored in the designated location
+Most high-level languages do things this way, meaning that
+- Pointers are used all over the place
+- The pointers are implicit, you don't see them
+
+The /the cdr/ of a /cons-cell/ can hold
+- a simple value representing an empty list
+- a pointer to the location of the next /cons-cell/ of a list
+
+Thus, Lisp will allocate each =cons-cell= of a list independently somewhere in
+memory. They are likely not contiguous. The /cons-cells/ of a single list might
+be scattered all over memory.
+
+*** Lists Can Share Structure
+
+We can extend an existing list with /cons/ which means we can share structure.
+
+#+begin_src racket
+  #lang racket
+  (define wb '(white black))
+  (define gwb (cons 'gray wb))
+  (define cmyk (cons 'cyan (cons 'magenta (cons 'yellow (cdr wb)))))
+  (define rgb '(red green blue))
+  (define colors (cons 'orange (cons 'brown rgb)))
+  (displayln wb)
+  (displayln gwb)
+  (displayln cmyk)
+  (displayln rgb)
+  (displayln colors)
+#+end_src
+
+#+RESULTS:
+- (white black)
+- (gray white black)
+- (cyan magenta yellow black)
+- (red green blue)
+- (orange brown red green blue)
+
+How many /cons-cells/ do these five lists use in total?
+- Look at the end of the document for an explanation!
+
+** Vectors in Scheme and Racket
+
+** Mutation of Lists, Vectors, Bindings, Code
+
+Scheme and Racket differ as to whether you can change the contents of a List or Vector
+
+
+| Name   | Mutable                        |
+|--------+--------------------------------|
+| List   | Yes (Scheme) No (Racket)       |
+| Vector | Yes (Scheme) Optional (Racket) |
+
+In the early days of Lisp when programs and data were smaller and memory was a
+more limited resource, it was considered a good idea to be able to mutate
+(modify) any part of a program or its data, rather than allocating fresh
+storage to hold changed values.
+
+It has since become understood that the more mutation we allow, the more complex
+the program becomes because
+- procedures given the same apparent value might behave differently
+      - this violates /referential transparency/
+- slight timing differences of operations done in parallel can change values
+      - increasingly a problem with multi-threaded processors
+- etc.
+
+#+begin_src racket
+  (define data (read)) ; read some data from the user
+  ;; assume we have some procedures
+  ;; transform-data - given data computes a transformation of it
+  ;; mutate-data! - given some data, modifies it in memory
+  ;; mutate-code! - given a procedure, modifies what it does
+  (define data1 (transform-data data))
+  (define data2 (transform-data data))
+  ;; are data1 and data2 equivalent?
+  (mutate-code! transfom-data)
+  ;; what does transform-data do now?
+  (define data3 (transform-data data))
+  ;; is data3 the same as data2? -- who knows?
+  ;; has the original data changed? -- who knows?
+  (mutate-data! data)
+  ;; has data changed?? -- seems likely!
+#+end_src
+
+Over time the computing community has come to understand that
+- Modifying procedures after they've been defined is a bad idea
+      - All Lisps have forbidden this for some time
+      - Closures can simulate a procedure being modified, though!
+- Modifying /the car/ or /the cdr/ of a =cons-list= is a bad idea
+      - especially bad when it might share structure with another list
+      - but also bad in general as it makes understanding the program harder
+      - and nowadays allocating new =cons-cells= is cheap
+      - Scheme allows this practice but discourages it
+      - Racket /does not/ allow this practice
+            - Racket provides the =mpair= data structure
+                  - it's like =pair= but its modifiable
+                  - new code should not use it
+                  - intended to allow ancient code to possibly work
+- Modifying the elements of a /vector/ is questionable
+      - It makes it harder to analyze the behavior of the program
+      - Some good algorithms work better if you allow this
+      - Scheme /vectors/ always allows this
+      - Racket /vectors/ don't allow this
+      - Racket /mutable-vectors/ do allow modification
+- Modifying bindings is questionable
+      - Most of the time when you create a binding
+            - e.g. with =define=, =let=, =lambda=, etc.
+            - there will be no reason to modify it
+      - The =set!= form allows any of these bindings to be changed
+            - any use of =set!= introduces order dependencies
+            - code becomes harder to understand and debug
+      - Neither Scheme nor Racket provide any way to restrict the use of =set!=
+
+*Minimize Mutation*
+
+To create robust programs that are easy to understand and minimize debugging
+- Avoid mutation where practical
+- Document any intentional use of mutation
+
+** Efficiency of Lists vs. Vectors
+
+Programmers should always try to make their programs as easy to understand as
+possible. They should also design their programs so that reasonable future
+changes are likely to be easy to make and can probably be made without program's
+clarity much if at all.
+
+"*Premature optimization is the root of all evil*, or at least most of it, in
+programming!"
+- to quote [[https://en.wikipedia.org/wiki/Donald_Knuth][Donald Knuth]]
+
+Knuth's principle suggests that the programmer should only optimize a program
+- when the program, with all features is complete
+- it isn't as performant as desired
+- you've run out of ways to optimize it for clarity
+
+After making any changes for efficiency
+- test thoroughly to confirm that the program is significantly more efficient
+- if it isn't, revert the changes!
+
+*** Analyzing Efficiency
+
+Big efficiency differences are generally caused by differences in algorithmic
+complexity, represented by /Order Notation/ aka /Big-O Notation/.
+
+An algorithm which requires =n*n= steps to processes =n= data elements has
+- time complexity of =Order n*n= aka =O(n*n)=
+An algorithm which requires extra storage proportional to =n*n= when it processes =n= data elements has
+- space complexity of =Order n*n= aka =O(n*n)=
+
+Here are a few examples
+- Indexing to a random place in a List requires =O(n)= steps.
+      - i.e. the average number of =cdr= operations required will be
+        proportional to the length of the list
+- Indexing to a random place in a Vector requires =O(1)= steps.
+      - i.e. 1 primitive machine operation to access any element
+- The best sorting algorithms for list or vector have time complexity of
+      - =O(n * log n)=
+      - sorting a list will also require =O(n)= extra space
+
+There are two additional reasons why Vectors tend to be more efficient than
+lists for most algorithms
+- Lists require twice as much memory since /cons-cells/ require 2 words
+- Modern computers use /cache/ memory for speed
+
+It used to be that lists were as efficient as vectors for sequential access.
+This has not been true since processors adopted /cache memory/. /Cache Memory/
+is a special kind of memory which is faster for the CPU to access than a
+computer's main memory. It can be more than 10 times faster. When modern
+processors load data from main memory, they will try to load several words of
+data at once, placing it into cache. When a vector is accessed this way, several
+elements of the vector are likely to now be in cache. When this is done with a
+list, only one cons-cell of the list will wind up in cache.
+
+*** Should We Use Vectors Instead Of Lists?
+
+Vectors usually have more low-level efficiency than List.
+- Should we stop using Lists and do everything with Vectors?
+
+That would be *premature optimization* and would probably not help!
+
+*Programs usually only have a few /hot spots/ which matter to the performance
+of the program.*
+- Changing any other part of the program in hopes of speeding it up will not help!
+
+The performance of many programs is limited by Input/Output
+- Device I/O speed
+- Network I/O speed
+- Graphics rendering speed
+      - Now performed on a separate GPU processor
+
+*Bottom Lines*
+- program first for clarity, ease of understanding, ease of maintenance
+- only optimize where necessary and testing proves it makes a significant difference
+
+Where optimized code is less clear than the original code
+- Keep the original code, but disabled (use #; in Racket)
+      - as documentation
+      - as a fall-back for when maintenance obsoletes the optimization
+            - a very common occurrence!
+
+*** Janet Language prefers Vectors to Lists
+
+The very new [[https://janet-lang.org][Janet Language]] has a program and programming style very similar to
+Lisp but it replaces Lists with Vectors. Some people argue that Janet is not a
+Lisp since it doesn't use lists. Others argue that using vectors instead of
+lists is not an important difference and that Janet is the future of Lisp! We'll
+reserve judgment and we won't mention Janet any further unless and until Janet
+or Janet-like languages get a lot more popular!
+
+** Structures aka Records
+
+Most fancy data structures are created on top of either Lists or Vectors and
+Structures aka Records are no exceptions.
+
+Structures are really just vectors with named fields. They are much more
+convenient to use when the values you want to manage have different meaning.
+
+Structures can be provided in any dialect of Lisp using /macros/ which are
+functions which rewrite forms when your program is being compiled.
+
+The Scheme standard doesn't have structures although there are a number of
+popular packages which provide them.
+
+The Racket language provides several /macros/ which create different kinds of
+structures.  Alas, Racket often lacks the simplicity of Scheme!  I generally find
+that these two will give me what I need:
+
+- [[https://docs.racket-lang.org/reference/define-struct.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._struct%29%29][struct]] :: defines a simple structure type with no type checking
+- [[https://docs.racket-lang.org/reference/attaching-contracts-to-values.html#%28form._%28%28lib._racket%2Fcontract%2Fregion..rkt%29._struct%2Fcontract%29%29][struct/contract]] :: defines a structure type with contracts, e.g. type checking
+
+I have come to prefer =struct/contract= most of the time because of the clarity
+and reliability provided by the contracts you can attach to each field. The
+=struct= macro has a =guard= feature, but it's clumsier and also doesn't work if
+you make the structure =mutable=. Oh yes, Racket structures default to
+non-modifiable, but you can change that with a simple option.
+
+See [[https://docs.racket-lang.org/guide/define-struct.html][Programmer-Defined Datatypes]] in the [[https://docs.racket-lang.org/guide][Racket Guide]] for an overview of Racket
+Structure Types.
+
+** More Composite Types!
+
+While Lists, Vectors and Structures are the most commonly useful composite
+types, there are many more which can
+- sometimes simplify your code
+- sometimes optimize your code
+
+As always, unless they do in fact simplify your code you should avoid them until
+and unless you determine that their increased efficiency is truly needed.
+
+Another reason to avoid these is that they will typically make it more difficult
+if you ever want to port your program to another dialect of lisp or another
+language entirely.
+
+*** Some Great Specialized Composite Types
+
+Two that you might want to look at are
+- [[https://docs.racket-lang.org/guide/hash-tables.html][Hash Tables]] :: an efficient mapping from keys to values
+- [[https://docs.racket-lang.org/reference/treelist.html#(part._treelist)][Treelists]] :: the flexibility of lists with better efficiency
+
+Look under /Data Structures/ on the [[https://docs.racket-lang.org][Main Racket Documentation Page]]
+- [[https://docs.racket-lang.org/data][Data: Data Structures]] provides several very useful composite types!
+
+*** Writing Generic Composite Code
+
+You might have chosen Lists or Vectors or other composite types to manage
+various collections of data elements. Is there a way to do simple things, e.g.
+access elements sequentially, without having to know which composite type you
+chose?
+
+You can generalize a lot of your code to hide which kinds of composites you
+wound up using, or which changes in exact composite types might be introduced as
+maintenance (e.g. adding new features) evolves your program.
+
+- [[https://docs.racket-lang.org/reference/sequences_streams.html][Sequences, Streams and Generators]] :: generic protocols for accessing data
+  sequentially once or repeatedly, hiding low-level datatype choices or I/O
+- [[https://docs.racket-lang.org/reference/dicts.html][Dictionaries]] :: a generic protocol for mappings from keys to values
+- [[https://docs.racket-lang.org/reference/sets.htm][Sets]] :: a generic protocol for set operations
+
+*** Still More Composite Types
+** Typed/Racket, Contracts and Tests!
+
+*** Trust But Verify
+
+Racket is a very practical Lisp but it's also very traditional. It's based on
+the idea that *The Programmer Knows What They're Doing, stay out of their way*
+even when the code is complex.
+
+In particular, if the programmer passes the wrong values to an argument or binds
+the wrong value to a symbol, Racket will just go ahead with it as long as
+possible.
+
+*The worst misbehavior possible from a program*
+- is NOT when the program crashes
+- is NOT when the program outputs an error message
+
+*The worst misbehavior possible from a program*
+- is when it appears to work
+      - but it outputs plausible but wrong values
+- when misbehaves and no one notices until too late!
+
+Racket has a powerful Contract System and support for Structured Testing
+- Contract Testing is done at Runtime
+      - It's often turned off because it slows the program down too much
+- Detecting bugs with Testing requires Luck
+      - The input data being used in Test Runs needs to cover all situations
+      - It can never prove the absence of bugs!
+
+Static Type Checking is a feature of many programming languages.
+- The compiler examines the types required by and produced by every operation
+- When they're inconsistent, the compiler reports a detailed error message
+- No program will be output until all type errors are fixed!
+
+*Static Type Checking is guaranteed to eliminate type bugs!*
+
+*** Typed/Racket
+
+Typed/Racket is an alternative Language to the regular Racket language, which
+should properly be called Dynamic Racket.
+
+In regular Racket, any program which is syntactically correct will be run, and
+we'll find out what happens!
+
+In Typed Racket, the Compiler (the program responsible for translating Racket
+Code it's elegant Symbolic Expressions into Machine Language for your model of
+computer) first examines those expressions carefully to see if they make sense
+-- *just as a human would do* -- before translating it to machine code.
+
+In Typed Racket every expression has a type which is /Manifest/, i.e.
+determinable by examining the source code. The programmer will have added /type
+declarations/ for some of their procedures and possibly some of their bindings
+or expressions. The compiler will following those types through the expressions
+and infers the proper type of all expressions. When the compiler find a
+contradiction, it generates a clear report of the error.
+
+Why doesn't everyone use Typed/Racket instead of dynamic Racket?
+- It takes practice to learn to write good type declarations
+- You have to spend more time writing code before you can run it
+      - although you spend *much less time debugging!*
+- It can't replace all Contracts and Structured Tests
+      - although it greatly reduces how many of those you need!
+
+It can be argued that dynamic Racket is an easier language when programmers are
+first learning to program in Lisp and their programs are very simple.
+
+Type Checking becomes a *very good idea* once your programs become
+- larger and more complex
+- developed and maintained by multiple people over long periods of time
+- critical parts of the operation of your enterprise
+
+As soon as these criteria apply to your programming, or as soon as you feel interested,
+- [[https://docs.racket-lang.org/ts-guide][Learn Typed Racket!]]
+
+Typed/Racket is more efficient too
+- the compiler is able to generate better machine code when it knows the types!
+
+** Structure Sharing Analysis
+
+#+begin_src racket
+  #lang racket
+  (define wb '(white black))                                         ; 2 cons-cells
+  (define gwb (cons 'gray wb))                                       ; 1 more
+  (define cmyk (cons 'cyan (cons 'magenta (cons 'yellow (cdr wb))))) ; 3 more
+  (define rgb '(red green blue))                                     ; 3 cons-cells
+  (define colors (cons 'orange (cons 'brown rgb)))                   ; 2 more
+  (displayln wb)          ; 3 elements
+  (displayln gwb)         ; 3 elements
+  (displayln cmyk)        ; 4 elements
+  (displayln rgb)         ; 3 elements
+  (displayln colors)      ; 5 elements
+#+end_src
+;; Allocated 11 cons-cells to build 5 lists managing 18 elements
