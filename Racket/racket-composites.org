@@ -70,15 +70,15 @@ Lisp data consists of *Symbolic Expressions*, which are either
 #+end_src
 
 RESULTS:
-- data is a list, the pair (1 two (buckle my shoe)).
-- (car data) is an atom, the number 1.
-- (cdr data) is a list, the pair (two (buckle my shoe)).
-- (car (cdr data)) is an atom, the symbol two.
-- (cdr (cdr data)) is a list, the pair ((buckle my shoe)).
-- (car (cdr (cdr data))) is a list, the pair (buckle my shoe).
-- (cdr (cdr (cdr data))) is a list, the empty list ().
-- (car (car (cdr (cdr data)))) is an atom, the symbol buckle.
-- (cdr (car (cdr (cdr data)))) is a list, the pair (my shoe).
+: data is a list, the pair (1 two (buckle my shoe)).
+: (car data) is an atom, the number 1.
+: (cdr data) is a list, the pair (two (buckle my shoe)).
+: (car (cdr data)) is an atom, the symbol two.
+: (cdr (cdr data)) is a list, the pair ((buckle my shoe)).
+: (car (cdr (cdr data))) is a list, the pair (buckle my shoe).
+: (cdr (cdr (cdr data))) is a list, the empty list ().
+: (car (car (cdr (cdr data)))) is an atom, the symbol buckle.
+: (cdr (car (cdr (cdr data)))) is a list, the pair (my shoe).
 
 In the original Lisp
 - lists were the /only/ composites
@@ -115,10 +115,10 @@ classified as /atoms/!
 #+end_src
 
 RESULTS:
-- (Hello world)
-- (Hello world)
-- (Hello world)
-- (Hello world)
+: (Hello world)
+: (Hello world)
+: (Hello world)
+: (Hello world)
 
 The =cons-cells= of a list are always allocated by the function =cons=, but you
 don't have to call it directly.
@@ -262,11 +262,11 @@ We can extend an existing list with /cons/ which means we can share structure.
 #+end_src
 
 RESULTS:
-- (white black)
-- (gray white black)
-- (cyan magenta yellow black)
-- (red green blue)
-- (orange brown red green blue)
+: (white black)
+: (gray white black)
+: (cyan magenta yellow black)
+: (red green blue)
+: (orange brown red green blue)
 
 How many /cons-cells/ do these five lists use in total?
 - Look at the end of the document for an explanation!
