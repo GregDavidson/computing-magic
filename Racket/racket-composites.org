@@ -83,7 +83,7 @@ RESULTS:
 In the original Lisp
 - lists were the /only/ composites
 - atoms were all /scalars/
-  - hence the name atom, Greek for uncuttable
+  - hence the name /atom/, Greek for uncuttable
 
 Lists are very common in Lisp Programs
 - Lists are an extraordinarily versatile data structure.
@@ -95,9 +95,9 @@ This one simple idea allows for very flexible processing.
 All modern general purpose programming languages provide several kinds of
 composite data structures, sometimes including lists and sometimes not. All
 Lisps provide Lists along with at least one other kind of composite data
-structures.
+structure.
 
-To really understand the nature of Lists, Vectors and more, see
+To understand the nature of Lists, Vectors beyond Lisp, see
 - [[https://github.com/GregDavidson/on-computing/blob/main/composites.org][Composite Data Structures]]
 
 Although modern Lisps now provide more than one kind of Composite Data
@@ -121,11 +121,11 @@ RESULTS:
 : (Hello world)
 
 The =cons-cells= of a list are always allocated by the function =cons=, but you
-don't have to call it directly.
+don't have to call =cons= directly.
 - The =list= function calls =cons= for each of its arguments.
 - The =quote= special form allows us to return a piece of the list structure of
   the program (created by the /reader/) for use as data!
-- The /reader macro/ ' is a handy abbreviation for the =quote= special form.
+- The /reader macro/ ='= is a handy abbreviation for the =quote= special form.
 
 The /reader/, usually the builtin function =read=, is the function which reads
 bytes, parses them as /symbolic-expressions/ and stores them into memory. It's
