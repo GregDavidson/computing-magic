@@ -25,13 +25,13 @@ other data structures which are typically called
 
 Composites are considered to /contain/ their elements if the only way to get to
 those elements is by going through the composite
-- Such composites are ofte called /Container Types/
+- Such composites are often called /Container Types/
 Otherwise the composites are simply one way to /manage/ those elements
-- which might even be under the management of multiple composites!
+- which might be under the management of multiple composites!
 
 It's common to call non-composite data structures /scalars/
 - the classic example of /scalars/ is /numbers/.
-In many languages /strings/ are also considered scalars
+In many languages /strings/ are also considered /scalars/
 - because they /only/ contain /bytes or characters/
 - whereas the main composites can contain elements of any type.
 
@@ -97,7 +97,7 @@ composite data structures, sometimes including lists and sometimes not. All
 Lisps provide Lists along with at least one other kind of composite data
 structure.
 
-To understand the nature of Lists, Vectors beyond Lisp, see
+To understand the nature of composites beyond Lisp, see
 - [[https://github.com/GregDavidson/on-computing/blob/main/composites.org][Composite Data Structures]]
 
 Although modern Lisps now provide more than one kind of Composite Data
@@ -270,8 +270,6 @@ RESULTS:
 How many /cons-cells/ do these five lists use in total?
 - Look at the end of the document for an explanation!
 
-** Vectors in Scheme and Racket
-
 ** Mutation of Lists, Vectors, Bindings, Code
 
 Scheme and Racket differ as to whether you can change the contents of a List or Vector
@@ -360,13 +358,14 @@ programming!"
 - to quote [[https://en.wikipedia.org/wiki/Donald_Knuth][Donald Knuth]]
 
 Knuth's principle suggests that the programmer should only optimize a program
-- when the program, with all features is complete
-- it isn't as performant as desired
-- you've run out of ways to optimize it for clarity
+- when the program with all of its features is complete
+- yet it isn't as performant as desired
+- and you've run out of ways to optimize it for clarity
 
 After making any changes for efficiency
 - test thoroughly to confirm that the program is significantly more efficient
-- if it isn't, revert the changes!
+      - make sure your input data is realistic
+- if it isn't more efficient, revert the changes!
 
 *** Analyzing Efficiency
 
@@ -431,20 +430,20 @@ Where optimized code is less clear than the original code
 
 *** Janet Language prefers Vectors to Lists
 
-The very new [[https://janet-lang.org][Janet Language]] has a program and programming style very similar to
-Lisp but it replaces Lists with Vectors. Some people argue that Janet is not a
-Lisp since it doesn't use lists. Others argue that using vectors instead of
-lists is not an important difference and that Janet is the future of Lisp! We'll
-reserve judgment and we won't mention Janet any further unless and until Janet
-or Janet-like languages get a lot more popular!
+The very new [[https://janet-lang.org][Janet Language]] has a program syntax and programming style very
+similar to Lisp but it replaces Lists with Vectors. Some people argue that Janet
+is not a Lisp since it doesn't use lists. Others argue that using vectors
+instead of lists is not an important difference and that Janet is the future of
+Lisp! We'll reserve judgment and we won't mention Janet any further unless and
+until Janet or Janet-like languages get a lot more popular!
 
 ** Structures aka Records
 
-Most fancy data structures are created on top of either Lists or Vectors and
-Structures aka Records are no exceptions.
+Most fancy data structures are created on top of either Lists or Vectors.
+Structures aka Records are an example of this.
 
-Structures are really just vectors with named fields. They are much more
-convenient to use when the values you want to manage have different meaning.
+Structures are really just vectors with named fields. They are more convenient
+to use when the values you want to manage are heterogeneous.
 
 Structures can be provided in any dialect of Lisp using /macros/ which are
 functions which rewrite forms when your program is being compiled.
@@ -453,8 +452,7 @@ The Scheme standard doesn't have structures although there are a number of
 popular packages which provide them.
 
 The Racket language provides several /macros/ which create different kinds of
-structures.  Alas, Racket often lacks the simplicity of Scheme!  I generally find
-that these two will give me what I need:
+structures. I use these two the most:
 
 - [[https://docs.racket-lang.org/reference/define-struct.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._struct%29%29][struct]] :: defines a simple structure type with no type checking
 - [[https://docs.racket-lang.org/reference/attaching-contracts-to-values.html#%28form._%28%28lib._racket%2Fcontract%2Fregion..rkt%29._struct%2Fcontract%29%29][struct/contract]] :: defines a structure type with contracts, e.g. type checking
@@ -462,8 +460,8 @@ that these two will give me what I need:
 I have come to prefer =struct/contract= most of the time because of the clarity
 and reliability provided by the contracts you can attach to each field. The
 =struct= macro has a =guard= feature, but it's clumsier and also doesn't work if
-you make the structure =mutable=. Oh yes, Racket structures default to
-non-modifiable, but you can change that with a simple option.
+you make the structure =mutable=. Racket structures default to non-mutable, but
+you can change that with the =#:mutable= option.
 
 See [[https://docs.racket-lang.org/guide/define-struct.html][Programmer-Defined Datatypes]] in the [[https://docs.racket-lang.org/guide][Racket Guide]] for an overview of Racket
 Structure Types.
@@ -488,7 +486,7 @@ Two that you might want to look at are
 - [[https://docs.racket-lang.org/guide/hash-tables.html][Hash Tables]] :: an efficient mapping from keys to values
 - [[https://docs.racket-lang.org/reference/treelist.html#(part._treelist)][Treelists]] :: the flexibility of lists with better efficiency
 
-Look under /Data Structures/ on the [[https://docs.racket-lang.org][Main Racket Documentation Page]]
+You can find more under /Data Structures/ on the [[https://docs.racket-lang.org][Main Racket Documentation Page]]
 - [[https://docs.racket-lang.org/data][Data: Data Structures]] provides several very useful composite types!
 
 *** Writing Generic Composite Code
@@ -498,16 +496,15 @@ various collections of data elements. Is there a way to do simple things, e.g.
 access elements sequentially, without having to know which composite type you
 chose?
 
-You can generalize a lot of your code to hide which kinds of composites you
-wound up using, or which changes in exact composite types might be introduced as
-maintenance (e.g. adding new features) evolves your program.
+You can generalize your code to hide which composites types you chose and to
+hide changes in composite types introduced as maintenance evolves your program,
+e.g. to accommodate new features.
 
 - [[https://docs.racket-lang.org/reference/sequences_streams.html][Sequences, Streams and Generators]] :: generic protocols for accessing data
   sequentially once or repeatedly, hiding low-level datatype choices or I/O
 - [[https://docs.racket-lang.org/reference/dicts.html][Dictionaries]] :: a generic protocol for mappings from keys to values
 - [[https://docs.racket-lang.org/reference/sets.htm][Sets]] :: a generic protocol for set operations
 
-*** Still More Composite Types
 ** Typed/Racket, Contracts and Tests!
 
 *** Trust But Verify
@@ -527,12 +524,12 @@ possible.
 *The worst misbehavior possible from a program*
 - is when it appears to work
       - but it outputs plausible but wrong values
-- when misbehaves and no one notices until too late!
+- when it misbehaves and no one notices until too late!
 
-Racket has a powerful Contract System and support for Structured Testing
-- Contract Testing is done at Runtime
-      - It's often turned off because it slows the program down too much
-- Detecting bugs with Testing requires Luck
+Racket has powerful support for [[https://docs.racket-lang.org/guide/contracts.html][Contracts]] and [[https://docs.racket-lang.org/rackunit][Unit Testing]]
+- Contracts are tested at Runtime
+      - Testing often turned off to avoid slowing the program
+- Detecting bugs with testing requires Luck
       - The input data being used in Test Runs needs to cover all situations
       - It can never prove the absence of bugs!
 
@@ -567,7 +564,7 @@ Why doesn't everyone use Typed/Racket instead of dynamic Racket?
 - It takes practice to learn to write good type declarations
 - You have to spend more time writing code before you can run it
       - although you spend *much less time debugging!*
-- It can't replace all Contracts and Structured Tests
+- It can't replace all Contracts and Unit Tests
       - although it greatly reduces how many of those you need!
 
 It can be argued that dynamic Racket is an easier language when programmers are
