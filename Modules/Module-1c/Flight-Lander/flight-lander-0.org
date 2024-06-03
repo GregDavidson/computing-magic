@@ -1,11 +1,11 @@
 * Notes on Flight Lander 0
 
 The program [[file:flight-lander-0.rkt][flight-lander-0.rkt]] illustrates a number of powerful programming
-techniques which you will be able to use in the programs you write.
+techniques which you will want to use in many of the programs you will write.
 
 The Lisp Family of languages has always supported a broad range of ways to think
-about programming. Lisps have often been called /the programmable, programming
-languages/. [[https://racket-lang.org][Racket]] extends these /multi-paradigm/ and extensible capabilities
+about programming. Lisps have been called /the programmable, programming
+languages/. [[https://racket-lang.org][Racket]] extends these /multi-paradigm/ and /extensible/ capabilities
 even further than most Lisps.
 
 Let's look at some of the interesting features used in flight-lander-0.
@@ -16,17 +16,23 @@ Let's look at some of the interesting features used in flight-lander-0.
 #lang racket
 #+end_src
 
-No language (or notation, if you prefer) is perfect for all purposes, so the
-Racket community gives us a set of alternative languages we can use for all or
-part of our projects. Each module (typically a file) in a project declares which
-of these languages is being used in this module. The Racket Development Tools
-translates the code each modules from its particular language to a common
-intermediate code which can then be combined with the other modules of your
-creation and compiled and linked into an efficient program for your computer.
+This declaration tells the compiler the this module contains code written in the
+Racket Language.
 
-The original and probably the most general-purpose of these languages is Racket
-itself. So yes, we have to distinguish between the Racket System with all of its
-diverse languages and the individual languages including the Racket Language.
+Wait, why would that be necessary?
+
+No language (or notation) is perfect for all purposes. The Racket developers
+give us a collection of diverse languages so that we can use the best language
+for each part of our creations. Each module (typically a file) in a project
+declares which language it's using. The Racket Development Tools translates the
+code in each module to a common intermediate code and then combines that code to
+produce your program.
+
+The original and probably the most general-purpose of these languages is the
+Racket Language. The Racket System supports the Racket Language along with many
+other languages and many Packages (Libraries) and Software Development Tools.
+Collectively, the Racket System is now among the best software development
+systems in existence.
 
 ** Bringing in Useful Packages
 
@@ -37,12 +43,14 @@ diverse languages and the individual languages including the Racket Language.
 #+end_src
 
 Racket provides a large collection of standardized and community-contributed
-[[https://pkgs.racket-lang.org][packages]], Open Source and written in Racket itself, to make it easier to create
-sophisticated new programs.
+[[https://pkgs.racket-lang.org][packages]] which add features which will provide a lot of the solutions you need.
+Like the rest of the Racket System, these packages are Open Source and are
+largely or entirely written in Racket itself.
 
-Here we're bringing in /universe/ for creating distributed multi-user programs,
-e.g. multi-user games, along with one of Racket's many graphics libraries and a
-library for testing our program against our expectations.
+Here we're bringing in
+- 2htdp/universe :: to manage the game and coordinate multiple players over a network
+- 2htdp/image :: one of Racket's several graphics libraries
+- rackunit :: a library for Structured Testing to help us find bugs
 
 ** Structuring Our Data
 
@@ -52,62 +60,65 @@ Metaprogramming can create higher-Level Data Structures on top of Lists and Vect
 Racket provides two convenient macros for creating structures
 - =struct= :: creates functions to manage fields of any type
 - =struct/contract= :: like =struct= but with contracts
-- Racket Contracts declare and then check your values for validity
-- We'll use them to specify the datatypes of our structure's fields
-- These contracts help us reduce accidents and debugging effort!
-- See [[https://docs.racket-lang.org/guide/contracts.html][Racket's Contracts]] for more on Racket's constructs.
+
+Racket Contracts declare and then check your values for validity
+- We'll use them to specify the datatype of each field
+- This will help reduce accidents and debugging effort!
+- See [[https://docs.racket-lang.org/guide/contracts.html][Racket's Contracts]] when you're feeling ambitious!
 
 #+begin_src racket
-(struct/contract sprite
-                 ( [image image?]
-                   ;; position: x and y coodinates
-                   [x integer?] [y integer?]
-                   ;; velocity: delta (change) of x and y
-                   [dx integer?] [dy integer?]
-                   ;; methods: behavior procedures
-                   [on-tick procedure?]
-                   [on-key procedure?]
-                   [to-draw procedure?] )
-                 #:mutable ; fields can be modified
-                 #:transparent ; field values visible on output
-                 )
+  (struct/contract
+   sprite ; name of constructor and datatype
+   ( [image image?]
+     ;; position: x and y coodinates
+     [x integer?] [y integer?]
+     ;; velocity: delta (change of) x and y
+     [dx integer?] [dy integer?]
+     ;; methods: behavior procedures
+     [on-tick procedure?]
+     [on-key procedure?]
+     [to-draw procedure?] )
+   #:mutable     ; fields can be modified
+   #:transparent ; field values visible on output
+   )
 #+end_src
 
-All Lisp dialects can use (parentheses for any list). Racket also allows you to
-use [square brackets] to mean the same thing (as parentheses).
+All Lisp dialects can use (parentheses for any list).
+Racket also allows you to use [square brackets instead].
 - It's common practice to
       - use (parentheses for forms)
-      - and maybe use [square brackets for some non-forms]
-            - e.g. let, cond and big-bang clauses
-- This practice can also help increase readability.
+      - and maybe use [square brackets for other expressions]
+            - e.g. let, cond and big-bang clauses which aren't forms
+- This optional feature can help increase readability!
 
-This example of =struct/contract= creates a new type to manage the 8 named
-fields by creating 10 functions for us:
+This example of =struct/contract= creates a new type to manage
+the 8 named fields by creating 10 functions for us:
 
 #+begin_src racket
 ;; A constructor function to create a new sprite from 8 suitable values
 ;;   (sprite v1 v2 v3 v4 v5 v6 v7 v8)
-;; A predicate function to tell is if a value is a sprite
+;; A predicate function to tell us if a value is a sprite
 ;;   (sprite? v) ; #t if value v is a sprite, #f otherwise
-;; A selector functions for each field
+;; A selector function for each field
 ;; e.g. for field x we'll have
 ;;   (sprite-x s) -- selects x value of sprite s
 #+end_src
 
 By default, once a structure is created you can't change the values of any of its fields.
-This is generally what you want as it makes your programs simpler and more reliable.
-However, if you need to, you add the keyword =#:mutable= and then struct will create a
-setter procedure for each field
+- This will generally make your programs simpler and more reliable.
+- If you add the keyword =#:mutable=
+      - =struct= will create a setter procedure for each field
 
 #+begin_src racket
 ;; A setter procedure for each field, e.g. for field x we'll have
 ;;   (set-sprite-x! s v) -- sets field x of sprite s to value v
 #+end_src
 
-Setters are procedures, not functions as they (1) modify something outside of
-themselves [this is called a "side effect"] and (2) they don't have to return a
-value.  The ! is part of the name of the procedure and follows the convention
-warning you that this procedure mutates something.
+Setters are procedures, not functions as they
+(1) modify something outside of themselves [this is a "side effect"]
+(2) don't have to return a value
+The ! is part of the name of the procedure
+- a convention to warn you that this procedure mutates something!
 
 What's does the #:transparent keyword do?
 
@@ -117,7 +128,7 @@ Usually structures are implemented as vectors, hidden behind the functions and
 procedures generated by the =struct= or =struct/contract= macros. Therefore,
 structures are contiguous, compact and support efficient random access. Racket
 has both mutable and non-mutable vectors. When you use the #:mutable keyword
-with struct you're implementing your struct type with a mutable-vector,
+with =struct= you're implementing your =struct= type with a mutable-vector,
 otherwise with a non-mutable vector.
 
 Each structures type is a unique new type, distinct from all other types. That's
@@ -366,30 +377,29 @@ When you think you've got it, see if you can figure out
 - =update-plane-on-tick!=
       - =plane-edge-cases= could have been nested, but that makes debugging harder.
 - =update-plane-on-key!=
-      - Why does =key-match= have to be nested?
+      - Why is =key-match= nested within =update-plane-on-key!=?
 
 ** Some Tests
 
 During program development, you'll generally test a lot of things interactively
-at the REPL. You can (and should) put some of those tests into your program so
-that when you (or someone else) is improving the program in some fashion and
-accidentally breaks something, one of the automated tests will tell you (or
-them) right away that something broke, what broke and where.
+at the REPL - at the prompt in the Interaction Window if you're using DrRacket.
+You can (and should) put some of those tests into your program so that when you
+(or someone else) is modifying the program and accidentally breaks something, a
+tests will detect the problem and report it.
 
 Creating good tests is an art for you to learn. The more complex your program
-the more valuable tests become. The best thing is to make everything simple. But
-when you can't yet figure out how to do that, put in tests. Remember: A test is
-checking that your program agrees with your expectations.
+the more valuable tests become. Test help ensure that your program agrees with
+your expectations.
 
 ** The World State
 
 - The world state is a list of sprites.
-- Each sprite is a mutable struct.
-- The update functions alter the structs.
-- Following the =2htdp= style we call it WORLD
-      - The list named =WORLD= never changes
-      - But its elements /do/ change
-- So should we call it =world= instead?
+- Each sprite is a mutable structure!
+- The update functions /mutate/ the sprites.
+- Following the =2htdp= style we call it =WORLD=
+      - The =WORLD= list holding the sprites never changes
+      - But the sprites in the =WORLD= /do/ change
+- So should we call it =world= instead??
 
 ** Managing The Game
 
@@ -410,19 +420,19 @@ Everything is managed by
 - =draw-world=
 - =game-over?=
 
-=update-world-on-tick!= and =update-world-on-key!= simply delegate the work to
-the each sprite's corresponding method returning the unchanged world list to
+=update-world-on-tick!= and =update-world-on-key!= delegate the work to
+each sprite's corresponding method and return the unchanged world list to
 =big-bang=.
 
-=draw-world= delegates the work to each sprite's =to-draw= method, but composes
-all of the results together using the metafunction =foldr=. The final canvas is
-returned to =big-bang=.
+=draw-world= delegates the work to each sprite's =to-draw= method, composing the
+results together using the function =foldr=. The final canvas is returned to
+=big-bang=.
 
 Only =game-over= really has to work much. It needs to understand the rules of
 the game.
 
-In the exercise notes, we ask "How a sprite notify =game-over?= that it should
-end the game?" Delegating the work of =game-over= to the sprites would mean we'd
-need to make the values returned by our sprites to our /management functions/
-more sophisticated. It turns out that we need to do that anyway if we want to be
+In the exercise notes, we ask "How can a sprite notify =game-over?= that it
+should end the game?" It would be good to delegating the work of =game-over= to
+the sprites, but we'd need to make the values returned by our sprites contain
+more information. It turns out that we need to do that anyway if we want to be
 able to add and delete sprites during the game. =WORLD= must become =world=!
