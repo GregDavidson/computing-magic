@@ -305,7 +305,7 @@
 
 ;; clip x and x2 so that the sprite is within the horizontal bounds
 (define (clip-x x y x2 y2 dx dy xx yy xx2 yy2)
-  (let ( [x- (max 0 (- x2 xx2 1))] ; extension of x2 to the right of) xx2
+  (let ( [x- (max 0 (- x2 xx2 1))] ; extension of x2 to the right of xx2
          [x+ (max 0 (- xx x))]     ; extension of x to the left of xx
          )
     (when (and (positive? x-) (positive? x+))

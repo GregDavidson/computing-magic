@@ -44,85 +44,18 @@ Here we're bringing in /universe/ for creating distributed multi-user programs,
 e.g. multi-user games, along with one of Racket's many graphics libraries and a
 library for testing our program against our expectations.
 
-** Structuring Our Data: Lists and Vectors
-
-Traditional Lisps provide two fundamental ways to structure data: Lists and
-Vectors.  Originally there were only Lists.  In fact Lisp is an acronym for
-/List Processor/.
-
-Lists are flexible but somewhat inefficient on modern hardware
-- Lists are so flexible that they're used to represent Lisp Programs!
-- Languages whose programs are also valid data are called [[https://en.wikipedia.org/wiki/Homoiconicity][Homoiconic]] and
-  helps makes lisp
-      - A /Programmable, Programming Language/
-      - Highly Extensible, e.g. with [[https://docs.racket-lang.org/guide/macros.html][Macros]]
-      - supporting [[https://en.wikipedia.org/wiki/Metaprogramming][Metaprogramming]]
-            - arguably the most powerful of all [[https://en.wikipedia.org/wiki/Programming_paradigm][Programming Paradigms]]
-- Lists are OK for sequential access
-      - accessing all elements of the list in the order they appear
-- Lists are terrible for random access
-      - accessing an arbitrary element from somewhere in the list
-
-*** What Are Lists and Vectors, Exactly
-
-Essential Background
-- [[https://gregdavidson.github.io/on-computing/what-computers-are][What Computers Are]]
-      - Bits, Bytes, Words
-- [[https://github.com/GregDavidson/on-computing/blob/main/composites.org][Composite Data Structures]]
-      - Multi-Word Data Structures
-      - Contiguous, Linked, Volatile or Persistent
-
-A lists of =N= items is made of
-- =N= pairs of pointers (machine addresses) called /cons-cells/ or just /pairs/
-- The two pointers in a cons-cell are called /car/ and /cdr/
-- The /car/ pointer holds or points to the value of an element
-- The /cdr/ pointer points to the next /cons-cell/ in the list.
-- Given a /cons-cell/
-      - the function =car= will return the value of its /car/
-      - the function =cdr= will return the value of its /cdr/
-- Given an element value and a pre-existing list (possibly empty)
-- The =cons= function will allocate a new /cons-cell/ with it's
-      - /cons field/ holding (or pointing to) the new element
-      - /cdr field/ pointing to the pre-existing list
-- Thus, =cons= creates a new list, 1 element long than the pre-existing list
-      - The two lists are distinct yet they share all cons-cells but one.
-- To store 10 element, a list needs 10 cons cells requiring 20 worlds of memory
-- Each cons-cell could be stored anywhere in memory.
-      - Alas, modern memory is very slow for accessing non-contiguous values
-- Lisp's /Garbage Collector/ efficiently recycles cons-cells that are no longer
-  accessible by the program.
-
-Vectors
-
-A vector of =N= elements consists of =N= contiguous pointers
-- Half the storage required by a list
-- Since the pointers are contiguous
-      - Chunks can fit in a modern computer's cache memory
-            - access time can be about 10x vaster!
-      - You can efficiently access the items sequentially or at random
-- Vectors are more expensive to grow incrementally
-      - i.e. adding just one more element every once in awhile
-- Vectors can't share storage so they can sometimes require more storage
-- Lisp's /Garbage Collector/ recycles vectors as soon as no part of the vector
-  is accessible by the program.
-
-You can actually think of a =cons-cell= as a vector of two elements.
-- So you really only need vectors
-- The new Lisp Family language [[https://janet-lang.org][Janet]] only provides vectors
-      - is Janet the Lisp of the Future?
-      - it will have to catch up with other features first, though!
-
 ** Structuring Our Data
 
 Metaprogramming can create higher-Level Data Structures on top of Lists and Vectors
 - structures (sometimes called records) are very popular
 
-Racket provides two main macros for creating structures, =struct= and =struct/contract=.
-- =struct/contract= let's you easily add contracts to each field
-- a simple contract might specify the required datatype for a field
-- [[https://docs.racket-lang.org/guide/contracts.html][Racket's Contracts]] can do much more than specify types!
-- contracts are checked whenever you store a value
-- Contracts help prevent errors and reduce debugging effort!
+Racket provides two convenient macros for creating structures
+- =struct= :: creates functions to manage fields of any type
+- =struct/contract= :: like =struct= but with contracts
+- Racket Contracts declare and then check your values for validity
+- We'll use them to specify the datatypes of our structure's fields
+- These contracts help us reduce accidents and debugging effort!
+- See [[https://docs.racket-lang.org/guide/contracts.html][Racket's Contracts]] for more on Racket's constructs.
 
 #+begin_src racket
 (struct/contract sprite
@@ -135,13 +68,17 @@ Racket provides two main macros for creating structures, =struct= and =struct/co
                    [on-tick procedure?]
                    [on-key procedure?]
                    [to-draw procedure?] )
-                 #:mutable ; fields can be modifed
-                 #:transparent ; field values visible
+                 #:mutable ; fields can be modified
+                 #:transparent ; field values visible on output
                  )
 #+end_src
 
-A reminder that in Racket [square brackets] mean the same thing (as parentheses).
-- It's to use (parentheses for forms) and sometimes use [square brackets for non-forms].
+All Lisp dialects can use (parentheses for any list). Racket also allows you to
+use [square brackets] to mean the same thing (as parentheses).
+- It's common practice to
+      - use (parentheses for forms)
+      - and maybe use [square brackets for some non-forms]
+            - e.g. let, cond and big-bang clauses
 - This practice can also help increase readability.
 
 This example of =struct/contract= creates a new type to manage the 8 named
