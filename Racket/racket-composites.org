@@ -69,7 +69,7 @@ Lisp data consists of *Symbolic Expressions*, which are either
   ;; and so on!
 #+end_src
 
-#+RESULTS:
+RESULTS:
 - data is a list, the pair (1 two (buckle my shoe)).
 - (car data) is an atom, the number 1.
 - (cdr data) is a list, the pair (two (buckle my shoe)).
@@ -114,7 +114,7 @@ classified as /atoms/!
   (displayln '(Hello world))
 #+end_src
 
-#+RESULTS:
+RESULTS:
 - (Hello world)
 - (Hello world)
 - (Hello world)
@@ -190,7 +190,7 @@ immediately.  This is what it means for a data structure to be /random access/.
   (show '(vector-ref (vector-ref data 2) 0) (vector-ref (vector-ref data 2) 2))
 #+end_src
 
-#+RESULTS:
+RESULTS:
 : data is an atom, the vector #(1 two #(buckle my shoe)).
 : (vector-ref data 0) is an atom, the number 1.
 : (vector-ref data 1) is an atom, the symbol two.
@@ -261,7 +261,7 @@ We can extend an existing list with /cons/ which means we can share structure.
   (displayln colors)
 #+end_src
 
-#+RESULTS:
+RESULTS:
 - (white black)
 - (gray white black)
 - (cyan magenta yellow black)
