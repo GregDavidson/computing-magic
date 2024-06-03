@@ -125,7 +125,7 @@ don't have to call =cons= directly.
 - The =list= function calls =cons= for each of its arguments.
 - The =quote= special form allows us to return a piece of the list structure of
   the program (created by the /reader/) for use as data!
-- The /reader macro/ ='= is a handy abbreviation for the =quote= special form.
+- The /reader macro/ *'* is a handy abbreviation for the =quote= special form.
 
 The /reader/, usually the builtin function =read=, is the function which reads
 bytes, parses them as /symbolic-expressions/ and stores them into memory. It's
