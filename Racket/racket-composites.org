@@ -123,16 +123,15 @@ RESULTS:
 The =cons-cells= of a list are always allocated by the function =cons=, but you
 don't have to call =cons= directly.
 - The =list= function calls =cons= for each of its arguments.
-- The =quote= special form allows us to return a piece of the list structure of
-  the program (created by the /reader/) for use as data!
-- The /reader macro/ *'* is a handy abbreviation for the =quote= special form.
+- The =quote= special form returns its literal argument (a piece of the
+  structure of the program) for use as data!
+- The ' (quote symbol) is an abbreviation for the =quote= special form.
 
-The /reader/, usually the builtin function =read=, is the function which reads
-bytes, parses them as /symbolic-expressions/ and stores them into memory. It's
-used to read both Lisp Programs and Lisp Data. It's part of every /Lisp System/
-and can be called just like any other input function. This means that it's
-trivial to write a Lisp Program to read another Lisp Program which it might want
-to analyze or transform. Lisp is perfect for metaprogramming, an extraordinarily
+The input function =read= parses characters into /symbolic-expressions/ and
+stores them into memory. It's used to read both Lisp Programs and Lisp Data.
+It's part of every /Lisp System/ and can be called just like any other function.
+It's trivial to write a Lisp Program to read another Lisp Program - perhaps to
+analyze or transform it. Lisp is great for [[https://en.wikipedia.org/wiki/Metaprogramming][metaprogramming]], an extraordinarily
 powerful programming technique!
 
 ** Lists and Vectors in Scheme and Racket
