@@ -1,0 +1,82 @@
+* Efficiency Issues with the Racket Programming Language
+
+This document is part of the [[https://github.com/GregDavidson/loel#readme][LOEL]] [[file:../README.org][Computing Magic]] Curriculum.
+
+** Compiled vs. Interpreted Language Implementations
+
+The Racket Languages are normally compiled to optimized machine code so Racket
+Programs run fast. The Library procedures your Racket program uses are also
+written in Racket, so Racket Programmers can easily study how they work, change
+them, write alternative procedures, etc. Racket rewards ambitious programmers.
+
+In contrast, Python code, executed by the (original and still most common)
+=cpython= interpreter tends to run 10-50 times slower than similar Racket code.
+Python libraries are therefore generally written in the C Language and carefully
+hand-optimized by C experts. Python library procedures are impossible for Python
+programmers to study, change or implement differently. Python programmers tend
+to be punished for being ambitious.
+
+All that being said, Racket is not the fastest compiled language. With the
+exception of Typed/Racket, the Racket System Languages are /dynamic languages/,
+which means that the compiler is generally unable to determine the type of a
+value before generating code to do something with it. The Racket Compiler often
+generates extra machine code to select the appropriate instructions when the
+program runs with, e.g. a vector rather than a list or an integer rather than a
+floating-point number.
+
+The Racket Compiler can produce slightly faster (and more compact) machine code
+programs from Typed/Racket than it can from dynamic Racket. This is considered a
+minor advantage. The big advantages of using Typed/Racket are
+1. an increase in reliability -- fewer bugs, this is huge!
+2. less time spent debugging! -- this is nice
+Some disadvantages of Typed/Racket are
+1. Extra learning to make good use of static types
+2. The compiler takes longer to translate Typed/Racket to Machine Code
+       - this is only a factor during development
+
+There are a number of simple tricks which a Racket Programmer can apply
+to make a Racket program more efficient.
+- [[https://docs.racket-lang.org/guide/performance.html][Performance in dynamic Racket]]
+- [[https://docs.racket-lang.org/ts-guide/optimization.html][Optimization of Typed/Racket]]
+Remember:
+- Avoid premature or gratuitous optimization!
+- Don't use these tricks unless you need to and you can measure their benefit!
+
+** Choosing Algorithms and Data Structures
+
+The performance differences between languages and compilers is trivial compared
+to the performance differences between alternative Algorithms. Note that some of
+the Algorithms are implemented as standalone procedures, e.g. /sort/ and some of
+them are part of the implementation of Composite Data Structures, e.g. /List/ or
+/Priority Queue/.
+
+Using good Algorithms can allow your program to run enormously faster compared
+to using naive Algorithms and Data Structures, but you won't notice until you're
+processing a large number of values. Consider the task of sorting a list with
+Insertion Sort (a naive algorithm) vs. Merge-Sort (an optimal algorithm):
+
+| Algorithm      | Complexity |
+|----------------+------------|
+| Insertion Sort | O(n*n)     |
+| Merge Sort     | O(n*log n) |
+
+
+| Algorithm      | List Size | Processing Steps  | Advantage            |
+|----------------+-----------+-------------------+----------------------|
+| Insertion Sort | 1,000     | 1,000,000         |                      |
+| Merge Sort     | 1,000     | 10,000            | 100 times faster     |
+|                |           |                   |                      |
+| Insertion Sort | 1,000,000 | 1,000,000,000,000 |                      |
+| Merge Sort     | 1,000,000 | 20,000,000        | 50,000 times faster  |
+
+
+The Racket Libraries generally use the most efficient algorithms. But you have to
+select the best ones depending on
+- How many values you're processing
+- The datatype of your values
+- The operations you're performing on them
+
+- Read [[https://github.com/GregDavidson/on-computing/blob/main/computing-efficiency.org][On Computing Efficiency]] to understand the basis for comparing algorithms
+- Read [[file:racket-composites.org][Racket Composite Data Structures]] to guide your choice of Composites
+
+And as always, avoid gratuitous complexity!
