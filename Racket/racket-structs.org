@@ -1,0 +1,91 @@
+* Racket Structures aka Records
+
+This document is part of the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]].
+
+Racket has several
+- [[file:racket-composites.org][Composite Data Structures]]
+of which Structures
+- [[https://docs.racket-lang.org/guide/define-struct.html][Structures (Guide)]]
+- [[https://docs.racket-lang.org/reference/structures.html][Structures (Reference)]]
+are among the most useful and ubiquitous.
+
+Alas, Racket support for structures is a bit of a mess.
+
+Racket provides several incomplete macro-based solutions for defining structure
+types along with a complex infrastructure with which programmers can roll their
+own or extend the existing solutions.
+
+Racket Structure-Defining Macros
+- =struct=
+- =struct/contract= -- allows a contract, e.g. a type, for each field
+- =serializable-struct= -- allows /limited/ automatic serialization
+As well as variants
+- =define-struct=
+- =define-serializable-struct=
+- =serializable-struct/versions=
+
+Structure Solution Common Properties
+- Can /extend/ one existing structure type
+- (except for #:prefab struct) /Generates a New Type/
+- For a structure with =n= fields
+      - Defines =n+2= functions
+      - Constructor, Predicate, =n= selectors
+- Immutable by default
+- Can be made mutable with =#:mutable= keyword
+      - Defines a mutation (setter) procedure for each field
+
+Limitations
+- Unnecessary keywords inconsistencies
+      - =define-struct/contract= only allows a subset of the struct-option keywords
+- Contract issues
+      - =struct= =#:guard= does nothing on mutation
+      - =struct/contract= is better for contracts
+            - nicer syntax
+            - contracts checked on creation and mutation
+            - but requires contract for each field
+- Serialization issues
+      - [all but prefab] Can't =read= a structure written with =write=
+- Prefab and serializable structures
+      - Serialization turns graphs trees
+            - shared objects are replaced with copies
+      - Fields have to be recursively serializable
+            - Many important values can't be serialized at all
+                  - Images, Procedures, et al
+- Mutability Issues
+      - Mutability is all-or-nothing for all fields
+- Extension Issues
+      - Inherited selectors and setters have super-type prefix name
+      - Base-type predicate is true for extended type -- this is a feature, but
+            - How do you test if something is an unextended instance?
+
+** Racket Structure Evolution Proposal
+
+*Opportunity to contribute to Racket!!!*
+
+Generalize these features into one structure-defining macro
+- Use keywords to provide any specialized features
+      - e.g. =#:serializable=
+- Use optional clauses around fields to provide
+      - Contracts
+      - Field-specific struct-option keywords
+            - Same as regular struct-options but just for that field
+            - Control of serialization method for that field
+
+Provide multiple-values in and out mechanism(s)
+- =(struct-values id structure field-names*)=
+      - returns a value for each specified /field-name/
+      - or for all fields is none are specified
+- =(set-struct-values! id structure field-names*)=
+      - returns a setter procedure expecting a value for each specified /field-name/
+      - or for all fields if none are specified
+- =(copy-struct-values! id structure field-names*)=
+      - returns a copying procedure expecting a value for each specified /field-name/
+      - or for all fields if none are specified
+- Syntactic sugar for =struct-values= wrapped in =let-values=
+      - maybe =(let-struct (id structure field-names+) forms+)=
+
+Allow /extending syntax/ to extend any racket datatype as a structure
+- Like adding property lists
+      - Subsumes existing =prop:procedure= /structure type property/
+- With =#:serializable type-id= creating a /proxy structure/
+      - including a serializable proxy for images, procedures, etc.
