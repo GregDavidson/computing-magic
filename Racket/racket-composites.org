@@ -1,5 +1,7 @@
 * Racket and Scheme Composite Data Structures
 
+This document is part of the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]].
+
 ** Essential Background
 
 We have two other documents which will provide the necessary background to
@@ -463,8 +465,10 @@ and reliability provided by the contracts you can attach to each field. The
 you make the structure =mutable=. Racket structures default to non-mutable, but
 you can change that with the =#:mutable= option.
 
-See [[https://docs.racket-lang.org/guide/define-struct.html][Programmer-Defined Datatypes]] in the [[https://docs.racket-lang.org/guide][Racket Guide]] for an overview of Racket
-Structure Types.
+Resources on Racket Structures:
+- [[file:racket-structs.org][Racket-Structs]] :: our take on Racket Structures
+- [[https://docs.racket-lang.org/guide/define-struct.html][Introduction to Racket Structures]] :: in the Racket Guide
+- [[https://docs.racket-lang.org/reference/structures.html][Details of Racket Structures]] :: in the Racket Reference
 
 ** More Composite Types!
 
