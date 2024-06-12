@@ -36,7 +36,8 @@ Structure Solution Common Properties
 
 Limitations
 - Unnecessary keywords inconsistencies
-      - =define-struct/contract= only allows a subset of the struct-option keywords
+      - =define-struct/contract= only allows a subset of the struct-option
+        keywords
 - Contract issues
       - =struct= =#:guard= does nothing on mutation
       - =struct/contract= is better for contracts
@@ -45,6 +46,12 @@ Limitations
             - but requires contract for each field
 - Serialization issues
       - [all but prefab] Can't =read= a structure written with =write=
+- Prefab Issues
+      - Can only inherit from other prefab structures
+      - Does not create a new type, but...
+      - "Exactly one prefab structure type exists for each combination of name,
+        supertype, field count, automatic field count, automatic field value
+        (when there is at least one automatic field), and field mutability."
 - Prefab and serializable structures
       - Serialization turns graphs trees
             - shared objects are replaced with copies
@@ -89,3 +96,10 @@ Allow /extending syntax/ to extend any racket datatype as a structure
       - Subsumes existing =prop:procedure= /structure type property/
 - With =#:serializable type-id= creating a /proxy structure/
       - including a serializable proxy for images, procedures, etc.
+
+It would be good to provide a keyword which would create synonyms for any
+inherited field selectors and accessors using the subtype prefix.
+
+It would be good to provide a predicate for each structure type which would test
+whether a particular structure was actually of that type, rather than of a
+structure type inheriting from that type.
