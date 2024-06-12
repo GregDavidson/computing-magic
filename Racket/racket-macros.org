@@ -73,7 +73,7 @@ Evaluate ~(sum-of-squares 3 4)~ in top-level environment
       - 3 => 3
       - 4 => 4
 - Apply ~(λ x y) (+ (* x x) (* y y))~ to ~(3 4)~
-- An temporary nested environment is created
+- A temporary nested environment is created
       - It's nested, so + and * are still bound to the usual procedures
       - But we add bindings for ~(x . 3)~ and ~(y . 4)~
 - Evaluate ~(+ (* x x) (* y y))~ in nested environment
