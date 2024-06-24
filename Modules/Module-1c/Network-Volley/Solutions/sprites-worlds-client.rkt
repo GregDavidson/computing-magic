@@ -4,9 +4,14 @@
 ;; The file sprites-words-games.rkt provides
 ;; - a description of the game
 ;; - struct sprite-proxy
-;; - and some more require forms
+;; - additional require forms
+(require 2htdp/universe)
+(require rackunit) ; assertions
+(require racket/serialize)
+(require uuid) ; univerally unique identifiers
 (require "sprites-worlds-game.rkt")
 (require 2htdp/image)
+(require (except-in racket/draw make-color make-pen))
 
 ;; ** Our Canvas and Our Color
 
@@ -14,9 +19,36 @@
 (define CANVAS-HEIGHT 300) ; pixels
 (define EMPTY-CANVAS (empty-scene CANVAS-WIDTH CANVAS-HEIGHT))
 
-;; *our-color* should be set via a S2W-COLOR
+ color-names
+'#(
+  "red" "yellow" "green" "blue" "purple" "orange" "brown" "fuchsia"
+  "skyblue" "yellowgreen" "navy" "aquamarine" "azure" "goldenrod" "coral" "chartreuse"
+  "lime" "cornflowerblue" "indigo" "crimson" "forestgreen" "cyan" "hotpink" "lavender"
+  "olive" "salmon" "turquoise" "silver" "indianred" "royalblue" "magenta" "pink"
+  "teal" "violet"
+  )
+
+(define *our-color* #f)
+(define (set-our-color c)
+  (if *our-color*
+      (eprintf "~a already set to ~a" '*our-color* *our-color*)
+      (set! *our-color*
+            (cond [(image-color? c)]
+                  [(natural? c)
+                   (set-our-color vector-index (remainder (- n 1) (vector-length color-names)) color-names) ]
+                  [else (error "bad color or index ~a" c)] ) ) ) )
+
+;; *our-client-number* should be set via a S2W-CLIENT
 ;; message before any sprites are created.
-(define *our-color* 'tbd)
+(define *our-client-number* #f)
+(define (set-our-client-number n)
+  (if *our-client-number*
+      (eprintf "~a already set to ~a" '*our-client-number* *our-client-number*)
+      (set! *our-client-number* n) ) )
+
+;; EXERCISE: Select colors that are maximally distinct
+;; using a colorspace model from package color.
+;; (require color)
 
 ;; ** Sprites
 
@@ -284,7 +316,7 @@
 ;; – (make-package WorldState Mail)
 
 ;; MailActions are (or/c NEW-SPRITE MUTATE-SPRITE DROP-SPRITE)
-;; Mail is either (list S2W-COLOR image-color?)
+;; Mail is either (list S2W-CLIENT natural?)
 ;; or it is (cons/c MailActions (listof (or/c MailActions sprite?))
 ;; that is, a list of action symbols followed by sprites.
 ;; The action will be applied to the sprites which follow the action.
@@ -348,12 +380,12 @@
   (if (null? mail) ; no actions?
       state        ; return the state unchanged
       (let ( [action (car mail)] [values (cdr mail)] )
-        (if (eq? action S2W-COLOR)
+        (if (eq? action S2W-CLIENT)
             (begin
-              (unless (= 1 (length values)) (error "bad ~a message ~a" S2W-COLOR mail))
-              (let ( [color (car values)] )
-                (unless (image-color? color) (error "bad color ~a in ~a" color mail))
-                (set! *our-color* color)
+              (unless (= 1 (length values)) (error "bad ~a message ~a" S2W-CLIENT mail))
+              (let ( [number (car values)] )
+                (set-our-client-number number)
+                (set-our-color (- number 1))
                 state ) )
             (sprites (sprites-ours state) (update-sprites mail (sprites-theirs state))) ) ) ) )
 

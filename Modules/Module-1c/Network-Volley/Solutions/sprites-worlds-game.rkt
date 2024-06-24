@@ -1,25 +1,33 @@
 #lang racket
 ;; * Multiple Worlds Sprites Game Protocol and Overview
 
-(require 2htdp/universe)
-(require rackunit) ; assertions
-(require uuid) ; univerally unique identifiers
 (require racket/serialize)
+(require uuid) ; univerally unique identifiers
 
 ;; The definition of struct sprite-proxy is at the end of the file;
 ;; everything else beyond this section is comments!
 (provide sprite-proxy)
-
-(provide W2S-PASS W2S-STOP S2W-COLOR)
+(provide W2S-PASS W2S-DONE S2W-COLOR S2W-CLIENT)
 
 ;; W2S messages are sent from a World to the Server
-(define W2S-PASS 'pass)  ;; we've lost our sprites
-(define W2S-STOP 'done)  ;; we're done, goodbye!
 
+;; Does the server need to know this?  Maybe notify
+;; other clients instead??
+(define W2S-PASS 'pass)  ;; we've lost our sprites
+
+(define W2S-DONE 'done)  ;; detach us!
+
+;; Obsoleted by S2W-CLIENT??
 ;; S2W messages are sent from the Server to a World
 ;; S2W-COLOR should only be sent at the beginning of a message
-;; preceeding any sprite creation
+;; preceeding any sprite creation.
 (define S2W-COLOR 'set-color)  ;; establish our color
+
+;; S2W-CLIENT messages assign the smallest available
+;; non-negative integer uniquely identifying a new client.
+;; When a client detaches their number becomes available
+;; for reassignment.
+(define S2W-CLIENT 'set-client-number)
 
 ;; ** Key Concepts
 

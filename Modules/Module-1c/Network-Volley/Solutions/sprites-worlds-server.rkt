@@ -1,12 +1,19 @@
 #lang racket
 
-;; * Multiple Worlds Multiple Sprites Universe Server
+;; * Multiple Worlds Universe Server
 
 ;; The file sprites-words-games.rkt provides
 ;; - a description of the game
-;; - struct sprite-proxy
-;; - and some more require forms
+;; - inter-client protocol information
+;; - additional require forms
 (require "sprites-worlds-game.rkt")
+
+;; The goal is to have this Server know as little
+;; about any specific game as possible.  It should
+;; - Welcome new clients with a S2W-CLIENT message.
+;; - Detach client on receipt of a W2S-STOP message.
+;; Eventually this will evolve into a general-purpose
+;; coordination server.
 
 ;; Library Concepts:
 ;; a world - a client program
@@ -29,8 +36,8 @@
 
 ;; UniverseState: [Listof iworld?]
 ;; Our mail Messages:
-(define GoMessage 'it-is-your-turn) ;  S2W = Server to World
-(define StopMessage 'done) ; W2S = World to Server
+;; (define GoMessage 'it-is-your-turn) ;  S2W = Server to World
+;; (define StopMessage 'done) ; W2S = World to Server
 
 ;; States and Actions
 
@@ -61,4 +68,7 @@
                  '() ) ) )
 
 ;; Start the server
-(universe '() [on-new add-world] [on-msg switch])
+(universe '()
+          #;[state #f] ; suppress opening separate state window
+          [on-new add-world]
+          [on-msg switch] )
