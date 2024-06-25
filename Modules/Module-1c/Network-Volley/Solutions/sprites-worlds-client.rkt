@@ -19,14 +19,17 @@
 (define CANVAS-HEIGHT 300) ; pixels
 (define EMPTY-CANVAS (empty-scene CANVAS-WIDTH CANVAS-HEIGHT))
 
- color-names
-'#(
-  "red" "yellow" "green" "blue" "purple" "orange" "brown" "fuchsia"
-  "skyblue" "yellowgreen" "navy" "aquamarine" "azure" "goldenrod" "coral" "chartreuse"
-  "lime" "cornflowerblue" "indigo" "crimson" "forestgreen" "cyan" "hotpink" "lavender"
-  "olive" "salmon" "turquoise" "silver" "indianred" "royalblue" "magenta" "pink"
-  "teal" "violet"
-  )
+;; Choose colors which will, for any number of clients, be maximally
+;; distinguishable. Uses may have color blindness so be use additional methods
+;; (labels, textures, etc.) where visual differentiation is required.
+ (define color-names
+   #( ; a vector, indexable by client number
+     'red 'yellow 'green 'blue 'purple 'orange 'brown 'fuchsia
+     'skyblue 'yellowgreen 'navy 'aquamarine 'azure 'goldenrod 'coral 'chartreuse
+     'lime 'cornflowerblue 'indigo 'crimson 'forestgreen 'cyan 'hotpink 'lavender
+     'olive 'salmon 'turquoise 'silver 'indianred 'royalblue 'magenta 'pink
+     'teal 'violet
+     ) )
 
 (define *our-color* #f)
 (define (set-our-color c)
@@ -81,10 +84,11 @@
 ;; the corresponding sprite field is irrelevant, i.e. not requiring an update.
 (serializable-struct
  sprite-proxy (uuid image x y dx dy on-tick on-key to-draw)
- #:guard (struct-guard/c strict-uuid-string? (or/c #f string? symbol?)
-                         (or/c #f natural?) (or/c #f natural?)
-                         (or/c #f integer?) (or/c #f integer?)
-                         (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) )
+ #:guard (struct-guard/c
+          strict-uuid-string? (or/c #f string? symbol?)
+          (or/c #f natural?) (or/c #f natural?)
+          (or/c #f integer?) (or/c #f integer?)
+          (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) )
  #:transparent )
 
 ;; ** Transmitting Sprites
@@ -112,17 +116,18 @@
 ;; We need a place to associate
 ;; - the keys (path strings or procedure names)
 ;; - with the original sprite values
-;; for each of the sprite fields that won't serialize
+;; for each of the sprite fields that won't serialize.
 
-;; We can use association lists.  And since they're associated
-;; with specific sprite structure fields, we'll just use a global
+;; We can use association lists.  Since they're associated
+;; with specific sprite structure fields, we'll use a global
 ;; structure as a central registry:
 (struct/contract
   registry (
             ;; To support dynamic loading of images, we could allow the
             ;; image to be #f until it's needed.  Then it can be created
             ;; from its procedure or loaded from its filesystem path.
-            [image (listof (cons/c (or/c string? symbol?) (or/c image? procedure? string? #f)))]
+            [image (listof (cons/c (or/c string? symbol?)
+                                   (or/c image? procedure? string? #f) ))]
             [on-tick (listof (cons/c symbol? procedure?))]
             [on-key (listof (cons/c symbol? procedure?))]
             [to-draw (listof (cons/c symbol? procedure?))] )
@@ -159,20 +164,26 @@
   (let ( [found (registry-find (λ (pair) (equal? val (second pair))) getter)] )
     (and found (first found)) ) )
 
+;; Load a bitmap from a file, cache (save) it in the registry
+;; and return it. What happens if there's no image at that path?
+(define (bitmap/file/cache path)
+  (let ( [image (bitmap/file path)] )
+    (register-key-val key image registry-image set-registry-image!)
+    image ) )
+
 ;; Given a path or symbol as a key, return the associated image
 ;; and ensure it's registered.
 (define (get-image key)
   (let ( [found (key->val key registry-image)] )
     (cond [(image? found) found]
-          [(procedure? found) (found *our-color*)]
-          [(string? found) (bitmap/file found)]
-          [(string? key) (let ( [image (bitmap/file key)] )
-                           (register-key-val key image registry-image set-registry-image!)
-                           image )] ) ) )
+          [(procedure? found) (found *our-color*)] ; cache it??
+          [(string? found) (bitmap/file/cache found)]
+          [(string? key) (bitmap/file/cache key)]
+          [else (eprintf "Can't get image from ~a\n" key) #f] ) ) )
 
 ;; Given a sprite, convert it to a proxy which can be serialized
-;; for transmission across a byte stream.  If any needed values
-;; were not registered, #f will be substituted!!
+;; for transmission across a byte stream.  #f will be substituted
+;; for any unknown values!!
 (define (sprite->proxy s)
   (sprite-proxy
    (sprite-uuid s)
@@ -182,7 +193,7 @@
    (val->key (sprite-on-key s) registry-on-key)
    (val->key (sprite-to-draw s) registry-to-draw) ) )
 
-;; Given a sprite-proxy, convert it to a 
+;; Given a sprite-proxy, convert it to a
 ;; This returns a new sprite, even if there's already a sprite
 ;; with this uuid.  You'll have to update any such sprite with
 ;; any non-#f values of the new sprite!!
@@ -239,7 +250,7 @@
                                (begin
                                  (error "no on-tick in ~a" sp)
                                  (sprite-on-tick s) ) )) )
-  (when (sprite-proxy-on-key sp)  
+  (when (sprite-proxy-on-key sp) 
     (set-sprite-on-key! s (or (key->val (sprite-proxy-on-key sp) registry-on-key)
                               (begin
                                 (error "no on-key in ~a" sp)
@@ -331,40 +342,41 @@
 (define (update-sprites actions sprites)
   ;; process the actions with mutually recursive functions
   ;; letrec creates a common scope for all of its bindings
-  (letrec (
-           ;; which function should process the proxies?
-           [switch (λ (action proxies sprites)
-                     (cond [(eq? action NEW-SPRITE) (call new proxies sprites)]
-                           [(eq? action MUTATE-SPRITE) (call mutate proxies sprites)]
-                           [(eq? action DROP-SPRITE) (call drop proxies sprites)]
-                           [else (error "bad action ~a in message ~a" action proxies)] ) )]
-           ;; we have a handler, do we have any proxies to apply?
-           [call (λ (handler actions sprites)
-                   (if (null? actions)
-                       sprites
-                       (handler actions sprites) ) )]
-           ;; add any new proxies as sprites
-           [new (λ (actions sprites)
-                  (let ( [first (car actions)] [rest (cdr actions)] )
-                    (if (sprite-proxy? first)
-                        (new rest (cons (proxy->sprite first) sprites))
-                        (switch first rest sprites) ) ) )]
-           ;; drop any sprites with these uuids
-           [drop (λ (actions sprites)
-                   (let ( [first (car actions)] [rest (cdr actions)] )
-                     (if (sprite-proxy? first)
-                         (drop rest (remove (λ (s) (eq? (sprite-proxy-uuid first) (sprite-uuid s)))
-                                            sprites ))
-                         (switch first rest sprites) ) ) )]
-           ;; mutate any sprites with these uuids and new field values
-           [mutate (λ (actions sprites)
-                     (let ( [first (car actions)] [rest (cdr actions)] )
-                       (if (sprite-proxy? first)
-                           (let* ( [uuid (sprite-proxy-uuid first)]
-                                   [s (findf (λ (s) (eq? uuid (sprite-uuid s))) sprites)] )
-                             (mutate-sprite-from-proxy! s first)
-                             (mutate rest sprites) )
-                           (switch first rest sprites) ) ) )] )
+  (letrec
+      (
+       ;; which function should process the proxies?
+       [switch (λ (action proxies sprites)
+                 (cond [(eq? action NEW-SPRITE) (call new proxies sprites)]
+                       [(eq? action MUTATE-SPRITE) (call mutate proxies sprites)]
+                       [(eq? action DROP-SPRITE) (call drop proxies sprites)]
+                       [else (error "bad action ~a in message ~a" action proxies)] ) )]
+       ;; we have a handler, do we have any proxies to apply?
+       [call (λ (handler actions sprites)
+               (if (null? actions)
+                   sprites
+                   (handler actions sprites) ) )]
+       ;; add any new proxies as sprites
+       [new (λ (actions sprites)
+              (let ( [first (car actions)] [rest (cdr actions)] )
+                (if (sprite-proxy? first)
+                    (new rest (cons (proxy->sprite first) sprites))
+                    (switch first rest sprites) ) ) )]
+       ;; drop any sprites with these uuids
+       [drop (λ (actions sprites)
+               (let ( [first (car actions)] [rest (cdr actions)] )
+                 (if (sprite-proxy? first)
+                     (drop rest (remove (λ (s) (eq? (sprite-proxy-uuid first) (sprite-uuid s)))
+                                        sprites ))
+                     (switch first rest sprites) ) ) )]
+       ;; mutate any sprites with these uuids and new field values
+       [mutate (λ (actions sprites)
+                 (let ( [first (car actions)] [rest (cdr actions)] )
+                   (if (sprite-proxy? first)
+                       (let* ( [uuid (sprite-proxy-uuid first)]
+                               [s (findf (λ (s) (eq? uuid (sprite-uuid s))) sprites)] )
+                         (mutate-sprite-from-proxy! s first)
+                         (mutate rest sprites) )
+                       (switch first rest sprites) ) ) )] )
     (if (null? actions) ; no actions?
         sprites           ; just return the sprites unchanged
         (let ( [action (car actions)] [values (cdr actions)] )
@@ -376,18 +388,17 @@
 ;; Return an updated WorldState
 ;; - possibly including Return Mail
 (define (receive state mail)
-  (unless (list? mail) (error "bad mail ~a" mail))
-  (if (null? mail) ; no actions?
-      state        ; return the state unchanged
-      (let ( [action (car mail)] [values (cdr mail)] )
-        (if (eq? action S2W-CLIENT)
-            (begin
-              (unless (= 1 (length values)) (error "bad ~a message ~a" S2W-CLIENT mail))
-              (let ( [number (car values)] )
+  (cond [(not (list? mail)) (error "bad mail ~a" mail)]
+        [(null? mail) state] ; no actions, return state unchanged
+        [(eq? (first mail) S2W-CLIENT)
+              (unless (= 2 (length mail)) (error "bad mail ~a" mail))
+              (let ( [number (second mail)] )
+                (unless (natural? number) (error "bad client number ~a" number))
                 (set-our-client-number number)
                 (set-our-color (- number 1))
-                state ) )
-            (sprites (sprites-ours state) (update-sprites mail (sprites-theirs state))) ) ) ) )
+                state ) ]
+        [else (sprites (sprites-ours state)
+                       (update-sprites mail (sprites-theirs state)) )] ) )
 
 ;; ** Action Procedures and Functions
 
@@ -395,15 +406,19 @@
 (define DY-BOOST 5)
 (define DY-FALLING 2)
 
-;; decay moves a value closer to its target value
-;; used to decay any boost, i.e. to have the boost wear out
-(define (decay value target)
-  (cond [(> value target) (- value 1)]
-        [(< value target) (+ value 1)]
+;; decay moves a value closer to its target value,
+;; i.e. it makes boosts decay.
+(define (decay value target [step 1])
+  (cond [(> value target) (- value step)]
+        [(< value target) (+ value step)]
         [else value] ) )
 
+;; Why add text to the ball? (How common is color blindness?)
+;; We could use the provided name instead (or in addition to) the
+;; number.  How can you better center the text on the ball??
 (define (make-ball color)
-  (circle 20 "solid" *our-color*) )
+  (overlay (text (number->string *our-client-number*) 10 'black)
+           (circle 20 "solid" color) ) )
 (register-key-val 'make-ball make-ball registry-image set-registry-image!)
 
 (define (on-canvas? image x y)
@@ -411,8 +426,8 @@
        (< 0 y (- CANVAS-HEIGHT (image-height image))) ) )
 
 ;; WorldState -> ActionList
-;; update the sprite's coordinates on each clock tick
-;; drop it if no longer on-canvas
+;; update the sprite's coordinates;
+;; drop it if it's no longer on-canvas;
 ;; decay any velocity boosts
 (define (move-sprite s)
   (let ( [image (sprite-image s)]
@@ -430,10 +445,14 @@
 ;; apply any boosts to its velocity
 (define (boost-sprite-on-key s k)
   (cond
-    [(key=? k "up") (list MUTATE-SPRITE (make-proxy s #:dy (+ (sprite-dy s) DY-BOOST)))]
-    [(key=? k "down") (list MUTATE-SPRITE (make-proxy s #:dy (- (sprite-dy s) DY-BOOST)))]
-    [(key=? k "right") (list MUTATE-SPRITE (make-proxy s #:dx (+ (sprite-dx s) DX-BOOST)))]
-    [(key=? k "down") (list MUTATE-SPRITE (make-proxy s #:dx (- (sprite-dx s) DX-BOOST)))]
+    [(key=? k "up") (list MUTATE-SPRITE
+                          (make-proxy s #:dy (+ (sprite-dy s) DY-BOOST)) )]
+    [(key=? k "down") (list MUTATE-SPRITE
+                            (make-proxy s #:dy (- (sprite-dy s) DY-BOOST)) )]
+    [(key=? k "right") (list MUTATE-SPRITE
+                             (make-proxy s #:dx (+ (sprite-dx s) DX-BOOST)) )]
+    [(key=? k "down") (list MUTATE-SPRITE
+                            (make-proxy s #:dx (- (sprite-dx s) DX-BOOST)) )]
     [else '()] )
  )
 (register-key-val 'boost-sprite-on-key boost-sprite-on-key registry-on-key set-registry-on-key!)
@@ -456,7 +475,8 @@
 
 ;; ** big-bang callback procedures
 
-;; return updated sprites composed of all sprites returned by updates
+;; Return updated sprites composed of all sprites returned by updates.
+;; How might grouping actions by ACTION symbol impact efficiency??
 (define (gather-actions-on-tick sprites)
   (foldr append ; append together all the returned action lists
          '()    ; starting with none
@@ -497,7 +517,7 @@
          (sprites-ours world) ) )
 
 ; String -> WorldState
-; create and hook up a world
+; create a world, hook it up to a server and start it running
 (define (create-world a-name [server LOCALHOST])
   (when (symbol? a-name) (set! a-name (symbol->string a-name)))
   (big-bang INITIAL-STATE
@@ -505,7 +525,7 @@
    [to-draw draw-world]
    [on-key update-world-on-key]
    [on-tick update-world-on-tick 1/30]
-   [name  a-name]
+   [name a-name]
    [register server] ) )
 
 (define (go [server LOCALHOST]) (launch-many-worlds (create-world "Eti" server)
