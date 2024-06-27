@@ -1,33 +1,60 @@
 #lang racket
 ;; * Multiple Worlds Sprites Game Protocol and Overview
 
+;; This file provides both the Universe Server and the World Clients with the
+;; protocol which connects them.
+
 (require racket/serialize)
 (require uuid) ; univerally unique identifiers
 
-;; The definition of struct sprite-proxy is at the end of the file;
-;; everything else beyond this section is comments!
+;; The definition of struct sprite-proxy is at the end of the file
+;; after a lot of comments!
 (provide sprite-proxy)
-(provide W2S-PASS W2S-DONE S2W-COLOR S2W-CLIENT)
+(provide W2U-EMPTY W2U-DONE)
+(provide U2W-WELCOME)
+(provide welcome? make-welcome welcome-alist welcome-world-number)
 
-;; W2S messages are sent from a World to the Server
+;; W2U messages are sent from a World Client to the Universe Server
 
 ;; Does the server need to know this?  Maybe notify
 ;; other clients instead??
-(define W2S-PASS 'pass)  ;; we've lost our sprites
+(define W2U-EMPTY 'empty)  ;; we've lost our sprites
 
-(define W2S-DONE 'done)  ;; detach us!
+(define W2U-DONE 'done)  ;; detach us!
 
-;; Obsoleted by S2W-CLIENT??
-;; S2W messages are sent from the Server to a World
-;; S2W-COLOR should only be sent at the beginning of a message
-;; preceeding any sprite creation.
-(define S2W-COLOR 'set-color)  ;; establish our color
+;; U2W-WELCOME messages provide information for a new
+;; world in the form of an association list.
+;; They should always provide a natural? number to
+;; uniquely identify that world.
+(define U2W-WELCOME 'welcome)
+(define WORLD-NUMBER-KEY 'world-number)
 
-;; S2W-CLIENT messages assign the smallest available
-;; non-negative integer uniquely identifying a new client.
-;; When a client detaches their number becomes available
-;; for reassignment.
-(define S2W-CLIENT 'set-client-number)
+;; Is alist an association list whose keys are all symbols?
+(define (symbol-key-alist? alist)
+  (and (or (null? alist) (pair? alist))
+       (pair? (car alist)) (symbol? (caar alist))
+       (alist (cdr alist)) ) )
+
+(define (welcome? message)
+  (and (pair? message)
+       (eq? U2W-WELCOME (car message))
+       (let ( [wn ((assoc WORLD-NUMBER-KEY))] )
+         (and wn (natural? (cdr wn))) )
+       (symbol-key-alist? (cdr message))) )
+
+(define (make-welcome n . alist)
+  (unless (natural? n) (error "invalid world-number ~a" n))
+  (unless (symbol-key-alist? alist) (error "invalid alist ~a" alist))
+  (cons (cons WORLD-NUMBER-KEY n) alist) )
+
+(define (welcome-alist welcome)
+  (unless (welcome? welcome) (error "invalid welcome ~a" welcome))
+  (cdr welcome) )
+
+(define (welcome-world-number welcome)
+  (let ( [number (assoc WORLD-NUMBER-KEY (welcome-alist))] )
+    (unless (natural? number) (error "invalid world number ~a in ~a" number welcome))
+    (assoc WORLD-NUMBER-KEY (welcome-alist)) ) )
 
 ;; ** Key Concepts
 
@@ -51,27 +78,30 @@
 
 ;; ** Simplest Version of Game
 
+;; - Each world has its own unique World Number.
 ;; - Each world has its own unique color.
 ;; - Each world has one sprite of its color.
 ;; - The server will give a new sprite to any world that
 ;;   does not have one.
-;; - All sprites are simple balls.
-;; - The balls start at the top of the canvas
-;;   and fall.
-;; - If a ball reaches the bottom or any other
-;;   edge of the canvas it will be lost.
+;; - Initially all sprites are balls labeled with their World Number.
+;; - The balls start at the top of the canvas and fall at a constant velocity.
+;; - A sprite is lost if it reaches the edge of the canvas.
+;;   - Users can avoid this!
 
 ;; As a user
-;; - We see all sprites of all worlds in their colors.
-;;   - They're spaced horizontally.
-;; - We can use the arrow keys to give velocity boosts
-;;   to our ball in any direction.
-;; - Any velocity beyond simple falling will decay.
+;; - We see all sprites of all worlds.
+;; - We can use the left/right arrow keys to move our ball left or right.
+;; - We can use the up/down arrow keys to give up/down velocity boosts
+;;   to our ball.
+;; - Velocity boosts will decay back to the original constant falling velocity.
+;; - Careful boosting can keep our balls away from edges.
+;; - Over-boosting can cause balls to collide with the edges!
 
 ;; ** Possible Game Enhancements
 
-;; Allow velocity changes in any direction
+;; Allow persistent velocity changes in any direction
 ;; - Our sprite structures are already designed for this!
+;; Add gravity to accelerate falling!
 
 ;; Gifting Sprites!
 ;; - Have an action to give our sprite to a world needing one
@@ -96,7 +126,6 @@
 ;;   - Maybe upon succesfully giving one away you get
 ;;     a more interesting new one!
 ;; - Allow some surfaces to bounce sprites
-;; - Add gravity to accelerate falling.
 ;; - Allow sprites to interact with sprites of other worlds
 ;;   - Momentum exchanges and/or destructive interactions!
 
@@ -125,3 +154,5 @@
                          (or/c #f integer?)   (or/c #f integer?)
                          (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) )
  #:transparent )
+
+;; ** Notes

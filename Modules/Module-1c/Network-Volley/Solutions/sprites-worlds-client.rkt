@@ -13,6 +13,20 @@
 (require 2htdp/image)
 (require (except-in racket/draw make-color make-pen))
 
+;; ** Client-Side Library Types
+
+;; The WorldState is defined by the Client
+;; and passed to and received from all handler
+;; procedures.
+
+;; Handler procedures can either return
+;; - a bare WorldState
+;; - a package
+
+;; package - a structure consisting of
+;; - a World State
+;; - a serializable symbolic expression to send to the Server
+
 ;; ** Our Canvas and Our Color
 
 (define CANVAS-WIDTH 400) ; pixels
@@ -41,7 +55,7 @@
                    (set-our-color vector-index (remainder (- n 1) (vector-length color-names)) color-names) ]
                   [else (error "bad color or index ~a" c)] ) ) ) )
 
-;; *our-client-number* should be set via a S2W-CLIENT
+;; *our-client-number* should be set via a U2W-WELCOME
 ;; message before any sprites are created.
 (define *our-client-number* #f)
 (define (set-our-client-number n)
@@ -327,7 +341,7 @@
 ;; – (make-package WorldState Mail)
 
 ;; MailActions are (or/c NEW-SPRITE MUTATE-SPRITE DROP-SPRITE)
-;; Mail is either (list S2W-CLIENT natural?)
+;; Mail is either (list U2W-WELCOME natural?)
 ;; or it is (cons/c MailActions (listof (or/c MailActions sprite?))
 ;; that is, a list of action symbols followed by sprites.
 ;; The action will be applied to the sprites which follow the action.
@@ -390,13 +404,13 @@
 (define (receive state mail)
   (cond [(not (list? mail)) (error "bad mail ~a" mail)]
         [(null? mail) state] ; no actions, return state unchanged
-        [(eq? (first mail) S2W-CLIENT)
-              (unless (= 2 (length mail)) (error "bad mail ~a" mail))
+        [(eq? (first mail) U2W-WELCOME)
+         (let ( [number (assoc 'number (rest mail))] )
+              (unless (natural? number) (error "no number in ~a" mail))
               (let ( [number (second mail)] )
-                (unless (natural? number) (error "bad client number ~a" number))
                 (set-our-client-number number)
-                (set-our-color (- number 1))
-                state ) ]
+                (set-our-color number)
+                state ) ) ]
         [else (sprites (sprites-ours state)
                        (update-sprites mail (sprites-theirs state)) )] ) )
 
