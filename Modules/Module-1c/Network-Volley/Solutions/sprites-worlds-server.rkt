@@ -68,10 +68,10 @@
 ;; Universe u which is unused, i.e. #f.
 ;; If there are none, return the index which
 ;; is one beyond the last, which is given
-;; by gvector-size.
+;; by gvector-count.
 (define (universe-next u)
   (let loop ( [i 0] )
-    (if (or (= i (gvector-size u)) (not (gvector-ref u i)))
+    (if (or (= i (gvector-count u)) (not (gvector-ref u i)))
         i
         (loop (+ 1 i)) ) ) )
 
@@ -80,14 +80,16 @@
 ;; Note: It would be nice if we could pull the
 ;; World Number out of the iWorld structure!!
 (define (universe-world-index u w)
-  (let loop ( [i 0] )e
-    (cond [(= i (gvector-size u)) #f]
+  (eprintf "universe-world-index ~a ~a\n" u w)
+  (let loop ( [i 0] )
+    (eprintf "i: ~a\n" i)
+    (cond [(= i (gvector-count u)) #f]
           [(not (gvector-ref u i)) (loop (+ 1 i))]
-          [(iWorld=? w (gvector-ref u i)) i] ) ) )
+          [(iworld=? w (gvector-ref u i)) i] ) ) )
 
 ;; Add World w to Universe u, modifying u.
 (define (universe-add! u w)
-  (gvector-add gv (universe-next u) w) )
+  (gvector-set! u (universe-next u) w) )
 
 ;; Drop World at index i from Universe u, modifying u.
 (define (universe-drop! u i)
@@ -121,10 +123,10 @@
 ;; - a list of any worlds to remove
 (define (handle-world-msg universe world message)
   (let ( [world-number (universe-world-index universe world)]
-         [msg-head (car message)] )
-    (cond [(eq? W2U-DROP msg-head)
+         [msg-head (message-head message)] )
+    (cond [(eq? W2U-DONE msg-head)
            (universe-drop! universe world-number)
-           (make-bundle universe return-msgs (list world)) ]
+           (make-bundle universe '() (list world)) ]
           [else universe] ) ) )
 
 ;; Start the server

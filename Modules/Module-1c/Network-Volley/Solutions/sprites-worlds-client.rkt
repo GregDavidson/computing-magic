@@ -38,11 +38,11 @@
 ;; (labels, textures, etc.) where visual differentiation is required.
  (define color-names
    #( ; a vector, indexable by client number
-     'red 'yellow 'green 'blue 'purple 'orange 'brown 'fuchsia
-     'skyblue 'yellowgreen 'navy 'aquamarine 'azure 'goldenrod 'coral 'chartreuse
-     'lime 'cornflowerblue 'indigo 'crimson 'forestgreen 'cyan 'hotpink 'lavender
-     'olive 'salmon 'turquoise 'silver 'indianred 'royalblue 'magenta 'pink
-     'teal 'violet
+     red yellow green blue purple orange brown fuchsia
+     skyblue yellowgreen navy aquamarine azure goldenrod coral chartreuse
+     lime cornflowerblue indigo crimson forestgreen cyan hotpink lavender
+     olive salmon turquoise silver indianred royalblue magenta pink
+     teal violet
      ) )
 
 (define *our-color* #f)
@@ -50,18 +50,19 @@
   (if *our-color*
       (eprintf "~a already set to ~a" '*our-color* *our-color*)
       (set! *our-color*
-            (cond [(image-color? c)]
+            (cond [(image-color? c) c]
                   [(natural? c)
-                   (set-our-color vector-index (remainder (- n 1) (vector-length color-names)) color-names) ]
+                   (set-our-color (vector-ref color-names (remainder c (vector-length color-names))))
+                   (eprintf "~a: ~a\n" '*our-color* *our-color*)]
                   [else (error "bad color or index ~a" c)] ) ) ) )
 
-;; *our-client-number* should be set via a U2W-WELCOME
+;; *our-world-number* should be set via a U2W-WELCOME
 ;; message before any sprites are created.
-(define *our-client-number* #f)
-(define (set-our-client-number n)
-  (if *our-client-number*
-      (eprintf "~a already set to ~a" '*our-client-number* *our-client-number*)
-      (set! *our-client-number* n) ) )
+(define *our-world-number* #f)
+(define (set-our-world-number n)
+  (if *our-world-number*
+      (eprintf "~a already set to ~a" '*our-world-number* *our-world-number*)
+      (set! *our-world-number* n) ) )
 
 ;; EXERCISE: Select colors that are maximally distinct
 ;; using a colorspace model from package color.
@@ -182,7 +183,7 @@
 ;; and return it. What happens if there's no image at that path?
 (define (bitmap/file/cache path)
   (let ( [image (bitmap/file path)] )
-    (register-key-val key image registry-image set-registry-image!)
+    (register-key-val path image registry-image set-registry-image!)
     image ) )
 
 ;; Given a path or symbol as a key, return the associated image
@@ -402,17 +403,22 @@
 ;; Return an updated WorldState
 ;; - possibly including Return Mail
 (define (receive state mail)
+  (eprintf "1. mail: ~a\n" mail)
   (cond [(not (list? mail)) (error "bad mail ~a" mail)]
         [(null? mail) state] ; no actions, return state unchanged
-        [(eq? (first mail) U2W-WELCOME)
-         (let ( [number (assoc 'number (rest mail))] )
-              (unless (natural? number) (error "no number in ~a" mail))
-              (let ( [number (second mail)] )
-                (set-our-client-number number)
-                (set-our-color number)
-                state ) ) ]
-        [else (sprites (sprites-ours state)
-                       (update-sprites mail (sprites-theirs state)) )] ) )
+        [(welcome? mail)
+         (eprintf "2. mail: ~a\n" mail)
+         (let ( [number (welcome-world-number mail)] )
+           (set-our-world-number number)
+           (set-our-color number)
+           (sprites (if (null? (sprites-ours state))
+                        (list (make-ball *our-color*))
+                        (sprites-ours state) )
+                    (sprites-theirs state) ) ) ]
+        [else
+         (eprintf "3. mail: ~a\n" mail)
+         (sprites (sprites-ours state)
+                  (update-sprites mail (sprites-theirs state)) )] ) )
 
 ;; ** Action Procedures and Functions
 
@@ -431,7 +437,8 @@
 ;; We could use the provided name instead (or in addition to) the
 ;; number.  How can you better center the text on the ball??
 (define (make-ball color)
-  (overlay (text (number->string *our-client-number*) 10 'black)
+  (eprintf "~a: ~a\n" '*our-color* *our-color*)
+  (overlay (text (number->string *our-world-number*) 10 'black)
            (circle 20 "solid" color) ) )
 (register-key-val 'make-ball make-ball registry-image set-registry-image!)
 
@@ -502,9 +509,11 @@
 
 ;; return Package from applying on-tick methods to our sprites
 (define (update-world-on-tick world)
-  (let* ( [actions (gather-actions-on-tick (sprites-ours world))]
-          [our-sprites (update-sprites actions sprites)] )
-    (make-package (sprites our-sprites (sprites-theirs world)) actions) ) )
+  (let* ( [ours (sprites-ours world)]
+          [actions (gather-actions-on-tick ours)]
+          [ours-updated (update-sprites actions ours)] )
+    (eprintf "our-sprites: ~a\n" ours-updated)
+    (make-package (sprites ours-updated (sprites-theirs world)) actions) ) )
 
 ;; deliver key events to all sprites in the given list
 ;; returning a merged action list in Mail format
@@ -535,13 +544,15 @@
 (define (create-world a-name [server LOCALHOST])
   (when (symbol? a-name) (set! a-name (symbol->string a-name)))
   (big-bang INITIAL-STATE
-   [on-receive receive]
-   [to-draw draw-world]
-   [on-key update-world-on-key]
-   [on-tick update-world-on-tick 1/30]
-   [name a-name]
-   [register server] ) )
+    [on-receive receive]
+    [to-draw draw-world]
+    [on-key update-world-on-key]
+    [on-tick update-world-on-tick 1/30]
+    [stop-when (λ (_) #f)] ; for now, never stop!
+    [name a-name]
+    [register server] ) )
 
-(define (go [server LOCALHOST]) (launch-many-worlds (create-world "Eti" server)
+(define (go [server LOCALHOST]) (launch-many-worlds
+                                 (create-world "Eti" server)
                                  (create-world "Brandt" server)
                                  (create-world "Touch" server) ))

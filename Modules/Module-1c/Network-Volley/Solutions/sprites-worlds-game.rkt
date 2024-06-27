@@ -12,7 +12,7 @@
 (provide sprite-proxy)
 (provide W2U-EMPTY W2U-DONE)
 (provide U2W-WELCOME)
-(provide welcome? make-welcome welcome-alist welcome-world-number)
+(provide message-head welcome? make-welcome welcome-alist welcome-world-number)
 
 ;; W2U messages are sent from a World Client to the Universe Server
 
@@ -31,30 +31,36 @@
 
 ;; Is alist an association list whose keys are all symbols?
 (define (symbol-key-alist? alist)
-  (and (or (null? alist) (pair? alist))
-       (pair? (car alist)) (symbol? (caar alist))
-       (alist (cdr alist)) ) )
+  (or (null? alist)
+      (and (pair? alist)
+           (pair? (car alist)) (symbol? (caar alist))
+           (symbol-key-alist? (cdr alist)) ) ) )
+
+(define (message-head m)
+  (if (pair? m) (car m) #f) )
 
 (define (welcome? message)
   (and (pair? message)
        (eq? U2W-WELCOME (car message))
-       (let ( [wn ((assoc WORLD-NUMBER-KEY))] )
-         (and wn (natural? (cdr wn))) )
+       (let ( [wn (assoc WORLD-NUMBER-KEY (cdr message))] )
+         (and wn (natural? (cadr wn))) )
        (symbol-key-alist? (cdr message))) )
 
 (define (make-welcome n . alist)
   (unless (natural? n) (error "invalid world-number ~a" n))
   (unless (symbol-key-alist? alist) (error "invalid alist ~a" alist))
-  (cons (cons WORLD-NUMBER-KEY n) alist) )
+  (cons U2W-WELCOME (cons (list WORLD-NUMBER-KEY n) alist)) )
 
 (define (welcome-alist welcome)
   (unless (welcome? welcome) (error "invalid welcome ~a" welcome))
   (cdr welcome) )
 
 (define (welcome-world-number welcome)
-  (let ( [number (assoc WORLD-NUMBER-KEY (welcome-alist))] )
-    (unless (natural? number) (error "invalid world number ~a in ~a" number welcome))
-    (assoc WORLD-NUMBER-KEY (welcome-alist)) ) )
+  (let ( [found (assoc WORLD-NUMBER-KEY (welcome-alist welcome))] )
+    (unless (and (pair? found) (= (length found) 2)) (error "missing world number in welcome ~a" welcome))
+    (let ( [number (second found)] )
+      (unless (natural? number) (error "invalid world number ~a in ~a" number welcome))
+      number ) ) )
 
 ;; ** Key Concepts
 
