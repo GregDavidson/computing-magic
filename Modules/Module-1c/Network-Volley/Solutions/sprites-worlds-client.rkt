@@ -27,11 +27,53 @@
 ;; - a World State
 ;; - a serializable symbolic expression to send to the Server
 
-;; ** Our Canvas and Our Color
+;; ** Our Canvas
 
 (define CANVAS-WIDTH 400) ; pixels
 (define CANVAS-HEIGHT 300) ; pixels
 (define EMPTY-CANVAS (empty-scene CANVAS-WIDTH CANVAS-HEIGHT))
+
+;; ** Parameters, Parameter *our-number*
+
+;; A parameter is a value which should be set once and should not change.
+;; We'll implement parameters as functions which yield
+;; the value of the parameter when called with no arguments
+;; and set the value of the parameter when called with one argument.
+;; Our parameters will have names, a guard function and an optional
+;; parsing function for converting an initialization value into a
+;; proper value.
+
+;; Create a parameter function with a give name,
+;; guard function and optional parsing function.
+;; Can we describe the way this function works
+;; in a comment that's easier to understand than
+;; simply reading the code??
+(define (make-parameter name guard #:parse [parse #f])
+  (define value #f)
+  (define is-set #f)
+  (define (action key [arg #f])
+    (cond [(eq? key 'init)
+           (when is-set
+             (error "parameter ~a is set, rejecting ~a") name arg )
+           (let ( [v (if parse (parse arg) arg)] )
+             (unless (guard v)
+               (error "Parameter ~a: guard rejects ~a") name v )
+             (set! value v)
+             (set! is-set #t)
+             (eprintf "Parameter ~a: ~a\n" name value) ) ]
+          [(eq? key 'show)
+           (fprintf (or arg (current-error-port))
+                    "Parameter ~a: ~a\n" name value ) ]
+          [else (error "Parameter ~a: expected init or show" name)] ) )
+  (case-lambda
+    [() (unless is-set (error "parameter ~a not set" name))
+        value ]
+    [(key) (action key)]
+    [(key arg) (action key arg)] ) )
+
+(define *our-number* (make-parameter "our number" natural?))
+
+;; ** Parameter: *our-color*
 
 ;; Choose colors which will, for any number of clients, be maximally
 ;; distinguishable. Uses may have color blindness so be use additional methods
@@ -45,24 +87,13 @@
      teal violet
      ) )
 
-(define *our-color* #f)
-(define (set-our-color c)
-  (if *our-color*
-      (eprintf "~a already set to ~a" '*our-color* *our-color*)
-      (set! *our-color*
-            (cond [(image-color? c) c]
-                  [(natural? c)
-                   (set-our-color (vector-ref color-names (remainder c (vector-length color-names))))
-                   (eprintf "~a: ~a\n" '*our-color* *our-color*)]
-                  [else (error "bad color or index ~a" c)] ) ) ) )
+(define (parse-color c)
+  (cond [(natural? c)
+         (vector-ref color-names (remainder c (vector-length color-names))) ]
+        [else c] ) )
 
-;; *our-world-number* should be set via a U2W-WELCOME
-;; message before any sprites are created.
-(define *our-world-number* #f)
-(define (set-our-world-number n)
-  (if *our-world-number*
-      (eprintf "~a already set to ~a" '*our-world-number* *our-world-number*)
-      (set! *our-world-number* n) ) )
+(define *our-color*
+  (make-parameter "our color" image-color? #:parse parse-color) )
 
 ;; EXERCISE: Select colors that are maximally distinct
 ;; using a colorspace model from package color.
@@ -191,7 +222,7 @@
 (define (get-image key)
   (let ( [found (key->val key registry-image)] )
     (cond [(image? found) found]
-          [(procedure? found) (found *our-color*)] ; cache it??
+          [(procedure? found) (found (*our-color*))] ; cache it??
           [(string? found) (bitmap/file/cache found)]
           [(string? key) (bitmap/file/cache key)]
           [else (eprintf "Can't get image from ~a\n" key) #f] ) ) )
@@ -369,33 +400,27 @@
        [call (λ (handler actions sprites)
                (if (null? actions)
                    sprites
-                   (handler actions sprites) ) )]
+                   (handler (car actions) (cdr actions) sprites) ) )]
        ;; add any new proxies as sprites
-       [new (λ (actions sprites)
-              (let ( [first (car actions)] [rest (cdr actions)] )
+       [new (λ (first rest sprites)
                 (if (sprite-proxy? first)
-                    (new rest (cons (proxy->sprite first) sprites))
-                    (switch first rest sprites) ) ) )]
+                    (call new rest (cons (proxy->sprite first) sprites))
+                    (switch first rest sprites) ) )]
        ;; drop any sprites with these uuids
-       [drop (λ (actions sprites)
-               (let ( [first (car actions)] [rest (cdr actions)] )
-                 (if (sprite-proxy? first)
-                     (drop rest (remove (λ (s) (eq? (sprite-proxy-uuid first) (sprite-uuid s)))
-                                        sprites ))
-                     (switch first rest sprites) ) ) )]
+       [drop (λ (first rest sprites)
+               (if (sprite-proxy? first)
+                   (call drop rest (remove (λ (s) (eq? (sprite-proxy-uuid first) (sprite-uuid s)))
+                                           sprites ))
+                   (switch first rest sprites) ) )]
        ;; mutate any sprites with these uuids and new field values
-       [mutate (λ (actions sprites)
-                 (let ( [first (car actions)] [rest (cdr actions)] )
-                   (if (sprite-proxy? first)
-                       (let* ( [uuid (sprite-proxy-uuid first)]
-                               [s (findf (λ (s) (eq? uuid (sprite-uuid s))) sprites)] )
-                         (mutate-sprite-from-proxy! s first)
-                         (mutate rest sprites) )
-                       (switch first rest sprites) ) ) )] )
-    (if (null? actions) ; no actions?
-        sprites           ; just return the sprites unchanged
-        (let ( [action (car actions)] [values (cdr actions)] )
-          (switch action values sprites) ) ) ) )
+       [mutate (λ (first rest sprites)
+                 (if (sprite-proxy? first)
+                     (let* ( [uuid (sprite-proxy-uuid first)]
+                             [s (findf (λ (s) (eq? uuid (sprite-uuid s))) sprites)] )
+                       (mutate-sprite-from-proxy! s first)
+                       (call mutate rest sprites) )
+                     (switch first rest sprites) ) )] )
+    (call switch actions sprites) ) )
 
 ;; Given
 ;; - our current state
@@ -409,10 +434,20 @@
         [(welcome? mail)
          (eprintf "2. mail: ~a\n" mail)
          (let ( [number (welcome-world-number mail)] )
-           (set-our-world-number number)
-           (set-our-color number)
+           (*our-number* 'init number)
+           (*our-color* 'init number)
            (sprites (if (null? (sprites-ours state))
-                        (list (make-ball *our-color*))
+                        (let ( [image (make-ball (*our-color*)) ] )
+                        (list (sprite
+                               (uuid-string)
+                               image
+                               (half CANVAS-WIDTH)
+                               (- CANVAS-HEIGHT (image-height image))
+                               0 DY-FALLING
+                               move-sprite
+                               boost-sprite-on-key
+                               draw-sprite)
+                               ))
                         (sprites-ours state) )
                     (sprites-theirs state) ) ) ]
         [else
@@ -437,8 +472,8 @@
 ;; We could use the provided name instead (or in addition to) the
 ;; number.  How can you better center the text on the ball??
 (define (make-ball color)
-  (eprintf "~a: ~a\n" '*our-color* *our-color*)
-  (overlay (text (number->string *our-world-number*) 10 'black)
+  (*our-color* 'show)
+  (overlay (text (number->string (*our-number*)) 10 'black)
            (circle 20 "solid" color) ) )
 (register-key-val 'make-ball make-ball registry-image set-registry-image!)
 
@@ -493,6 +528,7 @@
   (draw-image (sprite-image sprite)
               (sprite-x sprite) (sprite-y sprite)
               canvas ) )
+(register-key-val 'draw-sprite draw-sprite registry-to-draw set-registry-to-draw!)
 
 ;; ** big-bang callback procedures
 
