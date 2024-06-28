@@ -143,7 +143,8 @@
 ;; - regular structures, images or procedures
 
 ;; A serializable-struct can be serialized if all of their components
-;; can be serialized.  So let's create a serializable sprite-proxy!
+;; can be serialized.  Alas, the 2htdp/universe package won't accept
+;; serializable structures!  So let's create a prefab sprite-proxy!
 
 ;; Images will be represented either by
 ;; (1) a filesystem path to a stored image
@@ -153,12 +154,13 @@
 ;; A sprite-proxy will have the same uuid as the sprite it is a proxy for.
 ;; Only the uuid field is required.  The other fields can default to #f if
 ;; the corresponding sprite field is irrelevant, i.e. not requiring an update.
-(serializable-struct
+(struct
  sprite-proxy (uuid image x y dx dy on-tick on-key to-draw)
- #:guard (struct-guard/c strict-uuid-string?  (or/c #f string? symbol?)
-                         (or/c #f natural?)   (or/c #f natural?)
-                         (or/c #f integer?)   (or/c #f integer?)
-                         (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) )
- #:transparent )
+  #:prefab
+  #; #:guard
+  #; (struct-guard/c strict-uuid-string?  (or/c #f string? symbol?)
+                     (or/c #f natural?)   (or/c #f natural?)
+                     (or/c #f integer?)   (or/c #f integer?)
+                     (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) ) )
 
 ;; ** Notes
