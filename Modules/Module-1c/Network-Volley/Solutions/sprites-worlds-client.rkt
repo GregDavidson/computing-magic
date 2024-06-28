@@ -549,6 +549,7 @@
           [actions (gather-actions-on-tick ours)]
           [ours-updated (update-sprites actions ours)] )
     (eprintf "our-sprites: ~a\n" ours-updated)
+    (eprintf "actions: ~a\n" actions)
     (make-package (sprites ours-updated (sprites-theirs world)) actions) ) )
 
 ;; deliver key events to all sprites in the given list

@@ -9,7 +9,11 @@
 
 ;; The definition of struct sprite-proxy is at the end of the file
 ;; after a lot of comments!
-(provide sprite-proxy)
+(provide sprite-proxy sprite-proxy?
+         sprite-proxy-uuid sprite-proxy-image
+         sprite-proxy-x sprite-proxy-y sprite-proxy-dx sprite-proxy-dy
+         sprite-proxy-on-tick sprite-proxy-on-key sprite-proxy-to-draw)
+
 (provide W2U-EMPTY W2U-DONE)
 (provide U2W-WELCOME)
 (provide message-head welcome? make-welcome welcome-alist welcome-world-number)
@@ -139,12 +143,14 @@
 
 ;; We need to be able to send sprites across worlds.
 ;; This requires us to serialize them, i.e. convert them to a byte stream.
-;; Alas, Racket doesn't provide for serialization of
-;; - regular structures, images or procedures
-
-;; A serializable-struct can be serialized if all of their components
-;; can be serialized.  Alas, the 2htdp/universe package won't accept
-;; serializable structures!  So let's create a prefab sprite-proxy!
+;;
+;; ISSUE: big-bang <--> universe is apparently not using the Racket
+;; serialization framework and doesn't seem to accept structures of
+;; any kind, not even prefab structures!!
+;;
+;; We get to write our own wrapper functions around an acceptable
+;; data structure.
+;; Question: Can we use vectors or do we have to use lists?
 
 ;; Images will be represented either by
 ;; (1) a filesystem path to a stored image
@@ -154,13 +160,33 @@
 ;; A sprite-proxy will have the same uuid as the sprite it is a proxy for.
 ;; Only the uuid field is required.  The other fields can default to #f if
 ;; the corresponding sprite field is irrelevant, i.e. not requiring an update.
-(struct
- sprite-proxy (uuid image x y dx dy on-tick on-key to-draw)
+
+;; Earlier code:
+#;(struct sprite-proxy (uuid image x y dx dy on-tick on-key to-draw)
   #:prefab
   #; #:guard
   #; (struct-guard/c strict-uuid-string?  (or/c #f string? symbol?)
                      (or/c #f natural?)   (or/c #f natural?)
                      (or/c #f integer?)   (or/c #f integer?)
                      (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) ) )
+
+(define (sprite-proxy uuid image x y dx dy on-tick on-key to-draw)
+  ;; put guard here!!!
+  ;; add type tag??
+  (vector uuid image x y dx dy on-tick on-key to-draw) )
+
+(define (sprite-proxy? something)
+  ;; put in a more stringent test later!!
+  (and (vector? something) (eq? 9 (vector-length something))) )
+
+(define (sprite-proxy-uuid sp) (vector-ref sp 0))
+(define (sprite-proxy-image sp) (vector-ref sp 1))
+(define (sprite-proxy-x sp) (vector-ref sp 2))
+(define (sprite-proxy-y sp) (vector-ref sp 3))
+(define (sprite-proxy-dx sp) (vector-ref sp 4))
+(define (sprite-proxy-dy sp) (vector-ref sp 5))
+(define (sprite-proxy-on-tick sp) (vector-ref sp 6))
+(define (sprite-proxy-on-key sp) (vector-ref sp 7))
+(define (sprite-proxy-to-draw sp) (vector-ref sp 9))
 
 ;; ** Notes
