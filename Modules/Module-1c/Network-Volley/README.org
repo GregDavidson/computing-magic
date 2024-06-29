@@ -20,9 +20,11 @@ Explore both programs
 - By running them
 - By studying the code
 - Consulting the documentation on the new procedures
-
+ 
 Add some features!
 
-When you're ready, use the techniques from our earlier starting points to create
+We can use the techniques from our earlier starting points to create
 a rich Multi-User Universe
 - See the last section of the [[file:../Flight-Lander/README.org][Flight Lander]] Starting Point!
+
+If you'd like a framework, read [[file:sprites-worlds-game.org][Building a Multi-User Game with Sprites]].

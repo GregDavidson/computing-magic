@@ -41,11 +41,11 @@ As a user
 - Careful boosting can keep our balls away from edges.
 - Over-boosting can cause balls to collide with the edges!
 
-** EXERCISES: Possible Game Enhancements
+** EXERCISES: Enhancing the Game
 
 Allow persistent velocity changes in any direction
 - Our sprite structures are already designed for this!
-Add gravity to accelerate falling!
+- Add gravity to accelerate falling!
 
 Gifting Sprites!
 - Have an action to give our sprite to a world needing one
@@ -125,3 +125,13 @@ Universe to World Actions
 - is followed by an association list where
 : (define WORLD-NUMBER-KEY 'world-number)
 - a natural? number which uniquely identifies that world
+
+You can attempt a solution to the Simplest Game yourself and/or you can look at
+our solution and perhaps build on it.
+
+The Simplest Multi-User Game with Sprites
+- [[file:Solutions/sprites-worlds-game.rkt][sprites-worlds-game.rkt]]
+- [[file:Solutions/sprites-worlds-server.rkt][sprites-worlds-server.rkt]]
+- [[file:Solutions/sprites-worlds-client.rkt][sprites-worlds-client.rkt]]
+
+[[file:Solutions/serialization-issues.org][More on Serialization Issues]]

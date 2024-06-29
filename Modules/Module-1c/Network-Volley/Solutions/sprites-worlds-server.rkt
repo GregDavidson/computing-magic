@@ -2,6 +2,8 @@
 
 ;; * Multiple Worlds Universe Server
 
+;; see sprites-worlds-game.org for information about the game
+
 ;; The file sprites-words-games.rkt provides
 ;; - a description of the game
 ;; - inter-client (inter-world) protocol information
