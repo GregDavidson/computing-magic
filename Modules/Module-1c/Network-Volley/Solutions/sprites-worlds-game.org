@@ -1,0 +1,127 @@
+* Multiple Worlds Sprites Game Protocol and Overview
+
+** Key Concepts
+
+World Program aka "a client"
+- controlled by one user
+- runs on that user's computer
+- connects to a universe server
+
+Universe Server aka "the server"
+- connects a collection of worlds
+- coordinates them in playing a game together
+
+Sprite
+- A graphical object with
+  - A shape - which might change!
+  - A unique identity
+  - A location and velocity
+  - Reponses to certain key presses
+- May be visible in multiple worlds
+- Sprites might interact!
+
+** The Simplest Game
+
+- Each world has its own unique World Number.
+- Each world has its own unique color.
+- Each world has one sprite of its color.
+- The server will give a new sprite to any world that
+  does not have one.
+- Initially all sprites are balls labeled with their World Number.
+- The balls start at the top of the canvas and fall at a constant velocity.
+- A sprite is lost if it reaches the edge of the canvas.
+  - Users can avoid this!
+
+As a user
+- We see all sprites of all worlds.
+- We can use the left/right arrow keys to move our ball left or right.
+- We can use the up/down arrow keys to give up/down velocity boosts
+  to our ball.
+- Velocity boosts will decay back to the original constant falling velocity.
+- Careful boosting can keep our balls away from edges.
+- Over-boosting can cause balls to collide with the edges!
+
+** EXERCISES: Possible Game Enhancements
+
+Allow persistent velocity changes in any direction
+- Our sprite structures are already designed for this!
+Add gravity to accelerate falling!
+
+Gifting Sprites!
+- Have an action to give our sprite to a world needing one
+  - If no other world needs one we lose ours!
+    - Maybe someone else passed them a sprite first!
+  - If multiple worlds need one, a random one gets it.
+  - If we successfully gave ours away
+    - We gain a point
+- The Server will only give a new sprite
+  - to a world if they succesfully given one away
+  - to a random world if no worlds have any sprites
+
+Ejecting Transient Sprites!
+- Eject transient sprites to change our velocity
+- Transient sprites
+  - Do not affect the game play.
+  - Are not controllable
+  - Disappear when they leave the canvas
+
+More possible Enhancements
+- Allow diverse shapes for sprites
+  - Maybe upon succesfully giving one away you get
+    a more interesting new one!
+- Allow some surfaces to bounce sprites
+- Allow sprites to interact with sprites of other worlds
+  - Momentum exchanges and/or destructive interactions!
+
+** Prefab Proxy Structures
+
+We need to be able to send sprites across worlds.
+This requires us to serialize them, i.e. convert them to a byte stream.
+Alas, Racket doesn't provide for serialization of
+- regular structures, images or procedures
+
+We'll need to create serializable proxies
+- Converted from sprite structures and sent to the Universe Server
+- Used to create, update and drop sprite structures on receipt by a World
+
+A serializable-struct can be serialized if all of its components can be
+serialized.
+- Alas, 2htdp/universe won't accept serializable structures!
+
+A prefab structure can be serialized if all of its components can be
+serialized.
+- 2htdp/universe /does accept/ prefab structures!
+- sprite-proxy will be a prefab structure
+
+The fields of a sprite-proxy prefab structure corresponding to a sprite's
+non-serializable fields will be replace by proxy values.
+
+Images will be represented either by
+(1) a filesystem path to a stored image
+(2) a symbol representing a function which
+    takes a color and returns an image.
+
+Procedures will be represented by their names (symbols).
+
+A sprite-proxy will have the same uuid as the sprite it is a proxy for.
+- Only the uuid field requires a proper value.
+- The other fields can default to #f if the corresponding sprite field is irrelevant
+      - e.g. not requiring an update.
+
+** Messages
+
+Messages between World Clients and the Universe Server are lists.
+- Message Lists contain Action Symbols
+- A W2U- prefix is used for Action Symbols in World to Universe messages
+- A U2W- prefix is used for Action Symbols in Universe to World messages
+
+World to Universe Actions
+: (define W2U-EMPTY 'empty) ;  we've lost our spriteseee
+: (define W2U-DONE 'done)  ; detach us!
+
+Universe to World Actions
+: (define U2W-WELCOME 'welcome)
+- is sent to a new world after connecting to us
+- is followed by an association list where
+: (define WORLD-NUMBER-KEY 'world-number)
+- a natural? number which uniquely identifies that world

@@ -5,11 +5,12 @@
 ;; The file sprites-words-games.rkt provides
 ;; - a description of the game
 ;; - inter-client (inter-world) protocol information
-;; - additional require forms
+;; - including a sprite-proxy structure
 (require 2htdp/universe)
 (require data/gvector) ; growable vectors
 (require "sprites-worlds-game.rkt")
 
+;; ** Notes
 ;; The goal is to have this Server know as little
 ;; about any specific game as possible.  It should
 ;; - Welcome new worlds with a U2W-WELCOME message.

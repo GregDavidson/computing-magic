@@ -1,0 +1,56 @@
+* Serialization Issues with Universe
+
+Creating a distributed program, with 2htdp/universe or any other framework,
+involves sending state over the network.
+
+Ideally we'd like to use the state data structures which have emerged from our
+design of our non-distributed games.
+
+** Rust Serialization Insufficient
+
+Racket has a serialization system which doesn't work for some types, including
+- struct/contract structures
+- images
+- procedures
+all of which are in use by our sprite states.
+
+Rust serialization also breaks shared structures
+- e.g. hotboxes shared by multiple sprites
+
+** Creating Proxy Data Structures
+
+We could roll our own serialization solutions from scratch
+- that's a lot of work to design, implement and maintain!
+
+Or we can translate our state structures to and from serialization-struct
+proxies.
+
+** Send World or Send Diffs?
+
+We could certainly send our whole world state.
+- With images and procedures proxied, it's lightweight
+
+Sending the whole world doesn't scale well as games get richer and larger.
+
+We could send only diffs
+- What states to add, change or drop
+- This requires an efficient index on our composites
+
+An index would also allow shared structures
+- Would deserialize interfere with this??
+
+** Proxy & Unproxy
+
+We need to convert between
+- Working Struct <--> Proxy Struct
+
+Table-Driven Strategy
+- Create a table with a row for each corresponding field
+
+| Get Function | Set Procedure | Transformation Procedure |
+|--------------+---------------+--------------------------|
+|              |               |                          |
+
+Going from /Working Structures/ to /Proxy Structures/ the /Transformation
+Procedures/ are not pure functions if they are also responsible for recording
+the mappings.

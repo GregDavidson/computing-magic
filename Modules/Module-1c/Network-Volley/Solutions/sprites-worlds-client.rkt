@@ -3,15 +3,14 @@
 
 ;; The file sprites-words-games.rkt provides
 ;; - a description of the game
-;; - struct sprite-proxy
-;; - additional require forms
+;; - inter-client (inter-world) protocol information
+;; - including a sprite-proxy structure
 (require 2htdp/universe)
-(require rackunit) ; assertions
-(require racket/serialize)
-(require uuid) ; univerally unique identifiers
+(require uuid) ; universally unique identifiers
 (require "sprites-worlds-game.rkt")
 (require 2htdp/image)
 (require (except-in racket/draw make-color make-pen))
+
 
 ;; ** Client-Side Library Types
 
@@ -54,19 +53,19 @@
   (define (action key [arg #f])
     (cond [(eq? key 'init)
            (when is-set
-             (error "parameter ~a is set, rejecting ~a") name arg )
+             (error 'parameter "~a is set, rejecting ~a" name arg ) )
            (let ( [v (if parse (parse arg) arg)] )
              (unless (guard v)
-               (error "Parameter ~a: guard rejects ~a") name v )
+               (error 'parameter "~a: guard rejects ~a" name v ) )
              (set! value v)
              (set! is-set #t)
              (eprintf "Parameter ~a: ~a\n" name value) ) ]
           [(eq? key 'show)
            (fprintf (or arg (current-error-port))
                     "Parameter ~a: ~a\n" name value ) ]
-          [else (error "Parameter ~a: expected init or show" name)] ) )
+          [else (error 'parameter "~a: expected init or show" name)] ) )
   (case-lambda
-    [() (unless is-set (error "parameter ~a not set" name))
+    [() (unless is-set (error 'parameter "~a not set" name))
         value ]
     [(key) (action key)]
     [(key arg) (action key arg)] ) )
@@ -103,7 +102,7 @@
 
 ;; Each distinct sprite will have a universally unique id (uuid)
 (struct/contract
-  sprite ( [uuid strict-uuid-string?]
+  sprite ( [uuid uuid-symbol?]
            [image (or/c image? #f)]
            [x natural?] [y natural?]
            [dx integer?] [dy integer?]
@@ -128,14 +127,6 @@
 ;; A sprite-proxy will have the same uuid as the sprite it is a proxy for.
 ;; Only the uuid field is required.  The other fields can default to #f if
 ;; the corresponding sprite field is irrelevant, i.e. not requiring an update.
-(serializable-struct
- sprite-proxy (uuid image x y dx dy on-tick on-key to-draw)
- #:guard (struct-guard/c
-          strict-uuid-string? (or/c #f string? symbol?)
-          (or/c #f natural?) (or/c #f natural?)
-          (or/c #f integer?) (or/c #f integer?)
-          (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) )
- #:transparent )
 
 ;; ** Transmitting Sprites
 
@@ -143,21 +134,7 @@
 ;; - a sprite-proxy is created of the sprite
 ;; - the sprite-proxy is sent as part of a Mail Message
 ;; - when the Mail Message is received
-;; - any sprite-proxy structures are turned back into sprite structures
-
-;; a straight copy would look like this
-#;(define (sprite->proxy s)
-  (sprite-proxy
-   (sprite-uuid s) ; ok
-   (sprite-image s) ; needs a string path or function name instead
-   (sprite-x s) ; ok
-   (sprite-y s) ; ok
-   (sprite-dx s) ; ok
-   (sprite-dy s) ; ok
-   (sprite-on-tick s) ; needs a procedure name instead
-   (sprite-on-key s)  ; needs a procedure name instead
-   (sprite-to-draw s) ; needs a procedure name instead
-   ) )
+;; - sprite-proxy structures are used to create and update sprite structures
 
 ;; We need a place to associate
 ;; - the keys (path strings or procedure names)
@@ -280,12 +257,12 @@
                 (delta (sprite-to-draw s) draw) ) )
 
 (define (mutate-sprite-from-proxy! s sp)
-  (unless (equal? (sprite-uuid s) (sprite-proxy-uuid sp))
-    (error "improper mutation of ~a by ~a" s sp) )
+  (unless (eq? (sprite-uuid s) (sprite-proxy-uuid sp))
+    (error 'mutate-sprite-from-proxy! "improper mutation of ~a by ~a" s sp) )
   (when (sprite-proxy-image sp)
     (set-sprite-image! s (or (key->val (sprite-proxy-image sp) registry-image)
                              (begin
-                               (error "no image in ~a" sp)
+                               (error 'mutate-sprite-from-proxy! "no image in ~a" sp)
                                (sprite-image s) ) )) )
   (when (sprite-proxy-x sp) (set-sprite-x! s (sprite-proxy-x sp)))
   (when (sprite-proxy-y sp) (set-sprite-y! s (sprite-proxy-y sp)))
@@ -294,17 +271,17 @@
   (when (sprite-proxy-on-tick sp)
     (set-sprite-on-tick! s (or (key->val (sprite-proxy-on-tick sp) registry-on-tick)
                                (begin
-                                 (error "no on-tick in ~a" sp)
+                                 (error 'mutate-sprite-from-proxy! "no on-tick in ~a" sp)
                                  (sprite-on-tick s) ) )) )
   (when (sprite-proxy-on-key sp) 
     (set-sprite-on-key! s (or (key->val (sprite-proxy-on-key sp) registry-on-key)
                               (begin
-                                (error "no on-key in ~a" sp)
+                                (error 'mutate-sprite-from-proxy! "no on-key in ~a" sp)
                                 (sprite-on-key s) ) )) )
   (when (sprite-proxy-to-draw sp)
     (set-sprite-to-draw! s (or (key->val (sprite-proxy-to-draw sp) registry-to-draw)
                                (begin
-                                 (error "no to-draw in ~a" sp)
+                                 (error 'mutate-sprite-from-proxy! "no to-draw in ~a" sp)
                                  (sprite-to-draw s) ) )) ) )
 
 ;; If you're interested in how macros and structures work, here are
@@ -395,7 +372,7 @@
                  (cond [(eq? action NEW-SPRITE) (call new proxies sprites)]
                        [(eq? action MUTATE-SPRITE) (call mutate proxies sprites)]
                        [(eq? action DROP-SPRITE) (call drop proxies sprites)]
-                       [else (error "bad action ~a in message ~a" action proxies)] ) )]
+                       [else (error 'update-sprites "bad action ~a in message ~a" action proxies)] ) )]
        ;; we have a handler, do we have any proxies to apply?
        [call (λ (handler actions sprites)
                (if (null? actions)
@@ -409,8 +386,9 @@
        ;; drop any sprites with these uuids
        [drop (λ (first rest sprites)
                (if (sprite-proxy? first)
-                   (call drop rest (remove (λ (s) (eq? (sprite-proxy-uuid first) (sprite-uuid s)))
-                                           sprites ))
+                   (call drop rest
+                         (remove (λ (s) (eq? (sprite-proxy-uuid first) (sprite-uuid s)))
+                                 sprites ) )
                    (switch first rest sprites) ) )]
        ;; mutate any sprites with these uuids and new field values
        [mutate (λ (first rest sprites)
@@ -429,7 +407,7 @@
 ;; - possibly including Return Mail
 (define (receive state mail)
   (eprintf "1. mail: ~a\n" mail)
-  (cond [(not (list? mail)) (error "bad mail ~a" mail)]
+  (cond [(not (list? mail)) (error 'receive "bad mail ~a" mail)]
         [(null? mail) state] ; no actions, return state unchanged
         [(welcome? mail)
          (eprintf "2. mail: ~a\n" mail)
@@ -437,17 +415,7 @@
            (*our-number* 'init number)
            (*our-color* 'init number)
            (sprites (if (null? (sprites-ours state))
-                        (let ( [image (make-ball (*our-color*)) ] )
-                        (list (sprite
-                               (uuid-string)
-                               image
-                               (half CANVAS-WIDTH)
-                               (- CANVAS-HEIGHT (image-height image))
-                               0 DY-FALLING
-                               move-sprite
-                               boost-sprite-on-key
-                               draw-sprite)
-                               ))
+                        (list (make-sprite (make-ball (*our-color*))))
                         (sprites-ours state) )
                     (sprites-theirs state) ) ) ]
         [else
@@ -476,6 +444,19 @@
   (overlay (text (number->string (*our-number*)) 10 'black)
            (circle 20 "solid" color) ) )
 (register-key-val 'make-ball make-ball registry-image set-registry-image!)
+
+(define (make-sprite image #:uuid [uuid #f]
+                     #:x [x #f] #:y [y #f] #:dx [dx #f] #:dy [dy #f]
+                     #:tick [tick #f] #:key [key #f] #:draw [draw #f] )
+    (sprite
+     (or uuid (uuid-symbol))
+     image
+     (or x (half CANVAS-WIDTH))
+     (or y (- CANVAS-HEIGHT (image-height image) 10))
+     (or dx 0) (or dy DY-FALLING)
+     (or tick move-sprite)
+     (or key boost-sprite-on-key)
+     (or draw draw-sprite) ) )
 
 (define (on-canvas? image x y)
   (and (< 0 x (- CANVAS-WIDTH (image-width image)))
@@ -593,3 +574,5 @@
                                  (create-world "Eti" server)
                                  (create-world "Brandt" server)
                                  (create-world "Touch" server) ))
+
+(define final (create-world "Touch"))
