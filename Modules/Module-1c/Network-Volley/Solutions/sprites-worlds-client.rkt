@@ -13,6 +13,8 @@
 (require 2htdp/image)
 (require (except-in racket/draw make-color make-pen))
 
+(define *trace* #f) ; trace to interaction window
+
 ;; ** Client-Side 2http Framework Types
 
 ;; The WorldState is defined by the Client
@@ -43,42 +45,48 @@
 ;; parsing function for converting an initialization value into a
 ;; proper value.
 
-;; Create a parameter function with a give name,
-;; guard function and optional parsing function.
-;; Can we describe the way this function works
-;; in a comment that's easier to understand than
-;; simply reading the code??
-;; Consider ditching case-lambda and just parsing
-;; a variadic argument list.
-(define (make-parameter name guard #:parse [parse #f])
+;; Create a function to manage an immutable value with
+;; - a name for debugging
+;; - a guard to validate initialization
+;; - protection against access before initialization
+;; - protection against multiple initialization
+;; - an optional parsing function before initialization
+;; - an optional tracing feature showing intialization
+;; Can we fully describe this function with a comment
+;; that's easier to understand than reading the code??
+(define (make-parameter name guard #:parse [parse #f] #:trace [trace *trace*])
   (letrec ( [value #f]
             [is-set #f]
-            [trace #f]
-            [action (λ (key [arg #f])
-                      (cond [(eq? key 'init)
-                             (when is-set
-                               (error 'parameter "~a is set, rejecting ~a" name arg ) )
-                             (let ( [v (if parse (parse arg) arg)] )
-                               (unless (guard v)
-                                 (error 'parameter "~a: guard rejects ~a" name v ) )
-                               (set! value v)
-                               (set! is-set #t)
-                               (when trace
-                                 (eprintf "Parameter ~a: ~a\n" name value) ) ) ]
-                            [(eq? key 'show)
-                             (fprintf (or arg (current-error-port))
-                                      "Parameter ~a: ~a\n" name value )
-                             value ]
-                            [(eq? key 'trace) (set! trace arg) return]
-                            [else (error 'parameter "~a: expected init or show" name)] ) )]
-            [return (case-lambda
-                      [() (unless is-set (error 'parameter "~a not set" name))
-                          value ]
-                      [(key) (action key)]
-                      [(key arg) (action key arg)] )] )
-    return ) )
+            [return-value (λ ()
+                            (unless is-set (error 'parameter "~a not set" name))
+                            value)]
+            [show-value (λ () (eprintf "Parameter ~a: ~a\n" name value) )]
+            [process (λ (key args)
+                       (cond 
+                         [(eq? key 'value) (return-value)]
+                         [(eq? key 'init)
+                          (when is-set
+                            (error 'parameter "~a is set, rejecting ~a" name arg ) )
+                          (when (null? args)
+                            (error 'parameter "~a init missing value" name ) )
+                          (let* ( [arg (car args)]
+                                  [v (if parse (parse arg) arg)] )
+                            (unless (guard v)
+                              (error 'parameter "~a: guard rejects ~a" name v ) )
+                            (set! value v)
+                            (set! is-set #t)
+                            (when trace (show-value)) )
+                          (process-args (cdr args)) ]
+                         [(eq? key 'show) (show-value)]
+                         [else (error 'parameter "~a: unknown key ~a" name key)]) ) ]
+            [process-args (λ args (when (pair? args) (process (car args) (cdr args))))]
+            [the-parameter (λ args ; a function taking a list of 0 or more arguments
+                             (if (null? args)
+                                 (return-value)
+                                 (process-args args) ) )] )
+    the-parameter ) )
 
-(define *our-number* ( (make-parameter "our number" natural?) 'trace #t ))
+(define *our-number* (make-parameter "our number" natural?))
 
 ;; ** Parameter: *our-color*
 
@@ -100,7 +108,7 @@
         [else c] ) )
 
 (define *our-color*
-  ( (make-parameter "our color" image-color? #:parse parse-color) 'trace #t ) )
+  (make-parameter "our color" image-color? #:parse parse-color) )
 
 ;; EXERCISE: Select colors that are maximally distinct
 ;; using a colorspace model from package color.
@@ -422,11 +430,11 @@
 ;; Return an updated WorldState
 ;; - possibly including Return Mail
 (define (receive state mail)
-  (eprintf "1. mail: ~a\n" mail)
+  (when trace (eprintf "1. mail: ~a\n" mail))
   (cond [(not (list? mail)) (error 'receive "bad mail ~a" mail)]
         [(null? mail) state] ; no actions, return state unchanged
         [(welcome? mail)
-         (eprintf "2. mail: ~a\n" mail)
+         (when trace (eprintf "2. mail: ~a\n" mail))
          (let ( [number (welcome-world-number mail)] )
            (*our-number* 'init number)
            (*our-color* 'init number)
