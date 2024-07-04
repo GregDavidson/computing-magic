@@ -13,7 +13,7 @@
 (require 2htdp/image)
 (require (except-in racket/draw make-color make-pen))
 
-(define *trace* #f) ; trace to interaction window
+(define *trace* #t) ; trace to interaction window
 
 ;; ** Client-Side 2http Framework Types
 
@@ -281,6 +281,7 @@
                 (and (delta (sprite-to-draw s) draw) (val->key draw registry-to-draw) ) ) )
 
 (define (mutate-sprite-from-proxy! s sp)
+  (define original (struct-copy sprite s)) ; for debugging
   (unless (eq? (sprite-uuid s) (sprite-proxy-uuid sp))
     (error 'mutate-sprite-from-proxy! "improper mutation of ~a by ~a" s sp) )
   (when (sprite-proxy-image sp)
@@ -306,7 +307,8 @@
     (set-sprite-to-draw! s (or (key->val (sprite-proxy-to-draw sp) registry-to-draw)
                                (begin
                                  (error 'mutate-sprite-from-proxy! "no to-draw in ~a" sp)
-                                 (sprite-to-draw s) ) )) ) )
+                                 (sprite-to-draw s) ) )) )
+  (when (equal? s original) (error 'mutate-sprite-from-proxy! "~a didn't change ~a" sp s)) )
 
 ;; If you're interested in how macros and structures work, here are
 ;; some exercises which might interest you:
@@ -430,11 +432,11 @@
 ;; Return an updated WorldState
 ;; - possibly including Return Mail
 (define (receive state mail)
-  (when trace (eprintf "1. mail: ~a\n" mail))
+  (when *trace* (eprintf "1. mail: ~a\n" mail))
   (cond [(not (list? mail)) (error 'receive "bad mail ~a" mail)]
         [(null? mail) state] ; no actions, return state unchanged
         [(welcome? mail)
-         (when trace (eprintf "2. mail: ~a\n" mail))
+         (when *trace* (eprintf "2. mail: ~a\n" mail))
          (let ( [number (welcome-world-number mail)] )
            (*our-number* 'init number)
            (*our-color* 'init number)
@@ -476,7 +478,8 @@
      (or uuid (uuid-symbol))
      image
      (or x (half CANVAS-WIDTH))
-     (or y (- CANVAS-HEIGHT (image-height image) 10))
+     (or y (- CANVAS-HEIGHT (image-heigh  (unless is-set (error 'parameter "~a not set" name))
+                          value ]t image) 10))
      (or dx 0) (or dy DY-FALLING)
      (or tick move-sprite)
      (or key boost-sprite-on-key)
@@ -502,18 +505,23 @@
                   (make-proxy s #:x xx #:y yy #:dx dxx #:dy dyy) ) ) ) ) ) )
 (register-key-val 'move-sprite move-sprite registry-on-tick set-registry-on-tick!)
 
-;; WorldState Key -> ActionList
+;; Called by boost-sprite-on-key to do the work
+(define (boost-sprite s key ddx ddy)
+  (when *trace* (eprintf "boosting sprite ~a ~a" (sprite-uuid s) key))
+  (list MUTATE-SPRITE
+        ;; make-proxy will ignore unchanging values
+        (make-proxy s
+                    #:dx (+ (sprite-dx s) ddx)
+                    #:dy (+ (sprite-dy s) ddy) ) ) )
+
+;; Sprite Key -> ActionList
 ;; apply any boosts to its velocity
 (define (boost-sprite-on-key s k)
   (cond
-    [(key=? k "up") (list MUTATE-SPRITE
-                          (make-proxy s #:dy (+ (sprite-dy s) DY-BOOST)) )]
-    [(key=? k "down") (list MUTATE-SPRITE
-                            (make-proxy s #:dy (- (sprite-dy s) DY-BOOST)) )]
-    [(key=? k "right") (list MUTATE-SPRITE
-                             (make-proxy s #:dx (+ (sprite-dx s) DX-BOOST)) )]
-    [(key=? k "down") (list MUTATE-SPRITE
-                            (make-proxy s #:dx (- (sprite-dx s) DX-BOOST)) )]
+    [(key=? k "up") (boost-sprite s k 0 DY-BOOST)]
+    [(key=? k "down") (boost-sprite s k 0 (- DY-BOOST))]
+    [(key=? k "left") (boost-sprite s k (- DX-BOOST) 0)]
+    [(key=? k "right") (boost-sprite s k DX-BOOST 0)]
     [else '()] )
  )
 (register-key-val 'boost-sprite-on-key boost-sprite-on-key registry-on-key set-registry-on-key!)
@@ -585,6 +593,7 @@
 ; create a world, hook it up to a server and start it running
 (define (create-world a-name [server LOCALHOST])
   (when (symbol? a-name) (set! a-name (symbol->string a-name)))
+  (when *trace* (eprintf "creating a world named ~a" a-name))
   (big-bang INITIAL-STATE
     [on-receive receive]
     [to-draw draw-world]
