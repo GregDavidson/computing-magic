@@ -478,8 +478,7 @@
      (or uuid (uuid-symbol))
      image
      (or x (half CANVAS-WIDTH))
-     (or y (- CANVAS-HEIGHT (image-heigh  (unless is-set (error 'parameter "~a not set" name))
-                          value ]t image) 10))
+     (or y (- CANVAS-HEIGHT (image-height image) 10))
      (or dx 0) (or dy DY-FALLING)
      (or tick move-sprite)
      (or key boost-sprite-on-key)
