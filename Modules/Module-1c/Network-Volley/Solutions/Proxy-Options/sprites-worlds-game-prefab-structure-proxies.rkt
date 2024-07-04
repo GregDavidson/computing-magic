@@ -1,7 +1,7 @@
 #lang racket
 ;; * Multiple Worlds Sprites Game Protocol and Overview
 
-;; see sprites-worlds-game.org for information about the game
+;; See sprites-worlds-game.org for information about the game.
 
 ;; This file provides both the Universe Server and the World Clients with the
 ;; protocol which connects them.
@@ -63,7 +63,8 @@
 ;; Return the World Number from a welcome message.
 (define (welcome-world-number welcome)
   (let ( [found (assoc WORLD-NUMBER-KEY (welcome-alist welcome))] )
-    (unless (and (pair? found) (= (length found) 2)) (error "missing world number in welcome ~a" welcome))
+    (unless (and (pair? found) (= (length found) 2))
+      (error "missing world number in welcome ~a" welcome) )
     (let ( [number (second found)] )
       (unless (natural? number) (error "invalid world number ~a in ~a" number welcome))
       number ) ) )

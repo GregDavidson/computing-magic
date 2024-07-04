@@ -1,7 +1,7 @@
 #lang racket
 ;; * Multiple Worlds Multiple Sprites Client
 
-;; see sprites-worlds-game.org for information about the game
+;; See sprites-worlds-game.org for information about the game.
 
 ;; The file sprites-words-games.rkt provides
 ;; - a description of the game
@@ -13,8 +13,7 @@
 (require 2htdp/image)
 (require (except-in racket/draw make-color make-pen))
 
-
-;; ** Client-Side Library Types
+;; ** Client-Side 2http Framework Types
 
 ;; The WorldState is defined by the Client
 ;; and passed to and received from all handler
@@ -49,30 +48,37 @@
 ;; Can we describe the way this function works
 ;; in a comment that's easier to understand than
 ;; simply reading the code??
+;; Consider ditching case-lambda and just parsing
+;; a variadic argument list.
 (define (make-parameter name guard #:parse [parse #f])
-  (define value #f)
-  (define is-set #f)
-  (define (action key [arg #f])
-    (cond [(eq? key 'init)
-           (when is-set
-             (error 'parameter "~a is set, rejecting ~a" name arg ) )
-           (let ( [v (if parse (parse arg) arg)] )
-             (unless (guard v)
-               (error 'parameter "~a: guard rejects ~a" name v ) )
-             (set! value v)
-             (set! is-set #t)
-             (eprintf "Parameter ~a: ~a\n" name value) ) ]
-          [(eq? key 'show)
-           (fprintf (or arg (current-error-port))
-                    "Parameter ~a: ~a\n" name value ) ]
-          [else (error 'parameter "~a: expected init or show" name)] ) )
-  (case-lambda
-    [() (unless is-set (error 'parameter "~a not set" name))
-        value ]
-    [(key) (action key)]
-    [(key arg) (action key arg)] ) )
+  (letrec ( [value #f]
+            [is-set #f]
+            [trace #f]
+            [action (λ (key [arg #f])
+                      (cond [(eq? key 'init)
+                             (when is-set
+                               (error 'parameter "~a is set, rejecting ~a" name arg ) )
+                             (let ( [v (if parse (parse arg) arg)] )
+                               (unless (guard v)
+                                 (error 'parameter "~a: guard rejects ~a" name v ) )
+                               (set! value v)
+                               (set! is-set #t)
+                               (when trace
+                                 (eprintf "Parameter ~a: ~a\n" name value) ) ) ]
+                            [(eq? key 'show)
+                             (fprintf (or arg (current-error-port))
+                                      "Parameter ~a: ~a\n" name value )
+                             value ]
+                            [(eq? key 'trace) (set! trace arg) return]
+                            [else (error 'parameter "~a: expected init or show" name)] ) )]
+            [return (case-lambda
+                      [() (unless is-set (error 'parameter "~a not set" name))
+                          value ]
+                      [(key) (action key)]
+                      [(key arg) (action key arg)] )] )
+    return ) )
 
-(define *our-number* (make-parameter "our number" natural?))
+(define *our-number* ( (make-parameter "our number" natural?) 'trace #t ))
 
 ;; ** Parameter: *our-color*
 
@@ -94,7 +100,7 @@
         [else c] ) )
 
 (define *our-color*
-  (make-parameter "our color" image-color? #:parse parse-color) )
+  ( (make-parameter "our color" image-color? #:parse parse-color) 'trace #t ) )
 
 ;; EXERCISE: Select colors that are maximally distinct
 ;; using a colorspace model from package color.
@@ -113,6 +119,8 @@
            [to-draw (or/c procedure? #f)] )
   #:mutable #:transparent )
 
+;; ** Serializing Sprites for Transmission
+
 ;; We need to be able to send sprites across worlds.
 ;; This requires us to serialize them, i.e. convert them to a byte stream.
 ;; Alas, Racket doesn't provide for serialization of
@@ -130,7 +138,7 @@
 ;; Only the uuid field is required.  The other fields can default to #f if
 ;; the corresponding sprite field is irrelevant, i.e. not requiring an update.
 
-;; ** Transmitting Sprites
+;; ** Translating Non-Serializable Values
 
 ;; To transmit a sprite between a world and a server
 ;; - a sprite-proxy is created of the sprite
@@ -145,7 +153,10 @@
 
 ;; We can use association lists.  Since they're associated
 ;; with specific sprite structure fields, we'll use a global
-;; structure as a central registry:
+;; structure as a registry, with its field names corresponding
+;; to the field names to be translated.
+
+;; here's the type
 (struct/contract
   registry (
             ;; To support dynamic loading of images, we could allow the
@@ -157,8 +168,12 @@
             [on-key (listof (cons/c symbol? procedure?))]
             [to-draw (listof (cons/c symbol? procedure?))] )
   #:mutable #:transparent )
+
+;; here's the registry
 (define proxy-registry (registry '() '() '() '()))
+
 ;; The keys in each association list should be unique.
+;; What will happen if the values are not unique??
 
 ;; Return the element of the list in the proxy-registry field
 ;; (1) accessed with the given getter (structure selector function)
@@ -190,7 +205,7 @@
     (and found (first found)) ) )
 
 ;; Load a bitmap from a file, cache (save) it in the registry
-;; and return it. What happens if there's no image at that path?
+;; and return it. What happens if there's no image at that path??
 (define (bitmap/file/cache path)
   (let ( [image (bitmap/file path)] )
     (register-key-val path image registry-image set-registry-image!)
@@ -209,7 +224,8 @@
 ;; Given a sprite, convert it to a proxy which can be serialized
 ;; for transmission across a byte stream.  #f will be substituted
 ;; for any unknown values!!
-(define (sprite->proxy s)
+;; See make-proxy for what we're really using!!
+#;(define (sprite->proxy s)
   (sprite-proxy
    (sprite-uuid s)
    (val->key (sprite-image s) registry-image)
@@ -218,10 +234,8 @@
    (val->key (sprite-on-key s) registry-on-key)
    (val->key (sprite-to-draw s) registry-to-draw) ) )
 
-;; Given a sprite-proxy, convert it to a
-;; This returns a new sprite, even if there's already a sprite
-;; with this uuid.  You'll have to update any such sprite with
-;; any non-#f values of the new sprite!!
+;; Given a sprite-proxy, convert it to a new sprite.
+;; This is only used with NEW-SPRITE actions.
 (define (proxy->sprite sp)
   (sprite (sprite-proxy-uuid sp)
           (get-image (sprite-proxy-image sp))
@@ -233,30 +247,30 @@
           (key->val (sprite-proxy-on-key sp) registry-on-key)
           (key->val (sprite-proxy-to-draw sp) registry-to-draw) ) )
 
-;; WARNING: If we don't register all of the proxy values we need we'll
-;; wind up with imcomplete sprite-proxy structures where some of the
-;; fields will be #f which will then be converted into incomplete
-;; sprite structures on receipt!!
-;; Should this happen, depending on message type:
-;; MUTATE-SPRITE -- only update valid fields, log an issue
-;; NEW-SPRITE -- ignore this sprite, log an issue
+;; NOTE: If we don't register all of the proxy values we need we'll
+;; wind up with sprite-proxy structures where some of the fields
+;; will be #f with various results, depending on message actions:
+;; MUTATE-SPRITE -- only update non-#f fields
+;; NEW-SPRITE -- ignore this sprite, report an issue!!
 ;; DROP-SPRITE -- only the uuid matters, so no worries!
 ;; -- Learn about logging vs. volatile error reports!!
+
+;; Do we have a new value different from the old value?
+;; Return new value if it will, #f if it won't.
+(define (delta old new) (and new (not (equal? old new)) new))
 
 ;; Make a sprite-proxy which represents desired updates to a sprite
 (define (make-proxy s
                     #:image [image #f]
                     #:x [x #f] #:y [y #f] #:dx [dx #f] #:dy [dy #f]
                     #:tick [tick #f] #:key [key #f] #:draw [draw #f] )
-  ;; will changing value v to vv make a difference?
-  (define (delta v vv) (and vv (not (equal? v vv)) vv))
   (sprite-proxy (sprite-uuid s)
-                (delta (sprite-image s) image)
+                (and (delta (sprite-image s) image) (val->key image registry-image))
                 (delta (sprite-x s) x) (delta (sprite-y s) y)
                 (delta (sprite-dx s) dx) (delta (sprite-dy s) dy)
-                (delta (sprite-on-tick s) tick)
-                (delta (sprite-on-key s) key)
-                (delta (sprite-to-draw s) draw) ) )
+                (and (delta (sprite-on-tick s) tick) (val->key tick registry-on-tick))
+                (and (delta (sprite-on-key s) key) (val->key key registry-on-key))
+                (and (delta (sprite-to-draw s) draw) (val->key draw registry-to-draw) ) ) )
 
 (define (mutate-sprite-from-proxy! s sp)
   (unless (eq? (sprite-uuid s) (sprite-proxy-uuid sp))
