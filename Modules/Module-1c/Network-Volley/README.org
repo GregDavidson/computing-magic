@@ -4,10 +4,16 @@ This the third Starting Point for [[file:../README.org][Writing 2D Games]].
 
 We're going to learn how to create games which
 - Consist of multiple Client Programs called /Worlds/
-- Worlds will be coordinated by a /Universe Server/
-- We can design and test it on a single computer
-- Given an accessible network Universe Server
-- Multiple Users can interact with Worlds running on their own machines
+Worlds are coordinated by a /Universe Server/
+- Messages are Mailed to or from the /Universe Server/
+- which can relay messages among worlds
+ 
+- We can design and test our Universe on a single computer
+- We can run our /Universe Server/ on an Internet-accessible host
+      - Each user can then run a World on their own machine
+      - Each world creates a connection to the /Universe Server/
+
+** A Super Simple Example
 
 Open these example programs in 2 DrRacket tabs or windows:
 - [[file:ball-toss-client.rkt][ball-toss-client.rkt]]
@@ -21,10 +27,101 @@ Explore both programs
 - By studying the code
 - Consulting the documentation on the new procedures
  
-Add some features!
+** Building a Framework for More Complex Games
 
-We can use the techniques from our earlier starting points to create
-a rich Multi-User Universe
+In the Ball Toss example the World State is a single simple value.
+- What if the World State was a List of Sprites?
+- Sprites created by one world can be visible in the others!
+- How can the worlds propagate changes in "their" sprites?
+- How can the Universe Server track worlds?
+
+*** Bring in Our Earlier Ideas
+
+We reuse some of the ideas we developed in our earlier starting points,
+especially 
 - See the last section of the [[file:../Flight-Lander/README.org][Flight Lander]] Starting Point!
+- The main idea is to use a List of Sprites for the World State
 
-If you'd like a framework, read [[file:sprites-worlds-game.org][Building a Multi-User Game with Sprites]].
+** Overcome Some New Challenges
+
+We have some new challenges.
+
+Inter-world messages have to be
+- /serialized/ (converted to bytes) by the sender
+- /deserialized/ (converted back to data structures) by the receiver
+
+The 2http/universe framework can only serialize simple data structures
+- Lists and simple atoms are okay
+- Images, regular structures and functions are not
+- The framework doesn't use the general Racket serialization framework
+      - This is unfortunate because that framework is extensible
+
+The solution is to translate any message into a form which can be transmitted
+and then translate it back in the receiving world. In particular, we'll need to
+translate Sprites into Proxy Sprites (simple structures which can be
+transmitted.
+
+#+begin_src racket
+;; The "working data structure" in the world might be
+  (struct/contract
+    sprite ( [uuid uuid-symbol?]
+             [image (or/c image? #f)]
+             [x natural?] [y natural?]
+             [dx integer?] [dy integer?]
+             [on-tick (or/c procedure? #f)]
+             [on-key (or/c procedure? #f)]
+             [to-draw (or/c procedure? #f)] )
+
+;; A "proxy data structure" for transmission might be
+  (struct
+   sprite-proxy (uuid image x y dx dy on-tick on-key to-draw)
+    #:prefab
+    #;#:guard
+    #;(struct-guard/c uuid-symbol?  (or/c #f string? symbol?)
+                    (or/c #f natural?)   (or/c #f natural?)
+                    (or/c #f integer?)   (or/c #f integer?)
+                    (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) ) )
+    #:mutable #:transparent )
+#+end_src
+
+The uuid field ties a sprite together with a proxy unambiguously.
+- Check out uuid in the Racket documentation!
+
+In the  proxy, complex values are represented by simpler values, e.g.
+- images can be represented by
+  - a path to a file containing the image
+  - or a function which can draw the image
+- procedures can be represented by their names
+
+We assume that
+- procedures mentioned in messages are present in all worlds
+- suitable images referenced by paths are in those paths in all worlds.
+
+Because the 2htdp/universe framework doesn't understand either regular or
+serializable structures we're having to use primitive #:prefab structures which
+lack a lot of desirable features including contracts and guards. The sprite
+structures used contracts and we've commented out a guard which would be
+available from regular structures.
+- EXERCISE :: Given that we can't use either of these
+convenient features, how else can we make sure we protect proxy-sprite structure
+fields from being accidentally initialized with invalid values?
+
+*** Alternative Ideas
+
+Suppose that 2http/universe didn't allow any kind of structures?
+- We could use [[file:Solutions/Proxy-Options/sprites-worlds-game-vector-proxies.rkt][Proxies made from Vectors]]
+- or [[file:sprites-worlds-game-list-proxies.rkt][Proxies made from Lists]]
+
+Suppose that the 2http/universe /did/ use the Racket Serialization Process
+- Fields of Serializable structures have to themselves be serializable
+- We'll still need to use proxies but they can be
+- [[sprites-worlds-game-serializable-structure-proxies.rkt][[Proxies made from Seralizable Structures]]
+- Perhaps a future version of the 2http/universe framework will support this
+      - EXERCISE: Would you like to help make that possible/?
+
+** We have a Framework you can start with
+
+If you'd like to use the ideas presented above to build your own framework, go right ahead.
+
+If you'd like a framework to build on
+- look at [[file:sprites-worlds-game.org][Building a Multi-User Game with Sprites]]

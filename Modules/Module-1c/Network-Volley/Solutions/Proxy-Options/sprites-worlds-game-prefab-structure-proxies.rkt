@@ -3,10 +3,15 @@
 
 ;; See sprites-worlds-game.org for information about the game.
 
-;; This file provides both the Universe Server and the World Clients with the
-;; protocol which connects them.
+;; This file is required by the Universe Server
+;; and each World Client.  It provides
+;; - inter-client (inter-world) protocol information
+;; - universe-world protocol information
+;; - including a sprite-proxy structure
 
-(require uuid) ; univerally unique identifiers
+;; uuid package not required unless and until we
+;; can restore validation of proxy fields.
+#: (require uuid) ; univerally unique identifiers
 
 ;; The definition of struct sprite-proxy is at the end of the file
 ;; after a lot of comments!

@@ -3,17 +3,13 @@
 
 ;; See sprites-worlds-game.org for information about the game.
 
-;; The file sprites-words-games.rkt provides
-;; - a description of the game
-;; - inter-client (inter-world) protocol information
-;; - including a sprite-proxy structure
 (require 2htdp/universe)
-(require uuid) ; universally unique identifiers
-(require "sprites-worlds-game.rkt")
 (require 2htdp/image)
 (require (except-in racket/draw make-color make-pen))
+(require uuid) ; universally unique identifiers
+(require "sprites-worlds-game.rkt") ; study this file!!
 
-(define *trace* #t) ; trace to interaction window
+(define *trace* #t) ; trace to interaction window while debugging
 
 ;; ** Client-Side 2http Framework Types
 
@@ -34,7 +30,7 @@
 (define CANVAS-HEIGHT 300) ; pixels
 (define EMPTY-CANVAS (empty-scene CANVAS-WIDTH CANVAS-HEIGHT))
 
-;; ** Parameters, Parameter *our-number*
+;; ** Parameters, *our-number*
 
 ;; A parameter is a value which should be set once and should not change.
 ;; We'll implement parameters as functions which yield
@@ -87,7 +83,7 @@
 
 (define *our-number* (make-parameter "our number" natural?))
 
-;; ** Parameter: *our-color*
+;; *** Parameter: *our-color*
 
 ;; Choose colors which will, for any number of clients, be maximally
 ;; distinguishable. Uses may have color blindness so be use additional methods
