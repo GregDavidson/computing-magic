@@ -23,11 +23,10 @@
 
 ;; Handler procedures can either return
 ;; - a bare WorldState
-;; - a package
-
-;; package - a structure consisting of
-;; - a World State
-;; - a serializable symbolic expression to send to the Server
+;; - a package structure consisting of
+;;   - a World State
+;;   - a serializable symbolic expression to send to the Server
+;;     - 2http serialization requirements are quite limited
 
 ;; ** Our Canvas
 
@@ -65,12 +64,12 @@
                        (cond 
                          [(eq? key 'value) (return-value)]
                          [(eq? key 'init)
-                          (when is-set
-                            (error 'parameter "~a is set, rejecting ~a" name arg ) )
                           (when (null? args)
                             (error 'parameter "~a init missing value" name ) )
                           (let* ( [arg (car args)]
                                   [v (if parse (parse arg) arg)] )
+                            (when is-set
+                              (error 'parameter "~a is set, rejecting ~a" name arg ) )
                             (unless (guard v)
                               (error 'parameter "~a: guard rejects ~a" name v ) )
                             (set! value v)
@@ -79,7 +78,7 @@
                           (process-args (cdr args)) ]
                          [(eq? key 'show) (show-value)]
                          [else (error 'parameter "~a: unknown key ~a" name key)]) ) ]
-            [process-args (λ args (when (pair? args) (process (car args) (cdr args))))]
+            [process-args (λ (args) (when (pair? args) (process (car args) (cdr args))))]
             [the-parameter (λ args ; a function taking a list of 0 or more arguments
                              (if (null? args)
                                  (return-value)
@@ -245,7 +244,7 @@
 ;; Given a sprite-proxy, convert it to a new sprite.
 ;; This is only used with NEW-SPRITE actions.
 (define (proxy->sprite sp)
-  (sprite (sprite-proxy-uuid sp)
+  (let ( [s (sprite (sprite-proxy-uuid sp)
           (get-image (sprite-proxy-image sp))
           (sprite-proxy-x sp)
           (sprite-proxy-y sp)
@@ -253,7 +252,9 @@
           (sprite-proxy-dy sp)
           (key->val (sprite-proxy-on-tick sp) registry-on-tick)
           (key->val (sprite-proxy-on-key sp) registry-on-key)
-          (key->val (sprite-proxy-to-draw sp) registry-to-draw) ) )
+          (key->val (sprite-proxy-to-draw sp) registry-to-draw) )] )
+    (when *trace* (eprintf "sprite-proxy-uuid: ~a -> ~a" sp s ))
+    s ) )
 
 ;; NOTE: If we don't register all of the proxy values we need we'll
 ;; wind up with sprite-proxy structures where some of the fields
@@ -308,7 +309,8 @@
                                (begin
                                  (error 'mutate-sprite-from-proxy! "no to-draw in ~a" sp)
                                  (sprite-to-draw s) ) )) )
-  (when (equal? s original) (error 'mutate-sprite-from-proxy! "~a didn't change ~a" sp s)) )
+  (when (equal? s original) (error 'mutate-sprite-from-proxy! "~a didn't change ~a" sp s))
+  (when *trace* (eprintf "~a mutated ~a to ~a\n" sp original s)) )
 
 ;; If you're interested in how macros and structures work, here are
 ;; some exercises which might interest you:
@@ -453,7 +455,7 @@
 
 (define DX-BOOST 5)
 (define DY-BOOST 5)
-(define DY-FALLING 2)
+(define DY-FALLING -2)
 
 ;; decay moves a value closer to its target value,
 ;; i.e. it makes boosts decay.
@@ -487,6 +489,8 @@
 (define (on-canvas? image x y)
   (and (< 0 x (- CANVAS-WIDTH (image-width image)))
        (< 0 y (- CANVAS-HEIGHT (image-height image))) ) )
+
+;; ** Sprite Action Methods
 
 ;; WorldState -> ActionList
 ;; update the sprite's coordinates;
@@ -525,7 +529,7 @@
  )
 (register-key-val 'boost-sprite-on-key boost-sprite-on-key registry-on-key set-registry-on-key!)
 
-;; ** Rendering
+;; ** Rendering Method
 
 (define (half n) (quotient n 2))
 
@@ -577,9 +581,10 @@
 
 ;; return Package from applying on-key methods to our sprites
 (define (update-world-on-key world key)
-  (let* ( [actions (gather-actions-on-key (sprites-ours world) key)]
-          [our-sprites (update-sprites actions sprites)] )
-    (make-package (sprites our-sprites (sprites-theirs world)) actions) ) )
+  (let* ( [ours (sprites-ours world)]
+          [actions (gather-actions-on-key ours key)]
+          [ours-updated (update-sprites actions ours)] )
+    (make-package (sprites ours-updated (sprites-theirs world)) actions) ) )
 
 ;; Return a new canvas with our sprites drawn on top of
 ;; their sprites drawn on an empty canvas.
@@ -597,14 +602,15 @@
     [on-receive receive]
     [to-draw draw-world]
     [on-key update-world-on-key]
-    [on-tick update-world-on-tick 1/30]
+    [on-tick update-world-on-tick 1/10] ; 1/30 good, lower for testing
     [stop-when (λ (_) #f)] ; for now, never stop!
     [name a-name]
     [register server] ) )
 
-(define (go [server LOCALHOST]) (launch-many-worlds
-                                 (create-world "Eti" server)
-                                 (create-world "Brandt" server)
-                                 (create-world "Touch" server) ))
+(define (go1 [server LOCALHOST]) (create-world "Touch" server))
 
-(define final (create-world "Touch"))
+(define (go3 [server LOCALHOST])
+  (launch-many-worlds
+   (create-world "Eti" server)
+   (create-world "Brandt" server)
+   (create-world "Touch" server) ) )
