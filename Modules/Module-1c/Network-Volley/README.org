@@ -61,6 +61,8 @@ and then translate it back in the receiving world. In particular, we'll need to
 translate Sprites into Proxy Sprites (simple structures which can be
 transmitted.
 
+*** Data Structure Design Example
+
 #+begin_src racket
 ;; The "working data structure" in the world might be
   (struct/contract
@@ -87,6 +89,9 @@ transmitted.
 The uuid field ties a sprite together with a proxy unambiguously.
 - Check out uuid in the Racket documentation!
 
+Notice that some of the fields are allowed to be #f if unneeded.
+- This will be especially  useful in Algorithm Design #2.
+
 In the  proxy, complex values are represented by simpler values, e.g.
 - images can be represented by
   - a path to a file containing the image
@@ -106,6 +111,34 @@ available from regular structures.
 convenient features, how else can we make sure we protect proxy-sprite structure
 fields from being accidentally initialized with invalid values?
 
+*** Algorithm Design #1: Mail Your Whole World State
+
+A simple way to go from the single-world design to a multi-world design is to
+mail your whole World State to all other worlds whenever your world changes.
+
+Needed functions:
+- sprite-to-proxy :: convert a =sprite= structure to a =proxy-sprite= structure
+- proxy-to-sprite :: convert a =proxy-sprite= structure to a =sprite= structure
+
+Problems with this approach:
+- You have to reconcile inconsistent states of the same sprite modified by
+  multiple worlds -- this is hard!
+- For a complex world this generates a lot of network traffic.
+
+*** Algorithm Design #2: Mail /Changes/ to "Your" Sprites to the Other Worlds
+
+A more efficient and better-behaved design is
+- Any sprite belongs to only one world at any time.
+      - Starts as the world where the sprite is created.
+      - Some actions might "move" sprites between worlds.
+- Our World State now consists of two lists
+      - "Our" Sprites which we might change
+      - "Their" Sprites which only other worlds might change
+- When we change the state of any of our sprites
+      - We mail the proxies representing other worlds with a proxy representing our changes
+- We update "Their" sprites in response to messages.
+- We show both sets of sprites on our canvas.
+
 *** Alternative Ideas
 
 Suppose that 2http/universe didn't allow any kind of structures?
@@ -116,7 +149,7 @@ Suppose that the 2http/universe /did/ use the Racket Serialization Process
 - Fields of Serializable structures have to themselves be serializable
 - We'll still need to use proxies but they can be
 - [[sprites-worlds-game-serializable-structure-proxies.rkt][[Proxies made from Seralizable Structures]]
-- Perhaps a future version of the 2http/universe framework will support this
+- A future version of the 2http/universe framework could support this
       - EXERCISE: Would you like to help make that possible/?
 
 ** We have a Framework you can start with
@@ -125,3 +158,4 @@ If you'd like to use the ideas presented above to build your own framework, go r
 
 If you'd like a framework to build on
 - look at [[file:sprites-worlds-game.org][Building a Multi-User Game with Sprites]]
+  
