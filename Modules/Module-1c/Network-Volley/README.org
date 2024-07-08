@@ -1,17 +1,23 @@
 * Network Volley - Interactive Multi-User Games
 
-This the third Starting Point for [[file:../README.org][Writing 2D Games]].
+This is the third Starting Point for [[file:../README.org][Writing 2D Games]].
 
-We're going to learn how to create games which
-- Consist of multiple Client Programs called /Worlds/
-Worlds are coordinated by a /Universe Server/
-- Messages are Mailed to or from the /Universe Server/
-- which can relay messages among worlds
- 
-- We can design and test our Universe on a single computer
-- We can run our /Universe Server/ on an Internet-accessible host
-      - Each user can then run a World on their own machine
-      - Each world creates a connection to the /Universe Server/
+We're going to learn how to create games with
+- multiple simultaneous Users
+- running /Client Programs/ called /Worlds/
+- coordinated by a /Universe Server/
+The game play is managed by
+- /Messages/ /Mailed/ between /Worlds/ and the /Universe Server/
+
+We can design and test our Universe on a single computer
+- The Universe Server and all Worlds running on one /host/ system.
+- The /Universe Server/ can play an active role in the game
+- or it can act as a Post Office, relaying Mail between Worlds.
+
+When we install our /Universe Server/ on an Internet-accessible host
+- Each user can run a World on their own machine
+- Each world creates a connection to the /Universe Server/
+- Players can be anywhere with Internet connectivity.
 
 ** A Super Simple Example
 
@@ -26,7 +32,7 @@ Explore both programs
 - By running them
 - By studying the code
 - Consulting the documentation on the new procedures
- 
+
 ** Building a Framework for More Complex Games
 
 In the Ball Toss example the World State is a single simple value.
@@ -38,11 +44,11 @@ In the Ball Toss example the World State is a single simple value.
 *** Bring in Our Earlier Ideas
 
 We reuse some of the ideas we developed in our earlier starting points,
-especially 
+especially
 - See the last section of the [[file:../Flight-Lander/README.org][Flight Lander]] Starting Point!
 - The main idea is to use a List of Sprites for the World State
 
-** Overcome Some New Challenges
+** Overcoming Some New Challenges
 
 We have some new challenges.
 
@@ -51,17 +57,16 @@ Inter-world messages have to be
 - /deserialized/ (converted back to data structures) by the receiver
 
 The 2http/universe framework can only serialize simple data structures
-- Lists and simple atoms are okay
-- Images, regular structures and functions are not
-- The framework doesn't use the general Racket serialization framework
-      - This is unfortunate because that framework is extensible
+- It can serialize Lists and simple atoms
+- But not images, regular structures or procedures!
+The Racket Serialization Framework is extensible
+- Alas, the 2http/universe doesn't use it!!
 
-The solution is to translate any message into a form which can be transmitted
-and then translate it back in the receiving world. In particular, we'll need to
-translate Sprites into Proxy Sprites (simple structures which can be
-transmitted.
+A solution is to translate any message into a form which can be transmitted and
+then translate it back in the receiving world. As an example, we can translate
+Sprites into Proxy Sprites, simple structures which can be serialized..
 
-*** Data Structure Design Example
+*** EXAMPLE Data Structure Design
 
 #+begin_src racket
 ;; The "working data structure" in the world might be
@@ -94,24 +99,24 @@ Notice that some of the fields are allowed to be #f if unneeded.
 
 In the  proxy, complex values are represented by simpler values, e.g.
 - images can be represented by
-  - a path to a file containing the image
-  - or a function which can draw the image
+      - a path to a file containing the image
+      - or a function which can draw the image
 - procedures can be represented by their names
 
 We assume that
 - procedures mentioned in messages are present in all worlds
-- suitable images referenced by paths are in those paths in all worlds.
+- suitable images referenced by paths are at those paths in all worlds.
 
 Because the 2htdp/universe framework doesn't understand either regular or
-serializable structures we're having to use primitive #:prefab structures which
-lack a lot of desirable features including contracts and guards. The sprite
-structures used contracts and we've commented out a guard which would be
-available from regular structures.
+serializable structures we're having to use a simpler kind of structure called a
+Prefab Structure. Prefab Structures lack a lot of nice features, including
+contracts and guards. The sprite structures used contracts and we've commented
+out a guard which would be available from regular structures.
 - EXERCISE :: Given that we can't use either of these
 convenient features, how else can we make sure we protect proxy-sprite structure
 fields from being accidentally initialized with invalid values?
 
-*** Algorithm Design #1: Mail Your Whole World State
+*** EXAMPLE Algorithm Design #1: Mail Your Whole World State
 
 A simple way to go from the single-world design to a multi-world design is to
 mail your whole World State to all other worlds whenever your world changes.
@@ -125,7 +130,7 @@ Problems with this approach:
   multiple worlds -- this is hard!
 - For a complex world this generates a lot of network traffic.
 
-*** Algorithm Design #2: Mail /Changes/ to "Your" Sprites to the Other Worlds
+*** EXAMPLE Algorithm Design #2: Mail /Changes/ to "Your" Sprites to the Other Worlds
 
 A more efficient and better-behaved design is
 - Any sprite belongs to only one world at any time.
@@ -135,7 +140,8 @@ A more efficient and better-behaved design is
       - "Our" Sprites which we might change
       - "Their" Sprites which only other worlds might change
 - When we change the state of any of our sprites
-      - We mail the proxies representing other worlds with a proxy representing our changes
+      - We mail the proxies representing other worlds with a proxy representing
+        our changes
 - We update "Their" sprites in response to messages.
 - We show both sets of sprites on our canvas.
 
@@ -154,8 +160,8 @@ Suppose that the 2http/universe /did/ use the Racket Serialization Process
 
 ** We have a Framework you can start with
 
-If you'd like to use the ideas presented above to build your own framework, go right ahead.
+If you'd like to use the ideas presented above to build your own framework
+without further guidance, go right ahead.
 
 If you'd like a framework to build on
 - look at [[file:sprites-worlds-game.org][Building a Multi-User Game with Sprites]]
-  
