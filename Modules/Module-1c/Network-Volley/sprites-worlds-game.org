@@ -13,33 +13,39 @@ Universe Server aka "the server"
 
 Sprite
 - A graphical object with
-  - A shape - which might change!
-  - A unique identity
-  - A location and velocity
-  - Reponses to certain key presses
-- May be visible in multiple worlds
+      - A shape - which might change!
+      - A unique identity
+      - A location and velocity
+      - Reponses to certain key presses
+- Often visible in multiple worlds
 - Sprites might interact!
 
-** The Simplest Game
+Although a Sprite is often visible in more than one world, it will initially
+only receive Events (Tick, Key, Pointer, etc.) from its home world.
+- If the game logic desires it
+      - a Sprite could change its home
+      - a Sprite could receive events from more than one World.
+
+** A Simple Game
 
 - Each world has its own unique World Number.
-- Each world has its own unique color.
-- Each world has one sprite of its color.
-- The server will give a new sprite to any world that
-  does not have one.
+- Each world has its own unique Color.
+- Each world has one Sprite of its Color.
+- A new world will get one initial sprite.
 - Initially all sprites are balls labeled with their World Number.
 - The balls start at the top of the canvas and fall at a constant velocity.
 - A sprite is lost if it reaches the edge of the canvas.
-  - Users can avoid this!
+- Users can avoid this by giving a sprite "boosts".
 
-As a user
-- We see all sprites of all worlds.
-- We can use the left/right arrow keys to move our ball left or right.
-- We can use the up/down arrow keys to give up/down velocity boosts
-  to our ball.
-- Velocity boosts will decay back to the original constant falling velocity.
-- Careful boosting can keep our balls away from edges.
-- Over-boosting can cause balls to collide with the edges!
+As a User
+- We see all Sprites of all Worlds.
+- The up/down arrow keys to give our Sprite up/down velocity boosts
+      - This can keep our Sprite from becoming lost.
+- The left/right arrow keys to give our Sprite left/right velocity boosts
+      - This can keep our Sprite out of a muddle of other world's Sprites.
+- Velocity boosts will decay back to the original velocity, e.g. falling.
+      - Careful boosting can keep our balls away from edges.
+      - Over-boosting can cause balls to collide with the edges!
 
 ** EXERCISES: Enhancing the Game
 
@@ -49,52 +55,51 @@ Allow persistent velocity changes in any direction
 
 Gifting Sprites!
 - Have an action to give our sprite to a world needing one
-  - If no other world needs one we lose ours!
-    - Maybe someone else passed them a sprite first!
-  - If multiple worlds need one, a random one gets it.
-  - If we successfully gave ours away
-    - We gain a point
-- The Server will only give a new sprite
-  - to a world if they succesfully given one away
-  - to a random world if no worlds have any sprites
+      - If no other world needs one we lose ours!
+            - Maybe someone else passed them a sprite first!
+      - If multiple worlds need one, a random one gets it.
+      - If we successfully gave ours away
+            - We gain a point and get a new Sprite!
+- If all Worlds lose their Sprites
+      - a random world will get a new Sprite
 
-Ejecting Transient Sprites!
-- Eject transient sprites to change our velocity
-- Transient sprites
-  - Do not affect the game play.
-  - Are not controllable
-  - Disappear when they leave the canvas
+Eject Reaction Sprites to change velocity!
+- They boost Sprite by Newtonian Physics
+- Reaction Sprites
+      - Do not otherwise affect the game play.
+      - Are not controllable
+      - Disappear when they leave the canvas
 
 More possible Enhancements
-- Allow diverse shapes for sprites
-  - Maybe upon succesfully giving one away you get
-    a more interesting new one!
-- Allow some surfaces to bounce sprites
-- Allow sprites to interact with sprites of other worlds
-  - Momentum exchanges and/or destructive interactions!
+- Allow diverse shapes for Sprites
+      - Maybe after giving one away you get a more interesting new one!
+- Allow some surfaces to Bounce Sprites
+- Allow Sprites to interact with Sprites of other worlds
+      - Momentum exchanges? Destructive interactions?
 
 ** Prefab Proxy Structures
 
-We need to be able to send sprites across worlds.
-This requires us to serialize them, i.e. convert them to a byte stream.
-Alas, Racket doesn't provide for serialization of
-- regular structures, images or procedures
+We need to be able to send Sprite Attributes across Worlds.
+- This information must be serialized
+      - i.e. converted to/from a byte stream
+- Alas, Racket doesn't provide for serialization of
+      - regular structures, images or procedures
 
-We'll need to create serializable proxies
-- Converted from sprite structures and sent to the Universe Server
-- Used to create, update and drop sprite structures on receipt by a World
+We'll need to create Serializable Proxies
+- Converted from Sprite Structures and sent to the Universe Server
+- Used to Create, Update and Drop Sprite Structures on receipt by a World
 
 A serializable-struct can be serialized if all of its components can be
 serialized.
 - Alas, 2htdp/universe won't accept serializable structures!
 
-A prefab structure can be serialized if all of its components can be
+A Prefab Structure can be serialized if all of its components can be
 serialized.
-- 2htdp/universe /does accept/ prefab structures!
-- sprite-proxy will be a prefab structure
+- 2htdp/universe /does accept/ Prefab Structures!
+- sprite-proxy will be a Prefab Structure
 
-The fields of a sprite-proxy prefab structure corresponding to a sprite's
-non-serializable fields will be replace by proxy values.
+The fields of a sprite structure we want to change will be stored as a proxy
+value in the corresponding sprite-proxy field.
 
 Images will be represented either by
 (1) a filesystem path to a stored image
@@ -102,6 +107,8 @@ Images will be represented either by
     takes a color and returns an image.
 
 Procedures will be represented by their names (symbols).
+
+Simple scalars (numbers, et al) will be stored as themselves.
 
 A sprite-proxy will have the same uuid as the sprite it is a proxy for.
 - Only the uuid field requires a proper value.
