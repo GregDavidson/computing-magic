@@ -7,9 +7,12 @@
 ;; The file sprites-words-games.rkt provides
 ;; - inter-client (inter-world) protocol information
 ;; - including a sprite-proxy structure
+;; - You'll want to look it over carefully!
 (require 2htdp/universe)
 (require data/gvector) ; growable vectors
 (require "sprites-worlds-game.rkt")
+
+(define *trace* #t) ; trace to interaction window while debugging
 
 ;; ** Notes
 
@@ -139,9 +142,16 @@
            (make-bundle universe '() (list world)) ]
           [else universe] ) ) )
 
+(define (drop-world u w)
+  (let ( [i (universe-world-index u w)] )
+    (when *trace* (eprintf "dropping world ~a\n" i))
+    (universe-drop! u i)
+    (make-bundle u '() (list w)) ) )
+  
 ;; Start the server
 
 (universe (empty-universe)
           #;[state #f] ; suppress opening separate state window
           [on-new add-world]
-          [on-msg handle-world-msg] )
+          [on-msg handle-world-msg]
+          [on-disconnect drop-world] )

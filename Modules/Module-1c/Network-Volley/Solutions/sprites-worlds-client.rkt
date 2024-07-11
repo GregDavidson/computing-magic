@@ -3,11 +3,15 @@
 
 ;; See sprites-worlds-game.org for information about the game.
 
+;; The file sprites-words-games.rkt provides
+;; - inter-client (inter-world) protocol information
+;; - including a sprite-proxy structure
+;; - You'll want to look it over carefully!
 (require 2htdp/universe)
 (require 2htdp/image)
 (require (except-in racket/draw make-color make-pen))
 (require uuid) ; universally unique identifiers
-(require "sprites-worlds-game.rkt") ; study this file!!
+(require "sprites-worlds-game.rkt")
 
 (define *trace* #t) ; trace to interaction window while debugging
 
@@ -460,9 +464,9 @@
         [(< value target) (+ value step)]
         [else value] ) )
 
-;; Why add text to the ball? (How common is color blindness?)
-;; We could use the provided name instead (or in addition to) the
-;; number.  How can you better center the text on the ball??
+;; Why add text to the ball? 10% of humans are color blind!
+;; EXERCISE: Use the provided name instead (or in addition to)
+;; the number.
 (define (make-ball color)
   (*our-color* 'show)
   (overlay (text (number->string (*our-number*)) 10 'black)
@@ -603,10 +607,6 @@
     [name a-name]
     [register server] ) )
 
-(define (go1 [server LOCALHOST]) (create-world "Touch" server))
+(define (go [server LOCALHOST]) (create-world "Eti" server))
 
-(define (go3 [server LOCALHOST])
-  (launch-many-worlds
-   (create-world "Eti" server)
-   (create-world "Brandt" server)
-   (create-world "Touch" server) ) )
+(go)
