@@ -12,7 +12,7 @@
 (require data/gvector) ; growable vectors
 (require "sprites-worlds-game.rkt")
 
-(define *trace* #t) ; trace to interaction window while debugging
+(define *trace* (make-parameter #f boolean? 'trace)) ; trace to interaction window while debugging
 
 ;; ** Notes
 
@@ -140,7 +140,13 @@
     (cond [(eq? W2U-DONE msg-head)
            (universe-drop! universe world-number)
            (make-bundle universe '() (list world)) ]
-          [else universe] ) ) )
+          [else   ;;relay message to all other worlds, not the one
+           (make-bundle universe
+                        (map (λ (w) (make-mail w message) )
+                             (filter (λ (w) (and w (not (equal? w world))))
+                                     (gvector->list universe) ) )
+                        '() ; no worlds to remove
+                        ) ] )  )   )
 
 (define (drop-world u w)
   (let ( [i (universe-world-index u w)] )
