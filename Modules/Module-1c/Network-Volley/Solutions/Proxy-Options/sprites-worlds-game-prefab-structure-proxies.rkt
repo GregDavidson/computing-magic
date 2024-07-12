@@ -9,12 +9,11 @@
 ;; - universe-world protocol information
 ;; - including a sprite-proxy structure
 
-;; uuid package not required unless and until we
-;; can restore validation of proxy fields.
-#: (require uuid) ; univerally unique identifiers
+;; uuid package not required until we
+;; restore validation of proxy fields.
+#; (require uuid) ; univerally unique identifiers
 
 ;; The definition of struct sprite-proxy is at the end of the file
-;; after a lot of comments!
 (provide (struct-out sprite-proxy))
 (provide W2U-EMPTY W2U-DONE)
 (provide U2W-WELCOME)
