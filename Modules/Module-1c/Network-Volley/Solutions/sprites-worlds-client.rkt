@@ -31,8 +31,8 @@
 
 ;; ** Our Canvas
 
-(define CANVAS-WIDTH 400) ; pixels
-(define CANVAS-HEIGHT 300) ; pixels
+(define CANVAS-WIDTH 400)               ; pixels
+(define CANVAS-HEIGHT 300)              ; pixels
 (define EMPTY-CANVAS (empty-scene CANVAS-WIDTH CANVAS-HEIGHT))
 
 ;; ** Managing Colors
@@ -60,35 +60,30 @@
 ;; using a colorspace model from package color.
 ;; (require color)
 
-;; ** Put Parameters in an immutable structure
+;; ** Grouping World Parameters in an Immutable Structure
 
 ;; Parameters can be bound in the global environment
 ;; or they can be made part of the world state.
 
-;; If we run a separate client process for each
-;; world then global bindings are fine.
+;; Global bindings are good if they are constant
+;; after program initialization.
 
-;; If we ever want to use multiple threads running
-;; in the same client process to manage multiple
-;; worlds or multiple parts of worlds concurrently
-;; then global bindings won't do.
+;; If we need to supply specific parameters to
+;; procedures running in other worlds
+;; (or other threads) then it's better to group
+;; them in structures and pass them explicitly
+;; to those procedures.
 
-;; Let's move some of the parameters which have
-;; previously been in global bindings into a
-;; structure which will become part of our
-;; world state.  While this is not necessary now,
-;; it's shows us how to manage parameters more
-;; flexibly.
+;; Such grouped parameters can also become part of
+;; our World State.
 
-;; This may also be handy for testing.
-
-;; Here is a structure type for "our" parameters.
-;; We could move more global bindings in here
-;; if we wanted to.
-(struct/contract our ( [number natural?]
-                       [color image-color?]
-                       [falling natural?] )
-                 #:transparent )
+;; Here is a structure type for World Parameters
+;; needed by functions which we pass by name in
+;; our proxy structures.  It's #:prefab so that
+;; it can be serialized by the Universe Framework.
+(struct params ( number color falling )
+  #:constructor-name make-params
+  #:prefab )
 
 ;; ** Sprites
 
@@ -201,7 +196,7 @@
   (define this 'get-image-key)
   (let ( [found (key->val key registry-image)] )
     (cond [(image? found) found]
-          [(procedure? found) (found (our-color params))] ; cache it??
+          [(procedure? found) (found (params-color params))] ; cache it??
           [(string? found) (bitmap/file/cache found)]
           [(string? key) (bitmap/file/cache key)]
           [else           ; should this be an error??
@@ -213,7 +208,7 @@
 ;; for any unknown values!!
 ;; See make-proxy for what we're really using!!
 #;(define (sprite->proxy s)
-  (sprite-proxy
+  (make-sprite-proxy
    (sprite-uuid s)
    (val->key (sprite-image s) registry-image)
    (sprite-x s) (sprite-y s) (sprite-dx s) (sprite-dy s)
@@ -222,7 +217,7 @@
    (val->key (sprite-to-draw s) registry-to-draw) ) )
 
 ;; Given a sprite-proxy, convert it to a new sprite.
-;; This is only used with NEW-SPRITE actions.
+;; This is used with NEW-SPRITE actions.
 (define (proxy->sprite params sp)
   (define this 'proxy->sprite)
   (let ( [s (sprite (sprite-proxy-uuid sp)
@@ -250,17 +245,18 @@
 (define (delta old new) (and new (not (equal? old new)) new))
 
 ;; Make a sprite-proxy which represents desired updates to a sprite
+;; This is used with MUTATE-SPRITE actions.
 (define (make-proxy s
                     #:image [image #f]
                     #:x [x #f] #:y [y #f] #:dx [dx #f] #:dy [dy #f]
                     #:tick [tick #f] #:key [key #f] #:draw [draw #f] )
-  (sprite-proxy (sprite-uuid s)
-                (and (delta (sprite-image s) image) (val->key image registry-image))
-                (delta (sprite-x s) x) (delta (sprite-y s) y)
-                (delta (sprite-dx s) dx) (delta (sprite-dy s) dy)
-                (and (delta (sprite-on-tick s) tick) (val->key tick registry-on-tick))
-                (and (delta (sprite-on-key s) key) (val->key key registry-on-key))
-                (and (delta (sprite-to-draw s) draw) (val->key draw registry-to-draw) ) ) )
+  (make-sprite-proxy (sprite-uuid s)
+                     (and (delta (sprite-image s) image) (val->key image registry-image))
+                     (delta (sprite-x s) x) (delta (sprite-y s) y)
+                     (delta (sprite-dx s) dx) (delta (sprite-dy s) dy)
+                     (and (delta (sprite-on-tick s) tick) (val->key tick registry-on-tick))
+                     (and (delta (sprite-on-key s) key) (val->key key registry-on-key))
+                     (and (delta (sprite-to-draw s) draw) (val->key draw registry-to-draw) ) ) )
 
 (define (mutate-sprite-from-proxy! s sp)
   (define this 'mutate-sprite-from-proxy!)
@@ -338,11 +334,12 @@
 
 ;; Our WorldState consists of our parameters
 ;; and two lists of sprites:
-(struct/contract
- state ( [params our?]
-         [ours (listof sprite?)]
-         [theirs (listof sprite?)] )
- #:transparent )
+(struct state ( params ours theirs )
+  #:constructor-name make-state
+  #:guard
+  (struct-guard/c params? (listof sprite?) (listof sprite?))
+  #:transparent
+  )
 
 ;; Our tick and key events are relayed to our-sprites.
 ;; Our receive events are relayed to their-sprites.
@@ -428,16 +425,16 @@
            ;; check (null? our-sprites)
            (let* ( [number (welcome-world-number mail)]
                    [color (choose-color number)]
-                   [updated-params (struct-copy our our-params
+                   [updated-params (struct-copy params our-params
                            [number number]
                            [color color] ) ] )
              (when (tracing this) (eprintf "~a number ~a color ~a\n" this number color))
              (let* ( [new-sprite (make-sprite updated-params (make-ball updated-params))]
                      [ours-updated (cons new-sprite our-sprites)] )
                (make-package 
-                (state updated-params ours-updated their-sprites)
+                (make-state updated-params ours-updated their-sprites)
                 (list NEW-SPRITE (make-proxy new-sprite)) ) ) ) ]
-          [else (state our-params
+          [else (make-state our-params
                        our-sprites
                        (update-sprites our-params mail their-sprites) )] ) ) )
 
@@ -459,8 +456,8 @@
 ;; the number.
 (define (make-ball params)
   (define this 'make-ball)
-  (let ( [color (our-color params)]
-         [number (our-number params)] )
+  (let ( [color (params-color params)]
+         [number (params-number params)] )
     (when (tracing this) (eprintf "~a number ~a color ~a\n" this number color))
     (overlay (text (number->string number) 10 'black)
              (circle 20 "solid" color) ) ) )
@@ -474,7 +471,7 @@
      image
      (or x (half CANVAS-WIDTH))
      (or y (- CANVAS-HEIGHT (image-height image) 10))
-     (or dx 0) (or dy (our-falling params))
+     (or dx 0) (or dy (params-falling params))
      (or tick move-sprite)
      (or key boost-sprite-on-key)
      (or draw draw-sprite) ) )
@@ -496,7 +493,7 @@
     (let ( [xx (+ x dx)] [yy (+ y dy)] )
       (if (not (on-canvas? image xx yy))
           (list DROP-SPRITE (make-proxy s))
-          (let ( [dxx (decay dx 0)] [dyy (decay dy (our-falling params))] )
+          (let ( [dxx (decay dx 0)] [dyy (decay dy (params-falling params))] )
             (if (and (= x xx) (= y yy) (= dx dxx) (= dy dyy))
                 '() ; nothing changed
                 (list MUTATE-SPRITE
@@ -564,7 +561,7 @@
           [ours-updated (update-sprites our-params actions our-sprites)] )
     (when (tracing this) (eprintf "~a our-sprites: ~a\n" this ours-updated))
     (when (tracing this) (eprintf "~a actions: ~a\n" this actions))
-    (make-package (state our-params ours-updated (state-theirs world)) actions) ) )
+    (make-package (make-state our-params ours-updated (state-theirs world)) actions) ) )
 
 ;; deliver key events to all sprites in the given list
 ;; returning a merged action list in Mail format
@@ -583,7 +580,7 @@
           [our-sprites (state-ours world)]
           [actions (gather-actions-on-key our-params our-sprites key)]
           [ours-updated (update-sprites our-params actions our-sprites)] )
-    (make-package (state our-params ours-updated (state-theirs world)) actions) ) )
+    (make-package (make-state our-params ours-updated (state-theirs world)) actions) ) )
 
 ;; Return a new canvas with our sprites drawn on top of
 ;; their sprites drawn on an empty canvas.
@@ -600,11 +597,11 @@
   (when (tracing this) (eprintf "~a ~a" this a-name))
   (big-bang 
    ;; initial state
-   (state
+   (make-state
     ;; parameters
-    (our 0      ; will get a new value from the welcome message
-         'black ; will get a new value after the welcome message
-         (if *testing* 0 DY-FALLING) )
+    (make-params 0              ; will get a new value from the welcome message
+                 'black         ; will get a new value after the welcome message
+                 (if *testing* 0 DY-FALLING) )
     ;; our sprites and their sprites
     '() '() )
     [on-receive receive]

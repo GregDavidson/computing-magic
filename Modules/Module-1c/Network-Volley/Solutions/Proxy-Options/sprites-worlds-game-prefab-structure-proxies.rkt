@@ -9,12 +9,19 @@
 ;; - universe-world protocol information
 ;; - including a sprite-proxy structure
 
-;; uuid package not required until we
-;; restore validation of proxy fields.
-#; (require uuid) ; univerally unique identifiers
+(require uuid) ; univerally unique identifiers
 
 ;; The definition of struct sprite-proxy is at the end of the file
-(provide (struct-out sprite-proxy))
+(provide
+ (contract-out [make-sprite-proxy
+                (-> uuid-symbol? (or/c #f string? symbol?) ; uuid image
+                    (or/c #f natural?)   (or/c #f natural?) ; x y
+                    (or/c #f integer?)   (or/c #f integer?) ; dx dy
+                    (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) ; methods
+                    sprite-proxy? ) ])
+ (struct-out sprite-proxy) )
+
+(provide tracing *testing*)
 (provide W2U-EMPTY W2U-DONE)
 (provide U2W-WELCOME)
 (provide message-head welcome? make-welcome welcome-alist welcome-world-number)
@@ -55,23 +62,61 @@
 ;; Return a welcome message with a world number and
 ;; possibly additional values in an association list.
 (define (make-welcome n . alist)
-  (unless (natural? n) (error "invalid world-number ~a" n))
-  (unless (symbol-key-alist? alist) (error "invalid alist ~a" alist))
+  (define this 'make-welcome)
+  (unless (natural? n) (error this "invalid world-number ~a" n))
+  (unless (symbol-key-alist? alist) (error this "invalid alist ~a" alist))
   (cons U2W-WELCOME (cons (list WORLD-NUMBER-KEY n) alist)) )
 
 ;; Return the association list from a welcome message.
 (define (welcome-alist welcome)
-  (unless (welcome? welcome) (error "invalid welcome ~a" welcome))
+  (define this 'welcome-alist)
+  (unless (welcome? welcome) (error this "invalid welcome ~a" welcome))
   (cdr welcome) )
 
 ;; Return the World Number from a welcome message.
 (define (welcome-world-number welcome)
+  (define this 'welcome-world-number)
   (let ( [found (assoc WORLD-NUMBER-KEY (welcome-alist welcome))] )
     (unless (and (pair? found) (= (length found) 2))
-      (error "missing world number in welcome ~a" welcome) )
+      (error this "missing world number in ~a" welcome) )
     (let ( [number (second found)] )
-      (unless (natural? number) (error "invalid world number ~a in ~a" number welcome))
+      (unless (natural? number) (error  this "invalid world number ~a in ~a" number welcome))
       number ) ) )
+
+;; ** Tracing and Testing
+
+;; Tracing can be set to
+;; #f = don't trace anywhere
+;; #t = trace everywhere
+;; set of function names = trace only those functions
+
+;; (tracing) = return #t if tracing is #t, false otherwise
+;; (tracing name) = return #t if name is in set of functions
+;; (tracing #t) = enable tracing everywhere
+;; (tracing #f) = disable tracing
+;; (tracing #t name ...) = enable tracing for specified names
+;; (tracing #f name ...) = disable tracing for specified names
+
+(define tracing
+  (let ( [this 'tracing] [setting (make-parameter #f)] )
+    (λ args
+      (if (null? args)
+          (and (boolean? setting) setting) ; return #t iff setting is #t
+          (let ( [mode (car args)] [names (cdr args)] )
+            (if (null? names)
+                (cond [(boolean? mode) (set! setting mode)] ; set setting to #t or #f
+                      [(symbol? mode) (if (boolean? setting) setting (set-member? setting mode))]
+                      [else (error this "unknown mode ~a" mode)] )
+                (if (and (boolean? mode) (ormap symbol? names))
+                    ;; ensure setting is a mutable set using comparison function eq?
+                    (when (not (set-mutable? setting)) (set! setting (mutable-seteq)))
+                    (let ( [update! (if mode set-add! set-remove!)] )
+                      (for-each (λ (name) (update! setting name))
+                                names ) ) ) ) ) ) ) ) )
+
+;; In testing mode, disable any required user interactions
+;; in particular, disable falling!
+(define *testing* (make-parameter #f))
 
 ;; ** struct sprite-proxy
 
@@ -96,11 +141,14 @@
 ;; --> How can we add contracts a different way??
 (struct
  sprite-proxy (uuid image x y dx dy on-tick on-key to-draw)
+  #:constructor-name raw-sprite-proxy
   #:prefab
   #;#:guard
   #;(struct-guard/c uuid-symbol?  (or/c #f string? symbol?)
                   (or/c #f natural?)   (or/c #f natural?)
                   (or/c #f integer?)   (or/c #f integer?)
                   (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) ) )
+
+(define make-sprite-proxy raw-sprite-proxy)
 
 ;; ** Notes
