@@ -12,7 +12,8 @@
 (require data/gvector) ; growable vectors
 (require "sprites-worlds-game.rkt")
 
-(define *trace* (make-parameter #f boolean? 'trace)) ; trace to interaction window while debugging
+(tracing #t) ; trace everywhere!
+(*testing* #f) ; customize for easy testing
 
 ;; ** Notes
 
@@ -149,8 +150,9 @@
                         ) ] )  )   )
 
 (define (drop-world u w)
+  (define this 'drop-world)
   (let ( [i (universe-world-index u w)] )
-    (when *trace* (eprintf "dropping world ~a\n" i))
+    (when (tracing this) (eprintf "~a ~a\n" this i))
     (universe-drop! u i)
     (make-bundle u '() (list w)) ) )
   

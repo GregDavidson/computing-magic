@@ -13,7 +13,8 @@
 (require uuid) ; universally unique identifiers
 (require "sprites-worlds-game.rkt")
 
-(define *trace* #t) ; trace to interaction window while debugging
+(tracing #t) ; trace everywhere!
+(*testing* #t) ; customize for easy testing
 
 ;; ** Client-Side 2http Framework Types
 
@@ -34,60 +35,7 @@
 (define CANVAS-HEIGHT 300) ; pixels
 (define EMPTY-CANVAS (empty-scene CANVAS-WIDTH CANVAS-HEIGHT))
 
-;; ** Parameters, *our-number*
-
-;; A parameter is a value which should be set once and should not change.
-;; We'll implement parameters as functions which yield
-;; the value of the parameter when called with no arguments
-;; and set the value of the parameter when called with one argument.
-;; Our parameters will have names, a guard function and an optional
-;; parsing function for converting an initialization value into a
-;; proper value.
-
-;; Create a function to manage an immutable value with
-;; - a name for debugging
-;; - a guard to validate initialization
-;; - protection against access before initialization
-;; - protection against multiple initialization
-;; - an optional parsing function before initialization
-;; - an optional tracing feature showing intialization
-;; Can we fully describe this function with a comment
-;; that's easier to understand than reading the code??
-(define (make-parameter name guard #:parse [parse #f] #:trace [trace *trace*])
-  (letrec ( [value #f]
-            [is-set #f]
-            [return-value (λ ()
-                            (unless is-set (error 'parameter "~a not set" name))
-                            value)]
-            [show-value (λ () (eprintf "Parameter ~a: ~a\n" name value) )]
-            [process (λ (key args)
-                       (cond 
-                         [(eq? key 'value) (return-value)]
-                         [(eq? key 'init)
-                          (when (null? args)
-                            (error 'parameter "~a init missing value" name ) )
-                          (let* ( [arg (car args)]
-                                  [v (if parse (parse arg) arg)] )
-                            (when is-set
-                              (error 'parameter "~a is set, rejecting ~a" name arg ) )
-                            (unless (guard v)
-                              (error 'parameter "~a: guard rejects ~a" name v ) )
-                            (set! value v)
-                            (set! is-set #t)
-                            (when trace (show-value)) )
-                          (process-args (cdr args)) ]
-                         [(eq? key 'show) (show-value)]
-                         [else (error 'parameter "~a: unknown key ~a" name key)]) ) ]
-            [process-args (λ (args) (when (pair? args) (process (car args) (cdr args))))]
-            [the-parameter (λ args ; a function taking a list of 0 or more arguments
-                             (if (null? args)
-                                 (return-value)
-                                 (process-args args) ) )] )
-    the-parameter ) )
-
-(define *our-number* (make-parameter "our number" natural?))
-
-;; *** Parameter: *our-color*
+;; ** Managing Colors
 
 ;; Choose colors which will, for any number of clients, be maximally
 ;; distinguishable. Uses may have color blindness so be use additional methods
@@ -101,17 +49,46 @@
      teal violet
      ) )
 
-(define (parse-color c)
+(define (choose-color c)
+  (define this 'choose-color)
   (cond [(natural? c)
          (vector-ref color-names (remainder c (vector-length color-names))) ]
-        [else c] ) )
-
-(define *our-color*
-  (make-parameter "our color" image-color? #:parse parse-color) )
+        [(image-color? c) c]
+        [else (error 'this "invalid color ~a" c)] ) )
 
 ;; EXERCISE: Select colors that are maximally distinct
 ;; using a colorspace model from package color.
 ;; (require color)
+
+;; ** Put Parameters in an immutable structure
+
+;; Parameters can be bound in the global environment
+;; or they can be made part of the world state.
+
+;; If we run a separate client process for each
+;; world then global bindings are fine.
+
+;; If we ever want to use multiple threads running
+;; in the same client process to manage multiple
+;; worlds or multiple parts of worlds concurrently
+;; then global bindings won't do.
+
+;; Let's move some of the parameters which have
+;; previously been in global bindings into a
+;; structure which will become part of our
+;; world state.  While this is not necessary now,
+;; it's shows us how to manage parameters more
+;; flexibly.
+
+;; This may also be handy for testing.
+
+;; Here is a structure type for "our" parameters.
+;; We could move more global bindings in here
+;; if we wanted to.
+(struct/contract our ( [number natural?]
+                       [color image-color?]
+                       [falling natural?] )
+                 #:transparent )
 
 ;; ** Sprites
 
@@ -220,13 +197,16 @@
 
 ;; Given a path or symbol as a key, return the associated image
 ;; and ensure it's registered.
-(define (get-image key)
+(define (get-image params key)
+  (define this 'get-image-key)
   (let ( [found (key->val key registry-image)] )
     (cond [(image? found) found]
-          [(procedure? found) (found (*our-color*))] ; cache it??
+          [(procedure? found) (found (our-color params))] ; cache it??
           [(string? found) (bitmap/file/cache found)]
           [(string? key) (bitmap/file/cache key)]
-          [else (eprintf "Can't get image from ~a\n" key) #f] ) ) )
+          [else           ; should this be an error??
+           (eprintf "~a warning: no image at ~a\n" this key)
+           #f ] ) ) )
 
 ;; Given a sprite, convert it to a proxy which can be serialized
 ;; for transmission across a byte stream.  #f will be substituted
@@ -243,9 +223,10 @@
 
 ;; Given a sprite-proxy, convert it to a new sprite.
 ;; This is only used with NEW-SPRITE actions.
-(define (proxy->sprite sp)
+(define (proxy->sprite params sp)
+  (define this 'proxy->sprite)
   (let ( [s (sprite (sprite-proxy-uuid sp)
-          (get-image (sprite-proxy-image sp))
+          (get-image params (sprite-proxy-image sp))
           (sprite-proxy-x sp)
           (sprite-proxy-y sp)
           (sprite-proxy-dx sp)
@@ -253,7 +234,7 @@
           (key->val (sprite-proxy-on-tick sp) registry-on-tick)
           (key->val (sprite-proxy-on-key sp) registry-on-key)
           (key->val (sprite-proxy-to-draw sp) registry-to-draw) )] )
-    (when *trace* (eprintf "sprite-proxy-uuid: ~a -> ~a" sp s ))
+    (when (tracing this) (eprintf "~a sprite-proxy-uuid: ~a -> ~a" this sp s ))
     s ) )
 
 ;; NOTE: If we don't register all of the proxy values we need we'll
@@ -282,13 +263,14 @@
                 (and (delta (sprite-to-draw s) draw) (val->key draw registry-to-draw) ) ) )
 
 (define (mutate-sprite-from-proxy! s sp)
+  (define this 'mutate-sprite-from-proxy!)
   (define original (struct-copy sprite s)) ; for debugging
   (unless (eq? (sprite-uuid s) (sprite-proxy-uuid sp))
-    (error 'mutate-sprite-from-proxy! "improper mutation of ~a by ~a" s sp) )
+    (error this "improper mutation of ~a by ~a" s sp) )
   (when (sprite-proxy-image sp)
     (set-sprite-image! s (or (key->val (sprite-proxy-image sp) registry-image)
                              (begin
-                               (error 'mutate-sprite-from-proxy! "no image in ~a" sp)
+                               (error this "no image in ~a" sp)
                                (sprite-image s) ) )) )
   (when (sprite-proxy-x sp) (set-sprite-x! s (sprite-proxy-x sp)))
   (when (sprite-proxy-y sp) (set-sprite-y! s (sprite-proxy-y sp)))
@@ -297,20 +279,20 @@
   (when (sprite-proxy-on-tick sp)
     (set-sprite-on-tick! s (or (key->val (sprite-proxy-on-tick sp) registry-on-tick)
                                (begin
-                                 (error 'mutate-sprite-from-proxy! "no on-tick in ~a" sp)
+                                 (error this "no on-tick in ~a" sp)
                                  (sprite-on-tick s) ) )) )
   (when (sprite-proxy-on-key sp) 
     (set-sprite-on-key! s (or (key->val (sprite-proxy-on-key sp) registry-on-key)
                               (begin
-                                (error 'mutate-sprite-from-proxy! "no on-key in ~a" sp)
+                                (error this "no on-key in ~a" sp)
                                 (sprite-on-key s) ) )) )
   (when (sprite-proxy-to-draw sp)
     (set-sprite-to-draw! s (or (key->val (sprite-proxy-to-draw sp) registry-to-draw)
                                (begin
-                                 (error 'mutate-sprite-from-proxy! "no to-draw in ~a" sp)
+                                 (error this "no to-draw in ~a" sp)
                                  (sprite-to-draw s) ) )) )
-  (when (equal? s original) (error 'mutate-sprite-from-proxy! "~a didn't change ~a" sp s))
-  (when *trace* (eprintf "~a mutated ~a to ~a\n" sp original s)) )
+  (when (equal? s original) (error this "~a didn't change ~a" sp s))
+  (when (tracing this) (eprintf "~a ~a mutated ~a to ~a\n" this sp original s)) )
 
 ;; If you're interested in how macros and structures work, here are
 ;; some exercises which might interest you:
@@ -354,10 +336,12 @@
 ;; It's actually the State of the Universe
 ;; as viewed from our world!
 
-;; Our WorldState consists of two lists of sprites:
+;; Our WorldState consists of our parameters
+;; and two lists of sprites:
 (struct/contract
- sprites ( [ours (listof sprite?)]
-           [theirs (listof sprite?)] )
+ state ( [params our?]
+         [ours (listof sprite?)]
+         [theirs (listof sprite?)] )
  #:transparent )
 
 ;; Our tick and key events are relayed to our-sprites.
@@ -370,8 +354,6 @@
 
 ;; Changes to our-sprites need to be "Mailed" to the Server
 ;; so it can forward those changes to the Other Worlds!
-
-(define INITIAL-STATE (sprites '() '()))
 
 ;; A WorldResult is one of:
 ;; – WorldState
@@ -390,7 +372,8 @@
 ;;   a list of sprites
 ;; Returns an updated list of sprites
 ;; - according to the actions
-(define (update-sprites actions sprites)
+(define (update-sprites params actions sprites)
+  (define this 'update-sprites)
   ;; process the actions with mutually recursive functions
   ;; letrec creates a common scope for all of its bindings
   (letrec
@@ -400,7 +383,7 @@
                  (cond [(eq? action NEW-SPRITE) (call new proxies sprites)]
                        [(eq? action MUTATE-SPRITE) (call mutate proxies sprites)]
                        [(eq? action DROP-SPRITE) (call drop proxies sprites)]
-                       [else (error 'update-sprites "bad action ~a in message ~a" action proxies)] ) )]
+                       [else (error this "bad action ~a in message ~a" action proxies)] ) )]
        ;; we have a handler, do we have any proxies to apply?
        [call (λ (handler actions sprites)
                (if (null? actions)
@@ -409,7 +392,7 @@
        ;; add any new proxies as sprites
        [new (λ (first rest sprites)
                 (if (sprite-proxy? first)
-                    (call new rest (cons (proxy->sprite first) sprites))
+                    (call new rest (cons (proxy->sprite params first) sprites))
                     (switch first rest sprites) ) )]
        ;; drop any sprites with these uuids
        [drop (λ (first rest sprites)
@@ -429,32 +412,39 @@
     (call switch actions sprites) ) )
 
 ;; Given
-;; - our current state
+;; - the state of the world
 ;; - mail from the server
 ;; Return an updated WorldState
 ;; - possibly including Return Mail
-(define (receive state mail)
-  (when *trace* (eprintf "1. mail: ~a\n" mail))
-  (cond [(not (list? mail)) (error 'receive "bad mail ~a" mail)]
-        [(null? mail) state] ; no actions, return state unchanged
-        [(welcome? mail)
-         (when *trace* (eprintf "2. mail: ~a\n" mail))
-         (let ( [number (welcome-world-number mail)] )
-           (*our-number* 'init number)
-           (*our-color* 'init number)
-           (sprites (if (null? (sprites-ours state))
-                        (list (make-sprite (make-ball (*our-color*))))
-                        (sprites-ours state) )
-                    (sprites-theirs state) ) ) ]
-        [else
-         (eprintf "3. mail: ~a\n" mail)
-         (sprites (sprites-ours state)
-                  (update-sprites mail (sprites-theirs state)) )] ) )
+(define (receive world mail)
+  (let ( [this 'receive]
+         [our-params (state-params world)]
+         [our-sprites (state-ours world)]
+         [their-sprites (state-theirs world)] )
+    (when (tracing this) (eprintf "~a mail: ~a\n" this mail))
+    (cond [(not (list? mail)) (error this "bad mail ~a" mail)]
+          [(null? mail) world] ; no actions, return world unchanged
+          [(welcome? mail)
+           ;; check (null? our-sprites)
+           (let* ( [number (welcome-world-number mail)]
+                   [color (choose-color number)]
+                   [updated-params (struct-copy our our-params
+                           [number number]
+                           [color color] ) ] )
+             (when (tracing this) (eprintf "~a number ~a color ~a\n" this number color))
+             (let* ( [new-sprite (make-sprite updated-params (make-ball updated-params))]
+                     [ours-updated (cons new-sprite our-sprites)] )
+               (make-package 
+                (state updated-params ours-updated their-sprites)
+                (list NEW-SPRITE (make-proxy new-sprite)) ) ) ) ]
+          [else (state our-params
+                       our-sprites
+                       (update-sprites our-params mail their-sprites) )] ) ) )
 
 ;; ** Action Procedures and Functions
 
-(define DX-BOOST 5)
-(define DY-BOOST 5)
+(define DX-BOOST 6)
+(define DY-BOOST 6)
 (define DY-FALLING -2)
 
 ;; decay moves a value closer to its target value,
@@ -467,13 +457,16 @@
 ;; Why add text to the ball? 10% of humans are color blind!
 ;; EXERCISE: Use the provided name instead (or in addition to)
 ;; the number.
-(define (make-ball color)
-  (*our-color* 'show)
-  (overlay (text (number->string (*our-number*)) 10 'black)
-           (circle 20 "solid" color) ) )
+(define (make-ball params)
+  (define this 'make-ball)
+  (let ( [color (our-color params)]
+         [number (our-number params)] )
+    (when (tracing this) (eprintf "~a number ~a color ~a\n" this number color))
+    (overlay (text (number->string number) 10 'black)
+             (circle 20 "solid" color) ) ) )
 (register-key-val 'make-ball make-ball registry-image set-registry-image!)
 
-(define (make-sprite image #:uuid [uuid #f]
+(define (make-sprite params image #:uuid [uuid #f]
                      #:x [x #f] #:y [y #f] #:dx [dx #f] #:dy [dy #f]
                      #:tick [tick #f] #:key [key #f] #:draw [draw #f] )
     (sprite
@@ -481,7 +474,7 @@
      image
      (or x (half CANVAS-WIDTH))
      (or y (- CANVAS-HEIGHT (image-height image) 10))
-     (or dx 0) (or dy DY-FALLING)
+     (or dx 0) (or dy (our-falling params))
      (or tick move-sprite)
      (or key boost-sprite-on-key)
      (or draw draw-sprite) ) )
@@ -492,25 +485,28 @@
 
 ;; ** Sprite Action Methods
 
-;; WorldState -> ActionList
+;; params sprite -> ActionList
 ;; update the sprite's coordinates;
 ;; drop it if it's no longer on-canvas;
 ;; decay any velocity boosts
-(define (move-sprite s)
+(define (move-sprite params s)
   (let ( [image (sprite-image s)]
          [x (sprite-x s)] [y (sprite-y s)]
          [dx (sprite-dx s)] [dy (sprite-dy s)] )
     (let ( [xx (+ x dx)] [yy (+ y dy)] )
       (if (not (on-canvas? image xx yy))
           (list DROP-SPRITE (make-proxy s))
-          (let ( [dxx (decay dx 0)] [dyy (decay dy DY-FALLING)] )
-            (list MUTATE-SPRITE
-                  (make-proxy s #:x xx #:y yy #:dx dxx #:dy dyy) ) ) ) ) ) )
+          (let ( [dxx (decay dx 0)] [dyy (decay dy (our-falling params))] )
+            (if (and (= x xx) (= y yy) (= dx dxx) (= dy dyy))
+                '() ; nothing changed
+                (list MUTATE-SPRITE
+                      (make-proxy s #:x xx #:y yy #:dx dxx #:dy dyy) ) ) ) ) ) ) )
 (register-key-val 'move-sprite move-sprite registry-on-tick set-registry-on-tick!)
 
 ;; Called by boost-sprite-on-key to do the work
 (define (boost-sprite s key ddx ddy)
-  (when *trace* (eprintf "boosting sprite ~a ~a" (sprite-uuid s) key))
+  (define this 'boost-sprite)
+  (when (tracing this) (eprintf "~a boosting sprite ~a ~a\n" this (sprite-uuid s) key))
   (list MUTATE-SPRITE
         ;; make-proxy will ignore unchanging values
         (make-proxy s
@@ -519,7 +515,7 @@
 
 ;; Sprite Key -> ActionList
 ;; apply any boosts to its velocity
-(define (boost-sprite-on-key s k)
+(define (boost-sprite-on-key params s k)
   (cond
     [(key=? k "up") (boost-sprite s k 0 DY-BOOST)]
     [(key=? k "down") (boost-sprite s k 0 (- DY-BOOST))]
@@ -550,55 +546,67 @@
 
 ;; Return updated sprites composed of all sprites returned by updates.
 ;; How might grouping actions by ACTION symbol impact efficiency??
-(define (gather-actions-on-tick sprites)
+(define (gather-actions-on-tick params sprites)
   (foldr append ; append together all the returned action lists
          '()    ; starting with none
          (map   ; collicting small action lists from
           ;; calling sprite's own on-tick method on itself
-          (λ (sprite) ( (sprite-on-tick sprite) sprite ))
+          (λ (sprite) ( (sprite-on-tick sprite) params sprite ))
           ;; for every sprite in sprites
           sprites ) ) )
 
 ;; return Package from applying on-tick methods to our sprites
 (define (update-world-on-tick world)
-  (let* ( [ours (sprites-ours world)]
-          [actions (gather-actions-on-tick ours)]
-          [ours-updated (update-sprites actions ours)] )
-    (eprintf "our-sprites: ~a\n" ours-updated)
-    (eprintf "actions: ~a\n" actions)
-    (make-package (sprites ours-updated (sprites-theirs world)) actions) ) )
+  (define this 'update-world-on-tick)
+  (let* ( [our-params (state-params world)]
+          [our-sprites (state-ours world)]
+          [actions (gather-actions-on-tick our-params our-sprites)]
+          [ours-updated (update-sprites our-params actions our-sprites)] )
+    (when (tracing this) (eprintf "~a our-sprites: ~a\n" this ours-updated))
+    (when (tracing this) (eprintf "~a actions: ~a\n" this actions))
+    (make-package (state our-params ours-updated (state-theirs world)) actions) ) )
 
 ;; deliver key events to all sprites in the given list
 ;; returning a merged action list in Mail format
-(define (gather-actions-on-key sprites key)
+(define (gather-actions-on-key params sprites key)
   (foldr append ; append together all the returned action lists
          '()    ; starting with none
          (map   ; collicting small action lists from
           ;; calling sprite's own on-key method on itself
-          (λ (sprite) ( (sprite-on-key sprite) sprite key ))
+          (λ (sprite) ( (sprite-on-key sprite) params sprite key ))
           ;; for every sprite in sprites
           sprites ) ) )
 
 ;; return Package from applying on-key methods to our sprites
 (define (update-world-on-key world key)
-  (let* ( [ours (sprites-ours world)]
-          [actions (gather-actions-on-key ours key)]
-          [ours-updated (update-sprites actions ours)] )
-    (make-package (sprites ours-updated (sprites-theirs world)) actions) ) )
+  (let* ( [our-params (state-params world)]
+          [our-sprites (state-ours world)]
+          [actions (gather-actions-on-key our-params our-sprites key)]
+          [ours-updated (update-sprites our-params actions our-sprites)] )
+    (make-package (state our-params ours-updated (state-theirs world)) actions) ) )
 
 ;; Return a new canvas with our sprites drawn on top of
 ;; their sprites drawn on an empty canvas.
 (define (draw-world world)
   (foldr draw-sprite
-         (foldr draw-sprite EMPTY-CANVAS (sprites-theirs world))
-         (sprites-ours world) ) )
+         (foldr draw-sprite EMPTY-CANVAS (state-theirs world))
+         (state-ours world) ) )
 
 ; String -> WorldState
 ; create a world, hook it up to a server and start it running
 (define (create-world a-name [server LOCALHOST])
+  (define this 'create-world)
   (when (symbol? a-name) (set! a-name (symbol->string a-name)))
-  (when *trace* (eprintf "creating a world named ~a" a-name))
-  (big-bang INITIAL-STATE
+  (when (tracing this) (eprintf "~a ~a" this a-name))
+  (big-bang 
+   ;; initial state
+   (state
+    ;; parameters
+    (our 0      ; will get a new value from the welcome message
+         'black ; will get a new value after the welcome message
+         (if *testing* 0 DY-FALLING) )
+    ;; our sprites and their sprites
+    '() '() )
     [on-receive receive]
     [to-draw draw-world]
     [on-key update-world-on-key]
@@ -607,6 +615,6 @@
     [name a-name]
     [register server] ) )
 
-(define (go [server LOCALHOST]) (create-world "Eti" server))
+(define remote-host "ngender.net")
 
-(go)
+#;(create-world "Touch")
