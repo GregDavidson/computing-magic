@@ -1,4 +1,5 @@
-#lang racket
+;; (setq-local racket-repl-buffer-name "*sprites-worlds-server-repl*")
+#lang racket/base
 
 ;; * Multiple Worlds Universe Server
 
@@ -8,9 +9,12 @@
 ;; - inter-client (inter-world) protocol information
 ;; - including a sprite-proxy structure
 ;; - You'll want to look it over carefully!
-(require 2htdp/universe)
-(require data/gvector) ; growable vectors
-(require "sprites-worlds-game.rkt")
+(require 2htdp/universe
+         data/gvector
+         racket/cmdline
+         "sprites-worlds-game.rkt")
+
+ ; growable vectors
 
 (tracing #t) ; trace everywhere!
 (*testing* #f) ; customize for easy testing
@@ -155,11 +159,40 @@
     (when (tracing this) (eprintf "~a ~a\n" this i))
     (universe-drop! u i)
     (make-bundle u '() (list w)) ) )
-  
-;; Start the server
 
-(universe (empty-universe)
-          #;[state #f] ; suppress opening separate state window
-          [on-new add-world]
-          [on-msg handle-world-msg]
-          [on-disconnect drop-world] )
+(define (go)
+  (universe (empty-universe)
+            #;[state #f] ; suppress opening separate state window
+            [on-new add-world]
+            [on-msg handle-world-msg]
+            [on-disconnect drop-world] ) )
+
+;; ** Process Command Line or Enter REPL
+
+(define *cli* (make-parameter (positive? (vector-length (current-command-line-arguments)))))
+(define *repl* (make-parameter (not (*cli*))))
+
+(define (testing) (*testing* #t) (tracing #t))
+
+(define args
+  (if (not (*cli*))
+      '()
+      (command-line
+       #:once-each
+       [("-t" "--tracing") "trace everywhere" (tracing #t)]
+       [("-T" "--testing") "make easier to test" (testing)]
+       [("-i" "--repl") "enter repl, do not start client" (*repl* #t)]
+       #:args functions-to-trace
+       functions-to-trace ) ) )
+
+(when (not (null? args))
+  (let ( [this (find-system-path 'run-file)]
+         [names (map string->symbol args)] )
+    ;; eval will throw an error if name is not globally bound!
+    (for-each (λ (name) (unless (procedure? (eval name))
+                          (error this "No procedure ~a to trace" name) ))
+              names )
+    (when (not (null? names)) (apply tracing (cons #t names))) ) )
+
+;; this is only useful if we're already in a repl
+(unless (*repl*) (go))

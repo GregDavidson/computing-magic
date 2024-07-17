@@ -1,4 +1,5 @@
-#lang racket
+;; (setq-local racket-repl-buffer-name "*sprites-worlds-client-repl*")
+#lang racket/base
 ;; * Multiple Worlds Multiple Sprites Client
 
 ;; See sprites-worlds-game.org for information about the game.
@@ -7,11 +8,14 @@
 ;; - inter-client (inter-world) protocol information
 ;; - including a sprite-proxy structure
 ;; - You'll want to look it over carefully!
-(require 2htdp/universe)
-(require 2htdp/image)
-(require (except-in racket/draw make-color make-pen))
-(require uuid) ; universally unique identifiers
-(require "sprites-worlds-game.rkt")
+(require 2htdp/image
+         2htdp/universe
+         racket/cmdline
+         racket/contract/base
+         racket/contract/region
+         racket/list
+         racket/math
+         "sprites-worlds-game.rkt")
 
 (tracing #t) ; trace everywhere!
 (*testing* #t) ; customize for easy testing
@@ -77,19 +81,20 @@
 ;; Such grouped parameters can also become part of
 ;; our World State.
 
-;; Here is a structure type for World Parameters
-;; needed by functions which we pass by name in
-;; our proxy structures.  It's #:prefab so that
-;; it can be serialized by the Universe Framework.
+;; A structure type for World Parameters needed by
+;; functions passed by name in our proxy structures.
+;; It's Universe serializable because
+;; - it's a #:prefab structure
+;; - it's fields are Universe serializable
 (struct params ( number color falling )
   #:constructor-name make-params
   #:prefab )
 
 ;; ** Sprites
 
-;; Each distinct sprite will have a universally unique id (uuid)
+;; Each distinct sprite will have a unique key
 (struct/contract
-  sprite ( [uuid uuid-symbol?]
+  sprite ( [key key-value?]
            [image (or/c image? #f)]
            [x natural?] [y natural?]
            [dx integer?] [dy integer?]
@@ -113,8 +118,8 @@
 ;; (2) a symbol representing a function which
 ;;     takes a color and returns an image.
 ;; Procedures will be represented by their names (symbols).
-;; A sprite-proxy will have the same uuid as the sprite it is a proxy for.
-;; Only the uuid field is required.  The other fields can default to #f if
+;; A sprite-proxy will have the same key as the sprite it is a proxy for.
+;; Only the key field is required.  The other fields can default to #f if
 ;; the corresponding sprite field is irrelevant, i.e. not requiring an update.
 
 ;; ** Translating Non-Serializable Values
@@ -196,7 +201,7 @@
   (define this 'get-image-key)
   (let ( [found (key->val key registry-image)] )
     (cond [(image? found) found]
-          [(procedure? found) (found (params-color params))] ; cache it??
+          [(procedure? found) (found params)] ; cache it??
           [(string? found) (bitmap/file/cache found)]
           [(string? key) (bitmap/file/cache key)]
           [else           ; should this be an error??
@@ -209,7 +214,7 @@
 ;; See make-proxy for what we're really using!!
 #;(define (sprite->proxy s)
   (make-sprite-proxy
-   (sprite-uuid s)
+   (sprite-key s)
    (val->key (sprite-image s) registry-image)
    (sprite-x s) (sprite-y s) (sprite-dx s) (sprite-dy s)
    (val->key (sprite-on-tick s) registry-on-tick)
@@ -220,7 +225,7 @@
 ;; This is used with NEW-SPRITE actions.
 (define (proxy->sprite params sp)
   (define this 'proxy->sprite)
-  (let ( [s (sprite (sprite-proxy-uuid sp)
+  (let ( [s (sprite (sprite-proxy-key sp)
           (get-image params (sprite-proxy-image sp))
           (sprite-proxy-x sp)
           (sprite-proxy-y sp)
@@ -229,7 +234,7 @@
           (key->val (sprite-proxy-on-tick sp) registry-on-tick)
           (key->val (sprite-proxy-on-key sp) registry-on-key)
           (key->val (sprite-proxy-to-draw sp) registry-to-draw) )] )
-    (when (tracing this) (eprintf "~a sprite-proxy-uuid: ~a -> ~a" this sp s ))
+    (when (tracing this) (eprintf "~a sprite-proxy-key: ~a -> ~a" this sp s ))
     s ) )
 
 ;; NOTE: If we don't register all of the proxy values we need we'll
@@ -237,7 +242,7 @@
 ;; will be #f with various results, depending on message actions:
 ;; MUTATE-SPRITE -- only update non-#f fields
 ;; NEW-SPRITE -- ignore this sprite, report an issue!!
-;; DROP-SPRITE -- only the uuid matters, so no worries!
+;; DROP-SPRITE -- only the key matters, so no worries!
 ;; -- Learn about logging vs. volatile error reports!!
 
 ;; Do we have a new value different from the old value?
@@ -250,7 +255,7 @@
                     #:image [image #f]
                     #:x [x #f] #:y [y #f] #:dx [dx #f] #:dy [dy #f]
                     #:tick [tick #f] #:key [key #f] #:draw [draw #f] )
-  (make-sprite-proxy (sprite-uuid s)
+  (make-sprite-proxy (sprite-key s)
                      (and (delta (sprite-image s) image) (val->key image registry-image))
                      (delta (sprite-x s) x) (delta (sprite-y s) y)
                      (delta (sprite-dx s) dx) (delta (sprite-dy s) dy)
@@ -258,16 +263,13 @@
                      (and (delta (sprite-on-key s) key) (val->key key registry-on-key))
                      (and (delta (sprite-to-draw s) draw) (val->key draw registry-to-draw) ) ) )
 
-(define (mutate-sprite-from-proxy! s sp)
+(define (mutate-sprite-from-proxy! params s sp)
   (define this 'mutate-sprite-from-proxy!)
   (define original (struct-copy sprite s)) ; for debugging
-  (unless (eq? (sprite-uuid s) (sprite-proxy-uuid sp))
+  (unless (eq? (sprite-key s) (sprite-proxy-key sp))
     (error this "improper mutation of ~a by ~a" s sp) )
   (when (sprite-proxy-image sp)
-    (set-sprite-image! s (or (key->val (sprite-proxy-image sp) registry-image)
-                             (begin
-                               (error this "no image in ~a" sp)
-                               (sprite-image s) ) )) )
+    (set-sprite-image! s (get-image params (sprite-proxy-image sp)) ) )
   (when (sprite-proxy-x sp) (set-sprite-x! s (sprite-proxy-x sp)))
   (when (sprite-proxy-y sp) (set-sprite-y! s (sprite-proxy-y sp)))
   (when (sprite-proxy-dx sp) (set-sprite-dx! s (sprite-proxy-dx sp)))
@@ -312,18 +314,6 @@
 ;; and especially section 2.4.5 "The World is not Enough"
 ;; https://docs.racket-lang.org/teachpack/2htdpuniverse.html#%28part._universe._world2%29
 
-;; For this game, our Messages (Mail) will either be
-;; - a symbol or
-;; - a list of a symbols and sprite-proxy structures
-;;   starting with a symbol
-
-;; Forward Messages sent by any world to the server
-;; will be forwarded to all the other worlds.
-;; These symbols may appear in Forward Messages:
-(define NEW-SPRITE 'new)
-(define MUTATE-SPRITE 'mutate)
-(define DROP-SPRITE 'drop)
-
 ;; The other message types are defined in
 ;; the file sprites-worlds-game.rkt
 
@@ -356,61 +346,68 @@
 ;; – WorldState
 ;; – (make-package WorldState Mail)
 
-;; MailActions are (or/c NEW-SPRITE MUTATE-SPRITE DROP-SPRITE)
-;; Mail is either (list U2W-WELCOME natural?)
-;; or it is (cons/c MailActions (listof (or/c MailActions sprite?))
-;; that is, a list of action symbols followed by sprites.
-;; The action will be applied to the sprites which follow the action.
-;; Normally actions will be followed by at least one sprite;
-;; nothing happens if an action is followed by zero sprites!
+;; Forward Messages sent by any world to the server
+;; will be forwarded to all the other worlds.
+;; These symbols may appear in Forward Messages:
+(define NEW-SPRITE 'new)
+(define MUTATE-SPRITE 'mutate)
+(define DROP-SPRITE 'drop)
+
+#; (flat-named-contract
+    ActionMail
+    (listof (or/c (cons/c DROP-SPRITE (listof key-value?))
+                  (cons/c MUTATE-SPRITE (cons/c params? (listof sprite-proxy?)))
+                  (cons/c NEW-SPRITE (cons/c params? (listof sprite-proxy?))) )) )
+
+;; All three update-sprites actions are dealing with two sets sharing a key.
+;; We're using algorithms of time complexity O(n*m) for n actions on m sprites.
+;; Strategies if this is a bottleneck include
+;; - using an indexed data structure for either or both sets
+;; - partitioning sprites and sprite-proxies by the world which owns the sprite
+;;   - and possibly ordering both by creation time using ULID or BUID keys
 
 ;; Given
-;; - a Mail action list from the server
-;;   a list of sprites
+;; - a ActionMail from the server
+;; - a list of sprites
 ;; Returns an updated list of sprites
 ;; - according to the actions
-(define (update-sprites params actions sprites)
+(define (update-sprites action-lists sprites)
   (define this 'update-sprites)
-  ;; process the actions with mutually recursive functions
-  ;; letrec creates a common scope for all of its bindings
-  (letrec
-      (
-       ;; which function should process the proxies?
-       [switch (λ (action proxies sprites)
-                 (cond [(eq? action NEW-SPRITE) (call new proxies sprites)]
-                       [(eq? action MUTATE-SPRITE) (call mutate proxies sprites)]
-                       [(eq? action DROP-SPRITE) (call drop proxies sprites)]
-                       [else (error this "bad action ~a in message ~a" action proxies)] ) )]
-       ;; we have a handler, do we have any proxies to apply?
-       [call (λ (handler actions sprites)
-               (if (null? actions)
-                   sprites
-                   (handler (car actions) (cdr actions) sprites) ) )]
-       ;; add any new proxies as sprites
-       [new (λ (first rest sprites)
-                (if (sprite-proxy? first)
-                    (call new rest (cons (proxy->sprite params first) sprites))
-                    (switch first rest sprites) ) )]
-       ;; drop any sprites with these uuids
-       [drop (λ (first rest sprites)
-               (if (sprite-proxy? first)
-                   (call drop rest
-                         (remove (λ (s) (eq? (sprite-proxy-uuid first) (sprite-uuid s)))
-                                 sprites ) )
-                   (switch first rest sprites) ) )]
-       ;; mutate any sprites with these uuids and new field values
-       [mutate (λ (first rest sprites)
-                 (if (sprite-proxy? first)
-                     (let* ( [uuid (sprite-proxy-uuid first)]
-                             [s (findf (λ (s) (eq? uuid (sprite-uuid s))) sprites)] )
-                       (mutate-sprite-from-proxy! s first)
-                       (call mutate rest sprites) )
-                     (switch first rest sprites) ) )] )
-    (call switch actions sprites) ) )
+  ;; return the subset of the action-lists of the given action-type
+  (define (subset action-type) (filter (λ (action) (eq? action-type (car action))) action-lists))
+  ;; return the sprites left after removing those matching the keys in drop-lists
+  (define (after-drops drop-lists sprites)
+    (let ( [merged-drops (foldr append '() drop-lists)] )
+      (remove (λ (s) (memq s merged-drops)) sprites) ) )
+  ;; update (mutate) the sprites from the proxies in the update-lists with matching keys
+  (define (after-updates update-lists sprites)
+    (for-each (λ (update-list) ; for each update-list
+                (let ( [params (car update-list)] )
+                  (for-each (λ (sp) ; for each update proxy
+                              (for-each (λ (s) ; for each sprite
+                                          (when (eq? (sprite-proxy-key sp) (sprite-key s))
+                                            (mutate-sprite-from-proxy! params s sp) ) )
+                                        sprites ) ) ; the sprites
+                            (cdr update-list) ) ) ) ; the proxies
+              update-lists ) ; the update lists
+    sprites ) ; return the list of sprites we were given
+  ;; add new sprites specified by the proxies in the creation lists
+  (define (after-creations creation-lists sprites)
+    (foldr append '() (append (map (λ (creation-list)
+                                     (let ( [params (car creation-list)] [proxies (cdr creation-list)] )
+                                       (map (λ (sp) (proxy->sprite params sp)) proxies) ) )
+                                   creation-lists )
+                              (list sprites) )) )
+  ;; compose: after-drops -> after-updates -> after-creations
+  (when (tracing this) (eprintf "~a action-lists ~a\n" this action-lists))
+  (when (tracing this) (eprintf "~a sprites ~a\n" this sprites))
+  (after-creations (subset NEW-SPRITE)
+                   (after-updates (subset MUTATE-SPRITE)
+                                  (after-drops (subset DROP-SPRITE) sprites) ) ) )
 
 ;; Given
 ;; - the state of the world
-;; - mail from the server
+;; - action mail from the server
 ;; Return an updated WorldState
 ;; - possibly including Return Mail
 (define (receive world mail)
@@ -429,14 +426,14 @@
                            [number number]
                            [color color] ) ] )
              (when (tracing this) (eprintf "~a number ~a color ~a\n" this number color))
-             (let* ( [new-sprite (make-sprite updated-params (make-ball updated-params))]
+             (let* ( [new-sprite (make-sprite  updated-params (make-ball updated-params))]
                      [ours-updated (cons new-sprite our-sprites)] )
                (make-package 
                 (make-state updated-params ours-updated their-sprites)
                 (list NEW-SPRITE (make-proxy new-sprite)) ) ) ) ]
           [else (make-state our-params
                        our-sprites
-                       (update-sprites our-params mail their-sprites) )] ) ) )
+                       (update-sprites mail their-sprites) )] ) ) )
 
 ;; ** Action Procedures and Functions
 
@@ -463,18 +460,18 @@
              (circle 20 "solid" color) ) ) )
 (register-key-val 'make-ball make-ball registry-image set-registry-image!)
 
-(define (make-sprite params image #:uuid [uuid #f]
+(define (make-sprite params image #:key [key #f]
                      #:x [x #f] #:y [y #f] #:dx [dx #f] #:dy [dy #f]
-                     #:tick [tick #f] #:key [key #f] #:draw [draw #f] )
+                     #:on-tick [on-tick #f] #:on-key [on-key #f] #:on-draw [on-draw #f] )
     (sprite
-     (or uuid (uuid-symbol))
+     (or key (key-value))
      image
      (or x (half CANVAS-WIDTH))
      (or y (- CANVAS-HEIGHT (image-height image) 10))
      (or dx 0) (or dy (params-falling params))
-     (or tick move-sprite)
-     (or key boost-sprite-on-key)
-     (or draw draw-sprite) ) )
+     (or on-tick move-sprite)
+     (or on-key boost-sprite-on-key)
+     (or on-draw draw-sprite) ) )
 
 (define (on-canvas? image x y)
   (and (< 0 x (- CANVAS-WIDTH (image-width image)))
@@ -503,7 +500,7 @@
 ;; Called by boost-sprite-on-key to do the work
 (define (boost-sprite s key ddx ddy)
   (define this 'boost-sprite)
-  (when (tracing this) (eprintf "~a boosting sprite ~a ~a\n" this (sprite-uuid s) key))
+  (when (tracing this) (eprintf "~a boosting sprite ~a ~a\n" this (sprite-key s) key))
   (list MUTATE-SPRITE
         ;; make-proxy will ignore unchanging values
         (make-proxy s
@@ -518,8 +515,7 @@
     [(key=? k "down") (boost-sprite s k 0 (- DY-BOOST))]
     [(key=? k "left") (boost-sprite s k (- DX-BOOST) 0)]
     [(key=? k "right") (boost-sprite s k DX-BOOST 0)]
-    [else '()] )
- )
+    [else '()] ) )
 (register-key-val 'boost-sprite-on-key boost-sprite-on-key registry-on-key set-registry-on-key!)
 
 ;; ** Rendering Method
@@ -541,14 +537,25 @@
 
 ;; ** big-bang callback procedures
 
+;; Notice the similarity of
+;; - gather-actions-on-tick and gather-actions-on-key
+;; - update-world-on-tick and update-world-on-key
+;; EXERCISE: Write 2 more general procedures replacing these 4!
+
 ;; Return updated sprites composed of all sprites returned by updates.
 ;; How might grouping actions by ACTION symbol impact efficiency??
 (define (gather-actions-on-tick params sprites)
+  (define this 'gather-actions-on-key)
   (foldr append ; append together all the returned action lists
          '()    ; starting with none
-         (map   ; collicting small action lists from
-          ;; calling sprite's own on-tick method on itself
-          (λ (sprite) ( (sprite-on-tick sprite) params sprite ))
+         (map   ; collect action lists by
+          ;; calling sprite's on-tick method on itself
+          (λ (sprite) (let* ( [method (sprite-on-tick sprite)]
+                              [result (method params sprite)] )
+                        (cond [(null? result) result] ; return empty list
+                              [(and (pair? result) (pair? (car result))) result] ; return list of action lists
+                              [(and (pair? result) (symbol? (car result))) (list result)] ; return list of one action list
+                              [else (error this "invalid result ~a" result)] ) ))
           ;; for every sprite in sprites
           sprites ) ) )
 
@@ -557,30 +564,44 @@
   (define this 'update-world-on-tick)
   (let* ( [our-params (state-params world)]
           [our-sprites (state-ours world)]
-          [actions (gather-actions-on-tick our-params our-sprites)]
-          [ours-updated (update-sprites our-params actions our-sprites)] )
-    (when (tracing this) (eprintf "~a our-sprites: ~a\n" this ours-updated))
-    (when (tracing this) (eprintf "~a actions: ~a\n" this actions))
-    (make-package (make-state our-params ours-updated (state-theirs world)) actions) ) )
+          [actions (gather-actions-on-tick our-params our-sprites)] )
+    (if (null? actions)
+        world
+        (begin
+          (when (tracing this) (eprintf "~a actions: ~a\n" this actions))
+          (let ( [ours-updated (update-sprites actions our-sprites)] )
+            (when (tracing this) (eprintf "~a ours-updated ~a\n" this ours-updated))
+            (make-package (make-state our-params ours-updated (state-theirs world)) actions) ) ) ) ) )
 
 ;; deliver key events to all sprites in the given list
 ;; returning a merged action list in Mail format
 (define (gather-actions-on-key params sprites key)
+  (define this 'gather-actions-on-key)
   (foldr append ; append together all the returned action lists
          '()    ; starting with none
-         (map   ; collicting small action lists from
-          ;; calling sprite's own on-key method on itself
-          (λ (sprite) ( (sprite-on-key sprite) params sprite key ))
+         (map   ; collect action lists by
+          ;; calling sprite's on-key method on itself
+          (λ (sprite) (let* ( [method (sprite-on-key sprite)]
+                              [result (method params sprite key)] )
+                        (cond [(null? result) result] ; return empty list
+                              [(and (pair? result) (pair? (car result))) result] ; return list of action lists
+                              [(and (pair? result) (symbol? (car result))) (list result)] ; return list of one action list
+                              [else (error this "invalid result ~a" result)] ) ))
           ;; for every sprite in sprites
           sprites ) ) )
 
 ;; return Package from applying on-key methods to our sprites
 (define (update-world-on-key world key)
+  (define this 'update-world-on-key)
   (let* ( [our-params (state-params world)]
           [our-sprites (state-ours world)]
-          [actions (gather-actions-on-key our-params our-sprites key)]
-          [ours-updated (update-sprites our-params actions our-sprites)] )
-    (make-package (make-state our-params ours-updated (state-theirs world)) actions) ) )
+          [actions (gather-actions-on-key our-params our-sprites key)] )
+    (when (tracing this) (eprintf "~a actions: ~a\n" this actions))
+    (if (null? actions)
+        world
+        (let ( [ours-updated (update-sprites actions our-sprites)] )
+          (when (tracing this) (eprintf "~a ours-updated ~a\n" this ours-updated))
+          (make-package (make-state our-params ours-updated (state-theirs world)) actions) ) ) ) )
 
 ;; Return a new canvas with our sprites drawn on top of
 ;; their sprites drawn on an empty canvas.
@@ -612,6 +633,42 @@
     [name a-name]
     [register server] ) )
 
-(define remote-host "ngender.net")
+;; ** Process Command Line or Enter REPL
 
-#;(create-world "Touch")
+(define *user* (make-parameter #f))
+(define *host* (make-parameter LOCALHOST))
+(define *cli* (make-parameter (positive? (vector-length (current-command-line-arguments)))))
+(define *repl* (make-parameter (not (*cli*))))
+
+(define (local) (*host* LOCALHOST))
+(define (ngender) (*host* "ngender.net"))
+(define (testing) (*testing* #t) (tracing #t))
+(define (go [user #f]) (create-world (or user (*user*)) (*host*)))
+
+(define args
+  (if (not (*cli*))
+      '()
+      (command-line
+       #:once-each
+       [("-t" "--tracing") "trace everywhere" (tracing #t)]
+       [("-T" "--testing") "make easier to test" (testing)]
+       [("-H" "--host") host "server host" (*host* host)]
+       [("-N" "--ngender") "host ngender.net" (*host* "ngender.net")]
+       [("-i" "--repl") "enter repl, do not start client" (*repl* #t)]
+       #:args (user . functions-to-trace)
+       (cons user functions-to-trace)
+       ) ) )
+
+(when (*cli*)
+  (let ( [this (find-system-path 'run-file)] )
+    (when (null? args) (error this "user name required"))
+    (*user* (car args))
+    (let ( [names (map string->symbol (cdr args))] )
+      ;; eval will throw an error if name is not globally bound!
+      (for-each (λ (name) (unless (procedure? (eval name))
+                            (error this "No procedure ~a to trace" name) ))
+                names )
+      (when (not (null? names)) (apply tracing (cons #t names))) ) ) )
+
+;; this is only useful if we're already in a repl
+(unless (*repl*) (go))
