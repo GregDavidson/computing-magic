@@ -1,4 +1,4 @@
-#lang racket
+#lang racket/base
 ;; * Multiple Worlds Sprites Game Protocol and Overview
 
 ;; See sprites-worlds-game.org for information about the game.
@@ -9,12 +9,25 @@
 ;; - universe-world protocol information
 ;; - including a sprite-proxy structure
 
-(require uuid) ; univerally unique identifiers
+;; We need a datatype for unique keys.  Racket provides
+;; a UUID package - an old version not supporting ordering keys
+;; a ULID and a BUID package which are easier to keep sorted
+;; right now we're not doing any sorting or indexing so UUID will do
+(require racket/contract/base
+         racket/list
+         racket/math
+         racket/set
+         uuid)
+
+ ; univerally unique identifiers
+(define key-value uuid-symbol)
+(define key-value? uuid-symbol?)
 
 ;; The definition of struct sprite-proxy is at the end of the file
+(provide key-value key-value?)
 (provide
  (contract-out [make-sprite-proxy
-                (-> uuid-symbol? (or/c #f string? symbol?) ; uuid image
+                (-> key-value? (or/c #f string? symbol?) ; key image
                     (or/c #f natural?)   (or/c #f natural?) ; x y
                     (or/c #f integer?)   (or/c #f integer?) ; dx dy
                     (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) ; methods
@@ -134,17 +147,17 @@
 ;; (2) a symbol representing a function which
 ;;     takes a color and returns an image.
 ;; Procedures will be represented by their names (symbols).
-;; A sprite-proxy will have the same uuid as the sprite it is a proxy for.
-;; Only the uuid field is required.  The other fields can default to #f if
+;; A sprite-proxy will have the same key as the sprite it is a proxy for.
+;; Only the key field is required.  The other fields can default to #f if
 ;; the corresponding sprite field is irrelevant, i.e. not requiring an update.
 ;; EXERCISE: prefab structures don't support guards or contracts:
 ;; --> How can we add contracts a different way??
 (struct
- sprite-proxy (uuid image x y dx dy on-tick on-key to-draw)
+ sprite-proxy (key image x y dx dy on-tick on-key to-draw)
   #:constructor-name raw-sprite-proxy
   #:prefab
   #;#:guard
-  #;(struct-guard/c uuid-symbol?  (or/c #f string? symbol?)
+  #;(struct-guard/c key-value?  (or/c #f string? symbol?)
                   (or/c #f natural?)   (or/c #f natural?)
                   (or/c #f integer?)   (or/c #f integer?)
                   (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) ) )
