@@ -8,5 +8,8 @@ foo-*
 *.tex
 *.pdf
 *.odt
+*.dep
+*.zo
+*.broken
 Limbo/
 Draft/
