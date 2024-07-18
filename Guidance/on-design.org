@@ -1,0 +1,155 @@
+* Guidance on Software Design
+
+We're assuming you have something in mind which you (or someone you're working
+for or with) would like to have some new software (or adapt some existing
+software) to accomplish.
+
+We're also assuming that it's not obvious to you how to
+accomplish what you want in a good way.
+
+This is the challenge of /Design/, /Software Design/ which is particularly
+interesting and different because software is /magical/.
+
+/Software Design/ is a rich discipline which is distinct from /Programming/
+although the two fields overlap a great deal.
+
+The Guidance here is very simplified in order to serve you at the beginning of
+your journey. Later you'll want to study deeper aspects of Design and
+Development which you'll find elsewhere.
+
+** Aspects of Design
+
+- The Problem :: The general idea you (or others) want the software to
+  accomplish.
+- The Specifications :: The exact details of what the software needs to
+  accomplish.  A clear expression of /The Requirements/.
+- The Architecture :: The general structure of the software system which will
+  allow the software to solve the problem with minimum complexity.
+- The Design :: The detailed (often layered) structure of the software system
+  which will satisfy all of the specifications.
+
+The challenges
+- Understand all aspects of the problem
+- Refine the specifications to fully define the problem
+- Create an architecture which allows you to
+      - /Separate Your Concerns/
+            - Break the problem down into manageable pieces
+            - Divide and Conquer
+      - Adaptable
+            - Able to accommodate future desires
+- Create a Design which allows for easy implementation of a solution
+      - Easy to understand
+      - Reasonably efficient
+      - Adaptable
+- Implement your solution in software
+      - Maintaining the clarity of your Architecture and Design
+      - Adaptable
+
+Clarity and Adaptability are Paramount
+- The initial creation of your system is the easy part.
+- Most of the effort of software development is adapting an existing software
+  system to new and changing desires!  This is called /Maintenance/.
+- Most of the problems with software is caused by 
+
+** Fundamental Design Approaches
+
+Design is an inherently creative process, but there are definitely some
+general approaches which help guide and channel that creative process.
+
+*** The Bottom-Up Approach
+
+The Bottom-Up Approach is especially suited to beginners and learners.
+
+- Create pieces of code to try to implement parts of what you want
+- Experiment until you get the pieces right
+- Try combining the pieces to accomplish larger parts of what you want
+
+This approach is highly iterative.  It works well when
+- Your experiments help you understand the problem better
+- You're making significant progress towards solving the whole problem
+
+You won't always move forward
+- Many of your experiments will fail
+      - You'll discard or archive the artifacts (code, notes, etc.)
+- You'll realize you need a very different design
+      - You'll discard or archive lots of artifacts
+      - You'll start with a new approach.
+
+Good development environments for the Bottom-Up Approach allow
+- Exploration of running code
+- Quick and easy incorporation of changes
+      - No long compilation / build delays
+      - Small changes can be done while the code is still running
+
+**** Bottom-Up Resources
+
+- Test-Driven Bottom-Up Development
+- Type-Driven Bottom-Up Development
+- REPL and Persistent World Development
+      - Lisps and Smalltalks
+
+*** The Top-Down Approach
+
+The Top-Down Approach is especially suited to experienced software developers
+- especially when that experience relates well to the current problem
+- watch out for significant differences from past problems!
+
+- Stepwise Refinement
+
+Dijkstra's General Design Strategy
+
+**** Top-Down Resources
+
+- Test-Driven Top-Down Development
+- Type-Driven Top-Down Development
+
+*** Dynamic Design
+
+Significantly challenging problems often need a com
+
+**** Dynamic Design Resources
+
+- The Unified Process
+- The Agile Unified Process
+
+*** Design Approaches to Avoid
+
+Most ambitious (and many not highly ambitious) software development development
+projects fail, often with very bad consequences.
+
+Most software development failures are caused by using a poor software
+development process, including misusing a software development process.
+
+**** Waterfall Design
+
+In the /Waterfall Design Process/
+- First: Requirements Analysis is done to completion
+      - Output: /The Complete Specification/
+- Second: Architectural Analysis is done to completion
+      - Input:  /The Complete Specification/
+      - Output: /The Architecture Model/
+- Third: Design is done to completion
+      - Input: /The Architecture Model/
+      - Output: /The Design Model/
+- Fourth: The Software is Written to Fully Solve the Problem
+      - Input: /The Design Model/
+      - Output: /The Software System/
+- Fifth: The Software is Tested and Evaluated
+      - Input: /The Software System/
+      - Output: Disappointments and Bug Reports
+
+/Waterfall Design/ is a nice sounding name for a process which assumes that each
+stage of the process can be done in a linear manner.
+
+The Waterfall Design Process doesn't work well for any project which has any
+- new features
+- unexpected technical aspects
+- unclear or incomplete requirements
+
+The Waterfall Design Process and similar one-way linear processes is responsible
+for an enormous number of Software Development failures.
+
+The Waterfall Design Process continues to be widely required and used by
+organizations where the people in charge of managing the Software Design Process
+fail to understand that non-trivial Software Design is an /Inherently Creative
+Process/.

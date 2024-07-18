@@ -1,0 +1,154 @@
+* Guidance on Self-Directed Learning
+
+** You Are In Charge!
+
+Please ignore, at least for now, anything written here which you don't currently
+find helpful!
+
+You get to choose
+- What you intend to learn or explore
+- How you're going to go about it
+
+Guidance is gold
+- when you're ready for it
+- when you actively explore it
+
+** General Guidance
+
+- There's a way that you can learn /anything/.
+- A good Learning Path will rapidly Accumulate Knowledge.
+      - Knowledge will become Understanding
+      - Understanding will become Mastery
+- Understanding will Broaden and Deepen
+      - Different areas will get connected
+
+You don't need to be strongly goal driven
+- While loosely held goals are sometimes helpful
+- you need to explore an area to discover what's available
+
+You'll know when Learning is present
+- It's exciting, fun, exhilarating
+- Everything gets more richer and more interesting
+- Learning is /Intrinsically Rewarding/
+
+When it's not like this
+- Stop!
+- Get advice from experienced Learners!
+- Shift to a more exploratory approach!
+
+Trying to force learning can cause damage!
+- damage is often reparable, but not quickly or easily
+- many of us have damage from, e.g. poor schooling
+- repairing damaged learning can be an ongoing practice
+
+** About Advice
+
+Solicit and listen to advice from other learners.
+- Try to understand how their methods work for them
+- If any pieces of their advice seems right for you, try those pieces
+      - Modify them as you will
+      - Discard them when they're not useful
+- If or when any of their advice doesn't seem right for you
+      - Can you translate their method into something that might work for you?
+      - Does their advice provoke you to see something else you want to try?
+- Thank them for sharing their advice!
+
+Prefer input from other learners rather than experts
+- Especially those a little bit ahead of you
+You want to build your own intuition and understanding
+- Avoid premature tips, formulas, procedures, answers
+- Avoid premature abstraction
+
+Use experts sparingly to
+- show you more possibilities, not answers
+- help you find resources
+- broaden what you've learned
+
+** Use Open Culture Materials and Open Source Tools
+
+Strongly prefer learning materials which are
+- Freely redistributable
+- In open, editable formats
+
+Strongly prefer software which is
+- Open Source, especially Free/Libre
+
+Strongly prefer Hardware which is
+- Freely Inspectable -- no inaccessible components
+- Modifiable
+- Replicable, e.g. via 3D Printers or Fab Labs
+
+** How To Use Tutorials
+
+Good Tutorials are great to give you a path to elaborate
+
+A good tutorial is worth going through more than once.
+
+One time, maybe the first time?
+- go through the tutorial as intended
+- see if you can learn what they intended you to learn
+
+At least one time:
+- learn more about any commands or tools they used
+- follow the advice below on Reference Manuals
+- explore your own variations
+
+** How To Use Documentation
+
+Complex systems often come with a variety of documentation
+- Tutorials
+- Guides
+- Cookbooks and HOWTOs
+- Reference Manuals
+- In-Depth Articles, Books, etc.
+
+They each serve different purposes
+- You can also get lost in them, dissipating your energy!
+- You can make each kind of documentation serve you!
+
+Good Tutorials can help you get started and focus your initial learning
+- See the full section on Tutorials above
+- As you get oriented your own projects will give you your focus
+
+** Making Reference Manuals Serve You
+
+Strategy
+- Learn something you need
+- Learn just one extra thing
+
+Details
+- Go into a Reference Manual with a specific need or purpose in mind
+- Learn something which will help you move forward in your purpose
+- And learn just one extra thing
+      - Something you find particularly interesting
+      - Or which you can clearly see will be helpful in the future
+      - Sometimes something you wish you'd known earlier!
+- Ignore all of the other interesting things there
+      - You'll be back!
+- Over time, the "learn just one extra thing" will build up
+      - You'll discover you're an expert!
+
+** Using Books and other In-Depth Expositions
+
+The best books are
+- Short!
+      - You could easily read them more than once
+      - A good book gives you /core understanding/
+- Accessible
+      - Minimum jargon
+      - Necessary jargon and pre-requisites clearly explained
+
+** Immersive Learning Materials
+
+- Immersive materials are designed to be actively explored.
+- Feedback illuminates everything you do
+- Trying alternatives is encouraged
+
+** Take Notes and Refine Your Notes
+
+Use a structured system such as OrgMode.
+
+Where applicable record your knowledge as
+- Scripts
+- Makefiles
+- Literate Programs
