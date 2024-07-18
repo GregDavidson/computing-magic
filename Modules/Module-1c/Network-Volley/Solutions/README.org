@@ -1,0 +1,59 @@
+* Sprites Worlds Game
+
+The purpose of this game is to be
+- an example
+      - /motivating and illustrating/
+- the development of
+      - /a multi-user client/server framework/.
+
+See [[file:../sprites-worlds-game.org][sprites-worlds-game.org]] for more details.
+
+Sprites are the visible changing entities in each world.
+- Worlds may also have backgrounds which don't change.
+      - We won't discuss backgrounds further here.
+
+For its own sprites, worlds need to
+- update their own sprites based on
+      - time (clock ticks)
+      - user gestures
+      - interactions with other sprites
+      - any additional game logic
+      - and display those sprites
+- all updates on our sprites need to be mailed to the server
+      - which will mail them to the other worlds
+- updating sprites includes
+      - dropping (removing) sprites
+      - creating new sprites
+            - which are owned by the controlling world
+
+For foreign sprites (owned by other worlds), worlds need to
+- Receive updates from the owning worlds (relayed by the server)
+- Update the foreign sprites as directed
+- Display the foreign sprites
+
+A principle we want to have: /Only Control Your Own Sprites/
+- Owning worlds determine all updates to their sprites
+Exception:
+- If a world detaches
+      - The server will message all remaining worlds
+      - which will then remove the detached world's sprites
+      - and set that world to #f
+
+Interactions between our sprites and foreign sprites
+- Following the /Only Control Your Own Sprites/ Principle
+- If one of our methods indicates an interaction requiring updates
+      - We can update any of our sprites involved
+      - We don't directly update the other sprites
+- We can send mail to the owning worlds
+      - what the game logic needs them to know
+      - which they might not know themselves
+- They can then tell us how they'd like us to update their sprites
+
+If we want to transfer ownership of a sprite from one world to another
+- It looks like that because
+      - The owning world
+            - drops the old sprite
+            - Sends a creation request to the new world with the old sprite's data
+      - The receiving world
+            - creates the new sprite
+- NOTE: We haven't yet specified that message type
