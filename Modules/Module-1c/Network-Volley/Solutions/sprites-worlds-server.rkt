@@ -10,9 +10,25 @@
 ;; - including a sprite-proxy structure
 ;; - You'll want to look it over carefully!
 (require 2htdp/universe
-         data/gvector
          racket/cmdline
-         "sprites-worlds-game.rkt")
+         racket/contract
+         racket/math )
+
+(require (contract-in
+  "sprites-worlds-game.rkt"
+  [universe? (-> any/c boolean?)]
+  [make-universe (-> universe?)]
+  [universe-world (-> universe? natural? (or/c #f iworld?))]
+  [universe-world-list (-> universe? (listof iworld?))]
+  [universe-next-index (-> universe? natural?)]
+  [universe-world-index (-> universe? iworld? (or/c #f natural?))]
+  [universe-set! (-> universe? natural? iworld? void?)]
+  [universe-drop! (-> universe? natural? void?)] ) )
+
+(require 
+  (only-in "sprites-worlds-game.rkt"
+           tracing *testing*
+           message-head W2U-DONE make-welcome) )
 
  ; growable vectors
 
@@ -61,56 +77,6 @@
 ;; If we should ever need more information about a world than its iWorld
 ;; structure, we could create a structure extending an iWorld.
 
-;; *** Universe State Abstraction
-
-;; A good representation for a UniverseState is
-;; UniverseState: Growable Vector (gvector) of (or/c #f iWorld) 
-;; - An iWorld will be stored in the gvector slot given by that
-;;   world's World Number.  So an iWorld index = a World Number.
-;; - When a World detaches, its slot in the UniverseState becomes #f.
-;; - New worlds get the lowest available World Number, replacing
-;;   #f slots when available, otherwise growing the gvector.
-
-;; We'll hide this choice of representation behind the following
-;; six abstract functions.
-
-(define (empty-universe) (gvector))
-
-;; Given a universe and a world number, return the
-;; iworld structure at that location.
-(define (universe-world u i) (gvector-ref u i))
-
-;; Return the index of the first slot of
-;; Universe u which is unused, i.e. #f.
-;; If there are none, return the index which
-;; is one beyond the last, which would be
-;; equal to the gvector-count.
-(define (universe-next u)
-  (let loop ( [i 0] )
-    (if (or (= i (gvector-count u)) (not (gvector-ref u i)))
-        i
-        (loop (+ 1 i)) ) ) )
-
-;; Return the index of iWorld w in Universe u
-;; or #f if none.
-;; Note: It would be nice if we could pull the
-;; World Number out of the iWorld structure!!
-(define (universe-world-index u w)
-  (eprintf "universe-world-index ~a ~a\n" u w)
-  (let loop ( [i 0] )
-    (eprintf "i: ~a\n" i)
-    (cond [(= i (gvector-count u)) #f]
-          [(not (gvector-ref u i)) (loop (+ 1 i))]
-          [(iworld=? w (gvector-ref u i)) i] ) ) )
-
-;; Add World w to Universe u, modifying u.
-(define (universe-add! u w)
-  (gvector-set! u (universe-next u) w) )
-
-;; Drop World at index i from Universe u, modifying u.
-(define (universe-drop! u i)
-  (gvector-set! u i #f) )
-
 ;; ** States and Actions
 
 ;; Given
@@ -121,9 +87,10 @@
 ;; - a U2W-WELCOME message to Mail to the new World
 ;; - no worlds to drop
 (define (add-world universe new-world)
-  (let ( [message (make-welcome (universe-next universe))]
-         [worlds-to-drop '()] )
-    (universe-add! universe new-world)
+  (let* ( [index (universe-next-index universe)]
+          [message (make-welcome index)]
+          [worlds-to-drop '()] )
+    (universe-set! universe index new-world)
     (make-bundle universe
                  (list (make-mail new-world message))
                  worlds-to-drop ) ) )
@@ -140,16 +107,16 @@
 ;; - any return messages
 ;; - a list of any worlds to remove
 (define (handle-world-msg universe world message)
-  (let ( [world-number (universe-world-index universe world)]
+  (let ( [world-id (universe-world-index universe world)]
          [msg-head (message-head message)] )
     (cond [(eq? W2U-DONE msg-head)
-           (universe-drop! universe world-number)
+           (universe-drop! universe world-id)
            (make-bundle universe '() (list world)) ]
           [else   ;;relay message to all other worlds, not the one
            (make-bundle universe
                         (map (λ (w) (make-mail w message) )
                              (filter (λ (w) (and w (not (equal? w world))))
-                                     (gvector->list universe) ) )
+                                     (universe-world-list universe) ) )
                         '() ; no worlds to remove
                         ) ] )  )   )
 
@@ -161,7 +128,7 @@
     (make-bundle u '() (list w)) ) )
 
 (define (go)
-  (universe (empty-universe)
+  (universe (make-universe)
             #;[state #f] ; suppress opening separate state window
             [on-new add-world]
             [on-msg handle-world-msg]

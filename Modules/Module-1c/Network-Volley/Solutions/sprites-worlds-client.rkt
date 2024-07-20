@@ -4,6 +4,8 @@
 
 ;; See sprites-worlds-game.org for information about the game.
 
+;; ** Our Requires
+
 ;; The file sprites-words-games.rkt provides
 ;; - inter-client (inter-world) protocol information
 ;; - including a sprite-proxy structure
@@ -15,7 +17,25 @@
          racket/contract/region
          racket/list
          racket/math
-         "sprites-worlds-game.rkt")
+         "sprites-worlds-game.rkt" )
+
+#;(contract-in (rename-in "sprites-worlds-game.rkt"
+                    (gvec-ref universe-world)
+                    (gvec->list universe-worlds)
+                    (gvec-next universe-next)
+                    (gvec-index universe-world-index)
+                    (gvec-add! universe-add!)
+                    (gvec-drop! universe-drop!) )
+             )
+
+#;(contract-in (rename-in "sprites-worlds-game.rkt"
+                    (gvec-ref world-sprite)
+                    (gvec->list world-sprite)
+                    (gvec-next world-next)
+                    (gvec-index world-sprite-index)
+                    (gvec-add! world-add!)
+                    (gvec-drop! world-drop!) )
+             )
 
 (tracing #t) ; trace everywhere!
 (*testing* #t) ; customize for easy testing
@@ -86,7 +106,7 @@
 ;; It's Universe serializable because
 ;; - it's a #:prefab structure
 ;; - it's fields are Universe serializable
-(struct params ( number color falling )
+(struct params ( world-id color falling )
   #:constructor-name make-params
   #:prefab )
 
@@ -319,15 +339,17 @@
 
 ;; ** Our World State
 
-;; It's actually the State of the Universe
-;; as viewed from our world!
-
-;; Our WorldState consists of our parameters
-;; and two lists of sprites:
-(struct state ( params ours theirs )
+;; Our WorldState consists of
+;; - our parameters
+;; - a universe? vector indexed by world ids
+;;   - the elements of which are
+;;     - world-sprites? vectors indexed by sprite ids
+;;       - the elements of which are
+;;         - sprites owned by that world
+(struct state ( params world-sprites )
   #:constructor-name make-state
   #:guard
-  (struct-guard/c params? (listof sprite?) (listof sprite?))
+  (struct-guard/c params? universe? )
   #:transparent
   )
 
@@ -346,64 +368,35 @@
 ;; – WorldState
 ;; – (make-package WorldState Mail)
 
-;; Forward Messages sent by any world to the server
-;; will be forwarded to all the other worlds.
-;; These symbols may appear in Forward Messages:
-(define NEW-SPRITE 'new)
-(define MUTATE-SPRITE 'mutate)
-(define DROP-SPRITE 'drop)
-
-#; (flat-named-contract
-    ActionMail
-    (listof (or/c (cons/c DROP-SPRITE (listof key-value?))
-                  (cons/c MUTATE-SPRITE (cons/c params? (listof sprite-proxy?)))
-                  (cons/c NEW-SPRITE (cons/c params? (listof sprite-proxy?))) )) )
-
-;; All three update-sprites actions are dealing with two sets sharing a key.
-;; We're using algorithms of time complexity O(n*m) for n actions on m sprites.
-;; Strategies if this is a bottleneck include
-;; - using an indexed data structure for either or both sets
-;; - partitioning sprites and sprite-proxies by the world which owns the sprite
-;;   - and possibly ordering both by creation time using ULID or BUID keys
-
 ;; Given
-;; - a ActionMail from the server
-;; - a list of sprites
-;; Returns an updated list of sprites
-;; - according to the actions
-(define (update-sprites action-lists sprites)
+;; - ActionMail - a list of lists of sprite updates
+;; - a vector of worlds which are vectors of sprites
+;; Returns nothing special???
+;; Side Effects: Carries out the sprite updates
+(define (update-sprites action-lists universe)
   (define this 'update-sprites)
-  ;; return the subset of the action-lists of the given action-type
-  (define (subset action-type) (filter (λ (action) (eq? action-type (car action))) action-lists))
   ;; return the sprites left after removing those matching the keys in drop-lists
-  (define (after-drops drop-lists sprites)
-    (let ( [merged-drops (foldr append '() drop-lists)] )
-      (remove (λ (s) (memq s merged-drops)) sprites) ) )
-  ;; update (mutate) the sprites from the proxies in the update-lists with matching keys
-  (define (after-updates update-lists sprites)
-    (for-each (λ (update-list) ; for each update-list
-                (let ( [params (car update-list)] )
-                  (for-each (λ (sp) ; for each update proxy
-                              (for-each (λ (s) ; for each sprite
-                                          (when (eq? (sprite-proxy-key sp) (sprite-key s))
-                                            (mutate-sprite-from-proxy! params s sp) ) )
-                                        sprites ) ) ; the sprites
-                            (cdr update-list) ) ) ) ; the proxies
-              update-lists ) ; the update lists
-    sprites ) ; return the list of sprites we were given
-  ;; add new sprites specified by the proxies in the creation lists
-  (define (after-creations creation-lists sprites)
-    (foldr append '() (append (map (λ (creation-list)
-                                     (let ( [params (car creation-list)] [proxies (cdr creation-list)] )
-                                       (map (λ (sp) (proxy->sprite params sp)) proxies) ) )
-                                   creation-lists )
-                              (list sprites) )) )
-  ;; compose: after-drops -> after-updates -> after-creations
-  (when (tracing this) (eprintf "~a action-lists ~a\n" this action-lists))
-  (when (tracing this) (eprintf "~a sprites ~a\n" this sprites))
-  (after-creations (subset NEW-SPRITE)
-                   (after-updates (subset MUTATE-SPRITE)
-                                  (after-drops (subset DROP-SPRITE) sprites) ) ) )
+  (map (λ (action-list)
+         (let ( [action (message-head action-list)]
+                [sprites (universe-world (second action-list))]
+                [params (third action-list)]
+                [updates (cdddr action-list)] )
+           (cond
+             [(eq? action DROP-SPRITE)
+              (for-each (λ (id) (world-sprite-drop! sprites id)) updates) ]
+             [eq? action MUTATE-SPRITE
+                  (for-each (λ (sp)
+                              (let ( [s (world-sprite-index sprites (sprite-proxy-id))] )
+                                (when s (mutate-sprite-from-proxy! params s sp)) )
+                              updates )) ]
+             [eq? action ADD-SPRITE
+                  (for-each (λ (sp)
+                              (let* ( [id (sprite-proxy-id sp)]
+                                      [old-s (world-sprite-index sprites id)]
+                                      [new-s (proxy->sprite params sp)] )
+                                (cond [(and old-s (equal? old-s new-s))] ; already done, warn?
+                                      [old-s (eprintf "~a can't add ~a on top of ~a" this new-s old-s)]
+                                      [else (world-sprite-set! sprites id new-s) ] ) ) )) ] ) ) )) )
 
 ;; Given
 ;; - the state of the world
@@ -420,12 +413,12 @@
           [(null? mail) world] ; no actions, return world unchanged
           [(welcome? mail)
            ;; check (null? our-sprites)
-           (let* ( [number (welcome-world-number mail)]
-                   [color (choose-color number)]
+           (let* ( [id (welcome-world-id mail)]
+                   [color (choose-color id)]
                    [updated-params (struct-copy params our-params
-                           [number number]
+                           [id id]
                            [color color] ) ] )
-             (when (tracing this) (eprintf "~a number ~a color ~a\n" this number color))
+             (when (tracing this) (eprintf "~a id ~a color ~a\n" this id color))
              (let* ( [new-sprite (make-sprite  updated-params (make-ball updated-params))]
                      [ours-updated (cons new-sprite our-sprites)] )
                (make-package 
@@ -450,13 +443,13 @@
 
 ;; Why add text to the ball? 10% of humans are color blind!
 ;; EXERCISE: Use the provided name instead (or in addition to)
-;; the number.
+;; the id.
 (define (make-ball params)
   (define this 'make-ball)
   (let ( [color (params-color params)]
-         [number (params-number params)] )
-    (when (tracing this) (eprintf "~a number ~a color ~a\n" this number color))
-    (overlay (text (number->string number) 10 'black)
+         [id (params-world-id params)] )
+    (when (tracing this) (eprintf "~a id ~a color ~a\n" this id color))
+    (overlay (text (world-id->string id) 10 'black)
              (circle 20 "solid" color) ) ) )
 (register-key-val 'make-ball make-ball registry-image set-registry-image!)
 
@@ -620,8 +613,8 @@
    ;; initial state
    (make-state
     ;; parameters
-    (make-params 0              ; will get a new value from the welcome message
-                 'black         ; will get a new value after the welcome message
+    (make-params world-id-tbd   ; will get a final value from the welcome message
+                 'black         ; will get a final value after the welcome message
                  (if *testing* 0 DY-FALLING) )
     ;; our sprites and their sprites
     '() '() )

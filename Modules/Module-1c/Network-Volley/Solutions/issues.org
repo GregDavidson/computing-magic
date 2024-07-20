@@ -1,0 +1,33 @@
+* Issues
+
+** id-partially-applied
+
+Something is going wrong with my contract checking
+
+*** With DrRacket debug I get
+
+../../../../../../../../usr/local/SW.d/racket-8.13/collects/racket/contract/private/provide.rkt:185:32: id-partially-applied49: undefined;
+ cannot reference an identifier before its definition
+
+which seems to finger the contract system
+
+*** Provisional Bug Report:
+
+title:
+
+Need clue: Error "id-partially-applied49.1 undefined", no such symbol in my source!
+
+body:
+
+sprites-worlds-game.rkt brings in
+```
+#lang racket/base
+(require racket/math
+         racket/list
+         racket/set
+         racket/bool
+         racket/function
+         racket/stream
+         data/gvector )
+```
+Thanks for any help locating where to look!
