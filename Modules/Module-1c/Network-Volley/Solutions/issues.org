@@ -1,5 +1,19 @@
 * Issues
 
+** An easier message format??
+
+(action world-id proxy (or/c sprite-proxy sprite-id?))
+- Find the world-id/sprite-id slot
+
+ | Existing-Slot | proxy  | id         |
+ |---------------+--------+------------|
+ | #f            | create | do nothing |
+ | occupied      | mutate | drop       |
+
+- If it's empty, use the sprite-proxy to create a sprite there
+- If it's occupied, use the sprite-proxy to mutate it
+- If i
+
 ** id-partially-applied
 
 Something is going wrong with my contract checking

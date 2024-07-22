@@ -11,10 +11,12 @@
 ;; - You'll want to look it over carefully!
 (require 2htdp/universe
          racket/cmdline
-         racket/contract
-         racket/math )
+         racket/stream
+         #; racket/contract
+         #; racket/math )
 
-(require (contract-in
+(require "sprites-worlds-game.rkt")
+#;(require (contract-in
   "sprites-worlds-game.rkt"
   [universe? (-> any/c boolean?)]
   [make-universe (-> universe?)]
@@ -25,21 +27,16 @@
   [universe-set! (-> universe? natural? iworld? void?)]
   [universe-drop! (-> universe? natural? void?)] ) )
 
-(require 
+#;(require
   (only-in "sprites-worlds-game.rkt"
            tracing *testing*
            message-head W2U-DONE make-welcome) )
-
- ; growable vectors
-
-(tracing #t) ; trace everywhere!
-(*testing* #f) ; customize for easy testing
 
 ;; ** Notes
 
 ;; The goal is to have this Server know as little
 ;; about any specific game as possible.  It should
-;; - Welcome new worlds with a U2W-WELCOME message.
+;; - Welcome new worlds with a welcome? message.
 ;; - Detach world on receipt of a W2U-DONE message.
 ;; We would like to evolve this into a general-purpose
 ;; coordination server knowing nothing of the domain.
@@ -84,7 +81,7 @@
 ;; - a new World as an iworld or an extension of an iWorld
 ;; Return a bundle representing
 ;; - a new Universe incorporating the new World
-;; - a U2W-WELCOME message to Mail to the new World
+;; - a welcome message to Mail to the new World
 ;; - no worlds to drop
 (define (add-world universe new-world)
   (let* ( [index (universe-next-index universe)]
@@ -100,25 +97,25 @@
 ;; - a World as an iWorld
 ;; - a message from that world
 ;; Handle the message
-;; - We only have W2U-DONE messages so far
-;; - More W2U message types can be added as needed
+;; - We only have goodbye messages so far
+;; - More message types can be added as needed
 ;; Return a bundle representing
 ;; - the (possibly updated) Universe
 ;; - any return messages
 ;; - a list of any worlds to remove
 (define (handle-world-msg universe world message)
-  (let ( [world-id (universe-world-index universe world)]
-         [msg-head (message-head message)] )
-    (cond [(eq? W2U-DONE msg-head)
-           (universe-drop! universe world-id)
-           (make-bundle universe '() (list world)) ]
-          [else   ;;relay message to all other worlds, not the one
-           (make-bundle universe
-                        (map (λ (w) (make-mail w message) )
-                             (filter (λ (w) (and w (not (equal? w world))))
-                                     (universe-world-list universe) ) )
-                        '() ; no worlds to remove
-                        ) ] )  )   )
+  (let ( [world-id (message-world message)] )
+    (when (goodbye-message? message)
+      (universe-drop! universe world-id) )
+    ;; relay message to all other worlds,
+    ;; i.e. not the one which sent it
+    (make-bundle universe
+                 (map (λ (w) (make-mail w message) )
+                      (stream-filter
+                       (λ (w) (and w (not (equal? w world))))
+                       (universe-worlds universe) ) )
+                 '() ; no worlds to remove
+                 ) ) )
 
 (define (drop-world u w)
   (define this 'drop-world)
@@ -155,11 +152,13 @@
 (when (not (null? args))
   (let ( [this (find-system-path 'run-file)]
          [names (map string->symbol args)] )
-    ;; eval will throw an error if name is not globally bound!
+    ;; warn us if name is not bound to a procedure
     (for-each (λ (name) (unless (procedure? (eval name))
-                          (error this "No procedure ~a to trace" name) ))
+                          (eprintf "~a: No procedure ~a to trace\n" this name) ))
               names )
     (when (not (null? names)) (apply tracing (cons #t names))) ) )
 
-;; this is only useful if we're already in a repl
-(unless (*repl*) (go))
+#;(when (*repl*)
+  (tracing #t)                          ; trace everywhere!
+  (*testing* #f)                        ; customize for easy testing
+  (go) )

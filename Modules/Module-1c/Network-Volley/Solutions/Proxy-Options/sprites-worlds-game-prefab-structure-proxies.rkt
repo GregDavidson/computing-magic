@@ -1,3 +1,4 @@
+;; (setq-local racket-repl-buffer-name "*sprites-worlds-game-repl*")
 #lang racket/base
 ;; * Multiple Worlds Sprites Game Protocol and Overview
 
@@ -9,13 +10,16 @@
 ;; - universe-world protocol information
 ;; - including a sprite-proxy structure
 
-;; All of the (provide ...) forms are in the next section
+;; The (provide ...) forms follow the Require Forms section.
 ;; Non-trivial implementations have their own sections following
+
+;; ** Require Forms
+
 
 (require racket/math
          racket/list
          racket/set
-         racket/bool
+         #; racket/bool
          racket/function
          racket/stream
          data/gvector )
@@ -31,36 +35,37 @@
 ;; - the keys can be a combination of a world-id and a sprite-id
 
 (define world-id? natural?)
-(define world-id-tbd 666) ; to be determined, not the final value
 (define world-id->string number->string)
 
 (define sprite-id? natural?)
 
-(provide world-id? sprite-id? world-id-tbd world-id->string)
+(provide world-id? sprite-id? world-id->string)
 
 ;; indexes can be mapped to values with
 
 (provide (rename-out
-          (make-gvec make-universe)
           (gvec? universe?)
+          (make-gvec make-universe)
+          (gvec-count universe-count)
           (gvec-ref universe-world)
           (gvec->stream universe-worlds)
           (gvec->list universe-world-list)
-          (gvec-next universe-next-index)
-          (gvec-index universe-world-index)
+          (gvec-first-free-index universe-next-index)
+          (gvec-find-index universe-world-index)
           (gvec-set! universe-set!)
           (gvec-drop! universe-drop!) ))
 
 (provide (rename-out
-          (make-gvec make-world-sprites)
           (gvec? world-sprites?)
+          (make-gvec make-world-sprites)
+          (gvec-count world-sprites-count)
           (gvec-ref world-sprite)
           (gvec->stream world-sprites)
           (gvec->list world-sprite-list)
-          (gvec-next world-next-index)
-          (gvec-index world-sprite-index)
-          (gvec-set! world-set!)
-          (gvec-drop! world-drop!) ))
+          (gvec-first-free-index world-next-index)
+          (gvec-find-index world-sprite-index)
+          (gvec-set! world-sprite-set!)
+          (gvec-drop! world-sprite-drop!) ))
 
 ;; *** Sprite Proxies
 
@@ -86,22 +91,16 @@
 
 (provide tracing *testing*)
 
-;; *** Universe Server <-> World Client
+;; *** Client-Server Message Types
 
-;; welcome message details below at: ** Universe Server <-> World Client
-
-(provide W2U-EMPTY W2U-DONE)
-(provide U2W-WELCOME)
-
-;; Messages from a World Client to the Universe Server
-
-;; Does the server need to know this?  Maybe notify
-;; other clients instead??
-(define W2U-EMPTY 'empty)  ;; we've lost our sprites
-
-(define W2U-DONE 'done)  ;; detach us!
-
-(provide message-head welcome? make-welcome welcome-alist welcome-world-id)
+(provide (struct-out message)
+         (struct-out welcome-message)
+         make-welcome
+         (struct-out goodbye-message)
+         (struct-out action)
+         (struct-out drop-sprite)
+         (struct-out mutate-sprite)
+         (struct-out create-sprite) )
 
 ;; ** Tracing and Testing
 
@@ -138,32 +137,27 @@
 ;; in particular, disable falling!
 (define *testing* (make-parameter #f))
 
-;; ** Universe Server <-> World Client
+;; ** Client-Server message Types
 
-;; Provide a world-id? for a new world
-(define U2W-WELCOME 'welcome)
-(define WORLD-ID-KEY 'world-id)
+(struct message (world) #:prefab)
+
+;; server to new world
+(struct welcome-message message (alist) #:prefab)
+
+;; world to world, relayed by server
+(struct action message (params updates) #:prefab)
+(struct drop-sprite action ())
+(struct mutate-sprite action ())
+(struct create-sprite action ())
+
+;; world to server: goodbye, drop me please!
+(struct goodbye-message message ())
 
 ;; and maybe some additional things as an association list
 
 ;; Is alist an association list whose keys are all symbols?
 (define (symbol-key-alist? alist)
-  (or (null? alist)
-      (and (pair? alist)
-           (pair? (car alist)) (symbol? (caar alist))
-           (symbol-key-alist? (cdr alist)) ) ) )
-
-;; What Action Symbol, if any, begins this message?
-(define (message-head m)
-  (if (pair? m) (car m) #f) )
-
-;; Is this a welcome message?
-(define (welcome? message)
-  (and (pair? message)
-       (eq? U2W-WELCOME (car message))
-       (let ( [wn (assoc WORLD-ID-KEY (cdr message))] )
-         (and wn (world-id? (cadr wn))) )
-       (symbol-key-alist? (cdr message))) )
+  (and (list? alist) (andmap (compose symbol? car) alist)) )
 
 ;; Return a welcome message with a world number and
 ;; possibly additional values in an association list.
@@ -171,23 +165,7 @@
   (define this 'make-welcome)
   (unless (world-id? n) (error this "invalid world-id ~a" n))
   (unless (symbol-key-alist? alist) (error this "invalid alist ~a" alist))
-  (cons U2W-WELCOME (cons (list WORLD-ID-KEY n) alist)) )
-
-;; Return the association list from a welcome message.
-(define (welcome-alist welcome)
-  (define this 'welcome-alist)
-  (unless (welcome? welcome) (error this "invalid welcome ~a" welcome))
-  (cdr welcome) )
-
-;; Return the World Id from a welcome message.
-(define (welcome-world-id welcome)
-  (define this 'welcome-world-id)
-  (let ( [found (assoc WORLD-ID-KEY (welcome-alist welcome))] )
-    (unless (and (pair? found) (= (length found) 2))
-      (error this "missing world id in ~a" welcome) )
-    (let ( [id (second found)] )
-      (unless (world-id? id) (error  this "invalid world id ~a in ~a" id welcome))
-      id ) ) )
+  (welcome-message n alist) )
 
 ;; ** IDs and ID Maps
 
@@ -205,7 +183,9 @@
 
 (define gvec? gvector?)
 
-(define gvec-ref gvector-ref)
+(define gvec-count gvector-count)
+
+(define (gvec-ref gv i) (gvector-ref gv i #f))
 
 ;; return the non-false values in a gvec as a stream
 (define gvec->stream (compose (curry stream-filter identity) in-gvector))
@@ -215,7 +195,7 @@
 
 ;; Return the index of the first non-#f slot of
 ;; the gvec v which is #f, or if none, gvector-count
-(define (gvec-next v)
+(define (gvec-first-free-index v)
   (let loop ( [i 0] [end (gvector-count v)] )
     (if (or (= i end) (not (gvector-ref v i)))
         i
@@ -226,20 +206,22 @@
 ;; 3. The extra slots "point at each other" from lowest to highest, circularly
 
 ;; Return first index of item in gvec or #f if none.
-(define (gvec-index gv item)
+(define (gvec-find-index gv item)
   (let loop ( [i 0] [end (gvector-count gv)] )
     (cond [(= i end) #f]
           [(not (equal? item (gvector-ref gv i))) i]
           [else (loop (+ 1 i))] ) ) )
 
+;; Ensure that i is valid for a set!
+(define (gvec-ensure-size gv i [val #f])
+  (let ( [size-now (gvector-count gv)] )
+       (when (>= i size-now)
+         (let ( [more-needed (- size-now i -1)] )
+         (apply gvector-add! (build-list more-needed (λ () #f))) ) ) ) )
+
 (define (gvec-set! gv index item)
   (define this 'gvec-set!)
-  ;; ensure gv has enough slots
-  (when (> index (gvector-count gv))
-      (let loop ( [i (gvector-count gv)] )
-        (unless (= i index)
-          (gvector-add! gv #f)
-          (loop (+ 1 i)) ) ) )
+  (gvec-ensure-size)
   (let ( [old-item (gvector-ref gv index)] )
     (unless (equal? old-item item) ; make set! idempotent
       (when old-item
