@@ -97,10 +97,8 @@
          (struct-out welcome-message)
          make-welcome
          (struct-out goodbye-message)
-         (struct-out action)
-         (struct-out drop-sprite)
-         (struct-out mutate-sprite)
-         (struct-out create-sprite) )
+         (struct-out actions)
+         update? )
 
 ;; ** Tracing and Testing
 
@@ -145,10 +143,7 @@
 (struct welcome-message message (alist) #:prefab)
 
 ;; world to world, relayed by server
-(struct action message (params updates) #:prefab)
-(struct drop-sprite action ())
-(struct mutate-sprite action ())
-(struct create-sprite action ())
+(struct actions message (params updates) #:prefab)
 
 ;; world to server: goodbye, drop me please!
 (struct goodbye-message message ())
@@ -251,10 +246,12 @@
 ;; Only the key field is required.  The other fields can default to #f if
 ;; the corresponding sprite field is irrelevant, i.e. not requiring an update.
 (struct
-  sprite-proxy (world sprite image x y dx dy on-tick on-key to-draw)
+  sprite-proxy (sprite image x y dx dy on-tick on-key to-draw)
   #:constructor-name raw-sprite-proxy
   #:prefab )
 
 ;; prefab structures don't support guards or contracts!
 ;; - we can associate a contract with make-sprite-proxy
 (define make-sprite-proxy raw-sprite-proxy)
+
+(define (update? u) (or sprite-id? sprite-proxy?))

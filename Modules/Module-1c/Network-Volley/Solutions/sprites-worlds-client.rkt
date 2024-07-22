@@ -371,37 +371,32 @@
 ;; – (make-package WorldState Mail)
 
 ;; Given
-;; - ActionMail - a list of lists of sprite updates
-;; - a vector of worlds which are vectors of sprites
-;; Returns nothing special???
+;; - ActionMail - a list of sprite updates from the same world
+;; - universe - a vector of worlds which are vectors of sprites
 ;; Side Effects: Carries out the sprite updates
-(define (update-sprites! action universe)
+(define (update-sprites! actions universe)
   (define this 'update-sprites!)
   ;; return the sprites left after removing those matching the keys in drop-lists
-  (map (λ (action)
-         (let* ( [world (message-world action)]
-                 [world (message-world action)]
-                 [params (action-params action)]
-                 [updates (action-updates action)]
-                 [sprites (universe-world universe world)] )
+  (let* ( [world (message-world actions)]
+          [params (actions-params actions)]
+          [updates (actions-updates actions)]
+          [sprites (universe-world universe world)] )
+    (map (λ (update)
            (cond
-             [(drop-sprite? action)
+             [(sprite-id? update)
               (when sprites ; in case the world has been dropped
-                (for-each (λ (id) (world-sprite-drop! sprites id)) updates) ) ]
-             [(mutate-sprite? action)
-              (for-each (λ (sp)
-                          (let ( [s (world-sprite-index sprites (sprite-proxy-world sp))] )
-                            (when s (mutate-sprite-from-proxy! params s sp)) )
-                          updates )) ]
-             [(create-sprite? action)
-              (for-each (λ (sp)
-                          (let* ( [id (sprite-proxy-world sp)]
-                                  [old-s (world-sprite-index sprites id)]
-                                  [new-s (proxy->sprite params sp)] )
-                            (cond [(and old-s (equal? old-s new-s))] ; already done, warn?
-                                  [old-s (eprintf "~a can't add ~a on top of ~a" this new-s old-s)]
-                                  [else (world-sprite-set! sprites id new-s) ] ) ) )) ]
-             [else (error this "unknown action ~a" action)] ) ) )) )
+                (world-sprite-drop! sprites update) )]
+             [(sprite-proxy? update)
+              (let ( [sprite-id (sprite-proxy-sprite update)] )
+                (when (not sprites) ; in case the world has been dropped
+                  (universe-set! universe world (make-world-sprites sprite-id))
+                  (set! sprites (universe-world universe world)) )
+                (let ( [sprite (world-sprite sprites sprite-id)] )
+                  (if sprite
+                      (mutate-sprite-from-proxy! params sprite update)
+                      (world-sprite-set! sprites sprite-id (proxy->sprite params update)) ) ) ) ]
+             [else (error this "unknown update ~a" update)] )
+           updates )) ) )
 
 ;; Given
 ;; - the state of the world
@@ -431,12 +426,12 @@
                    (universe-set! new-universe new-world world-sprites)
                    (world-sprite-set! new-world-sprites 0 new-sprite)
                    (make-package (make-state new-params new-universe)
-                                 (list (create-sprite
-                                        new-world
-                                        new-params
-                                        (list (make-proxy 0 new-sprite)) )) ) ) ) ) ]
+                                 (actions
+                                  new-world
+                                  new-params
+                                  (list (make-proxy 0 new-sprite)) ) ) ) ) ) ]
           [(goodbye-message? mail) (universe-drop! existing-universe (message-world mail))]
-          [(action? mail) (update-sprites! mail existing-universe) world-state]
+          [(actions? mail) (update-sprites! mail existing-universe) world-state]
           [else (error this "bad mail ~a" mail)] ) ) )
 
 ;; ** Action Procedures and Functions
@@ -492,23 +487,22 @@
          [dx (sprite-dx s)] [dy (sprite-dy s)] )
     (let ( [xx (+ x dx)] [yy (+ y dy)] )
       (if (not (on-canvas? image xx yy))
-          (drop-sprite (params-world params) #f (list sprite-id))
+          sprite-id                     ; drop
           (let ( [dxx (decay dx 0)] [dyy (decay dy (params-falling params))] )
             (if (and (= x xx) (= y yy) (= dx dxx) (= dy dyy))
                 '() ; nothing changed
-                (mutate-sprite (params-world params) params
-                      (list (make-proxy sprite-id s #:x xx #:y yy #:dx dxx #:dy dyy) ) ) ) ) ) ) ) )
+                (make-proxy sprite-id s #:x xx #:y yy #:dx dxx #:dy dyy) ) ) ) ) ) )
 (register-key-val 'move-sprite move-sprite registry-on-tick set-registry-on-tick!)
 
 ;; Called by boost-sprite-on-key to do the work
 (define (boost-sprite sprite-id s key ddx ddy)
   (define this 'boost-sprite)
   (when (tracing this) (eprintf "~a boosting sprite ~a ~a\n" this sprite-id key))
-  (list MUTATE-SPRITE
-        ;; make-proxy will ignore unchanging values
-        (make-proxy sprite-id s
-                    #:dx (+ (sprite-dx s) ddx)
-                    #:dy (+ (sprite-dy s) ddy) ) ) )
+  (if (and (zero? ddx) (zero? ddy))
+      '()
+      (make-proxy sprite-id s
+                  #:dx (+ (sprite-dx s) ddx)
+                  #:dy (+ (sprite-dy s) ddy) ) ) )
 
 ;; Sprite Key -> ActionList
 ;; apply any boosts to its velocity
@@ -561,13 +555,12 @@
            ;; calling sprite's on-tick method on itself
            (let* ( [sprite (world-sprite sprites i)]
                    [method (sprite-on-tick sprite)]
-                   [result (method params i sprite)] )
-             (cond [(list? result) ; could be empty
-                    (unless (mapand action? result) ; of actions?
-                      (error this "not actions ~a" (filter (λ (v) (not (action? v))))) )
-                    result ] ; return actions
-                   [(action? result) (list result)] ; return it in a list
-                   [else (error this "invalid result ~a" result)] ) )) ) )
+                   [result (method params i sprite)]
+                   [updates (if (list? result) result (list result))] )
+             (cond [(null? updates) '()]
+                   [(andmap update? updates)
+                    (actions (params-world params) params updates) ] ; return actions
+                   [else (error this "invalid result ~a" result)] ) ) ) ) )
 
 ;; return Package from applying on-tick methods to our sprites
 (define (update-world-on-tick world-state)
@@ -598,13 +591,12 @@
            ;; calling sprite's on-tick method on itself
            (let* ( [sprite (world-sprite sprites i)]
                    [method (sprite-on-key sprite)]
-                   [result (method params i sprite key)] )
-             (cond [(list? result) ; could be empty
-                    (unless (mapand action? result) ; of actions?
-                      (error this "not actions ~a" (filter (λ (v) (not (action? v))))) )
-                    result ] ; return actions
-                   [(action? result) (list result)] ; return it in a list
-                   [else (error this "invalid result ~a" result)] ) )) ) )
+                   [result (method params i sprite key)]
+                   [updates (if (list? result) result (list result))] )
+             (cond [(null? updates) '()]
+                   [(andmap update? updates)
+                    (actions (params-world params) params updates) ] ; return actions
+                   [else (error this "invalid result ~a" result)] ) ) ) ) )
 
 ;; return Package from applying on-key methods to our sprites
 (define (update-world-on-key world-state key)
@@ -628,7 +620,7 @@
   (let ( [universe (state-worlds-sprites world-state)]
          [canvas (EMPTY-CANVAS)] )
     (for ( [world-id (in-range 0 (universe-count universe))] )
-      (let ( [sprites (universe-world-sprites world-id)] )
+      (let ( [sprites (universe-world universe world-id)] )
         (when sprites                   ; world may have been dropped!
           (for ( [sprite-id (in-range 0 (world-sprites-count sprites))] )
             (let ( [sprite (world-sprite sprites sprite-id)] )

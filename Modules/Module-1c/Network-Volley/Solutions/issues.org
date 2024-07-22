@@ -10,9 +10,8 @@
  | #f            | create | do nothing |
  | occupied      | mutate | drop       |
 
-- If it's empty, use the sprite-proxy to create a sprite there
-- If it's occupied, use the sprite-proxy to mutate it
-- If i
+
+** Do we need BOTH actions-world and params-world?
 
 ** id-partially-applied
 
