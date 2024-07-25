@@ -21,7 +21,7 @@
          racket/set
          #; racket/bool
          racket/function
-         racket/stream
+         racket/sequence
          data/gvector )
 
 ;; ** Provide Forms and Trivial Implementations
@@ -41,51 +41,51 @@
 
 (provide world-id? sprite-id? world-id->string)
 
-;; indexes can be mapped to values with
-
-(provide (rename-out
-          (gvec? universe?)
-          (make-gvec make-universe)
-          (gvec-count universe-count)
-          (gvec-ref universe-world)
-          (gvec->stream universe-worlds)
-          (gvec->list universe-world-list)
-          (gvec-first-free-index universe-next-index)
-          (gvec-find-index universe-world-index)
-          (gvec-set! universe-set!)
-          (gvec-drop! universe-drop!) ))
+;; world-sprites map sprite-ids to sprites
 
 (provide (rename-out
           (gvec? world-sprites?)
           (make-gvec make-world-sprites)
           (gvec-count world-sprites-count)
           (gvec-ref world-sprite)
-          (gvec->stream world-sprites)
+          (gvec->sequence world-sprites)
           (gvec->list world-sprite-list)
-          (gvec-first-free-index world-next-index)
           (gvec-find-index world-sprite-index)
           (gvec-set! world-sprite-set!)
           (gvec-drop! world-sprite-drop!) ))
 
+;; universes map universe-ids to world-sprites
+
+(provide (rename-out
+          (gvec? universe?)
+          (make-gvec make-universe)
+          (gvec-count universe-count)
+          (gvec-ref universe-world)
+          (gvec->sequence universe-worlds)
+          (gvec->list universe-world-list)
+          (gvec-find-index universe-world-index)
+          (gvec-set! universe-set!)
+          (gvec-add! universe-add!)
+          (gvec-drop! universe-drop!) ))
+
 ;; *** Sprite Proxies
+
+;; Sprite Proxies represent new sprites or
+;; changes to existing sprites.
 
 ;; Implementation below: ** Sprite Proxies
 
 (provide make-sprite-proxy
          (struct-out sprite-proxy) )
 
-#;(provide
- (contract-out
-  [make-sprite-proxy
-   (-> world-id? sprite-id?
-       (or/c #f string? symbol?) ; key image
-       (or/c #f natural?)   (or/c #f natural?) ; x y
-       (or/c #f integer?)   (or/c #f integer?) ; dx dy
-       (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) ; methods
-       sprite-proxy? ) ] )
- (struct-out sprite-proxy) )
-
 ;; *** Tracing and Testing
+
+;; Tracing controls the display of runtime information
+;; to aid in understanding and debugging the programs.
+
+;; Testing Mode has the program behave in a manner
+;; which is simpler to study and debug.  E.g. the
+;; sprites won't move without explicit boosting.
 
 ;; Implementation below: ** Tracing and Testing
 
@@ -93,12 +93,29 @@
 
 ;; *** Client-Server Message Types
 
-(provide (struct-out message)
-         (struct-out welcome-message)
-         make-welcome
-         (struct-out goodbye-message)
-         (struct-out actions)
-         update? )
+;; a param structure provides context needed to
+;; run functions to create or update foreign sprites.
+
+;; messages carry information between a
+;; world and a universe server or between
+;; worlds when relayed by a universe server
+
+;; an update can describe a sprite to drop
+;; a sprite to create or a sprite to change
+
+;; an action structure associates a context,
+;; i.e. a world-id or a params structure
+;; with a list of updates.
+
+(provide
+ (struct-out params)
+ (struct-out message)
+ message-world
+ (struct-out welcome-message)
+ make-welcome
+ (struct-out goodbye-message)
+ update?
+ (struct-out actions) )
 
 ;; ** Tracing and Testing
 
@@ -114,36 +131,63 @@
 ;; (tracing #t name ...) = enable tracing for specified names
 ;; (tracing #f name ...) = disable tracing for specified names
 
+;; TODO: This is too complex!
+;; Either redesign it and/or
+;; (1) provide a thorough contract
+;; (2) provide thorough testing
 (define tracing
-  (let ( [this 'tracing] [setting (make-parameter #f)] )
+  (let ( [this 'tracing] [*setting* (make-parameter #f)] )
     (λ args
-      (if (null? args)
-          (and (boolean? setting) setting) ; return #t iff setting is #t
-          (let ( [mode (car args)] [names (cdr args)] )
-            (if (null? names)
-                (cond [(boolean? mode) (set! setting mode)] ; set setting to #t or #f
-                      [(symbol? mode) (if (boolean? setting) setting (set-member? setting mode))]
-                      [else (error this "unknown mode ~a" mode)] )
-                (if (and (boolean? mode) (ormap symbol? names))
-                    ;; ensure setting is a mutable set using comparison function eq?
-                    (when (not (set-mutable? setting)) (set! setting (mutable-seteq)))
-                    (let ( [update! (if mode set-add! set-remove!)] )
-                      (for-each (λ (name) (update! setting name))
-                                names ) ) ) ) ) ) ) ) )
+      (let ( [setting (*setting*)] )
+        (if (null? args)
+            (and (boolean? setting) setting) ; return #t iff setting is #t
+            (let ( [mode (car args)] [names (cdr args)] )
+              (if (null? names)
+                  (cond [(boolean? mode) (*setting* mode)] ; set setting to #t or #f
+                        [(symbol? mode) (if (boolean? setting) setting (set-member? setting mode))]
+                        [else (error this "unknown mode ~a" mode)] )
+                  (when (and (boolean? mode) (ormap symbol? names))
+                      ;; ensure setting is a mutable set using comparison function eq?
+                      (when (not (set-mutable? setting)) (set! setting (mutable-seteq)))
+                      (let ( [update! (if mode set-add! set-remove!)] )
+                        (for-each (λ (name) (update! setting name))
+                                  names ) )
+                      (*setting* setting) ) ) ) ) ) ) ) )
 
 ;; In testing mode, disable any required user interactions
 ;; in particular, disable falling!
 (define *testing* (make-parameter #f))
 
+;; ** Game Parameters
+
+;; A structure type for World Parameters needed by
+;; functions passed by name in our proxy structures.
+;; It's Universe serializable because
+;; - it's a #:prefab structure
+;; - it's fields are Universe serializable
+(struct params ( world color falling )
+  #:constructor-name make-params
+  #:prefab )
+
+;; Consider adding a hash list to make
+;; params more open ended.
+
 ;; ** Client-Server message Types
 
-(struct message (world) #:prefab)
+(struct message (params) #:prefab)
+
+(define (message-world message)
+  (define this 'message-world)
+  (let ( [p (message-params message)] )
+    (cond [(params? p) (params-world p)]
+          [(world-id? p) p]
+          [else (error this "invalid message params p")] ) ) )
 
 ;; server to new world
 (struct welcome-message message (alist) #:prefab)
 
 ;; world to world, relayed by server
-(struct actions message (params updates) #:prefab)
+(struct actions message (updates) #:prefab)
 
 ;; world to server: goodbye, drop me please!
 (struct goodbye-message message ())
@@ -167,14 +211,17 @@
 ;; Given IDs which are small contiguous numbers
 ;; we can use gvectors to manage collections of
 ;; - IDs mapped to Values, e.g.
-;; - worlds indexed by world-ids
-;; - sprites indexed sprite-ids
+;; - worldsprites: sprites indexed sprite-ids
+;; - universes: world-sprites indexed by world-ids
 
 ;; gvec-nextid will keep the indexes small by
 ;; - starting with 0
 ;; - reusing ids when items are dropped
 
-(define make-gvec make-gvector)
+(define make-gvec
+  (case-lambda
+   [() (make-gvector)]
+   [(index) (make-gvector #:capacity (+ 1 index))] ) )
 
 (define gvec? gvector?)
 
@@ -183,46 +230,62 @@
 (define (gvec-ref gv i) (gvector-ref gv i #f))
 
 ;; return the non-false values in a gvec as a stream
-(define gvec->stream (compose (curry stream-filter identity) in-gvector))
+(define gvec->sequence (compose (curry sequence-filter identity) in-gvector))
 
 ;; return the non-false values in a gvec as a list
-(define gvec->list (compose gvec->stream stream->list))
+(define gvec->list (compose gvec->sequence sequence->list))
 
 ;; Return the index of the first non-#f slot of
 ;; the gvec v which is #f, or if none, gvector-count
-(define (gvec-first-free-index v)
-  (let loop ( [i 0] [end (gvector-count v)] )
-    (if (or (= i end) (not (gvector-ref v i)))
-        i
-        (loop (+ 1 i)) ) ) )
-;; A faster algorithm is possible if
+(define (gvec-first-free-index gv)
+  (let (  [end (gvector-count gv)] )
+    (let loop ( [i 0] )
+      (if (or (= i end) (not (gvector-ref gv i)))
+          i
+          (loop (+ 1 i)) ) ) ) )
+
+;; EXERCISE: Replace this O(n) algorithm with an O(1) algorithm
+
+;; Clue: An O(1) algorithm is straightforward if
 ;; 1. The vector contents aren't numbers
 ;; 2. An extra slot is always available at the end
 ;; 3. The extra slots "point at each other" from lowest to highest, circularly
+;; Examples:
+;; an empty gvec: (gvector 0)
+;; a gvec with 2 slots available for reuse:
+;;   (gvector 'item0 3 'item2 5 'item4 1)
+;; the end -> position 1 -> position 3 --> the end
+;; pronouncing -> as "points to"
 
 ;; Return first index of item in gvec or #f if none.
 (define (gvec-find-index gv item)
-  (let loop ( [i 0] [end (gvector-count gv)] )
-    (cond [(= i end) #f]
-          [(not (equal? item (gvector-ref gv i))) i]
-          [else (loop (+ 1 i))] ) ) )
+    (let ( [end (gvector-count gv)] )
+      (let loop ( [i 0] )
+        (cond [(= i end) #f]
+              [(equal? item (gvector-ref gv i)) i]
+              [else (loop (+ 1 i))] ) ) ) )
 
 ;; Ensure that i is valid for a set!
 (define (gvec-ensure-size gv i [val #f])
   (let ( [size-now (gvector-count gv)] )
        (when (>= i size-now)
-         (let ( [more-needed (- size-now i -1)] )
-         (apply gvector-add! (build-list more-needed (λ () #f))) ) ) ) )
+         (let ( [more-needed (- i size-now -1)] )
+         (apply (curry gvector-add! gv) (build-list more-needed (λ (_) #f))) ) ) ) )
 
 (define (gvec-set! gv index item)
   (define this 'gvec-set!)
-  (gvec-ensure-size)
+  (gvec-ensure-size gv index)
   (let ( [old-item (gvector-ref gv index)] )
     (unless (equal? old-item item) ; make set! idempotent
       (when old-item
         (error this "gvec[~a] is ~a, rejecting ~a" index old-item item))
       (gvector-set! gv index item) ) ) )
 
+(define (gvec-add! gv item)
+  (let ( [index (gvec-first-free-index gv)] )
+    (gvec-set! gv index item)
+    index ) )
+  
 (define (gvec-drop! gv i)
   (gvector-set! gv i #f) )
 
@@ -235,12 +298,13 @@
 
 ;; A serializable-struct can be serialized if all of their components
 ;; can be serialized.  Alas, the 2htdp/universe package won't accept
-;; serializable structures!  So let's create a prefab sprite-proxy!
+;; serializable structures!  It will accept lists, vectors and
+;; prefab structures.
 
-;; Images will be represented either by
+;; We can represent images either by
 ;; (1) a filesystem path to a stored image
 ;; (2) a symbol representing a function which
-;;     takes a color and returns an image.
+;;     takes a params structure and returns an image.
 ;; Procedures will be represented by their names (symbols).
 ;; A sprite-proxy will have the same key as the sprite it is a proxy for.
 ;; Only the key field is required.  The other fields can default to #f if
@@ -252,6 +316,10 @@
 
 ;; prefab structures don't support guards or contracts!
 ;; - we can associate a contract with make-sprite-proxy
+;;   and then give it a contract when it is imported.
 (define make-sprite-proxy raw-sprite-proxy)
 
-(define (update? u) (or sprite-id? sprite-proxy?))
+;; an update is either
+;; a sprite-id indicating a sprite to be dropped
+;; a sprite-proxy used to create or mutate a sprite
+(define (update? u) (or (sprite-id? u) (sprite-proxy? u)))

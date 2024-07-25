@@ -11,33 +11,44 @@
 ;; - You'll want to look it over carefully!
 (require 2htdp/universe
          racket/cmdline
-         racket/stream
-         #; racket/contract
-         #; racket/math )
+         racket/sequence
+         racket/contract
+         racket/math )
 
-(require "sprites-worlds-game.rkt")
-#;(require (contract-in
-  "sprites-worlds-game.rkt"
-  [universe? (-> any/c boolean?)]
-  [make-universe (-> universe?)]
-  [universe-world (-> universe? natural? (or/c #f iworld?))]
-  [universe-world-list (-> universe? (listof iworld?))]
-  [universe-next-index (-> universe? natural?)]
-  [universe-world-index (-> universe? iworld? (or/c #f natural?))]
-  [universe-set! (-> universe? natural? iworld? void?)]
-  [universe-drop! (-> universe? natural? void?)] ) )
+(require
+ (contract-in "sprites-worlds-game.rkt"
+              [universe? (-> any/c boolean?)]
+              [world-id? (-> any/c boolean?)]
+              [message? (-> any/c boolean?)]
+              [params? (-> any/c boolean?)]
+              [welcome-message? (-> any/c boolean?)]
+              [goodbye-message? (-> any/c boolean?)]
+              #;[actions? (-> any/c boolean?)] ) )
 
-#;(require
-  (only-in "sprites-worlds-game.rkt"
-           tracing *testing*
-           message-head W2U-DONE make-welcome) )
+(require
+ (contract-in "sprites-worlds-game.rkt"
+              [make-universe (->* () (natural?) universe?)]
+              #;[universe-count (-> universe? natural?)]
+              #;[universe-world (-> universe? natural? (or/c #f iworld?))]
+              [universe-worlds (-> universe? sequence?)]
+              [universe-world-index (-> universe? iworld? natural?)]
+              #;[universe-set! (-> universe? natural? (or/c #f iworld?) void?)]
+              [universe-add! (-> universe? iworld? natural?)]
+              [universe-drop! (-> universe? natural? void?)]
+              #;[message (-> params? message?)]
+              [message-world (-> message? world-id?)]
+              [make-welcome (->* (natural?) () #:rest (listof any/c) welcome-message?)]
+              [*testing* parameter?] ) )
 
-;; ** Notes
+ ;; tracing is hard to write a contract for
+(require (only-in "sprites-worlds-game.rkt" tracing))
+
+;; ** Our Goal: Write a Very Generic World Server
 
 ;; The goal is to have this Server know as little
 ;; about any specific game as possible.  It should
 ;; - Welcome new worlds with a welcome? message.
-;; - Detach world on receipt of a W2U-DONE message.
+;; - Detach world on receipt of a goodbye-message.
 ;; We would like to evolve this into a general-purpose
 ;; coordination server knowing nothing of the domain.
 
@@ -84,10 +95,9 @@
 ;; - a welcome message to Mail to the new World
 ;; - no worlds to drop
 (define (add-world universe new-world)
-  (let* ( [index (universe-next-index universe)]
+  (let* ( [index (universe-add! universe new-world)]
           [message (make-welcome index)]
           [worlds-to-drop '()] )
-    (universe-set! universe index new-world)
     (make-bundle universe
                  (list (make-mail new-world message))
                  worlds-to-drop ) ) )
@@ -110,10 +120,11 @@
     ;; relay message to all other worlds,
     ;; i.e. not the one which sent it
     (make-bundle universe
-                 (map (λ (w) (make-mail w message) )
-                      (stream-filter
-                       (λ (w) (and w (not (equal? w world))))
-                       (universe-worlds universe) ) )
+                 (sequence->list
+                  (sequence-map (λ (w) (make-mail w message) )
+                                (sequence-filter
+                                 (λ (w) (and w (not (equal? w world))))
+                                 (universe-worlds universe) ) ) )
                  '() ; no worlds to remove
                  ) ) )
 
@@ -158,7 +169,7 @@
               names )
     (when (not (null? names)) (apply tracing (cons #t names))) ) )
 
-#;(when (*repl*)
+(when (*repl*)
   (tracing #t)                          ; trace everywhere!
   (*testing* #f)                        ; customize for easy testing
   (go) )
