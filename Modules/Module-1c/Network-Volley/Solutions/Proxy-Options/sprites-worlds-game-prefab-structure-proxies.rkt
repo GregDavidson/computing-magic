@@ -17,7 +17,7 @@
 
 
 (require racket/math
-         racket/list
+         #; racket/list
          racket/set
          #; racket/bool
          racket/function

@@ -1,28 +1,32 @@
 * Issues
 
-** An easier message format??
+** Giving source files their own REPL
+
+Add this to the top of the source file:
+
+;; (setq-local racket-repl-buffer-name "*sprites-worlds-client-repl*")
+
+and then run eval-last-sexp with point at the end of that line.
+
+Do this BEFORE using the shared REPL!
+
+** An easier message format
 
 (action world-id proxy (or/c sprite-proxy sprite-id?))
 - Find the world-id/sprite-id slot
 
- | Existing-Slot | proxy  | id         |
- |---------------+--------+------------|
- | #f            | create | do nothing |
- | occupied      | mutate | drop       |
+ | Existing-Slot | proxy                     | id                      |
+ |---------------+---------------------------+-------------------------|
+ | #f            | create a new sprite       | do nothing              |
+ | occupied      | mutate an existing sprite | drop an existing sprite |
 
-
-** Do we need BOTH actions-world and params-world?
 
 ** id-partially-applied
 
-Something is going wrong with my contract checking
-
-*** With DrRacket debug I get
-
-../../../../../../../../usr/local/SW.d/racket-8.13/collects/racket/contract/private/provide.rkt:185:32: id-partially-applied49: undefined;
- cannot reference an identifier before its definition
-
-which seems to finger the contract system
+This can be caused by a predicates in the contracts being specified is not
+already known. They must be known /before/ the current /require/ form. So use an
+initial require form to bring all of those predicates in, then use a second
+require form to specify contracts for everything else.
 
 *** Provisional Bug Report:
 

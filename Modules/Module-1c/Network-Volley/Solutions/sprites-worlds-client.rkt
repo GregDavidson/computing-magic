@@ -82,7 +82,7 @@
               [make-sprite-proxy
                (-> sprite-id?
                    (or/c #f string? symbol?)
-                   (or/c #f natural?) (or/c #f natural?)                   
+                   (or/c #f natural?) (or/c #f natural?)
                    (or/c #f integer?) (or/c #f integer?)
                    (or/c #f symbol?) (or/c #f symbol?) (or/c #f symbol?)
                    sprite-proxy?)]
@@ -475,7 +475,7 @@
 
 (define DX-BOOST 6)
 (define DY-BOOST 6)
-(define DY-FALLING -2)
+(define DY-FALLING -4)
 
 ;; decay moves a value closer to its target value,
 ;; i.e. it makes boosts decay.
@@ -748,7 +748,7 @@
                 names )
       (when (not (null? names)) (apply tracing (cons #t names))) ) ) )
 
-(when (*repl*)
+#;(when (*repl*)
   (tracing #t)                          ; trace everywhere!
   #; (*testing* #f)                        ; customize for easy testing
   (go) )
