@@ -15,6 +15,9 @@
          racket/contract
          racket/math )
 
+;; We'll need these predicate functions imported first
+;; so that we can use them in the contracts of the other
+;; functions we'll import next.
 (require
  (contract-in "sprites-worlds-game.rkt"
               [universe? (-> any/c boolean?)]
@@ -22,22 +25,20 @@
               [message? (-> any/c boolean?)]
               [params? (-> any/c boolean?)]
               [welcome-message? (-> any/c boolean?)]
-              [goodbye-message? (-> any/c boolean?)]
-              #;[actions? (-> any/c boolean?)] ) )
+              [goodbye-message? (-> any/c boolean?)] ) )
 
 (require
  (contract-in "sprites-worlds-game.rkt"
               [make-universe (->* () (natural?) universe?)]
-              #;[universe-count (-> universe? natural?)]
-              #;[universe-world (-> universe? natural? (or/c #f iworld?))]
+              [universe-world-ids (-> universe? sequence?)]
               [universe-worlds (-> universe? sequence?)]
               [universe-world-index (-> universe? iworld? natural?)]
-              #;[universe-set! (-> universe? natural? (or/c #f iworld?) void?)]
               [universe-add! (-> universe? iworld? natural?)]
               [universe-drop! (-> universe? natural? void?)]
-              #;[message (-> params? message?)]
+
               [message-world (-> message? world-id?)]
               [make-welcome (->* (natural?) () #:rest (listof any/c) welcome-message?)]
+
               [*testing* parameter?] ) )
 
  ;; tracing is hard to write a contract for

@@ -21,7 +21,7 @@ dest-copy:
 dest-make:
 	ssh ngender.net make -C Network-Volley all
 dest-run:
-	ssh ngender.net $D/$B/sprites-worlds-server
+	ssh -X ngender.net $D/$B/sprites-worlds-server -t
 dest-clean:
 	ssh $H rm -f $D/$B/sprites-worlds-server $D/$B/sprites-worlds-client
 clean:

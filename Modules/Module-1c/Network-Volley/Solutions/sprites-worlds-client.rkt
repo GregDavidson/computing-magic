@@ -52,24 +52,23 @@
            [to-draw (or/c procedure? #f)] )
   #:mutable #:transparent )
 
-
 ;; Application Package Non-Type Requires
 
 (require
  (contract-in "sprites-worlds-game.rkt"
               [make-universe (->* () (natural?) universe?)]
-              [universe-count (-> universe? natural?)]
               [universe-world (-> universe? world-id? (or/c #f world-sprites?))]
+              [universe-world-ids (-> universe? sequence?)]
               [universe-set! (-> universe? world-id? (or/c #f world-sprites?) void?)]
               [universe-drop! (-> universe? natural? void?)]
-              [message-world (-> message? natural?)]
-              [*testing* parameter?]
+
               [make-world-sprites (->* () (natural?) world-sprites?)]
-              [world-sprites-count (-> world-sprites? natural?)]
               [world-sprite (-> world-sprites? sprite-id? (or/c #f sprite?))]
+              [world-sprite-ids (-> world-sprites? sequence?)]
               [world-sprites (-> world-sprites? sequence?)]
               [world-sprite-set! (-> world-sprites? sprite-id? (or/c #f sprite?) void?)]
               [world-sprite-drop!  (-> world-sprites? natural? void?)]
+
               [sprite-proxy-sprite (-> sprite-proxy? sprite-id?)]
               [sprite-proxy-image (-> sprite-proxy? (or/c #f string? symbol?))]
               [sprite-proxy-x (-> sprite-proxy? (or/c #f natural?))]
@@ -86,14 +85,18 @@
                    (or/c #f integer?) (or/c #f integer?)
                    (or/c #f symbol?) (or/c #f symbol?) (or/c #f symbol?)
                    sprite-proxy?)]
+
+              [world-id->string (-> world-id? string?)]
+              [message-world (-> message? world-id?)]
               [message-params (-> message? params?)]
+              [make-params (-> world-id? image-color? integer? params?)]
               [params-world (-> params? world-id?)]
               [params-color (-> params? image-color?)]
               [params-falling (-> params? integer?)]
-              [make-params (-> world-id? image-color? integer? params?)]
               [actions (-> (or/c world-id? params?) (listof update?) actions?)]
               [actions-updates (-> actions? (listof update?))]
-              [world-id->string (-> world-id? string?)] ) )
+              
+              [*testing* parameter?] ) )
 
 ;; tracing is hard to write a contract for
 (require (only-in "sprites-worlds-game.rkt" tracing))
@@ -136,7 +139,7 @@
   (cond [(natural? c)
          (vector-ref color-names (remainder c (vector-length color-names))) ]
         [(image-color? c) c]
-        [else (error 'this "invalid color ~a" c)] ) )
+        [else (error this "invalid color ~a" c)] ) )
 
 ;; EXERCISE: Select colors that are maximally distinct
 ;; using a colorspace model from package color.
@@ -589,14 +592,12 @@
   (let ( [updates
           (foldr append ; append the lists of updates into one
                  '()    ; starting with none
-                 (for/list ( [i (in-range 0 (world-sprites-count sprites))] )
+                 (for/list ( [i (world-sprite-ids sprites)] )
                    (let ( [sprite (world-sprite sprites i)] )
-                     (if (not sprite)
-                         '()
                          ;; call sprite's on-tick method on itself
                          (let* ( [method (sprite-on-tick sprite)]
                                  [result (method params i sprite)] )
-                           (if (list? result) result (list result)) ) ) ) ) ) ] )
+                           (if (list? result) result (list result)) ) ) ) ) ] )
     ;; package the updates, if any, into an actions structure
     (if (null? updates) #f (actions params updates)) ) )
 
@@ -628,16 +629,14 @@
   (let ( [updates
           (foldr append ; append the lists of lists of updates into one list
                  '()    ; starting with none
-                 (for/list ( [i (in-range 0 (world-sprites-count sprites))] )
+                 (for/list ( [i (world-sprite-ids sprites)] )
                    ;; generate a list of updates for each sprite in the world
                    (let ( [sprite (world-sprite sprites i)] )
-                          (if (not sprite)
-                              '()
                               ;; call sprite's on-key method on itself
                               (let* ( [method (sprite-on-key sprite)]
                                       [result (method params i sprite key)] )
                                 (when tracing (eprintf "~a result: ~a\n" this result))
-                                (if (list? result) result (list result)) ) ) ) ) ) ] )
+                                (if (list? result) result (list result)) ) ) ) ) ] )
     ;; package the updates, if any, into an actions structure
     (if (null? updates) #f (actions params updates)) ) )
 
@@ -666,15 +665,13 @@
   (let ( [universe (state-worlds-sprites world-state)]
          [canvas EMPTY-CANVAS] )
     (when universe ; initialization has happened
-      (for ( [world-id (in-range 0 (universe-count universe))] )
+      (for ( [world-id (universe-world-ids universe)] )
         (let ( [sprites (universe-world universe world-id)] )
-          (when sprites                   ; world may have been dropped!
-            (when (not (world-sprites? sprites)) (error this "Not world-sprites ~a" sprites))
-            (for ( [sprite-id (in-range 0 (world-sprites-count sprites))] )
+          (when (not (world-sprites? sprites)) (error this "Not world-sprites ~a" sprites))
+            (for ( [sprite-id (world-sprite-ids sprites)] )
               (let ( [sprite (world-sprite sprites sprite-id)] )
-                (when sprite              ; sprite may have been dropped!
                   (let ( [drawing-method (sprite-to-draw sprite)] )
-                    (set! canvas (drawing-method sprite canvas)) ) ) ) ) ) ) ) )
+                    (set! canvas (drawing-method sprite canvas)) ) ) ) ) ) )
     canvas ) )
 
 ;; Should we send the universe server

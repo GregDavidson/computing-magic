@@ -17,9 +17,7 @@
 
 
 (require racket/math
-         #; racket/list
          racket/set
-         #; racket/bool
          racket/function
          racket/sequence
          data/gvector )
@@ -44,29 +42,26 @@
 ;; world-sprites map sprite-ids to sprites
 
 (provide (rename-out
-          (gvec? world-sprites?)
-          (make-gvec make-world-sprites)
-          (gvec-count world-sprites-count)
-          (gvec-ref world-sprite)
+          [gvec? world-sprites?]
+          [make-gvec make-world-sprites]
+          [gvec-ref world-sprite]
+          [gvec-ids world-sprite-ids]
           (gvec->sequence world-sprites)
-          (gvec->list world-sprite-list)
-          (gvec-find-index world-sprite-index)
-          (gvec-set! world-sprite-set!)
-          (gvec-drop! world-sprite-drop!) ))
+          [gvec-set! world-sprite-set!]
+          [gvec-drop! world-sprite-drop!] ))
 
 ;; universes map universe-ids to world-sprites
 
 (provide (rename-out
-          (gvec? universe?)
-          (make-gvec make-universe)
-          (gvec-count universe-count)
-          (gvec-ref universe-world)
-          (gvec->sequence universe-worlds)
-          (gvec->list universe-world-list)
-          (gvec-find-index universe-world-index)
-          (gvec-set! universe-set!)
-          (gvec-add! universe-add!)
-          (gvec-drop! universe-drop!) ))
+          [gvec? universe?]
+          [make-gvec make-universe]
+          [gvec-ref universe-world]
+          [gvec-ids universe-world-ids]
+          [gvec->sequence universe-worlds]
+          [gvec-find-index universe-world-index]
+          [gvec-set! universe-set!]
+          [gvec-add! universe-add!]
+          [gvec-drop! universe-drop!] ))
 
 ;; *** Sprite Proxies
 
@@ -75,8 +70,7 @@
 
 ;; Implementation below: ** Sprite Proxies
 
-(provide make-sprite-proxy
-         (struct-out sprite-proxy) )
+(provide (struct-out sprite-proxy))
 
 ;; *** Tracing and Testing
 
@@ -206,34 +200,35 @@
   (unless (symbol-key-alist? alist) (error this "invalid alist ~a" alist))
   (welcome-message n alist) )
 
-;; ** IDs and ID Maps
+;; ** gvec maps ids to values just right
 
 ;; Given IDs which are small contiguous numbers
-;; we can use gvectors to manage collections of
+;; we can use gvector to manage collections of
 ;; - IDs mapped to Values, e.g.
 ;; - worldsprites: sprites indexed sprite-ids
 ;; - universes: world-sprites indexed by world-ids
 
-;; gvec-nextid will keep the indexes small by
-;; - starting with 0
-;; - reusing ids when items are dropped
+;; We'll customize gvector to have exactly the
+;; semantics we want and call the result gvec!
 
+;; gvec ids will be automatically reused, smallest
+;; first, so the underlying gvector won't grow
+;; until it must.
+
+;; Make a new gvec with a default initial capacity
+;; or with just enough room to hold a given index.
 (define make-gvec
   (case-lambda
    [() (make-gvector)]
    [(index) (make-gvector #:capacity (+ 1 index))] ) )
 
+;; A gvec is just a gvector we manage a bit differently.
 (define gvec? gvector?)
 
-(define gvec-count gvector-count)
-
+;; We can reference an element of a gvec by and index
+;; to return the element there, or #f if no such
+;; element or index exist.
 (define (gvec-ref gv i) (gvector-ref gv i #f))
-
-;; return the non-false values in a gvec as a stream
-(define gvec->sequence (compose (curry sequence-filter identity) in-gvector))
-
-;; return the non-false values in a gvec as a list
-(define gvec->list (compose gvec->sequence sequence->list))
 
 ;; Return the index of the first non-#f slot of
 ;; the gvec v which is #f, or if none, gvector-count
@@ -265,15 +260,27 @@
               [(equal? item (gvector-ref gv i)) i]
               [else (loop (+ 1 i))] ) ) ) )
 
-;; Ensure that i is valid for a set!
+;; return the non-false ids in a gvec as a sequence or stream
+(define (gvec-ids gv)
+  (sequence-filter (λ (id) (gvector-ref gv id))
+                   (in-range 0 (gvector-count gv)) ) )
+
+;; return the non-false values in a gvec as a sequence or stream
+(define (gvec->sequence gv)
+  (sequence-map (λ (id) (gvector-ref gv id))
+                (gvec-ids gv) ) )
+
+;; Ensure that gv is big enough to have a slot with index i
 (define (gvec-ensure-size gv i [val #f])
   (let ( [size-now (gvector-count gv)] )
        (when (>= i size-now)
          (let ( [more-needed (- i size-now -1)] )
          (apply (curry gvector-add! gv) (build-list more-needed (λ (_) #f))) ) ) ) )
 
+;; Add item to gv at index, growing gv if necessary.
 (define (gvec-set! gv index item)
   (define this 'gvec-set!)
+  (when (not gv) (error this "set ~a ~a ~a" gv index item))
   (gvec-ensure-size gv index)
   (let ( [old-item (gvector-ref gv index)] )
     (unless (equal? old-item item) ; make set! idempotent
@@ -281,13 +288,16 @@
         (error this "gvec[~a] is ~a, rejecting ~a" index old-item item))
       (gvector-set! gv index item) ) ) )
 
+;; Add item to the first free slot in gv
+;; returning the id of that slot.
 (define (gvec-add! gv item)
   (let ( [index (gvec-first-free-index gv)] )
     (gvec-set! gv index item)
     index ) )
-  
+
+;; when gv exists, drop its element at index i
 (define (gvec-drop! gv i)
-  (gvector-set! gv i #f) )
+  (when gv (gvector-set! gv i #f)) )
 
 ;; ** Sprite Proxies
 
@@ -311,13 +321,8 @@
 ;; the corresponding sprite field is irrelevant, i.e. not requiring an update.
 (struct
   sprite-proxy (sprite image x y dx dy on-tick on-key to-draw)
-  #:constructor-name raw-sprite-proxy
+  #:constructor-name make-sprite-proxy
   #:prefab )
-
-;; prefab structures don't support guards or contracts!
-;; - we can associate a contract with make-sprite-proxy
-;;   and then give it a contract when it is imported.
-(define make-sprite-proxy raw-sprite-proxy)
 
 ;; an update is either
 ;; a sprite-id indicating a sprite to be dropped
