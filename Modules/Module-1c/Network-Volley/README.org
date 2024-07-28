@@ -3,9 +3,9 @@
 This is the third Starting Point for [[file:../README.org][Writing 2D Games]].
 
 We're going to learn how to create games with
-- multiple simultaneous Users
-- running /Client Programs/ called /Worlds/
-- coordinated by a /Universe Server/
+- multiple simultaneous Users across the Internet
+- each running a /Client Program/ aka a /World/
+- coordinated by a single /Universe Server/
 The game play is managed by
 - /Messages/ /Mailed/ between /Worlds/ and the /Universe Server/
 
@@ -33,24 +33,169 @@ Explore both programs
 - By studying the code
 - Consulting the documentation on the new procedures
 
+In the Ball Toss example the World State is a single simple value.
+- There's no obvious way to evolve it to something much more interesting.
+
+We will need to build a more sophisticated framework
+- We can build the new framework on top of the Racket Framework we used for the
+  Ball Toss example.
+
 ** Building a Framework for More Complex Games
 
-In the Ball Toss example the World State is a single simple value.
-- What if the World State was a List of Sprites?
-- Sprites created by one world can be visible in the others!
-- How can the worlds propagate changes in "their" sprites?
-- How can the Universe Server track worlds?
+There are phases to developing something sophisticated
+- Requirements :: Figuring out what you want.
+- Analysis :: Separating Your Concerns, some Conceptual Structure
+- Design :: How might we build it?  Data Structures, Algorithms, etc.
+- Coding :: Making it Real: From Prototypes to a Resilient Solution
+- Testing & Evaluation :: How well does it do?
 
-*** Bring in Our Earlier Ideas
+In creative software development, all of these phases interleave, each helping
+refine the others. Early iterations of each phase are thrown away for something
+better.
 
-We reuse some of the ideas we developed in our earlier starting points,
-especially
-- See the last section of the [[file:../Flight-Lander/README.org][Flight Lander]] Starting Point!
-- The main idea is to use a List of Sprites for the World State
+*** Requirements: What Might We Want?
 
-** Overcoming Some New Challenges
+We would like our games to provide us with a rich universe
+- with an overall game logic
+- filled with many interesting entities
 
-We have some new challenges.
+The entities should
+- be fun and interesting to look at
+- have their own behavior
+- respond to user gestures
+- interact with one another
+- interact with the environment
+
+We want multiple users to be able to join our game universe by running programs on
+their own computers. Those programs will connect over the network and co-create
+what happens in that universe.
+
+But what all do we want it to be like?
+
+There is a saying in software development:
+- /The users don't know what they want until they see what they can get./
+
+The details of what we want are likely to evolve as we see what's possible and
+achievable.
+
+We'll start with the idea of a two-dimensional world where all the users can see
+the whole universe, but each user can only control parts of that universe at any
+time.
+- When a user creates, updates or destroys something, all users see the result.
+
+*** Analysis: Imagined Entities and Separation of Concerns
+
+We can divide our rich world into two graphical parts
+- The *background*, which might look nice but has no behavior.
+- The entities which have /appearance and behavior/
+      - Let's call these entities *Sprites*
+
+Sprites will interact with
+- the game logic
+- the physics of the game world
+- each other
+- user gestures
+
+We could have sprites belong to the universe as a whole, but that
+would mean that there's always a lot of network overhead for all actions.
+
+Let's call the program which connects each user to the game universe a world.
+Let's see if we can simplify things by assigning sprites to worlds.
+
+Sprites belonging to Worlds
+- User gestures only directly affect the sprites belonging to that user's world.
+- Game logic and physics is implemented by each world for its own sprites.
+- Each world informs the others about any changes in its sprites by sending
+  messages.
+      - Including the creation and dropping of sprites.
+- Each world updates the appearance of "foreign" sprites according to the
+  messages it receives.
+- Sprites can be given away to other worlds.
+- If and when a user leaves the game, all of the sprites belonging to their
+  world disappear from the universe
+
+If there's an interaction between two or more sprites
+- Each world handles the impact on its own sprites
+
+Breaking things down like this doesn't limit what's possible
+- Worlds can send messages to each other to coordinate.
+- Worlds can give away their sprites before leaving the universe.
+- etc.
+
+We could have all worlds connect to all other worlds, but this is a lot of
+network overhead. Instead, let's have each World Client connect to a Universe
+Server which can relay messages among worlds as desired.
+
+We've now done a lot of separation of concerns:
+- Each world draws the fixed background.
+- Each world manages its own sprites.
+      - Creating, Updating and Dropping them as it sees fit
+- Each world informs the Universe Server of any changes in its sprites.
+- The Universe Server relays these messages to all other worlds.
+- Each world displays foreign sprites according to these relayed messages.
+
+Any or even all of these Analysis choices can be changed if they cause problems
+with the other phases of our development process.
+
+*** Design: Choosing Suitable Data Structures
+
+Looking at the Requirements and the ideas from the Analysis
+- We need a way to represent
+      - a *universe* consisting of *worlds* consisting of *sprites*
+      - the *state of our world*
+      - *messages between worlds and the universe server*
+
+We will need to be able to identify the world associated with
+- each sprite
+- each message
+and identify the sprite which any message is saying to update
+
+To solve the identification problems we need
+- world-id :: a unique key for each world
+- sprite-id :: a unique key for each sprite in each world
+
+Messages updating sprites need to provide both a world-id and a sprite-id
+to uniquely identify the sprite to update.
+
+It seems, then that we should have two kinds of container
+- A world-sprite container to hold the sprites of one world, indexed by a
+  sprite-id.
+- A universe container to hold all of the worlds, indexed by a world-id.
+
+Both the world-id and the sprite-id values could be simple non-negative numbers.
+
+The world-id values could be assigned sequentially by the Universe Server to
+each world when it joins.
+
+The sprite-id values could assigned sequentially by the world which owns a
+sprite at the time the sprite is created. When a sprite appears to be
+"transferred" to another world, we can just have the "receiving" world create a
+copy of it and the old world simply drops the original sprite.
+
+*** Capturing the Design with Simple, Maintainable Code
+
+We need to write two programs
+- The Universe Server - which will run on one Internet Host.
+- The World Client - a copy of which will run on each User's device.
+
+To avoid duplication of code and inconsistent understanding of messages, we'll
+have a /shared game code module/ imported by both the Server and the Client
+programs.
+
+The code files
+- sprites-worlds-server.rkt -- compiles to the Universe Server program
+- sprites-worlds-client.rkt -- compiles to a World Client program
+- sprites-worlds-game.rkt -- implements entities imported by both programs
+
+**** Implementing Sprites
+
+**** Implementing a Universe
+
+**** Implementing a World
+
+**** Implementing a World State
+
+**** Implementing Messages
 
 Inter-world messages have to be
 - /serialized/ (converted to bytes) by the sender
@@ -59,45 +204,71 @@ Inter-world messages have to be
 The 2http/universe framework can only serialize simple data structures
 - It can serialize Lists and simple atoms
 - But not images, regular structures or procedures!
-The Racket Serialization Framework is extensible
-- Alas, the 2http/universe doesn't use it!!
+
+In particular, we can't send our sprite structures via messages!
 
 A solution is to translate any message into a form which can be transmitted and
 then translate it back in the receiving world. As an example, we can translate
-Sprites into Proxy Sprites, simple structures which can be serialized..
+Sprites into Proxy Sprites, simple structures which can be serialized.
 
 *** EXAMPLE Data Structure Design
 
 #+begin_src racket
 ;; The "working data structure" in the world might be
-  (struct/contract
-    sprite ( [uuid uuid-symbol?]
-             [image (or/c image? #f)]
-             [x natural?] [y natural?]
-             [dx integer?] [dy integer?]
-             [on-tick (or/c procedure? #f)]
-             [on-key (or/c procedure? #f)]
-             [to-draw (or/c procedure? #f)] )
-
-;; A "proxy data structure" for transmission might be
-  (struct
-   sprite-proxy (uuid image x y dx dy on-tick on-key to-draw)
-    #:prefab
-    #;#:guard
-    #;(struct-guard/c uuid-symbol?  (or/c #f string? symbol?)
-                    (or/c #f natural?)   (or/c #f natural?)
-                    (or/c #f integer?)   (or/c #f integer?)
-                    (or/c #f procedure?) (or/c #f procedure?) (or/c #f procedure?) ) )
-    #:mutable #:transparent )
+(struct/contract
+  sprite ( [image (or/c image? #f)]
+           [x natural?] [y natural?]
+           [dx integer?] [dy integer?]
+           [on-tick (or/c procedure? #f)]
+           [on-key (or/c procedure? #f)]
+           [to-draw (or/c procedure? #f)] )
+ ;; A "proxy data structure" for transmission might be
+(struct
+  sprite-proxy (sprite image x y dx dy on-tick on-key to-draw)
+  #:constructor-name make-sprite-proxy
+  #:prefab )
 #+end_src
 
-The uuid field ties a sprite together with a proxy unambiguously.
-- Check out uuid in the Racket documentation!
+The sprite-proxy has to be a #:prefab structure so that we can transmit
+it over a network socket.  #:prefab structures don't have type guards or
+contracts, but we can give them contracts when we import them, e.g.
+
+#+begin_src racket
+(require
+  (contract-in "sprites-worlds-game.rkt"
+               [sprite-proxy-sprite (-> sprite-proxy? sprite-id?)]
+               [sprite-proxy-image (-> sprite-proxy? (or/c #f string? symbol?))]
+               [sprite-proxy-x (-> sprite-proxy? (or/c #f natural?))]
+               [sprite-proxy-y (-> sprite-proxy? (or/c #f natural?))]
+               [sprite-proxy-dx (-> sprite-proxy? (or/c #f integer?))]
+               [sprite-proxy-dy (-> sprite-proxy? (or/c #f integer?))]
+               [sprite-proxy-on-tick (-> sprite-proxy? (or/c #f symbol?))]
+               [sprite-proxy-on-key (-> sprite-proxy? (or/c #f symbol?))]
+               [sprite-proxy-to-draw (-> sprite-proxy? (or/c #f symbol?))]
+               [make-sprite-proxy
+               (-> sprite-id?
+                   (or/c #f string? symbol?)
+                   (or/c #f natural?) (or/c #f natural?)
+                   (or/c #f integer?) (or/c #f integer?)
+                   (or/c #f symbol?) (or/c #f symbol?) (or/c #f symbol?)
+                   sprite-proxy?)]
+#+end_src
+
+The sprite-proxy needs to be suitable for
+- Creating a new sprite
+      - All fields will need to be present
+- Updating an existing sprite
+      - Only the fields we will mutate need to be present
+
+The sprite-proxy needs to be able to find the right sprite to update.
+- The sprite-proxy-sprite field needs to identify it.
+- How do we generate sprite-id? values?
 
 Notice that some of the fields are allowed to be #f if unneeded.
 - This will be especially  useful in Algorithm Design #2.
 
-In the  proxy, complex values are represented by simpler values, e.g.
+A sprite-proxy structure substitutes values we can send over a network for some
+of the values in the sprite structure which can't be sent.
 - images can be represented by
       - a path to a file containing the image
       - or a function which can draw the image
@@ -106,15 +277,6 @@ In the  proxy, complex values are represented by simpler values, e.g.
 We assume that
 - procedures mentioned in messages are present in all worlds
 - suitable images referenced by paths are at those paths in all worlds.
-
-Because the 2htdp/universe framework doesn't understand either regular or
-serializable structures we're having to use a simpler kind of structure called a
-Prefab Structure. Prefab Structures lack a lot of nice features, including
-contracts and guards. The sprite structures used contracts and we've commented
-out a guard which would be available from regular structures.
-- EXERCISE :: Given that we can't use either of these
-convenient features, how else can we make sure we protect proxy-sprite structure
-fields from being accidentally initialized with invalid values?
 
 *** EXAMPLE Algorithm Design #1: Mail Your Whole World State
 
@@ -157,6 +319,13 @@ Suppose that the 2http/universe /did/ use the Racket Serialization Process
 - [[sprites-worlds-game-serializable-structure-proxies.rkt][[Proxies made from Seralizable Structures]]
 - A future version of the 2http/universe framework could support this
       - EXERCISE: Would you like to help make that possible/?
+
+
+*** What works, what was missed, what's possible?
+
+- Sprites created by one world can be visible in the others!
+- How can the worlds propagate changes in "their" sprites?
+- How can the Universe Server track worlds?
 
 ** We have a Framework you can start with
 
