@@ -88,18 +88,17 @@
 
               [world-id->string (-> world-id? string?)]
               [message-world (-> message? world-id?)]
-              [message-params (-> message? params?)]
+              [message-params (-> message? (or/c params? world-id?))]
               [make-params (-> world-id? image-color? integer? params?)]
               [params-world (-> params? world-id?)]
               [params-color (-> params? image-color?)]
               [params-falling (-> params? integer?)]
-              [actions (-> (or/c world-id? params?) (listof update?) actions?)]
+              [make-actions (-> params? (listof update?) actions?)]
               [actions-updates (-> actions? (listof update?))]
-              
-              [*testing* parameter?] ) )
 
-;; tracing is hard to write a contract for
-(require (only-in "sprites-worlds-game.rkt" tracing))
+              [*tracing* parameter?]
+              [tracing (->* () (symbol?) boolean?)]
+              [*testing* parameter?] ) )
 
 ;; ** Client-Side 2http Framework Types
 
@@ -467,7 +466,7 @@
                    (universe-set! new-universe new-world new-world-sprites)
                    (world-sprite-set! new-world-sprites 0 new-sprite)
                    (make-package (make-state new-params new-universe)
-                                 (actions
+                                 (make-actions
                                   new-params
                                   (list (make-proxy 0 new-sprite)) ) ) ) ) ) ]
           [(goodbye-message? mail) (universe-drop! existing-universe (message-world mail))]
@@ -599,7 +598,7 @@
                                  [result (method params i sprite)] )
                            (if (list? result) result (list result)) ) ) ) ) ] )
     ;; package the updates, if any, into an actions structure
-    (if (null? updates) #f (actions params updates)) ) )
+    (if (null? updates) #f (make-actions params updates)) ) )
 
 ;; return Package from applying on-tick methods to our sprites
 (define (update-world-on-tick world-state)
@@ -638,7 +637,7 @@
                                 (when tracing (eprintf "~a result: ~a\n" this result))
                                 (if (list? result) result (list result)) ) ) ) ) ] )
     ;; package the updates, if any, into an actions structure
-    (if (null? updates) #f (actions params updates)) ) )
+    (if (null? updates) #f (make-actions params updates)) ) )
 
 ;; return Package from applying on-key methods to our sprites
 (define (update-world-on-key world-state key)
@@ -704,27 +703,35 @@
 
 ;; ** Process Command Line or Enter REPL
 
-(define *user* (make-parameter #f))
-(define *host* (make-parameter LOCALHOST))
-(define *cli* (make-parameter (positive? (vector-length (current-command-line-arguments)))))
-(define *repl* (make-parameter (not (*cli*))))
+(define *user* (make-parameter #f (or/c symbol? string?) 'user))
+(define *host* (make-parameter LOCALHOST string? 'host))
+(define *args* (make-parameter (let ( [cl (current-command-line-arguments)] )
+                                 (if (positive? (vector-length cl)) cl #f) )
+                               (or/c #f vector?) 'command-arguments ))
 
 (define (local) (*host* LOCALHOST))
 (define (ngender) (*host* "ngender.net"))
 (define (testing) (*testing* #t) (tracing #t))
-(define (go [user #f])
-  (create-world (or user (*user*) (get-string-line "User name")) (*host*)) )
+
+(define (go #:user [user #f] #:host [host #f] #:trace [trace #f] #:test [test #f])
+  (define this 'go)
+  (parameterize ( [*user* (or user (*user*) (get-string-line "User name"))]
+                  [*host* (or host (*host*))]
+                  [*tracing* (or trace (*tracing*))]
+                  [*testing* (or test (*testing*))] )
+    (eprintf "~a user ~a host ~a tracing ~a testing ~a\n"
+             this (*user*) (*host*) (*tracing*) (*testing*) )
+    (create-world (*user*) (*host*)) ) )
 
 (define args
-  (if (not (*cli*))
+  (if (not (*args*))
       '()
       (command-line
        #:once-each
-       [("-t" "--tracing") "trace everywhere" (tracing #t)]
-       [("-T" "--testing") "make easier to test" (testing)]
+       [("-t" "--tracing") "trace everywhere" (*tracing* #t)]
+       [("-T" "--testing") "ease testing and trace everywhere" (begin (*testing* #t) (*tracing* #t))]
        [("-H" "--host") host "server host" (*host* host)]
        [("-N" "--ngender") "host ngender.net" (*host* "ngender.net")]
-       [("-i" "--repl") "enter repl, do not start client" (*repl* #t)]
        #:args (user . functions-to-trace)
        (cons user functions-to-trace)
        ) ) )
@@ -734,7 +741,7 @@
   (eprintf "~a: " prompt)
   (read-line) )
 
-(when (*cli*)
+(when (*args*)
   (let ( [this (find-system-path 'run-file)] )
     (when (null? args) (error this "user name required"))
     (*user* (car args))
@@ -745,7 +752,10 @@
                 names )
       (when (not (null? names)) (apply tracing (cons #t names))) ) ) )
 
-#;(when (*repl*)
-  (tracing #t)                          ; trace everywhere!
-  #; (*testing* #f)                        ; customize for easy testing
-  (go) )
+(if (*args*)
+    (go)
+    (let ( [yes (regexp "[yY].*")]
+           [reply (get-string-line "run world client? [y/n]")] )
+      (when (regexp-match yes reply)
+        (parameterize ( [*tracing* #t] )
+          (go) ) ) ) )
