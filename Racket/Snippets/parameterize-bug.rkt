@@ -2,10 +2,11 @@
 
 (define *host* (make-parameter "ngender.net" string? 'host))
 
-(define (go1 [host #f])
-  (define this 'go1)
-  (parameterize ( [*host* (or host (*host*))] )
-    (eprintf "~a host ~a\n" this (*host*) ) ) )
+(parameterize ( [*host* "hello"] )
+  (define h (*host*))
+  (eprintf "h ~a\n" h)
+  (eprintf "host ~a\n" (*host*)) )
 
-(go1)
-(go1 "hello")
+;; prints: h #t
+;; prints: host #t
+;; racket version: 8.13 [cs]
