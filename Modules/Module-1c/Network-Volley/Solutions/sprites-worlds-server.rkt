@@ -23,14 +23,12 @@
               [universe? (-> any/c boolean?)]
               [world-id? (-> any/c boolean?)]
               [message? (-> any/c boolean?)]
-              [params? (-> any/c boolean?)]
               [welcome-message? (-> any/c boolean?)]
               [goodbye-message? (-> any/c boolean?)] ) )
 
 (require
  (contract-in "sprites-worlds-game.rkt"
               [make-universe (->* () (natural?) universe?)]
-              [universe-world-ids (-> universe? sequence?)]
               [universe-worlds (-> universe? sequence?)]
               [universe-world-index (-> universe? iworld? natural?)]
               [universe-add! (-> universe? iworld? natural?)]
@@ -39,12 +37,12 @@
               [message-world (-> message? world-id?)]
               [make-welcome (->* (natural?) () #:rest (listof any/c) welcome-message?)]
 
+              [my-parameter (->* (any/c procedure? symbol?) ((or/c #f symbol? string?)) parameter?)]
+              [*tracing* parameter?]
+              [tracing (->* () (symbol?) boolean?)]
               [*testing* parameter?] ) )
 
- ;; tracing is hard to write a contract for
-(require (only-in "sprites-worlds-game.rkt" tracing))
-
-;; ** Our Goal: Write a Very Generic World Server
+ ;; ** Our Goal: Write a Very Generic World Server
 
 ;; The goal is to have this Server know as little
 ;; about any specific game as possible.  It should
@@ -145,19 +143,19 @@
 
 ;; ** Process Command Line or Enter REPL
 
-(define *cli* (make-parameter (positive? (vector-length (current-command-line-arguments)))))
-(define *repl* (make-parameter (not (*cli*))))
+(define *args* (my-parameter (let ( [cl (current-command-line-arguments)] )
+                                 (if (positive? (vector-length cl)) cl #f) )
+                               (or/c #f vector?) 'command-arguments ))
 
 (define (testing) (*testing* #t) (tracing #t))
 
 (define args
-  (if (not (*cli*))
+  (if (not (*args*))
       '()
       (command-line
        #:once-each
        [("-t" "--tracing") "trace everywhere" (tracing #t)]
        [("-T" "--testing") "make easier to test" (testing)]
-       [("-i" "--repl") "enter repl, do not start client" (*repl* #t)]
        #:args functions-to-trace
        functions-to-trace ) ) )
 
@@ -168,9 +166,18 @@
     (for-each (λ (name) (unless (procedure? (eval name))
                           (eprintf "~a: No procedure ~a to trace\n" this name) ))
               names )
-    (when (not (null? names)) (apply tracing (cons #t names))) ) )
+    (*tracing* names) ) )
 
-(when (*repl*)
-  (tracing #t)                          ; trace everywhere!
-  (*testing* #f)                        ; customize for easy testing
-  (go) )
+;; Prompt and then read an input line as a string
+(define (get-string-line prompt)
+  (eprintf "~a: " prompt)
+  (read-line) )
+
+(if *args*
+    (go)
+    (let ( [yes (regexp "[[:space:]]*[yY].*")]
+           [reply (get-string-line "run universe server? [y/n]" )] )
+      (when (regexp-match yes reply)
+        (parameterize ( [*tracing* #t] )
+          (go) ) ) ) )
+

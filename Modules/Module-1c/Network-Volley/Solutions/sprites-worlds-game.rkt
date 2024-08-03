@@ -20,6 +20,7 @@
          racket/set
          racket/function
          racket/sequence
+         racket/contract/base
          data/gvector )
 
 ;; ** Provide Forms and Trivial Implementations
@@ -72,7 +73,7 @@
 
 (provide (struct-out sprite-proxy))
 
-;; *** Tracing and Testing
+;; *** Parameters, Tracing and Testing
 
 ;; Tracing controls the display of runtime information
 ;; to aid in understanding and debugging the programs.
@@ -83,7 +84,7 @@
 
 ;; Implementation below: ** Tracing and Testing
 
-(provide tracing *testing*)
+(provide my-parameter tracing *tracing* *testing*)
 
 ;; *** Client-Server Message Types
 
@@ -111,46 +112,43 @@
  update?
  (struct-out actions) )
 
-;; ** Tracing and Testing
+;; ** Parameters, Tracing and Testing
 
-;; Tracing can be set to
+;; fix the problems with the make-parameter guard
+;; - ensure it is applied to the initial value
+;; - ensure it returns the value it has checked
+;; - allow value to initially be #f
+(define (my-parameter value guard name [check-name #f])
+  (define (string x) (format "~a" x))
+  (define (check v)
+    (unless (guard v)
+      (raise-argument-error name
+                            (string (or check-name (object-name guard) 'check))
+                            v ) )
+    v )
+  (make-parameter (and value (check value)) check name) )
+
+;; the parameter *tracing* can be set to
 ;; #f = don't trace anywhere
 ;; #t = trace everywhere
-;; set of function names = trace only those functions
+;; set of function names (symbols) = trace only those functions
 
-;; (tracing) = return #t if tracing is #t, false otherwise
-;; (tracing name) = return #t if name is in set of functions
-;; (tracing #t) = enable tracing everywhere
-;; (tracing #f) = disable tracing
-;; (tracing #t name ...) = enable tracing for specified names
-;; (tracing #f name ...) = disable tracing for specified names
+;; ==> Use *tracing* with the function tracing!
 
-;; TODO: This is too complex!
-;; Either redesign it and/or
-;; (1) provide a thorough contract
-;; (2) provide thorough testing
-(define tracing
-  (let ( [this 'tracing] [*setting* (make-parameter #f)] )
-    (λ args
-      (let ( [setting (*setting*)] )
-        (if (null? args)
-            (and (boolean? setting) setting) ; return #t iff setting is #t
-            (let ( [mode (car args)] [names (cdr args)] )
-              (if (null? names)
-                  (cond [(boolean? mode) (*setting* mode)] ; set setting to #t or #f
-                        [(symbol? mode) (if (boolean? setting) setting (set-member? setting mode))]
-                        [else (error this "unknown mode ~a" mode)] )
-                  (when (and (boolean? mode) (ormap symbol? names))
-                      ;; ensure setting is a mutable set using comparison function eq?
-                      (when (not (set-mutable? setting)) (set! setting (mutable-seteq)))
-                      (let ( [update! (if mode set-add! set-remove!)] )
-                        (for-each (λ (name) (update! setting name))
-                                  names ) )
-                      (*setting* setting) ) ) ) ) ) ) ) )
+;; (tracing) = return #t if *tracing* is #t, false otherwise
+;; (tracing name) = return #t if *tracing* is #t
+;;   or *tracing* is a set of function names including name
+
+(define *tracing* (my-parameter #f (or/c boolean? generic-set?) 'tracing))
+
+(define (tracing [name #f])
+  (cond [(boolean? (*tracing*)) (*tracing*)]
+        [(symbol? name) (set-member? name (*tracing*))]
+        [else #f] ) )
 
 ;; In testing mode, disable any required user interactions
 ;; in particular, disable falling!
-(define *testing* (make-parameter #f))
+(define *testing* (my-parameter #f boolean? 'testing))
 
 ;; ** Game Parameters
 
@@ -168,7 +166,10 @@
 
 ;; ** Client-Server message Types
 
-(struct message (params) #:prefab)
+;; params could be a world-id? or a struct params
+(struct message (params)
+  #:constructor-name make-message
+  #:prefab)
 
 (define (message-world message)
   (define this 'message-world)
@@ -178,13 +179,18 @@
           [else (error this "invalid message params p")] ) ) )
 
 ;; server to new world
+;; create with make-welcome function
 (struct welcome-message message (alist) #:prefab)
 
 ;; world to world, relayed by server
-(struct actions message (updates) #:prefab)
+(struct actions message (updates)
+  #:constructor-name make-actions
+  #:prefab )
 
 ;; world to server: goodbye, drop me please!
-(struct goodbye-message message ())
+(struct goodbye-message message ()
+  #:constructor-name make-goodbye
+  #:prefab )
 
 ;; and maybe some additional things as an association list
 

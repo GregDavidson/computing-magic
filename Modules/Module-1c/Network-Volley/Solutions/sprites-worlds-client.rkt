@@ -96,6 +96,7 @@
               [make-actions (-> params? (listof update?) actions?)]
               [actions-updates (-> actions? (listof update?))]
 
+              [my-parameter (->* (any/c procedure? symbol?) ((or/c #f symbol? string?)) parameter?)]
               [*tracing* parameter?]
               [tracing (->* () (symbol?) boolean?)]
               [*testing* parameter?] ) )
@@ -703,9 +704,9 @@
 
 ;; ** Process Command Line or Enter REPL
 
-(define *user* (make-parameter #f (or/c symbol? string?) 'user))
-(define *host* (make-parameter LOCALHOST string? 'host))
-(define *args* (make-parameter (let ( [cl (current-command-line-arguments)] )
+(define *user* (my-parameter #f (or/c symbol? string?) 'user))
+(define *host* (my-parameter LOCALHOST string? 'host))
+(define *args* (my-parameter (let ( [cl (current-command-line-arguments)] )
                                  (if (positive? (vector-length cl)) cl #f) )
                                (or/c #f vector?) 'command-arguments ))
 
