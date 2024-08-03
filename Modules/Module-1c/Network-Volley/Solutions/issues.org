@@ -6,13 +6,23 @@ Add this to the top of the source file:
 
 ;; (setq-local racket-repl-buffer-name "*sprites-worlds-client-repl*")
 
-and then run eval-last-sexp with point at the end of that line.
+BEFORE using the shared REPL, run the emacs command
+- M-x eval-last-sexp
+- with point at the end of that line.
 
-Do this BEFORE using the shared REPL!
+** How to interpret action messages
 
-** An easier message format
+- params :: struct (world [world-id?], ...)
+- message :: struct (world [or/c world-id? params?])
+- message-world :: (-> message? world-id?)
+- update? :: (or/c sprite-id? sprite-proxy?)
+- actions :: struct message (updates [listof update?])
+- When (sprite-id? update)
+      - drop that sprite from its world
+- When (sprite-proxy? update)
+      - update or create the indicated sprite
+      - pass the params structure to the update or create procedure
 
-(action world-id proxy (or/c sprite-proxy sprite-id?))
 - Find the world-id/sprite-id slot
 
  | Existing-Slot | proxy                     | id                      |
@@ -21,30 +31,11 @@ Do this BEFORE using the shared REPL!
  | occupied      | mutate an existing sprite | drop an existing sprite |
 
 
-** id-partially-applied
+** Interpreting Racket Error Messages
+
+*** id-partially-applied
 
 This can be caused by a predicates in the contracts being specified is not
 already known. They must be known /before/ the current /require/ form. So use an
 initial require form to bring all of those predicates in, then use a second
 require form to specify contracts for everything else.
-
-*** Provisional Bug Report:
-
-title:
-
-Need clue: Error "id-partially-applied49.1 undefined", no such symbol in my source!
-
-body:
-
-sprites-worlds-game.rkt brings in
-```
-#lang racket/base
-(require racket/math
-         racket/list
-         racket/set
-         racket/bool
-         racket/function
-         racket/stream
-         data/gvector )
-```
-Thanks for any help locating where to look!
