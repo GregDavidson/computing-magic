@@ -4,7 +4,7 @@ The purpose of this game is to be
 - an example
       - /motivating and illustrating/
 - the development of
-      - /a multi-user client/server framework/.
+      - /a multi-user client-server framework/.
 
 See [[file:../sprites-worlds-game.org][sprites-worlds-game.org]] for more details.
 
