@@ -233,22 +233,22 @@
 ;; If it isn't, add it with the provided setter.
 (define (register-key-val key val getter setter)
   (let* ( [alist (getter proxy-registry)]
-          [found (findf (λ (pair) (equal? key (first pair))) alist)] )
+          [found (findf (λ (pair) (equal? key (car pair))) alist)] )
     (unless found (setter proxy-registry (cons (cons key val) alist))) ) )
 
 ;; Given the key, return the val part of the (key . val) association
 ;; in the proxy-registry field accessed with the given getter function.
 ;; Returns #f if key is not present!!
 (define (key->val key getter)
-  (let ( [found (registry-find (λ (pair) (equal? key (first pair))) getter)] )
-    (and found (second found)) ) )
+  (let ( [found (registry-find (λ (pair) (equal? key (car pair))) getter)] )
+    (and found (cdr found)) ) )
 
 ;; Given the val, return the key part of the (key . val) association
 ;; in the proxy-registry field accessed with the given getter function.
 ;; Returns #f if key is not present!!
 (define (val->key val getter)
-  (let ( [found (registry-find (λ (pair) (equal? val (second pair))) getter)] )
-    (and found (first found)) ) )
+  (let ( [found (registry-find (λ (pair) (equal? val (cdr pair))) getter)] )
+    (and found (car found)) ) )
 
 ;; Load a bitmap from a file, cache (save) it in the registry
 ;; and return it. What happens if there's no image at that path??
@@ -267,14 +267,16 @@
           [(string? found) (bitmap/file/cache found)]
           [(string? key) (bitmap/file/cache key)]
           [else           ; should this be an error??
-           (eprintf "~a warning: no image at ~a\n" this key)
-           #f ] ) ) )
+           #;(eprintf "~a warning: no image at ~a\n" this key)
+           (eprintf "~a warning: substituting a ball for missing image ~a\n" this key)
+           ;; PATCH: !!!
+           (make-ball params) #;#f ] ) ) )
 
 ;; Given a sprite, convert it to a proxy which can be serialized
-;; for transmission across a byte stream.  #f will be substituted
-;; for any unknown values!!
-;; See make-proxy for what we're really using!!
-#;(define (sprite->proxy sprite-id s)
+;; for transmission across a byte stream.
+;; This is only used for brand new sprites!
+;; See make-proxy for how we update sprites!
+(define (sprite->proxy sprite-id s)
   (make-sprite-proxy
    sprite-id
    (val->key (sprite-image s) registry-image)
@@ -284,7 +286,7 @@
    (val->key (sprite-to-draw s) registry-to-draw) ) )
 
 ;; Given a sprite-proxy, convert it to a new sprite.
-;; This is used with NEW-SPRITE actions.
+;; This is used with brand new sprites.
 (define (proxy->sprite params sp)
   (define this 'proxy->sprite)
   (let ( [s (sprite
@@ -469,7 +471,7 @@
                    (make-package (make-state new-params new-universe)
                                  (make-actions
                                   new-params
-                                  (list (make-proxy 0 new-sprite)) ) ) ) ) ) ]
+                                  (list (sprite->proxy 0 new-sprite)) ) ) ) ) ) ]
           [(goodbye-message? mail) (universe-drop! existing-universe (message-world mail))]
           [(actions? mail) (update-sprites! mail existing-universe) world-state]
           [else (error this "bad mail ~a" mail)] ) ) )
@@ -495,8 +497,13 @@
   (let ( [color (params-color params)]
          [id (params-world params)] )
     (when (tracing this) (eprintf "~a id ~a color ~a\n" this id color))
-    (overlay (text (world-id->string id) 10 'black)
-             (circle 20 "solid" color) ) ) )
+    (let ( [image (overlay (text (world-id->string id) 10 'black)
+                           (circle 20 "solid" color) )] )
+      ;; THIS ISN'T WORKING!!!
+      (register-key-val 'make-ball image  registry-image set-registry-image!)
+      image ) ) )
+;; PATCH - Works as a default for now !!!
+(register-key-val 'make-ball #f registry-image set-registry-image!)
 (register-key-val 'make-ball make-ball registry-image set-registry-image!)
 
 (define (make-sprite params image #:key [key #f]
@@ -712,17 +719,6 @@
 
 (define (local) (*host* LOCALHOST))
 (define (ngender) (*host* "ngender.net"))
-(define (testing) (*testing* #t) (tracing #t))
-
-(define (go #:user [user #f] #:host [host #f] #:trace [trace #f] #:test [test #f])
-  (define this 'go)
-  (parameterize ( [*user* (or user (*user*) (get-string-line "User name"))]
-                  [*host* (or host (*host*))]
-                  [*tracing* (or trace (*tracing*))]
-                  [*testing* (or test (*testing*))] )
-    (eprintf "~a user ~a host ~a tracing ~a testing ~a\n"
-             this (*user*) (*host*) (*tracing*) (*testing*) )
-    (create-world (*user*) (*host*)) ) )
 
 (define args
   (if (not (*args*))
@@ -752,6 +748,16 @@
                             (eprintf "~a: No procedure ~a to trace\n" this name) ))
                 names )
       (when (not (null? names)) (apply tracing (cons #t names))) ) ) )
+
+(define (go #:user [user #f] #:host [host #f] #:trace [trace #f] #:test [test #f])
+  (define this 'go)
+  (parameterize ( [*user* (or user (*user*) (get-string-line "User name"))]
+                  [*host* (or host (*host*))]
+                  [*tracing* (or trace (*tracing*))]
+                  [*testing* (or test (*testing*))] )
+    (eprintf "~a user ~a host ~a tracing ~a testing ~a\n"
+             this (*user*) (*host*) (*tracing*) (*testing*) )
+    (create-world (*user*) (*host*)) ) )
 
 (if (*args*)
     (go)

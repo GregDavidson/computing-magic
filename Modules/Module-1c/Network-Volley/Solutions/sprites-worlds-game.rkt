@@ -204,6 +204,7 @@
   (define this 'make-welcome)
   (unless (world-id? n) (error this "invalid world-id ~a" n))
   (unless (symbol-key-alist? alist) (error this "invalid alist ~a" alist))
+  (when (tracing this) (eprintf "~a world ~a alist ~a\n" this n alist))
   (welcome-message n alist) )
 
 ;; ** gvec maps ids to values just right

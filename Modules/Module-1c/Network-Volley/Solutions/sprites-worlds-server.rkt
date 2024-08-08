@@ -94,9 +94,11 @@
 ;; - a welcome message to Mail to the new World
 ;; - no worlds to drop
 (define (add-world universe new-world)
+  (define this 'add-world)
   (let* ( [index (universe-add! universe new-world)]
           [message (make-welcome index)]
           [worlds-to-drop '()] )
+    (when (tracing this) (eprintf "~a index ~a world ~a\n" this index new-world))
     (make-bundle universe
                  (list (make-mail new-world message))
                  worlds-to-drop ) ) )
@@ -147,15 +149,13 @@
                                  (if (positive? (vector-length cl)) cl #f) )
                                (or/c #f vector?) 'command-arguments ))
 
-(define (testing) (*testing* #t) (tracing #t))
-
 (define args
   (if (not (*args*))
       '()
       (command-line
        #:once-each
-       [("-t" "--tracing") "trace everywhere" (tracing #t)]
-       [("-T" "--testing") "make easier to test" (testing)]
+       [("-t" "--tracing") "trace everywhere" (*tracing* #t)]
+       [("-T" "--testing") "make easier to test" (begin (*tracing* #t) (*testing* #t))]
        #:args functions-to-trace
        functions-to-trace ) ) )
 
