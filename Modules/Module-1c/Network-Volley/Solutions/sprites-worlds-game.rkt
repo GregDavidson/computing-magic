@@ -51,7 +51,8 @@
           [gvec-set! world-sprite-set!]
           [gvec-drop! world-sprite-drop!] ))
 
-;; universes map universe-ids to world-sprites
+;; universes map universe-ids to worlds
+;; either iworld or world-sprites
 
 (provide (rename-out
           [gvec? universe?]

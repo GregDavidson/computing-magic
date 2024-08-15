@@ -26,6 +26,9 @@
 
 ;; Application Package Type Predicates
 
+;; import the structure id sprite-proxy
+(require (only-in "sprites-worlds-game.rkt" sprite-proxy))
+
 (require
  (contract-in "sprites-worlds-game.rkt"
               [universe? (-> any/c boolean?)]
@@ -58,7 +61,7 @@
  (contract-in "sprites-worlds-game.rkt"
               [make-universe (->* () (natural?) universe?)]
               [universe-world (-> universe? world-id? (or/c #f world-sprites?))]
-              [universe-world-ids (-> universe? sequence?)]
+              [universe-worlds (-> universe? sequence?)]
               [universe-set! (-> universe? world-id? (or/c #f world-sprites?) void?)]
               [universe-drop! (-> universe? natural? void?)]
 
@@ -114,13 +117,43 @@
 ;;   - a serializable symbolic expression to send to the Server
 ;;     - 2http serialization requirements are quite limited
 
-;; ** Our Canvas
+;; ** Sizes, Constants and Colors
+
+;; *** Our Canvas
 
 (define CANVAS-WIDTH 400)               ; pixels
 (define CANVAS-HEIGHT 300)              ; pixels
 (define EMPTY-CANVAS (empty-scene CANVAS-WIDTH CANVAS-HEIGHT))
 
-;; ** Managing Colors
+;; *** Ball Sizes
+
+(define (half n) (quotient n 2))
+
+(define BALL-RADIUS 20)
+(define BALL-MARGIN 1)
+(define BALL-SIZE (* 2 (+ BALL-RADIUS BALL-MARGIN)))
+(define BALL-TEXT-SIZE (half BALL-RADIUS))
+
+;; *** Ball Accelerations
+
+(define DX-BOOST 6)
+(define DY-BOOST 6)
+(define DY-FALLING -4) ; disabled when *testing*
+
+;; *** a proxy template for our first sprite
+
+;; This will be copied when we receive our welcome message
+;; after we connect to the universe server.  Some of the
+;; field values may be changed in the copy.  This structure
+;; will also be used in testing.
+
+(define PROXY-0  (make-sprite-proxy
+                  0 'make-ball ; sprite-id image-function
+                  (half CANVAS-WIDTH) (- CANVAS-HEIGHT BALL-SIZE)
+                  0 0 ; dx dy
+                  'move-sprite 'boost-sprite-on-key 'draw-sprite ))
+
+;; *** Managing Colors
 
 ;; Choose colors which will, for any number of clients, be maximally
 ;; distinguishable. Uses may have color blindness so be use additional methods
@@ -257,16 +290,18 @@
     (register-key-val path image registry-image set-registry-image!)
     image ) )
 
+#; (register-key-val 'make-ball make-ball registry-image set-registry-image!)
 ;; Given a path or symbol as a key, return the associated image
 ;; and ensure it's registered.
 (define (get-image params key)
   (define this 'get-image-key)
   (let ( [found (key->val key registry-image)] )
     (cond [(image? found) found]
-          [(procedure? found) (found params)] ; cache it??
           [(string? found) (bitmap/file/cache found)]
           [(string? key) (bitmap/file/cache key)]
-          [else           ; should this be an error??
+          [(procedure? found) (found params)]
+          [else
+           ; should this be an error??
            #;(eprintf "~a warning: no image at ~a\n" this key)
            (eprintf "~a warning: substituting a ball for missing image ~a\n" this key)
            ;; PATCH: !!!
@@ -391,12 +426,12 @@
 ;; YES: worlds-states is a copy of
 ;;      all the sprites in the universe,
 ;;      not just our sprites!
+(define no-state-yet #f)
+(define (no-state-yet? x) (eq? no-state-yet x))
 (struct state ( params worlds-sprites )
   #:constructor-name make-state
-  #:guard
-  (struct-guard/c (or/c #f params?) (or/c #f universe?))
-  #:transparent
-  )
+  #:guard (struct-guard/c params? universe?)
+  #:transparent )
 
 ;; Our tick and key events are relayed to our-sprites.
 ;; Our receive events are relayed to their-sprites.
@@ -420,26 +455,36 @@
 (define (update-sprites! actions universe)
   (define this 'update-sprites!)
   ;; return the sprites left after removing those matching the keys in drop-lists
-  (let* ( [world (message-world actions)]
+  (let* ( [world-id (message-world actions)]
           [params (message-params actions)]
           [updates (actions-updates actions)]
-          [sprites (universe-world universe world)] )
+          [world-sprites (universe-world universe world-id)] )
+    (when (tracing this) (eprintf "~a params ~a updates ~a sprites ~a\n" this params updates world-sprites))
     (map (λ (update)
            (cond
-             [(sprite-id? update)
-              (when sprites ; in case the world has been dropped
-                (world-sprite-drop! sprites update) )]
-             [(sprite-proxy? update)
+             [(sprite-id? update) ; drop this sprite
+              (when world-sprites ; in case the world has been dropped
+                (when (tracing this) (eprintf "~a dropping sprite ~a from world ~a\n"
+                                              this update world-id ))
+                (world-sprite-drop! world-sprites update) ) ]
+             [(sprite-proxy? update) ; create or update this sprite
               (let ( [sprite-id (sprite-proxy-sprite update)] )
-                (when (not sprites) ; in case the world has been dropped
-                  (universe-set! universe world (make-world-sprites sprite-id))
-                  (set! sprites (universe-world universe world)) )
-                (let ( [sprite (world-sprite sprites sprite-id)] )
-                  (if sprite
+                (when (not world-sprites) ; in case the world has been dropped
+                  (when (tracing this) (eprintf "~a creating new world ~a\n"
+                                                this world-id ))
+                  (universe-set! universe world-id (make-world-sprites sprite-id)) )
+                (let* ( [sprites (or world-sprites (universe-world universe world-id))]
+                        [sprite (world-sprite sprites sprite-id)] )
+                  (if sprite ; it already exists, so mutate it in place
                       (mutate-sprite-from-proxy! params sprite update)
-                      (world-sprite-set! sprites sprite-id (proxy->sprite params update)) ) ) ) ]
+                      ;; it doesn't exist, so create it
+                      ;; should we check if the sprite-proxy is complete???
+                      (let ( [new-sprite (proxy->sprite params update)] )
+                        (when (tracing this) (eprintf "~a adding new sprite ~a to world ~a at index ~a\n"
+                                                      this new-sprite  world-id sprite-id ))
+                        (world-sprite-set! sprites sprite-id new-sprite) ) ) ) ) ]
              [else (error this "unknown update ~a" update)] ) )
-           updates ) ) )
+         updates ) ) )
 
 ;; Given
 ;; - the state of the world
@@ -447,40 +492,52 @@
 ;; Return an updated WorldState
 ;; - possibly including Return Mail
 ;; ??? do we get a single mail message or a list of them ???
+(define (do-receive world-state mail)
+  (define this 'receive)
+  (if world-state
+      (let ( [params (state-params world-state)]
+             [universe (state-worlds-sprites world-state)] )
+        (cond
+          [(goodbye-message? mail)
+           (universe-drop! universe (message-world mail)) ]
+          [(actions? mail) (update-sprites! mail universe)]
+          [else (error this "bad mail ~a for state ~a" mail world-state)] )
+        ;; return world-state after mutation by update-sprites!
+        world-state )
+      (begin
+        (unless (welcome-message? mail)
+          (error this "expected welcome instead of ~a" mail) )
+        ;; build our state, our world and our first sprite
+        (let* ( [new-world-id (message-world mail)]
+                [new-color (choose-color new-world-id)]
+                [new-params (make-params new-world-id new-color
+                                         (if (*testing*) 0 DY-FALLING) )] )
+          #;(when (tracing this)
+            (eprintf "~a world ~a color ~a\n" this new-world-id new-color) )
+          (let* (
+                 ;; create a proxy to represent our first sprite
+                 [new-sprite-proxy
+                  (struct-copy sprite-proxy PROXY-0 [dx (params-falling new-params)]) ]
+                 ;; put it in an actions message
+                 [new-actions (make-actions new-params (list new-sprite-proxy))]
+                 ;; to perform on our new universe
+                 [new-universe (make-universe (+ 1 new-world-id))] )
+            ;; update locally
+            #;(when (tracing this) (eprintf "~a actions ~a\n" this new-actions))
+            (update-sprites! new-actions new-universe)
+            #;(when (tracing this)
+              (eprintf "~a new params ~a new actions ~a new universe ~a\n" this new-params new-actions new-universe) )
+            ;; return new state, with mail
+            (make-package (make-state new-params new-universe) new-actions) ) ) ) ) )
+
 (define (receive world-state mail)
-  (let ( [this 'receive]
-         [existing-params (state-params world-state)]
-         [existing-universe (state-worlds-sprites world-state)] )
-    (when (tracing this) (eprintf "~a mail: ~a\n" this mail))
-    (cond [(welcome-message? mail)
-           (if (or existing-params existing-universe)
-               (begin (eprintf "~a world ~a warning: attempting re-welcome!\n"
-                               this (params-world existing-params) )
-                      world-state )
-               (let* ( [new-world (message-world mail)]
-                       [new-color (choose-color new-world)]
-                       [new-params (make-params new-world new-color
-                                                (if (*testing*) 0 DY-FALLING) )] )
-                 (when (tracing this)
-                   (eprintf "~a world ~a color ~a\n" this new-world new-color) )
-                 (let* ( [new-sprite (make-sprite new-params (make-ball new-params))]
-                         [new-universe (make-universe (+ 1 new-world))]
-                         [new-world-sprites (make-world-sprites)] )
-                   (universe-set! new-universe new-world new-world-sprites)
-                   (world-sprite-set! new-world-sprites 0 new-sprite)
-                   (make-package (make-state new-params new-universe)
-                                 (make-actions
-                                  new-params
-                                  (list (sprite->proxy 0 new-sprite)) ) ) ) ) ) ]
-          [(goodbye-message? mail) (universe-drop! existing-universe (message-world mail))]
-          [(actions? mail) (update-sprites! mail existing-universe) world-state]
-          [else (error this "bad mail ~a" mail)] ) ) )
+  (define this 'receive)
+  (when (tracing this) (eprintf "~a mail ~a for world-state ~a\n" this mail world-state))
+  (let ( [result (do-receive world-state mail)] )
+    (when (tracing this) (eprintf "~a returning ~a\n" this result))
+    result ) )
 
 ;; ** Action Procedures and Functions
-
-(define DX-BOOST 6)
-(define DY-BOOST 6)
-(define DY-FALLING -4)
 
 ;; decay moves a value closer to its target value,
 ;; i.e. it makes boosts decay.
@@ -492,31 +549,16 @@
 ;; Why add text to the ball? 10% of humans are color blind!
 ;; EXERCISE: Use the provided name instead (or in addition to)
 ;; the id.
+
 (define (make-ball params)
   (define this 'make-ball)
   (let ( [color (params-color params)]
          [id (params-world params)] )
     (when (tracing this) (eprintf "~a id ~a color ~a\n" this id color))
-    (let ( [image (overlay (text (world-id->string id) 10 'black)
-                           (circle 20 "solid" color) )] )
-      ;; THIS ISN'T WORKING!!!
-      (register-key-val 'make-ball image  registry-image set-registry-image!)
+    (let ( [image (overlay (text (world-id->string id) BALL-TEXT-SIZE 'black)
+                           (circle BALL-RADIUS "solid" color) )] )
       image ) ) )
-;; PATCH - Works as a default for now !!!
-(register-key-val 'make-ball #f registry-image set-registry-image!)
 (register-key-val 'make-ball make-ball registry-image set-registry-image!)
-
-(define (make-sprite params image #:key [key #f]
-                     #:x [x #f] #:y [y #f] #:dx [dx #f] #:dy [dy #f]
-                     #:on-tick [on-tick #f] #:on-key [on-key #f] #:on-draw [on-draw #f] )
-    (sprite
-     image
-     (or x (half CANVAS-WIDTH))
-     (or y (- CANVAS-HEIGHT (image-height image) 10))
-     (or dx 0) (or dy (params-falling params))
-     (or on-tick move-sprite)
-     (or on-key boost-sprite-on-key)
-     (or on-draw draw-sprite) ) )
 
 (define (on-canvas? image x y)
   (and (< 0 x (- CANVAS-WIDTH (image-width image)))
@@ -564,8 +606,6 @@
 
 ;; ** Rendering Method
 
-(define (half n) (quotient n 2))
-
 ;; Like place-image, but relative to the left-bottom corner
 ;; of the sprite and the canvas.
 (define (draw-image image x y canvas)
@@ -595,7 +635,9 @@
   (define this 'gather-actions-on-tick)
   ;; We're modeling the sprites container as a primitive vector
   ;; - gvector currently, although that could change
-  ;; we're going to do this iteratively for a change - enjoy!
+  ;; we're going to do this iteratively for a change.
+  ;; EXERCISE: How might this be done functionally, i.e. with
+  ;; mapping and/or folding operations??
   (let ( [updates
           (foldr append ; append the lists of updates into one
                  '()    ; starting with none
@@ -609,22 +651,43 @@
     (if (null? updates) #f (make-actions params updates)) ) )
 
 ;; return Package from applying on-tick methods to our sprites
-(define (update-world-on-tick world-state)
+(define (do-update-world-on-tick world-state)
   (define this 'update-world-on-tick)
-  (let ( [universe (state-worlds-sprites world-state)]
-          [our-params (state-params world-state)] )
-    (if (not (and universe our-params))
-        world-state ; we've not be welcomed yet
-        (let* ( [our-world (params-world our-params)]
-                [our-sprites (universe-world universe our-world)]
+  (if (no-state-yet? world-state)
+      world-state  ; we've not been welcomed yet
+      (let ( [universe (state-worlds-sprites world-state)]
+             [our-params (state-params world-state)] )
+        (let* ( [our-world-id (params-world our-params)]
+                [our-sprites (universe-world universe our-world-id)]
                 [actions (gather-actions-on-tick our-params our-sprites)] )
           (if (not actions)
               world-state ; no updates this time
               (begin
                 (when (tracing this) (eprintf "~a actions: ~a\n" this actions))
-                (let ( [ours-updated (update-sprites! actions universe)] )
-                  (when (tracing this) (eprintf "~a ours-updated ~a\n" this ours-updated))
-                  (make-package world-state actions) ) ) ) ) ) ) )
+                (update-sprites! actions universe) ; may invalidate our-sprites binding
+                (when (tracing this) (eprintf "~a ours-updated ~a\n" this (universe-world universe our-world-id)))
+                (make-package world-state actions) ) ) ) ) ) )
+
+;; create a clojure around do-update-world-on-tick which
+;; will show us any changing inputs or outputs
+;; when we're tracing and testing
+(define update-world-on-tick
+  (let ( [this 'update-world-on-tick]
+         [first-time #t]
+         [last-world-state #f]
+         [last-result #f] )
+    (λ (world-state)
+      (when (and (tracing 'this) (*testing*)
+                 (or first-time (not (equal? world-state last-world-state))) )
+        (eprintf "~a input world-state ~a\n" this world-state) )
+      (let ( [result (do-update-world-on-tick world-state)] )
+        (when (and (tracing 'this) (*testing*)
+                   (or first-time (not (equal? result result))) )
+          (eprintf "~a returning ~a\n" this result) )
+        (set! first-time #f)
+        (set! last-world-state world-state)
+        (set! last-result result)
+        result ) ) ) )
 
 ;; deliver key events to all sprites in the given list
 ;; returning a merged action list in Mail format
@@ -648,50 +711,65 @@
     (if (null? updates) #f (make-actions params updates)) ) )
 
 ;; return Package from applying on-key methods to our sprites
+(define (do-update-world-on-key world-state key)
+  (define this 'update-world-on-key)
+  (if (no-state-yet? world-state)
+      world-state
+      (let ( [universe (state-worlds-sprites world-state)]
+             [our-params (state-params world-state)] )
+        (if (not (and universe our-params))
+            world-state ; we've not be welcomed yet
+            (let* ( [our-world-id (params-world our-params)]
+                    [our-sprites (universe-world universe our-world-id)]
+                    [actions (gather-actions-on-key our-params our-sprites key)] )
+              (when (tracing this) (eprintf "~a actions: ~a\n" this actions))
+              (if (not actions)
+                  world-state ; no updates from this key
+                  (begin
+                    (update-sprites! actions universe) ; may invalidate our-sprites binding
+                    (when (tracing this) (eprintf "~a ours-updated ~a\n" this (universe-world universe our-world-id)))
+                    (make-package world-state actions) ) ) ) ) ) ) )
+
 (define (update-world-on-key world-state key)
   (define this 'update-world-on-key)
-  (let ( [universe (state-worlds-sprites world-state)]
-         [our-params (state-params world-state)] )
-    (if (not (and universe our-params))
-        world-state ; we've not be welcomed yet
-        (let* ( [our-world (params-world our-params)]
-                [our-sprites (universe-world universe our-world)]
-                [actions (gather-actions-on-key our-params our-sprites key)] )
-          (when (tracing this) (eprintf "~a actions: ~a\n" this actions))
-          (if (not actions)
-              world-state ; no updates from this key
-              (let ( [ours-updated (update-sprites! actions universe)] )
-                (when (tracing this) (eprintf "~a ours-updated ~a\n" this ours-updated))
-                (make-package world-state actions) ) ) ) ) ) )
+  (when (tracing this) (eprintf "~a world-state ~a key ~a\n" this world-state key))
+  (let ( [result (do-update-world-on-key world-state key)] )
+    (when (tracing this) (eprintf "~a returning ~a\n" this result))
+    result ) )
 
-;; Let all the sprites in the universe draw on an empty
-;; canvas and return that canvas.
-;; EXERCISE: How could we ensure that our sprites are always drawn on top??
+;; Use the drawing methods of all sprites in the universe
+;; to compose their images onto a single canvas and return
+;; the result.
+;; EXERCISE: How could we ensure that our sprites are always drawn on top,
+;; i.e. when our sprites overlap those from other worlds??
 (define (draw-world world-state)
   (define this 'draw-world)
-  (let ( [universe (state-worlds-sprites world-state)]
-         [canvas EMPTY-CANVAS] )
-    (when universe ; initialization has happened
-      (for ( [world-id (universe-world-ids universe)] )
-        (let ( [sprites (universe-world universe world-id)] )
-          (when (not (world-sprites? sprites)) (error this "Not world-sprites ~a" sprites))
-            (for ( [sprite-id (world-sprite-ids sprites)] )
-              (let ( [sprite (world-sprite sprites sprite-id)] )
-                  (let ( [drawing-method (sprite-to-draw sprite)] )
-                    (set! canvas (drawing-method sprite canvas)) ) ) ) ) ) )
-    canvas ) )
+  (if (no-state-yet? world-state)
+      EMPTY-CANVAS
+      ;; compose the worlds of our world state
+      (sequence-fold
+       (λ (c w)
+         ;; compose the sprites of world w
+         (sequence-fold (λ (c s) (let ( [drawing-method (sprite-to-draw s)] )
+                                   (drawing-method s c) ))
+                        c ; start with this canvas
+                        ;; generate a sequence of all sprites in our world
+                        (world-sprites w) ) )
+       EMPTY-CANVAS ; start with this canvas
+       ;; generate a sequence of all worlds in our universe
+       (universe-worlds (state-worlds-sprites world-state)) ) ) )
 
 ;; Should we send the universe server
 ;; a message before we just detach??
-(define (no-sprites-left world-state)
-  (define this 'draw-world)
-  (let ( [universe (state-worlds-sprites world-state)]
-         [our-params (state-params world-state)] )
-    (if (not our-params)
-        #f ; no sprites yet!
-        (let* ( [our-world (params-world our-params)]
-                [our-sprites (universe-world universe our-world)] )
-          (not (sequence-ormap sprite? (world-sprites our-sprites))) ) ) ) )
+(define (no-sprites-left? world-state)
+  (define this 'no-sprites-left?)
+  (and (not (no-state-yet? world-state))
+       (let* ( [universe (state-worlds-sprites world-state)]
+               [params (state-params world-state)]
+               [world-id (params-world params)]
+               [sprites (universe-world universe world-id)] )
+         (or (not sprites) ; our world is missing entirely!
+             (not (sequence-ormap sprite? (world-sprites sprites))) ) ) ) )
 
 ; String -> WorldState
 ; create a world, hook it up to a server and start it running
@@ -700,14 +778,155 @@
   (when (symbol? a-name) (set! a-name (symbol->string a-name)))
   (when (tracing this) (eprintf "~a ~a" this a-name))
   (big-bang
-   (make-state #f #f) ; to be initialized from welcome message
+   no-state-yet
    [on-receive receive]
    [to-draw draw-world]
    [on-key update-world-on-key]
-   [on-tick update-world-on-tick 1/10] ; 1/30 good, lower for testing
-   [stop-when no-sprites-left]
+   [on-tick update-world-on-tick (if (*testing*) 1/10 1/30)]
+   [stop-when no-sprites-left?]
    [name a-name]
    [register server] ) )
+
+;; ** Testing!
+
+;; Move this code out to a separate module
+;; during the next refactoring!!!
+
+;; *** Testing Machinery
+
+;; requirements for testing
+(require data/gvector rackunit)
+
+;; To test any side-effecting procedure, any
+;; data structure which will be side-effected
+;; must be deep copied, i.e. reallocated into
+;; fresh storage in memory.  A deep copy of an
+;; object should compare as equal? but not eq?.
+
+;; Allocate new gvectors to make a copy of
+;; directly nested gvectors.
+;; Any element that is not a gvector will
+;; not be copied, even if it's a container
+;; of some sort with a gvector inside of it.
+(define (gv-copy x)
+  (if (not (gvector? x))
+      ;; return x's value without copying it
+      x
+      ;; build a new gvector copy of x
+      (for/gvector ( [y (in-gvector x)] )
+        (gv-copy y) ) ) )
+
+;; *** Testing Params, Proxies, Sprites
+
+;; world 0, color "red", no falling
+(define params-0 (make-params 0 (choose-color 0) 0))
+
+;; default sprite created manually
+(define sprite-1 (sprite (make-ball params-0)
+                              (sprite-proxy-x PROXY-0)
+                              (sprite-proxy-y PROXY-0)
+                              (sprite-proxy-dx PROXY-0)
+                              (sprite-proxy-dy PROXY-0)
+                              move-sprite boost-sprite-on-key draw-sprite ))
+
+(define sprite-2 (struct-copy sprite sprite-1 [dy DY-FALLING]))
+
+(define proxy-2 (make-sprite-proxy 0 ; sprite id
+                                   #f ; image
+                                   #f ; x
+                                   (+ (sprite-y sprite-2) (sprite-dy sprite-2)) ; y
+                                   #f ; dx
+                                   (decay (sprite-dy sprite-2) 0) ; dy
+                                   #f #f #f #;methods ) )
+
+(check-equal? sprite-1 (proxy->sprite params-0 PROXY-0) "proxy->sprite")
+
+;; *** Testing Actions, Worlds, Universes
+
+;; an action which will drop the sprite at index 0
+(define drop-0 (make-actions params-0 (list 0)))
+
+;; an action which will update or create a sprite
+;; described by PROXY-0
+(define create-0 (make-actions params-0 (list PROXY-0)))
+
+;; an empty universe
+(define universe-0 (gvector))
+
+;; missing world
+(check-pred no-sprites-left? (make-state params-0 universe-0) "universe-0")
+
+;; an empty universe with one emptied world
+(define universe-00 (gvector (gvector #f)))
+
+(check-pred no-sprites-left? (make-state params-0 universe-00) "universe-00")
+
+;; an emptied universe with one emptied world
+(define universe-000 (gvector (gvector #f) #f))
+
+(check-pred no-sprites-left? (make-state params-0 universe-000) "universe-000")
+
+(let ( [u (gv-copy universe-000)] )
+  (check-equal? u universe-000 "gv-copy not equal?")
+  (check-not-eq? u universe-000 "gv-copy eq?") )
+
+;; a world with a single unmoving sprite
+(define world-1 (gvector sprite-1))
+
+;; a world with a single falling sprite
+(define world-2 (gvector sprite-2))
+
+;; a universe with a single default sprite
+(define universe-1 (gvector world-1))
+
+;; *** Testing update-sprites!
+
+(check-equal? universe-00
+              (let ( [u (gv-copy universe-1)] )
+                (update-sprites! drop-0 u)
+                u ) "drop-0 from universe-1" )
+
+(check-equal? universe-1
+              (let ( [u (gv-copy universe-0)] )
+                (update-sprites! create-0 u)
+                u ) "create-0 in universe-0" )
+
+(check-equal? universe-1
+              (let ( [u (gv-copy universe-00)] )
+                (update-sprites! create-0 u)
+                u ) "create-0 in univeres-00" )
+
+;; *** Testing Gathering Actions
+
+(check-false (gather-actions-on-tick params-0 world-1) "gather-actions-on-tick world-1")
+
+(let ( [sp (move-sprite params-0 0 sprite-2)] )
+  (check-equal? proxy-2 sp "move-sprite")
+  (check-equal? (make-actions params-0 (list proxy-2))
+                (gather-actions-on-tick params-0 world-2) "gather-actions-on-tick world-2" ) )
+
+;; *** Testing States, Packages
+
+;; uninitialized world state is forgiven
+(check-pred (compose not no-sprites-left?) no-state-yet "no-state-yet")
+
+;; a state based on universe-0
+(define state-0 (make-state params-0 universe-0))
+
+(check-pred no-sprites-left? state-0 "universe-0 in state-0")
+
+;; a state based on universe-1
+(define state-1 (make-state params-0 universe-1))
+
+(check-pred (compose not no-sprites-left?) state-1 "universe-1 in state-1")
+
+;; a package based on universe-1 with
+;; mail to replicate dropping PROXY-0
+(define package-drop-0 (make-package state-0 (list drop-0)))
+
+;; a package based on universe-0 with
+;; mail to replicate materializing PROXY-0
+(define package-1 (make-package state-1 (list create-0)))
 
 ;; ** Process Command Line or Enter REPL
 
