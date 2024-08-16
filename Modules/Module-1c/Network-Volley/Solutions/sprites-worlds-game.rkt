@@ -99,11 +99,11 @@
 ;; a sprite to create or a sprite to change
 
 ;; an action structure associates a context,
-;; i.e. a world-id or a params structure
+;; i.e. a world-id or a params-base structure
 ;; with a list of updates.
 
 (provide
- (struct-out params)
+ (struct-out params-base)
  (struct-out message)
  message-world
  (struct-out welcome-message)
@@ -209,26 +209,25 @@
 
 ;; ** Game Parameters
 
-;; A structure type for World Parameters needed by
+;; A base structure type for World Parameters needed by
 ;; functions passed by name in our proxy structures.
 ;; It's Universe serializable because
 ;; - it's a #:prefab structure
-;; - it's fields values need to be Universe serializable
-;; IN PROCESS: make-package is unhappy now!!!
+;; - it's fields values will be Universe serializable
+;; BUG IN make-package: doesn't like an alist field!!
 ;; make-package: expects a sexp as second argument, given
 ;; '(#s((actions message 1) #s(params 0 ((color . red) (falling . 0))) (0)))
 ;; despite these all being prefab structures!!!
 ;; TRY: Using structure inheritance instead!!!
-(struct params ( world alist )
-  #:constructor-name make-params
+;; Clients should define their own params structure extending
+;; struct params-base!
+(struct params-base (world)
+  #:constructor-name make-params-base
   #:prefab )
-
-;; Consider adding a hash list to make
-;; params more open ended.
 
 ;; ** Client-Server message Types
 
-;; params could be a world-id? or a struct params
+;; params could be a world-id? or a struct params-base
 (struct message (params)
   #:constructor-name make-message
   #:prefab)
@@ -236,7 +235,7 @@
 (define (message-world message)
   (define this 'message-world)
   (let ( [p (message-params message)] )
-    (cond [(params? p) (params-world p)]
+    (cond [(params-base? p) (params-base-world p)]
           [(world-id? p) p]
           [else (error this "invalid message params p")] ) ) )
 

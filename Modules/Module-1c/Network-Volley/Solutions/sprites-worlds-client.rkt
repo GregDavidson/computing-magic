@@ -13,8 +13,9 @@
 
 ;; ** What We Require
 
-;; import the structure id sprite-proxy
-(require (only-in "sprites-worlds-game.rkt" sprite-proxy))
+;; import structure ids
+(require (only-in "sprites-worlds-game.rkt"
+                  params-base sprite-proxy ))
 
 ;; Racket Package Requires
 
@@ -39,7 +40,7 @@
               [sprite-proxy? (-> any/c boolean?)]
               [sprite-id? (-> any/c boolean?)]
               [world-id? (-> any/c boolean?)]
-              [params? (-> any/c boolean?)]
+              [params-base? (-> any/c boolean?)]
               [update? (-> any/c boolean?)]
               [actions? (-> any/c boolean?)] ) )
 
@@ -90,14 +91,13 @@
                    sprite-proxy?)]
 
               [world-id->string (-> world-id? string?)]
-              [make-message (-> (or/c  params? world-id?) message?)]
+              [make-message (-> (or/c  params-base? world-id?) message?)]
               [message-world (-> message? world-id?)]
-              [message-params (-> message? (or/c params? world-id?))]
+              [message-params (-> message? (or/c params-base? world-id?))]
               [welcome-message-alist (-> welcome-message? (listof (cons/c symbol? any/c)))]
-              [make-params (-> world-id? (listof (cons/c symbol? any/c)) params?)]
-              [params-world (-> params? world-id?)]
-              [params-alist (-> params? (listof (cons/c symbol? any/c)))]
-              [make-actions (-> params? (listof update?) actions?)]
+              [make-params-base (-> world-id? params-base?)]
+              [params-base-world (-> params-base? world-id?)]
+              [make-actions (-> params-base? (listof update?) actions?)]
               [actions-updates (-> actions? (listof update?))]
 
               [my-parameter (->* (any/c procedure? symbol?) ((or/c #f symbol? string?)) parameter?)]
@@ -111,8 +111,13 @@
                   alist-key->val struct-alist-key->val
                   alist-val->key struct-alist-val->key ))
 
-(define params-color (struct-alist-key->val params-alist 'color))
-(define params-falling (struct-alist-key->val params-alist 'falling))
+;; ** move this where it goes!!!
+
+(struct params params-base (color falling)
+  #:constructor-name make-params
+  #:prefab )
+
+(define params-world params-base-world)
 
 ;; ** What We Provide
 
@@ -581,10 +586,10 @@
         (let* ( [new-world-id (message-world mail)]
                 [new-color (choose-color new-world-id)]
                 [new-params (make-params new-world-id
-                                         (list (cons 'color new-color)
-                                               (cons 'falling (if (*testing*) 0 DY-FALLING)) ) )] )
+                                         new-color
+                                         (if (*testing*) 0 DY-FALLING) )] )
           #;(when (tracing this)
-            (eprintf "~a world ~a color ~a\n" this new-world-id new-color) )
+              (eprintf "~a world ~a color ~a\n" this new-world-id new-color) )
           (let* (
                  ;; create a proxy to represent our first sprite
                  [new-sprite-proxy
@@ -894,9 +899,7 @@
 ;; *** Testing Params, Proxies, Sprites
 
 ;; world 0, color "red", no falling
-(define params-0 (make-params 0
-                              (list (cons 'color (choose-color 0))
-                                    (cons 'falling 0) ) ))
+(define params-0 (make-params 0 (choose-color 0) 0))
 
 ;; default sprite created manually
 (define sprite-1 (sprite (make-ball params-0)
