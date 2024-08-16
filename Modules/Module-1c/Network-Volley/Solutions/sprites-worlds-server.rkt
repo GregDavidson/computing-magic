@@ -129,6 +129,15 @@
                  '() ; no worlds to remove
                  ) ) )
 
+;; BUG: This isn't being called!!!
+;; Consequence: memory leak
+;; Q: Is this related to the complaint
+;; about old world names, e.g.
+;; "\"Greg\"" not on list
+;; When world "Greg" was disconnected
+;; and a new world connects???
+;; Wow, it complains about all of the
+;; disconnected worlds!!!
 (define (drop-world u w)
   (define this 'drop-world)
   (let ( [i (universe-world-index u w)] )

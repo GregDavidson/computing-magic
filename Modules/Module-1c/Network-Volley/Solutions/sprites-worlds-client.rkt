@@ -11,7 +11,10 @@
 ;; - including a sprite-proxy structure
 ;; - You'll want to look it over carefully!
 
-;; ** Requires and Early Definitions
+;; ** What We Require
+
+;; import the structure id sprite-proxy
+(require (only-in "sprites-worlds-game.rkt" sprite-proxy))
 
 ;; Racket Package Requires
 
@@ -25,9 +28,6 @@
          racket/math )
 
 ;; Application Package Type Predicates
-
-;; import the structure id sprite-proxy
-(require (only-in "sprites-worlds-game.rkt" sprite-proxy))
 
 (require
  (contract-in "sprites-worlds-game.rkt"
@@ -90,12 +90,13 @@
                    sprite-proxy?)]
 
               [world-id->string (-> world-id? string?)]
+              [make-message (-> (or/c  params? world-id?) message?)]
               [message-world (-> message? world-id?)]
               [message-params (-> message? (or/c params? world-id?))]
-              [make-params (-> world-id? image-color? integer? params?)]
+              [welcome-message-alist (-> welcome-message? (listof (cons/c symbol? any/c)))]
+              [make-params (-> world-id? (listof (cons/c symbol? any/c)) params?)]
               [params-world (-> params? world-id?)]
-              [params-color (-> params? image-color?)]
-              [params-falling (-> params? integer?)]
+              [params-alist (-> params? (listof (cons/c symbol? any/c)))]
               [make-actions (-> params? (listof update?) actions?)]
               [actions-updates (-> actions? (listof update?))]
 
@@ -103,6 +104,75 @@
               [*tracing* parameter?]
               [tracing (->* () (symbol?) boolean?)]
               [*testing* parameter?] ) )
+
+;; Generic alist management procedures
+(require (only-in "sprites-worlds-game.rkt"
+                  ensure-list-value ensure-struct-list-value
+                  alist-key->val struct-alist-key->val
+                  alist-val->key struct-alist-val->key ))
+
+(define params-color (struct-alist-key->val params-alist 'color))
+(define params-falling (struct-alist-key->val params-alist 'falling))
+
+;; ** What We Provide
+
+(provide *tracing* tracing *testing*)
+
+(provide *user* *args*)
+
+(provide universe?
+         message?
+         welcome-message?
+         goodbye-message?
+         world-sprites?
+         sprite-id?
+         world-id?
+         update?
+         actions? )
+
+(provide CANVAS-WIDTH
+         CANVAS-HEIGHT
+         (struct-out sprite)
+         mutate-sprite-from-proxy!
+         no-state-yet
+         no-state-yet?
+         (struct-out state)
+         update-sprites!
+         receive
+         on-canvas?
+         move-sprite
+         no-sprites-left?
+         create-world )
+
+;; Can't use struct-out
+#; (struct-out sprite-proxy)  ; doesn't work!
+;; sprites-worlds-game.rkt:331:2: struct-out: no binding for structure-type identifier in: struct:sprite-proxy
+#; (struct-out params)
+#; (struct-out message)
+#; (struct-out actions)
+
+(provide sprite-proxy
+         sprite-proxy?
+         make-sprite-proxy
+         sprite-proxy-sprite 
+         sprite-proxy-image
+         sprite-proxy-x 
+         sprite-proxy-y 
+         sprite-proxy-dx 
+         sprite-proxy-dy 
+         sprite-proxy-on-tick
+         sprite-proxy-on-key 
+         sprite-proxy-to-draw )
+
+(provide make-message message? message-params)
+
+(provide  welcome-message? welcome-message-alist)
+
+(provide make-actions actions? actions-updates)
+
+#; (provide register-on-tick register-on-key register-to-draw register-image-source)
+
+;; What else to provide???
 
 ;; ** Client-Side 2http Framework Types
 
@@ -271,17 +341,17 @@
 
 ;; Given the key, return the val part of the (key . val) association
 ;; in the proxy-registry field accessed with the given getter function.
-;; Returns #f if key is not present!!
-(define (key->val key getter)
+;; Returns not-found if the key is not found!
+(define (key->val key getter [not-found #f])
   (let ( [found (registry-find (λ (pair) (equal? key (car pair))) getter)] )
-    (and found (cdr found)) ) )
+    (if found (cdr found) not-found) ) )
 
 ;; Given the val, return the key part of the (key . val) association
 ;; in the proxy-registry field accessed with the given getter function.
-;; Returns #f if key is not present!!
-(define (val->key val getter)
+;; Returns not-found if the key is not found!
+(define (val->key val getter [not-found #f])
   (let ( [found (registry-find (λ (pair) (equal? val (cdr pair))) getter)] )
-    (and found (car found)) ) )
+    (if found (car found) not-found) ) )
 
 ;; Load a bitmap from a file, cache (save) it in the registry
 ;; and return it. What happens if there's no image at that path??
@@ -510,8 +580,9 @@
         ;; build our state, our world and our first sprite
         (let* ( [new-world-id (message-world mail)]
                 [new-color (choose-color new-world-id)]
-                [new-params (make-params new-world-id new-color
-                                         (if (*testing*) 0 DY-FALLING) )] )
+                [new-params (make-params new-world-id
+                                         (list (cons 'color new-color)
+                                               (cons 'falling (if (*testing*) 0 DY-FALLING)) ) )] )
           #;(when (tracing this)
             (eprintf "~a world ~a color ~a\n" this new-world-id new-color) )
           (let* (
@@ -773,7 +844,11 @@
 
 ; String -> WorldState
 ; create a world, hook it up to a server and start it running
-(define (create-world a-name [server LOCALHOST])
+(define (create-world a-name
+                      [server LOCALHOST]
+                      #:receive [receive receive]
+                      #:tick [tick 1/30]
+                      #:stop [stop? no-sprites-left?] )
   (define this 'create-world)
   (when (symbol? a-name) (set! a-name (symbol->string a-name)))
   (when (tracing this) (eprintf "~a ~a" this a-name))
@@ -782,8 +857,8 @@
    [on-receive receive]
    [to-draw draw-world]
    [on-key update-world-on-key]
-   [on-tick update-world-on-tick (if (*testing*) 1/10 1/30)]
-   [stop-when no-sprites-left?]
+   [on-tick update-world-on-tick (if (*testing*) 1/10 tick)]
+   [stop-when stop?]
    [name a-name]
    [register server] ) )
 
@@ -819,7 +894,9 @@
 ;; *** Testing Params, Proxies, Sprites
 
 ;; world 0, color "red", no falling
-(define params-0 (make-params 0 (choose-color 0) 0))
+(define params-0 (make-params 0
+                              (list (cons 'color (choose-color 0))
+                                    (cons 'falling 0) ) ))
 
 ;; default sprite created manually
 (define sprite-1 (sprite (make-ball params-0)

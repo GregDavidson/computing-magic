@@ -15,7 +15,6 @@
 
 ;; ** Require Forms
 
-
 (require racket/math
          racket/set
          racket/function
@@ -151,14 +150,76 @@
 ;; in particular, disable falling!
 (define *testing* (my-parameter #f boolean? 'testing))
 
+;; ** Key <-> Value Associations
+
+(provide ensure-list-value ensure-struct-list-value
+         alist-key->val struct-alist-key->val
+         alist-val->key struct-alist-val->key )
+
+;; In several places we need to have mappings between
+;; keys and values.  As long as these sets aren't too
+;; large, we can use alists, i.e. lists of cons pairs
+;; where the car is a key and the cdr is the value.
+
+;; Typically these associations are stored in fixed
+;; fields of particular fixed or variable structures
+;; so we provide some meta functions to create custom
+;; functions to do these operations conveniently.
+
+;; If the value is in the list, return the list as is;
+;; otherwise return an extended list with that value added.
+;; Note that val~elem? may be asymmetric in comparing
+;; the value with a list element!
+(define (ensure-list-value lst val [val~elem? equal?])
+  (let ( [found (member val lst val~elem?)] )
+    (if found lst (cons val lst))) )
+
+;; Return a function which will update struct as needed
+;; to ensure that the value is in the field with the given
+;; struct getter and setter procedures.
+;; Note that val~elem? may be asymmetric in comparing
+;; the value with a list element!
+(define (ensure-struct-list-value struct getter setter! [val~elem? equal?])
+  (λ (val)
+    (setter! struct (ensure-list-value (getter struct) val val~elem?) ) ) )
+
+;; Given the key, return the val part of
+;; the (key . val) association in the association list.
+;; Returns not-found if the key is not found!
+(define (alist-key->val alist key [is-equal? equal?] [not-found #f])
+  (let ( [found (assoc key alist is-equal?)] )
+    (if found (cdr found) not-found) ) )
+
+;; Return a function which will provide key->val mapping
+;; for any struct with the given getter and key.
+(define (struct-alist-key->val getter key [is-equal? eq?])
+  (λ (s) (alist-key->val (getter s) key is-equal?)) )
+
+;; Given the val, return the key part of
+;; the (key . val) association in the association list.
+;; Returns not-found if the val is not found!
+(define (alist-val->key alist val [is-equal? equal?] [not-found #f])
+  (let ( [found (memf (λ (pair) (is-equal? (cdr pair) val)) alist)] )
+    (if found (cadr found) not-found) ) )
+
+;; Return a function which will provide val->key mapping
+;; for any struct with the given getter and val.
+(define (struct-alist-val->key getter val [is-equal? equal?])
+  (λ (s) (alist-val->key (getter s) val is-equal?)) )
+
 ;; ** Game Parameters
 
 ;; A structure type for World Parameters needed by
 ;; functions passed by name in our proxy structures.
 ;; It's Universe serializable because
 ;; - it's a #:prefab structure
-;; - it's fields are Universe serializable
-(struct params ( world color falling )
+;; - it's fields values need to be Universe serializable
+;; IN PROCESS: make-package is unhappy now!!!
+;; make-package: expects a sexp as second argument, given
+;; '(#s((actions message 1) #s(params 0 ((color . red) (falling . 0))) (0)))
+;; despite these all being prefab structures!!!
+;; TRY: Using structure inheritance instead!!!
+(struct params ( world alist )
   #:constructor-name make-params
   #:prefab )
 
