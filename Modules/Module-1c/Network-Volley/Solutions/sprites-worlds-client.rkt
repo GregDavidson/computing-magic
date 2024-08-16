@@ -421,7 +421,11 @@
 
 ;; Do we have a new value different from the old value?
 ;; Return new value if it will, #f if it won't.
-(define (delta old new) (and new (not (equal? old new)) new))
+;; Suppress this refinement for now, as it will require that
+;; a new world client won't know how to apply the incomplete
+;; proxy to instantiate an unknown sprite
+#;(define (delta old new) (and new (not (equal? old new)) new))
+(define (delta old new) (or new old))
 
 ;; Make a sprite-proxy which represents desired updates to a sprite
 ;; This is used with MUTATE-SPRITE actions.
@@ -430,12 +434,16 @@
                     #:x [x #f] #:y [y #f] #:dx [dx #f] #:dy [dy #f]
                     #:tick [tick #f] #:key [key #f] #:draw [draw #f] )
   (make-sprite-proxy sprite-id
-                     (and (delta (sprite-image s) image) (val->key image registry-image))
+                     (val->key (or image (sprite-image s)) registry-image)
+                     #;(and (delta (sprite-image s) image) (val->key image registry-image))
                      (delta (sprite-x s) x) (delta (sprite-y s) y)
                      (delta (sprite-dx s) dx) (delta (sprite-dy s) dy)
-                     (and (delta (sprite-on-tick s) tick) (val->key tick registry-on-tick))
-                     (and (delta (sprite-on-key s) key) (val->key key registry-on-key))
-                     (and (delta (sprite-to-draw s) draw) (val->key draw registry-to-draw) ) ) )
+                     (val->key (or tick (sprite-on-tick s)) registry-on-tick)
+                     (val->key (or key (sprite-on-key s)) registry-on-key)
+                     (val->key (or draw (sprite-to-draw s)) registry-to-draw)
+                     #;(and (delta (sprite-on-tick s) tick) (val->key tick registry-on-tick))
+                     #;(and (delta (sprite-on-key s) key) (val->key key registry-on-key))
+                     #;(and (delta (sprite-to-draw s) draw) (val->key draw registry-to-draw) ) ) )
 
 (define (mutate-sprite-from-proxy! params s sp)
   (define this 'mutate-sprite-from-proxy!)
@@ -566,7 +574,6 @@
 ;; - action mail from the server
 ;; Return an updated WorldState
 ;; - possibly including Return Mail
-;; ??? do we get a single mail message or a list of them ???
 (define (do-receive world-state mail)
   (define this 'receive)
   (if world-state
@@ -623,6 +630,8 @@
         [else value] ) )
 
 ;; Why add text to the ball? 10% of humans are color blind!
+;; PRACTICE: Add high-contrast patterns to supplement color
+;; everywhere color is being used to distinguish visual elements. 
 ;; EXERCISE: Use the provided name instead (or in addition to)
 ;; the id.
 
