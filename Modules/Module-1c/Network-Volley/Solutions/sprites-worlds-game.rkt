@@ -152,60 +152,47 @@
 
 ;; ** Key <-> Value Associations
 
-(provide ensure-list-value ensure-struct-list-value
-         alist-key->val struct-alist-key->val
-         alist-val->key struct-alist-val->key )
+(provide obj-alist-procs)
 
-;; In several places we need to have mappings between
-;; keys and values.  As long as these sets aren't too
-;; large, we can use alists, i.e. lists of cons pairs
+;; In several places we need to have mappings between keys and values. As long
+;; as these sets aren't too large, we can use alists, i.e. lists of cons pairs
 ;; where the car is a key and the cdr is the value.
 
-;; Typically these associations are stored in fixed
-;; fields of particular fixed or variable structures
-;; so we provide some meta functions to create custom
-;; functions to do these operations conveniently.
+;; Typically these associations are stored in fixed fields of particular fixed
+;; or variable structures or other composite objects, so we provide some meta
+;; functions to create custom functions to do these operations conveniently.
 
-;; If the value is in the list, return the list as is;
-;; otherwise return an extended list with that value added.
-;; Note that val~elem? may be asymmetric in comparing
-;; the value with a list element!
+;; If the value is in the list, return the list as is, otherwise return an
+;; extended list with that value added. Note that val~elem? may be asymmetric in
+;; comparing the value with a list element!
 (define (ensure-list-value lst val [val~elem? equal?])
   (let ( [found (member val lst val~elem?)] )
     (if found lst (cons val lst))) )
 
-;; Return a function which will update struct as needed
-;; to ensure that the value is in the field with the given
-;; struct getter and setter procedures.
-;; Note that val~elem? may be asymmetric in comparing
-;; the value with a list element!
-(define (ensure-struct-list-value struct getter setter! [val~elem? equal?])
-  (λ (val)
-    (setter! struct (ensure-list-value (getter struct) val val~elem?) ) ) )
-
-;; Given the key, return the val part of
-;; the (key . val) association in the association list.
-;; Returns not-found if the key is not found!
+;; Given the key, return the val part of the (key . val) element in the
+;; association list. Returns not-found if the key is not found!
 (define (alist-key->val alist key [is-equal? equal?] [not-found #f])
   (let ( [found (assoc key alist is-equal?)] )
     (if found (cdr found) not-found) ) )
 
-;; Return a function which will provide key->val mapping
-;; for any struct with the given getter and key.
-(define (struct-alist-key->val getter key [is-equal? eq?])
-  (λ (s) (alist-key->val (getter s) key is-equal?)) )
 
-;; Given the val, return the key part of
-;; the (key . val) association in the association list.
-;; Returns not-found if the val is not found!
+;; Given the val, return the key part of the (key . val) element in the
+;; association list. Returns not-found if the val is not found!
 (define (alist-val->key alist val [is-equal? equal?] [not-found #f])
   (let ( [found (memf (λ (pair) (is-equal? (cdr pair) val)) alist)] )
-    (if found (cadr found) not-found) ) )
+    (if found (caar found) not-found) ) )
 
-;; Return a function which will provide val->key mapping
-;; for any struct with the given getter and val.
-(define (struct-alist-val->key getter val [is-equal? equal?])
-  (λ (s) (alist-val->key (getter s) val is-equal?)) )
+;; Create and return the three essential procedures
+;; to manage an alist stored in an object's field.
+(define (obj-alist-procs obj getter setter!
+                         [pair~elem? equal?]
+                         [key-compare? equal?]
+                         [val-compare? equal?] )
+  (values
+   (λ (key val)
+     (setter! obj (ensure-list-value (getter obj) (cons key val) pair~elem?)) )
+   (λ (key) (alist-key->val (getter obj) key key-compare?))
+   (λ (val) (alist-val->key (getter obj) val val-compare?)) ) )
 
 ;; ** Game Parameters
 

@@ -26,7 +26,8 @@
          racket/contract/region
          racket/sequence
          racket/list
-         racket/math )
+         racket/math
+         racket/function )
 
 ;; Application Package Type Predicates
 
@@ -106,10 +107,7 @@
               [*testing* parameter?] ) )
 
 ;; Generic alist management procedures
-(require (only-in "sprites-worlds-game.rkt"
-                  ensure-list-value ensure-struct-list-value
-                  alist-key->val struct-alist-key->val
-                  alist-val->key struct-alist-val->key ))
+(require (only-in "sprites-worlds-game.rkt" obj-alist-procs))
 
 ;; ** move this where it goes!!!
 
@@ -310,7 +308,7 @@
 ;; structure as a registry, with its field names corresponding
 ;; to the field names to be translated.
 
-;; here's the type
+;; here's the structure type
 (struct/contract
   registry (
             ;; To support dynamic loading of images, we could allow the
@@ -323,77 +321,43 @@
             [to-draw (listof (cons/c symbol? procedure?))] )
   #:mutable #:transparent )
 
-;; here's the registry
+;; instantiate the registry structure object
 (define proxy-registry (registry '() '() '() '()))
 
-;; The keys in each association list should be unique.
-;; What will happen if the values are not unique??
+;; define the procedures to manage the association lists
 
-;; Return the element of the list in the proxy-registry field
-;; (1) accessed with the given getter (structure selector function)
-;; (2) satisfying the given predicate
-;; - or #f if none found!!
-(define (registry-find predicate getter)
-  (findf predicate (getter proxy-registry)) )
+(define-values (image-register! image-key->val image-val->key)
+  (obj-alist-procs proxy-registry registry-image set-registry-image!) )
 
-;; Ensure that a cons pair (key . val) is in the association list
-;; of the proxy-registry field with the given getter.
-;; If it isn't, add it with the provided setter.
-(define (register-key-val key val getter setter)
-  (let* ( [alist (getter proxy-registry)]
-          [found (findf (λ (pair) (equal? key (car pair))) alist)] )
-    (unless found (setter proxy-registry (cons (cons key val) alist))) ) )
+(define-values (on-tick-register! on-tick-proc on-tick-name)
+  (obj-alist-procs proxy-registry registry-on-tick set-registry-on-tick!) )
 
-;; Given the key, return the val part of the (key . val) association
-;; in the proxy-registry field accessed with the given getter function.
-;; Returns not-found if the key is not found!
-(define (key->val key getter [not-found #f])
-  (let ( [found (registry-find (λ (pair) (equal? key (car pair))) getter)] )
-    (if found (cdr found) not-found) ) )
+(define-values (on-key-register! on-key-proc on-key-name)
+  (obj-alist-procs proxy-registry registry-on-key set-registry-on-key!) )
 
-;; Given the val, return the key part of the (key . val) association
-;; in the proxy-registry field accessed with the given getter function.
-;; Returns not-found if the key is not found!
-(define (val->key val getter [not-found #f])
-  (let ( [found (registry-find (λ (pair) (equal? val (cdr pair))) getter)] )
-    (if found (car found) not-found) ) )
+(define-values (to-draw-register! to-draw-proc to-draw-name)
+  (obj-alist-procs proxy-registry registry-to-draw set-registry-to-draw!) )
 
-;; Load a bitmap from a file, cache (save) it in the registry
-;; and return it. What happens if there's no image at that path??
-(define (bitmap/file/cache path)
-  (let ( [image (bitmap/file path)] )
-    (register-key-val path image registry-image set-registry-image!)
-    image ) )
-
-#; (register-key-val 'make-ball make-ball registry-image set-registry-image!)
 ;; Given a path or symbol as a key, return the associated image
 ;; and ensure it's registered.
 (define (get-image params key)
   (define this 'get-image-key)
-  (let ( [found (key->val key registry-image)] )
+  (let* ( [fallback ; better than throwing an error??
+           (λ ()
+             (eprintf "~a key ~a failed, substituting ball\n" this key)
+             (make-ball params) ) ]
+          [found (image-key->val key)]
+          [bitmap/file/cache
+           (λ (path)
+             (with-handlers ( [exn:fail? (λ (exn) (fallback))] )
+               (let ( [image (bitmap/file path)] )
+                 (image-register! path image)
+                 image ) ) ) ] )
     (cond [(image? found) found]
           [(string? found) (bitmap/file/cache found)]
           [(string? key) (bitmap/file/cache key)]
           [(procedure? found) (found params)]
-          [else
-           ; should this be an error??
-           #;(eprintf "~a warning: no image at ~a\n" this key)
-           (eprintf "~a warning: substituting a ball for missing image ~a\n" this key)
-           ;; PATCH: !!!
-           (make-ball params) #;#f ] ) ) )
-
-;; Given a sprite, convert it to a proxy which can be serialized
-;; for transmission across a byte stream.
-;; This is only used for brand new sprites!
-;; See make-proxy for how we update sprites!
-(define (sprite->proxy sprite-id s)
-  (make-sprite-proxy
-   sprite-id
-   (val->key (sprite-image s) registry-image)
-   (sprite-x s) (sprite-y s) (sprite-dx s) (sprite-dy s)
-   (val->key (sprite-on-tick s) registry-on-tick)
-   (val->key (sprite-on-key s) registry-on-key)
-   (val->key (sprite-to-draw s) registry-to-draw) ) )
+          [else (fallback)] ) ) )
 
 ;; Given a sprite-proxy, convert it to a new sprite.
 ;; This is used with brand new sprites.
@@ -405,27 +369,25 @@
              (sprite-proxy-y sp)
              (sprite-proxy-dx sp)
              (sprite-proxy-dy sp)
-             (key->val (sprite-proxy-on-tick sp) registry-on-tick)
-             (key->val (sprite-proxy-on-key sp) registry-on-key)
-             (key->val (sprite-proxy-to-draw sp) registry-to-draw) )] )
+             (on-tick-proc (sprite-proxy-on-tick sp))
+             (on-key-proc (sprite-proxy-on-key sp))
+             (to-draw-proc (sprite-proxy-to-draw sp)) )] )
     (when (tracing this) (eprintf "~a sprite-proxy-key: ~a -> ~a" this sp s ))
     s ) )
 
-;; NOTE: If we don't register all of the proxy values we need we'll
-;; wind up with sprite-proxy structures where some of the fields
-;; will be #f with various results, depending on message actions:
-;; MUTATE-SPRITE -- only update non-#f fields
-;; NEW-SPRITE -- ignore this sprite, report an issue!!
-;; DROP-SPRITE -- only the key matters, so no worries!
-;; -- Learn about logging vs. volatile error reports!!
+;; Given a possible new value, a structure, a getter and a possible value mapper
+;; Prefer the new value if it exists, otherwise use the getter to get the old value.
+;; Use the mapper to substitute a serializable value.
+(define (delta new s getter [mapper identity])
+  (mapper (or new (getter s))) )
 
-;; Do we have a new value different from the old value?
-;; Return new value if it will, #f if it won't.
-;; Suppress this refinement for now, as it will require that
-;; a new world client won't know how to apply the incomplete
-;; proxy to instantiate an unknown sprite
-#;(define (delta old new) (and new (not (equal? old new)) new))
-(define (delta old new) (or new old))
+;; EXERCISE:
+;; Only provide values for fields which need to be changed.
+;; Here's what delta might look like:
+#;(define (delta new s getter [mapper identity])
+    (and new (not (equal? (getter s) new)) (mapper new)) )
+;; But: This won't work for any world which missed the creation proxy.
+;; So: How could we solve this problem???
 
 ;; Make a sprite-proxy which represents desired updates to a sprite
 ;; This is used with MUTATE-SPRITE actions.
@@ -434,16 +396,12 @@
                     #:x [x #f] #:y [y #f] #:dx [dx #f] #:dy [dy #f]
                     #:tick [tick #f] #:key [key #f] #:draw [draw #f] )
   (make-sprite-proxy sprite-id
-                     (val->key (or image (sprite-image s)) registry-image)
-                     #;(and (delta (sprite-image s) image) (val->key image registry-image))
-                     (delta (sprite-x s) x) (delta (sprite-y s) y)
-                     (delta (sprite-dx s) dx) (delta (sprite-dy s) dy)
-                     (val->key (or tick (sprite-on-tick s)) registry-on-tick)
-                     (val->key (or key (sprite-on-key s)) registry-on-key)
-                     (val->key (or draw (sprite-to-draw s)) registry-to-draw)
-                     #;(and (delta (sprite-on-tick s) tick) (val->key tick registry-on-tick))
-                     #;(and (delta (sprite-on-key s) key) (val->key key registry-on-key))
-                     #;(and (delta (sprite-to-draw s) draw) (val->key draw registry-to-draw) ) ) )
+                     (delta image s sprite-image image-val->key)
+                     (delta x s sprite-x) (delta y s sprite-y)
+                     (delta dx s sprite-dx) (delta dy s sprite-dy)
+                     (delta tick s sprite-on-tick on-tick-name)
+                     (delta key s sprite-on-key on-key-name)
+                     (delta draw s sprite-to-draw to-draw-name) ) )
 
 (define (mutate-sprite-from-proxy! params s sp)
   (define this 'mutate-sprite-from-proxy!)
@@ -455,17 +413,17 @@
   (when (sprite-proxy-dx sp) (set-sprite-dx! s (sprite-proxy-dx sp)))
   (when (sprite-proxy-dy sp) (set-sprite-dy! s (sprite-proxy-dy sp)))
   (when (sprite-proxy-on-tick sp)
-    (set-sprite-on-tick! s (or (key->val (sprite-proxy-on-tick sp) registry-on-tick)
+    (set-sprite-on-tick! s (or (on-tick-proc (sprite-proxy-on-tick sp))
                                (begin
                                  (error this "no on-tick in ~a" sp)
                                  (sprite-on-tick s) ) )) )
-  (when (sprite-proxy-on-key sp) 
-    (set-sprite-on-key! s (or (key->val (sprite-proxy-on-key sp) registry-on-key)
+  (when (sprite-proxy-on-key sp)
+    (set-sprite-on-key! s (or (on-key-proc (sprite-proxy-on-key sp))
                               (begin
                                 (error this "no on-key in ~a" sp)
                                 (sprite-on-key s) ) )) )
   (when (sprite-proxy-to-draw sp)
-    (set-sprite-to-draw! s (or (key->val (sprite-proxy-to-draw sp) registry-to-draw)
+    (set-sprite-to-draw! s (or (to-draw-proc (sprite-proxy-to-draw sp))
                                (begin
                                  (error this "no to-draw in ~a" sp)
                                  (sprite-to-draw s) ) )) )
@@ -643,7 +601,7 @@
     (let ( [image (overlay (text (world-id->string id) BALL-TEXT-SIZE 'black)
                            (circle BALL-RADIUS "solid" color) )] )
       image ) ) )
-(register-key-val 'make-ball make-ball registry-image set-registry-image!)
+(image-register! 'make-ball make-ball)
 
 (define (on-canvas? image x y)
   (and (< 0 x (- CANVAS-WIDTH (image-width image)))
@@ -666,7 +624,7 @@
             (if (and (= x xx) (= y yy) (= dx dxx) (= dy dyy))
                 '() ; nothing changed
                 (make-proxy sprite-id s #:x xx #:y yy #:dx dxx #:dy dyy) ) ) ) ) ) )
-(register-key-val 'move-sprite move-sprite registry-on-tick set-registry-on-tick!)
+(on-tick-register! 'move-sprite move-sprite)
 
 ;; Called by boost-sprite-on-key to do the work
 (define (boost-sprite sprite-id s key ddx ddy)
@@ -687,7 +645,7 @@
     [(key=? k "left") (boost-sprite sprite-id s k (- DX-BOOST) 0)]
     [(key=? k "right") (boost-sprite sprite-id s k DX-BOOST 0)]
     [else '()] ) )
-(register-key-val 'boost-sprite-on-key boost-sprite-on-key registry-on-key set-registry-on-key!)
+(on-key-register! 'boost-sprite-on-key boost-sprite-on-key)
 
 ;; ** Rendering Method
 
@@ -702,7 +660,7 @@
   (draw-image (sprite-image sprite)
               (sprite-x sprite) (sprite-y sprite)
               canvas ) )
-(register-key-val 'draw-sprite draw-sprite registry-to-draw set-registry-to-draw!)
+(to-draw-register! 'draw-sprite draw-sprite)
 
 ;; ** big-bang callback procedures
 
@@ -998,7 +956,7 @@
 ;; *** Testing States, Packages
 
 ;; uninitialized world state is forgiven
-(check-pred (compose not no-sprites-left?) no-state-yet "no-state-yet")
+(check-pred (negate no-sprites-left?) no-state-yet "no-state-yet")
 
 ;; a state based on universe-0
 (define state-0 (make-state params-0 universe-0))
@@ -1008,7 +966,7 @@
 ;; a state based on universe-1
 (define state-1 (make-state params-0 universe-1))
 
-(check-pred (compose not no-sprites-left?) state-1 "universe-1 in state-1")
+(check-pred (negate no-sprites-left?) state-1 "universe-1 in state-1")
 
 ;; a package based on universe-1 with
 ;; mail to replicate dropping PROXY-0
