@@ -166,23 +166,23 @@
   actions actions? make-actions actions-updates
  )
 
-(provide update?
+;; 2htdp Re-Exports
+(provide empty-scene
+         image-width
+         image-height
          make-package
+         key=?
          LOCALHOST
+         big-bang )
+
+;; separate into Re-Exports vs. exports of local defines
+(provide world-sprites
          command-line
          my-parameter
-         proxy->sprite gather-actions-on-tick gather-actions-on-key)
-
-;; extra provides for testing ???
-;; move with specific game code !!! 
-(provide choose-color
-         make-ball
-         PROXY-0
-         move-sprite
-         draw-sprite
-         boost-sprite-on-key
-         DY-FALLING
-         decay )
+         proxy->sprite gather-actions-on-tick gather-actions-on-key
+         make-proxy
+         universe-world
+         choose-color )
 
 (provide 
  params-base params-base? make-params-base params-base-world
@@ -191,8 +191,6 @@
 (provide *tracing* tracing *testing*)
 
 ;; *** What We Provide Of Our Own
-
-(provide *user* *args*)
 
 (provide universe?
          world-sprites?
@@ -208,11 +206,7 @@
          no-state-yet?
          (struct-out state)
          update-sprites!
-         receive
-         on-canvas?
-         move-sprite
-         no-sprites-left?
-         create-world )
+         receive )
 
 ;; Can't use struct-out
 #; (struct-out sprite-proxy)  ; doesn't work!
@@ -239,7 +233,13 @@
 
 (provide make-actions actions? actions-updates)
 
-#; (provide register-on-tick register-on-key register-to-draw register-image-source)
+(provide make-ball
+         on-tick-register!
+         on-key-register!
+         image-register!
+         )
+
+(provide get-string-line)
 
 ;; What else to provide???
 
@@ -882,92 +882,9 @@
        ;; generate a sequence of all worlds in our universe
        (universe-worlds (state-worlds-sprites world-state)) ) ) )
 
-;; Should we send the universe server
-;; a message before we just detach??
-(define (no-sprites-left? world-state)
-  (define this 'no-sprites-left?)
-  (and (not (no-state-yet? world-state))
-       (let* ( [universe (state-worlds-sprites world-state)]
-               [params (state-params world-state)]
-               [world-id (params-world params)]
-               [sprites (universe-world universe world-id)] )
-         (or (not sprites) ; our world is missing entirely!
-             (not (sequence-ormap sprite? (world-sprites sprites))) ) ) ) )
-
-; String -> WorldState
-; create a world, hook it up to a server and start it running
-(define (create-world a-name
-                      [server LOCALHOST]
-                      #:receive [receive receive]
-                      #:tick [tick 1/30]
-                      #:stop [stop? no-sprites-left?] )
-  (define this 'create-world)
-  (when (symbol? a-name) (set! a-name (symbol->string a-name)))
-  (when (tracing this) (eprintf "~a ~a" this a-name))
-  (big-bang
-   no-state-yet
-   [on-receive receive]
-   [to-draw draw-world]
-   [on-key update-world-on-key]
-   [on-tick update-world-on-tick (if (*testing*) 1/10 tick)]
-   [stop-when stop?]
-   [name a-name]
-   [register server] ) )
-
 ;; ** Process Command Line or Enter REPL
-
-(define *user* (my-parameter #f (or/c symbol? string?) 'user))
-(define *host* (my-parameter LOCALHOST string? 'host))
-(define *args* (my-parameter (let ( [cl (current-command-line-arguments)] )
-                                 (if (positive? (vector-length cl)) cl #f) )
-                               (or/c #f vector?) 'command-arguments ))
-
-(define (local) (*host* LOCALHOST))
-(define (ngender) (*host* "ngender.net"))
-
-(define args
-  (if (not (*args*))
-      '()
-      (command-line
-       #:once-each
-       [("-t" "--tracing") "trace everywhere" (*tracing* #t)]
-       [("-T" "--testing") "ease testing and trace everywhere" (begin (*testing* #t) (*tracing* #t))]
-       [("-H" "--host") host "server host" (*host* host)]
-       [("-N" "--ngender") "host ngender.net" (*host* "ngender.net")]
-       #:args (user . functions-to-trace)
-       (cons user functions-to-trace)
-       ) ) )
 
 ;; Prompt and then read an input line as a string
 (define (get-string-line prompt)
   (eprintf "~a: " prompt)
   (read-line) )
-
-(when (*args*)
-  (let ( [this (find-system-path 'run-file)] )
-    (when (null? args) (error this "user name required"))
-    (*user* (car args))
-    (let ( [names (map string->symbol (cdr args))] )
-      ;; warn us if name is not bound to a procedure
-      (for-each (λ (name) (unless (procedure? (eval name))
-                            (eprintf "~a: No procedure ~a to trace\n" this name) ))
-                names )
-      (when (not (null? names)) (apply tracing (cons #t names))) ) ) )
-
-(define (go #:user [user #f] #:host [host #f] #:trace [trace #f] #:test [test #f])
-  (define this 'go)
-  (parameterize ( [*user* (or user (*user*) (get-string-line "User name"))]
-                  [*host* (or host (*host*))]
-                  [*tracing* (or trace (*tracing*))]
-                  [*testing* (or test (*testing*))] )
-    (eprintf "~a user ~a host ~a tracing ~a testing ~a\n"
-             this (*user*) (*host*) (*tracing*) (*testing*) )
-    (create-world (*user*) (*host*)) ) )
-
-(if (*args*)
-    (go)
-    (let ( [yes (regexp "[yY].*")]
-           [reply (get-string-line "run world client? [y/n]")] )
-      (when (regexp-match yes reply)
-        (parameterize ( [*tracing* #t] )
-          (go) ) ) ) )

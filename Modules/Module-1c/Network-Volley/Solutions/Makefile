@@ -1,13 +1,15 @@
+# do the clean actions work??
 H = ngender.net
 D = Network-Volley
 B := bin
 vpath $B
-SRC = sprites-worlds-server.rkt sprites-worlds-client.rkt sprites-worlds-game.rkt
-BIN = sprites-worlds-server sprites-worlds-client
+SRC = sprites-worlds-server.rkt sprites-worlds-client.rkt sprites-worlds-game.rkt network-volley-game.rkt
+BIN = sprites-worlds-server sprites-worlds-client network-volley-game
 help:
 	@ echo make all -- make the things: $(BIN)
 	@ echo make sprites-worlds-server -- just build that
 	@ echo make sprites-worlds-client -- just build that
+	@ echo network-volley-game -- just build that
 	@ echo dest-copy -- copy the local sources to $H:$D
 	@ echo dest-make -- make the things in directory $D on host $H
 	@ echo dest-run -- run sprites-worlds-server on $H
@@ -16,13 +18,19 @@ sprites-worlds-server: sprites-worlds-server.rkt sprites-worlds-game.rkt
 	raco exe --gui -o $B/$@ $<
 sprites-worlds-client: sprites-worlds-client.rkt sprites-worlds-game.rkt
 	raco exe --gui -o $B/$@ $<
+network-volley-game: network-volley-game.rkt sprites-worlds-client.rkt sprites-worlds-game.rkt
+	raco exe --gui -o $B/$@ $<
 dest-copy:
 	scp $(SRC) ngender.net:$D
 dest-make:
 	ssh ngender.net make -C Network-Volley all
 dest-run:
-	ssh -X ngender.net $D/$B/sprites-worlds-server -t
+	ssh -X ngender.net $D/$B/network-volley-game -t
 dest-clean:
-	ssh $H rm -f $D/$B/sprites-worlds-server $D/$B/sprites-worlds-client
+	ssh $H  '( chdir "$B"; rm -f $(BONS) )'
 clean:
-	rm -f $B/sprites-worlds-server $B/sprites-worlds-client
+	( chdir "$B"; rm -f $(BONS) )
+clean:
+	( chdir "$B"; rm -f $(BONS) )
+clean:
+	( chdir "$B"; rm -f $(BONS) )
