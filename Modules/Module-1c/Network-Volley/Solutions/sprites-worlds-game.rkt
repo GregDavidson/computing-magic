@@ -104,13 +104,19 @@
 
 (provide
  (struct-out params-base)
- (struct-out message)
+ #;(struct-out message)
+ message message? make-message message-params
  message-world
- (struct-out welcome-message)
- make-welcome
- (struct-out goodbye-message)
- update?
- (struct-out actions) )
+ #;(struct-out welcome-message)
+ welcome-message welcome-message? welcome-message-alist
+ make-welcome ; external procedure
+ #; (struct-out goodbye--message)
+ goodbye-message goodbye-message? make-goodbye
+ #; (struct-out actions)
+  actions actions? make-actions actions-updates
+ )
+
+(provide update?)
 
 ;; ** Parameters, Tracing and Testing
 
@@ -212,6 +218,9 @@
   #:constructor-name make-params-base
   #:prefab )
 
+;; https://docs.racket-lang.org/reference/require.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._struct-out%29%29 says:
+;; if the identifier has a transformer binding of structure-type information, the accessor and mutator bindings of the super-type are not included by struct-out for export.
+
 ;; ** Client-Server message Types
 
 ;; params could be a world-id? or a struct params-base
@@ -227,8 +236,10 @@
           [else (error this "invalid message params p")] ) ) )
 
 ;; server to new world
-;; create with make-welcome function
-(struct welcome-message message (alist) #:prefab)
+;; use make-welcome function instead of internal-make-welcome
+(struct welcome-message message (alist)
+  #:constructor-name internal-make-welcome
+  #:prefab)
 
 ;; world to world, relayed by server
 (struct actions message (updates)
@@ -253,7 +264,7 @@
   (unless (world-id? n) (error this "invalid world-id ~a" n))
   (unless (symbol-key-alist? alist) (error this "invalid alist ~a" alist))
   (when (tracing this) (eprintf "~a world ~a alist ~a\n" this n alist))
-  (welcome-message n alist) )
+  (internal-make-welcome n alist) )
 
 ;; ** gvec maps ids to values just right
 

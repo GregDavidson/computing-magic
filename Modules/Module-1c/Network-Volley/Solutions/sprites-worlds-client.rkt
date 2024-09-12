@@ -13,9 +13,19 @@
 
 ;; ** What We Require
 
+;; having a little trouble with importing struct params-base
+;; so let's do it up front and the simplest way
+(require (only-in "sprites-worlds-game.rkt"
+                 params-base params-base? make-params-base params-base-world ))
+
 ;; import structure ids
 (require (only-in "sprites-worlds-game.rkt"
-                  params-base sprite-proxy ))
+                  params-base
+                  message
+                  welcome-message
+                  goodbye-message
+                  sprite-proxy
+                  actions ))
 
 ;; Racket Package Requires
 
@@ -41,7 +51,7 @@
               [sprite-proxy? (-> any/c boolean?)]
               [sprite-id? (-> any/c boolean?)]
               [world-id? (-> any/c boolean?)]
-              [params-base? (-> any/c boolean?)]
+              ;;[params-base? (-> any/c boolean?)]
               [update? (-> any/c boolean?)]
               [actions? (-> any/c boolean?)] ) )
 
@@ -96,8 +106,13 @@
               [message-world (-> message? world-id?)]
               [message-params (-> message? (or/c params-base? world-id?))]
               [welcome-message-alist (-> welcome-message? (listof (cons/c symbol? any/c)))]
-              [make-params-base (-> world-id? params-base?)]
-              [params-base-world (-> params-base? world-id?)]
+              ;; [make-params-base (-> world-id? params-base?)]
+              ;; [params-base-world (-> params-base? world-id?)]
+              ;; see comment by definition of struct params !!
+              ;; [make-params (-> world-id? string? integer? params?)]
+              ;; [params-world (-> params? world-id?)]
+              ;; [params-color (-> params? image-color?)]
+              ;; [params-falling (-> params? integer?)]
               [make-actions (-> params-base? (listof update?) actions?)]
               [actions-updates (-> actions? (listof update?))]
 
@@ -106,32 +121,84 @@
               [tracing (->* () (symbol?) boolean?)]
               [*testing* parameter?] ) )
 
+;; provide contracts for these
+(require (only-in "sprites-worlds-game.rkt"
+                  make-welcome
+                  make-goodbye ))
+
 ;; Generic alist management procedures
 (require (only-in "sprites-worlds-game.rkt" obj-alist-procs))
 
-;; ** move this where it goes!!!
-
-(struct params params-base (color falling)
-  #:constructor-name make-params
-  #:prefab )
-
-(define params-world params-base-world)
-
 ;; ** What We Provide
 
+;; *** What We Re-Export from Game
+
+;; having a little trouble with exporting
+;; struct params-base and struct params
+;; so let's do it up front and the simplest way
+(require (only-in "sprites-worlds-game.rkt"
+                 params-base params-base? make-params-base params-base-world ))
+
+(provide ;; the easy way isn't working:
+ #;(struct-out sprite-proxy)
+ ;; sprites-worlds-game.rkt:381:2: struct-out: no binding for structure-type identifier in: struct:sprite-proxy
+ ;; so we do it the explicit way
+ sprite-proxy sprite-proxy? make-sprite-proxy
+ sprite-proxy-x sprite-proxy-y sprite-proxy-dx sprite-proxy-dy
+ sprite-proxy-on-tick sprite-proxy-on-key
+ sprite-proxy-to-draw
+ ;; easy way
+ #;(struct-out message)
+ ;; explicit way
+ message message? make-message message-params
+ message-world
+ ;; easy way
+ #;(struct-out welcome-message)
+ welcome-message welcome-message? welcome-message-alist
+ make-welcome
+ ;; easy way
+ #; (struct-out goodbye--message)
+ ;; explicit way
+ goodbye-message goodbye-message? make-goodbye
+ ;; easy way
+ #; (struct-out actions)
+ ;; explicit way
+  actions actions? make-actions actions-updates
+ )
+
+(provide update?
+         make-package
+         LOCALHOST
+         command-line
+         my-parameter
+         proxy->sprite gather-actions-on-tick gather-actions-on-key)
+
+;; extra provides for testing ???
+;; move with specific game code !!! 
+(provide choose-color
+         make-ball
+         PROXY-0
+         move-sprite
+         draw-sprite
+         boost-sprite-on-key
+         DY-FALLING
+         decay )
+
+(provide 
+ params-base params-base? make-params-base params-base-world
+ params params? make-params params-world params-color params-falling )
+
 (provide *tracing* tracing *testing*)
+
+;; *** What We Provide Of Our Own
 
 (provide *user* *args*)
 
 (provide universe?
-         message?
-         welcome-message?
-         goodbye-message?
          world-sprites?
          sprite-id?
          world-id?
-         update?
-         actions? )
+         )
 
 (provide CANVAS-WIDTH
          CANVAS-HEIGHT
@@ -150,7 +217,6 @@
 ;; Can't use struct-out
 #; (struct-out sprite-proxy)  ; doesn't work!
 ;; sprites-worlds-game.rkt:331:2: struct-out: no binding for structure-type identifier in: struct:sprite-proxy
-#; (struct-out params)
 #; (struct-out message)
 #; (struct-out actions)
 
@@ -169,13 +235,27 @@
 
 (provide make-message message? message-params)
 
-(provide  welcome-message? welcome-message-alist)
+(provide welcome-message? welcome-message-alist)
 
 (provide make-actions actions? actions-updates)
 
 #; (provide register-on-tick register-on-key register-to-draw register-image-source)
 
 ;; What else to provide???
+
+;; ** Our World Parameters
+
+;; Our World Parameters give context to
+;; any procedures which are creating
+;; foreign entities, i.e. sprites which
+;; belong to other worlds
+
+(struct params params-base (color falling)
+  #:constructor-name make-params
+  #:prefab )
+
+(define params-world params-base-world)
+
 
 ;; ** Client-Side 2http Framework Types
 
@@ -471,7 +551,7 @@
 (define (no-state-yet? x) (eq? no-state-yet x))
 (struct state ( params worlds-sprites )
   #:constructor-name make-state
-  #:guard (struct-guard/c params? universe?)
+  ;; #:guard (struct-guard/c params? universe?)
   #:transparent )
 
 ;; Our tick and key events are relayed to our-sprites.
@@ -833,148 +913,6 @@
    [stop-when stop?]
    [name a-name]
    [register server] ) )
-
-;; ** Testing!
-
-;; Move this code out to a separate module
-;; during the next refactoring!!!
-
-;; *** Testing Machinery
-
-;; requirements for testing
-(require data/gvector rackunit)
-
-;; To test any side-effecting procedure, any
-;; data structure which will be side-effected
-;; must be deep copied, i.e. reallocated into
-;; fresh storage in memory.  A deep copy of an
-;; object should compare as equal? but not eq?.
-
-;; Allocate new gvectors to make a copy of
-;; directly nested gvectors.
-;; Any element that is not a gvector will
-;; not be copied, even if it's a container
-;; of some sort with a gvector inside of it.
-(define (gv-copy x)
-  (if (not (gvector? x))
-      ;; return x's value without copying it
-      x
-      ;; build a new gvector copy of x
-      (for/gvector ( [y (in-gvector x)] )
-        (gv-copy y) ) ) )
-
-;; *** Testing Params, Proxies, Sprites
-
-;; world 0, color "red", no falling
-(define params-0 (make-params 0 (choose-color 0) 0))
-
-;; default sprite created manually
-(define sprite-1 (sprite (make-ball params-0)
-                              (sprite-proxy-x PROXY-0)
-                              (sprite-proxy-y PROXY-0)
-                              (sprite-proxy-dx PROXY-0)
-                              (sprite-proxy-dy PROXY-0)
-                              move-sprite boost-sprite-on-key draw-sprite ))
-
-(define sprite-2 (struct-copy sprite sprite-1 [dy DY-FALLING]))
-
-(define proxy-2 (make-sprite-proxy 0 ; sprite id
-                                   #f ; image
-                                   #f ; x
-                                   (+ (sprite-y sprite-2) (sprite-dy sprite-2)) ; y
-                                   #f ; dx
-                                   (decay (sprite-dy sprite-2) 0) ; dy
-                                   #f #f #f #;methods ) )
-
-(check-equal? sprite-1 (proxy->sprite params-0 PROXY-0) "proxy->sprite")
-
-;; *** Testing Actions, Worlds, Universes
-
-;; an action which will drop the sprite at index 0
-(define drop-0 (make-actions params-0 (list 0)))
-
-;; an action which will update or create a sprite
-;; described by PROXY-0
-(define create-0 (make-actions params-0 (list PROXY-0)))
-
-;; an empty universe
-(define universe-0 (gvector))
-
-;; missing world
-(check-pred no-sprites-left? (make-state params-0 universe-0) "universe-0")
-
-;; an empty universe with one emptied world
-(define universe-00 (gvector (gvector #f)))
-
-(check-pred no-sprites-left? (make-state params-0 universe-00) "universe-00")
-
-;; an emptied universe with one emptied world
-(define universe-000 (gvector (gvector #f) #f))
-
-(check-pred no-sprites-left? (make-state params-0 universe-000) "universe-000")
-
-(let ( [u (gv-copy universe-000)] )
-  (check-equal? u universe-000 "gv-copy not equal?")
-  (check-not-eq? u universe-000 "gv-copy eq?") )
-
-;; a world with a single unmoving sprite
-(define world-1 (gvector sprite-1))
-
-;; a world with a single falling sprite
-(define world-2 (gvector sprite-2))
-
-;; a universe with a single default sprite
-(define universe-1 (gvector world-1))
-
-;; *** Testing update-sprites!
-
-(check-equal? universe-00
-              (let ( [u (gv-copy universe-1)] )
-                (update-sprites! drop-0 u)
-                u ) "drop-0 from universe-1" )
-
-(check-equal? universe-1
-              (let ( [u (gv-copy universe-0)] )
-                (update-sprites! create-0 u)
-                u ) "create-0 in universe-0" )
-
-(check-equal? universe-1
-              (let ( [u (gv-copy universe-00)] )
-                (update-sprites! create-0 u)
-                u ) "create-0 in univeres-00" )
-
-;; *** Testing Gathering Actions
-
-(check-false (gather-actions-on-tick params-0 world-1) "gather-actions-on-tick world-1")
-
-;; Redo test after patch removing incomplete proxies is better resolved
-#;(let ( [sp (move-sprite params-0 0 sprite-2)] )
-  (check-equal? proxy-2 sp "move-sprite")
-  (check-equal? (make-actions params-0 (list proxy-2))
-                (gather-actions-on-tick params-0 world-2) "gather-actions-on-tick world-2" ) )
-
-;; *** Testing States, Packages
-
-;; uninitialized world state is forgiven
-(check-pred (negate no-sprites-left?) no-state-yet "no-state-yet")
-
-;; a state based on universe-0
-(define state-0 (make-state params-0 universe-0))
-
-(check-pred no-sprites-left? state-0 "universe-0 in state-0")
-
-;; a state based on universe-1
-(define state-1 (make-state params-0 universe-1))
-
-(check-pred (negate no-sprites-left?) state-1 "universe-1 in state-1")
-
-;; a package based on universe-1 with
-;; mail to replicate dropping PROXY-0
-(define package-drop-0 (make-package state-0 (list drop-0)))
-
-;; a package based on universe-0 with
-;; mail to replicate materializing PROXY-0
-(define package-1 (make-package state-1 (list create-0)))
 
 ;; ** Process Command Line or Enter REPL
 
