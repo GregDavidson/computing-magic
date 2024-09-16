@@ -3,34 +3,35 @@ H = ngender.net
 D = Network-Volley
 B := bin
 vpath $B
-SRC = sprites-worlds-server.rkt sprites-worlds-client.rkt sprites-worlds-game.rkt network-volley-game.rkt
-BIN = sprites-worlds-server sprites-worlds-client network-volley-game
+SERVER = sprites-worlds-server
+GAME = network-volley-game
+LIB = sprites-worlds-game.rkt 
+LIBS = $(LIB) sprites-worlds-client.rkt
+SRC = $(SERVER).rkt $(LIBS) $(GAME).rkt
+BIN = $(SERVER) $(GAME)
 help:
 	@ echo make all -- make the things: $(BIN)
-	@ echo make sprites-worlds-server -- just build that
-	@ echo make sprites-worlds-client -- just build that
-	@ echo network-volley-game -- just build that
-	@ echo dest-copy -- copy the local sources to $H:$D
-	@ echo dest-make -- make the things in directory $D on host $H
-	@ echo dest-run -- run sprites-worlds-server on $H
-all: sprites-worlds-server sprites-worlds-client
-sprites-worlds-server: sprites-worlds-server.rkt sprites-worlds-game.rkt
+	@ echo $(SERVER) -- just build that
+	@ echo $(GAME) -- just build that
+	@ echo dest-copy -- copy sources to $H:$D
+	@ echo dest-make -- make all in directory $D on host $H
+	@ echo dest-run -- run $(SERVER) on $H
+all: $(SERVER) $(GAME)
+$(SERVER): $(SERVER).rkt $(LIB)
 	raco exe --gui -o $B/$@ $<
-sprites-worlds-client: sprites-worlds-client.rkt sprites-worlds-game.rkt
-	raco exe --gui -o $B/$@ $<
-network-volley-game: network-volley-game.rkt sprites-worlds-client.rkt sprites-worlds-game.rkt
+$(GAME): $(GAME).rkt $(LIBS)
 	raco exe --gui -o $B/$@ $<
 dest-copy:
 	scp $(SRC) ngender.net:$D
 dest-make:
 	ssh ngender.net make -C Network-Volley all
 dest-run:
-	ssh -X ngender.net $D/$B/network-volley-game -t
+	ssh -X ngender.net $D/$B/$(SERVER) -t
 dest-clean:
-	ssh $H  '( chdir "$B"; rm -f $(BONS) )'
+	ssh $H  '( 'cd' "$B"; rm -f $(BINS) )'
 clean:
-	( chdir "$B"; rm -f $(BONS) )
+	( 'cd' "$B"; rm -f $(BINS) )
 clean:
-	( chdir "$B"; rm -f $(BONS) )
+	( 'cd' "$B"; rm -f $(BINS) )
 clean:
-	( chdir "$B"; rm -f $(BONS) )
+	( 'cd' "$B"; rm -f $(BINS) )
