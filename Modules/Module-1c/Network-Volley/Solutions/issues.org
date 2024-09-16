@@ -1,5 +1,21 @@
 * Issues
 
+** Finishing up Refactoring
+
+- Review names of files
+  - sprites-framework.rkt sprites-client-framework.rkt
+  - universe-server.rkt network-volley-game.rkt
+  - sprites-framework.org sprites-client-framework.org
+  - universe-server.org network-volley-game.org
+- Delete any comments no longer necessary
+- Put provides forms in parallel tree structure with definitions
+- What command-line code can go in the framework?
+- Somehow move ball and SPRITE-0 code into network-volley-game.rkt
+- Can we move the state code into network-volley-game.rkt ??
+- How can we make everything in the client-framework extensible?
+  - Extensible structures
+  - Extensible/overridable procedures
+
 ** Giving source files their own REPL
 
 Add this to the top of the source file:
