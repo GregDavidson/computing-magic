@@ -6,13 +6,16 @@
 
 ;; ** Requires and Provides
 
-(require racket/sequence
+(require 2htdp/image
+         2htdp/universe
+         racket/sequence
+         racket/contract/base
+         racket/contract/region
          "sprites-worlds-client.rkt" )
 
 ;; for testing we provide
 (provide PROXY-0
          move-sprite
-         draw-sprite
          boost-sprite-on-key
          DY-FALLING
          decay )
@@ -139,19 +142,7 @@
     [else '()] ) )
 (on-key-register! 'boost-sprite-on-key boost-sprite-on-key)
 
-;; ** big-bang callback procedures
 
-;; Should we send the universe server
-;; a message before we just detach??
-(define (no-sprites-left? world-state)
-  (define this 'no-sprites-left?)
-  (and (not (no-state-yet? world-state))
-       (let* ( [universe (state-worlds-sprites world-state)]
-               [params (state-params world-state)]
-               [world-id (params-world params)]
-               [sprites (universe-world universe world-id)] )
-         (or (not sprites) ; our world is missing entirely!
-             (not (sequence-ormap sprite? (world-sprites sprites))) ) ) ) )
 
 ; String -> WorldState
 ; create a world, hook it up to a server and start it running
@@ -165,9 +156,9 @@
   (when (tracing this) (eprintf "~a ~a" this a-name))
   (big-bang
    no-state-yet
-   [on-receive receive]
    [to-draw draw-world]
    [on-key update-world-on-key]
+   [on-receive receive]
    [on-tick update-world-on-tick (if (*testing*) 1/10 tick)]
    [stop-when stop?]
    [name a-name]
@@ -177,36 +168,18 @@
 
 (define *user* (my-parameter #f (or/c symbol? string?) 'user))
 (define *host* (my-parameter LOCALHOST string? 'host))
-(define *args* (my-parameter (let ( [cl (current-command-line-arguments)] )
-                                 (if (positive? (vector-length cl)) cl #f) )
-                               (or/c #f vector?) 'command-arguments ))
 
 (define (local) (*host* LOCALHOST))
 (define (ngender) (*host* "ngender.net"))
 
-(define args
-  (if (not (*args*))
-      '()
-      (command-line
-       #:once-each
-       [("-t" "--tracing") "trace everywhere" (*tracing* #t)]
-       [("-T" "--testing") "ease testing and trace everywhere" (begin (*testing* #t) (*tracing* #t))]
-       [("-H" "--host") host "server host" (*host* host)]
-       [("-N" "--ngender") "host ngender.net" (*host* "ngender.net")]
-       #:args (user . functions-to-trace)
-       (cons user functions-to-trace)
-       ) ) )
-
-(when (*args*)
-  (let ( [this (find-system-path 'run-file)] )
-    (when (null? args) (error this "user name required"))
-    (*user* (car args))
-    (let ( [names (map string->symbol (cdr args))] )
-      ;; warn us if name is not bound to a procedure
-      (for-each (λ (name) (unless (procedure? (eval name))
-                            (eprintf "~a: No procedure ~a to trace\n" this name) ))
-                names )
-      (when (not (null? names)) (apply tracing (cons #t names))) ) ) )
+(command-line
+ #:once-each
+ [("-t" "--tracing") "trace everywhere" (*tracing* #t)]
+ [("-T" "--testing") "ease testing and trace everywhere"
+                     (begin (*testing* #t) (*tracing* #t)) ]
+ [("-H" "--host") host "server host" (*host* host)]
+ [("-N" "--ngender") "host ngender.net" (*host* "ngender.net")]
+ #:args (user . proc-names) (begin (*user user) (trace-procs proc-names)) )
 
 (define (go #:user [user #f] #:host [host #f] #:trace [trace #f] #:test [test #f])
   (define this 'go)
@@ -218,7 +191,7 @@
              this (*user*) (*host*) (*tracing*) (*testing*) )
     (create-world (*user*) (*host*)) ) )
 
-(if (*args*)
+(if (program-is-standalone?)
     (go)
     (let ( [yes (regexp "[yY].*")]
            [reply (get-string-line "run world client? [y/n]")] )

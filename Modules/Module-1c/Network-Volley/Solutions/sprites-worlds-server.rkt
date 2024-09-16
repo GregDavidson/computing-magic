@@ -42,6 +42,9 @@
               [tracing (->* () (symbol?) boolean?)]
               [*testing* parameter?] ) )
 
+(require (only-in "sprites-worlds-game.rkt"
+                  program-name program-is-standalone? get-string-line ))
+
  ;; ** Our Goal: Write a Very Generic World Server
 
 ;; The goal is to have this Server know as little
@@ -154,39 +157,17 @@
 
 ;; ** Process Command Line or Enter REPL
 
-(define *args* (my-parameter (let ( [cl (current-command-line-arguments)] )
-                                 (if (positive? (vector-length cl)) cl #f) )
-                               (or/c #f vector?) 'command-arguments ))
+(command-line
+ #:once-each
+ [("-t" "--tracing") "trace everywhere" (*tracing* #t)]
+ [("-T" "--testing") "make easier to test" (begin (*tracing* #t) (*testing* #t))]
+ #:args procs-to-trace
+ (trace-procs procs-to-tracep) )
 
-(define args
-  (if (not (*args*))
-      '()
-      (command-line
-       #:once-each
-       [("-t" "--tracing") "trace everywhere" (*tracing* #t)]
-       [("-T" "--testing") "make easier to test" (begin (*tracing* #t) (*testing* #t))]
-       #:args functions-to-trace
-       functions-to-trace ) ) )
-
-(when (not (null? args))
-  (let ( [this (find-system-path 'run-file)]
-         [names (map string->symbol args)] )
-    ;; warn us if name is not bound to a procedure
-    (for-each (λ (name) (unless (procedure? (eval name))
-                          (eprintf "~a: No procedure ~a to trace\n" this name) ))
-              names )
-    (*tracing* names) ) )
-
-;; Prompt and then read an input line as a string
-(define (get-string-line prompt)
-  (eprintf "~a: " prompt)
-  (read-line) )
-
-(if *args*
+(if (program-is-standalone?)
     (go)
     (let ( [yes (regexp "[[:space:]]*[yY].*")]
            [reply (get-string-line "run universe server? [y/n]" )] )
       (when (regexp-match yes reply)
         (parameterize ( [*tracing* #t] )
           (go) ) ) ) )
-

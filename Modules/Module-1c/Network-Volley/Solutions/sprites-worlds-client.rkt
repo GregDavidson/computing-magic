@@ -3,15 +3,17 @@
 ;; * Multiple Worlds Multiple Sprites Client
 
 ;; See sprites-worlds-game.org for information about the game.
+;; - change this name!!
 
-;; ** Packages, Game Type Predicates, struct sprite, more Game Requires
-
-;; The file sprites-words-games.rkt provides
-;; - inter-client (inter-world) protocol information
-;; - including a sprite-proxy structure
-;; - You'll want to look it over carefully!
+;; The file sprites-words-client.rkt provides
+;; - a Framework for writing 2D Game Clients
+;;   based on Worlds of Sprites
 
 ;; ** What We Require
+
+;; (struct-out) forms don't always do the job so we
+;; sometimes comment them out and follow them with
+;; the individual exports.
 
 ;; having a little trouble with importing struct params-base
 ;; so let's do it up front and the simplest way
@@ -131,6 +133,11 @@
 
 ;; ** What We Provide
 
+;; (struct-out) forms don't always do the job so we
+;; sometimes comment them out and follow them with
+;; the individual exports along with related bindings.
+
+
 ;; *** What We Re-Export from Game
 
 ;; having a little trouble with exporting
@@ -167,7 +174,7 @@
  )
 
 ;; 2htdp Re-Exports
-(provide empty-scene
+#;(provide empty-scene
          image-width
          image-height
          make-package
@@ -204,7 +211,7 @@
          mutate-sprite-from-proxy!
          no-state-yet
          no-state-yet?
-         (struct-out state)
+         (struct-out client-state)
          update-sprites!
          receive )
 
@@ -233,15 +240,16 @@
 
 (provide make-actions actions? actions-updates)
 
-(provide make-ball
-         on-tick-register!
-         on-key-register!
-         image-register!
-         )
+(provide on-tick-register! on-key-register! image-register!)
+
+(provide receive no-sprites-left? draw-world update-world-on-key update-world-on-tick)
 
 (provide get-string-line)
 
 ;; What else to provide???
+
+
+;; * What We Define
 
 ;; ** Our World Parameters
 
@@ -549,7 +557,7 @@
 ;;      not just our sprites!
 (define no-state-yet #f)
 (define (no-state-yet? x) (eq? no-state-yet x))
-(struct state ( params worlds-sprites )
+(struct client-state ( params worlds-sprites )
   #:constructor-name make-state
   ;; #:guard (struct-guard/c params? universe?)
   #:transparent )
@@ -615,8 +623,8 @@
 (define (do-receive world-state mail)
   (define this 'receive)
   (if world-state
-      (let ( [params (state-params world-state)]
-             [universe (state-worlds-sprites world-state)] )
+      (let ( [params (client-state-params world-state)]
+             [universe (client-state-worlds-sprites world-state)] )
         (cond
           [(goodbye-message? mail)
            (universe-drop! universe (message-world mail)) ]
@@ -778,8 +786,8 @@
   (define this 'update-world-on-tick)
   (if (no-state-yet? world-state)
       world-state  ; we've not been welcomed yet
-      (let ( [universe (state-worlds-sprites world-state)]
-             [our-params (state-params world-state)] )
+      (let ( [universe (client-state-worlds-sprites world-state)]
+             [our-params (client-state-params world-state)] )
         (let* ( [our-world-id (params-world our-params)]
                 [our-sprites (universe-world universe our-world-id)]
                 [actions (gather-actions-on-tick our-params our-sprites)] )
@@ -838,8 +846,8 @@
   (define this 'update-world-on-key)
   (if (no-state-yet? world-state)
       world-state
-      (let ( [universe (state-worlds-sprites world-state)]
-             [our-params (state-params world-state)] )
+      (let ( [universe (client-state-worlds-sprites world-state)]
+             [our-params (client-state-params world-state)] )
         (if (not (and universe our-params))
             world-state ; we've not be welcomed yet
             (let* ( [our-world-id (params-world our-params)]
@@ -880,11 +888,16 @@
                         (world-sprites w) ) )
        EMPTY-CANVAS ; start with this canvas
        ;; generate a sequence of all worlds in our universe
-       (universe-worlds (state-worlds-sprites world-state)) ) ) )
+       (universe-worlds (client-state-worlds-sprites world-state)) ) ) )
 
-;; ** Process Command Line or Enter REPL
-
-;; Prompt and then read an input line as a string
-(define (get-string-line prompt)
-  (eprintf "~a: " prompt)
-  (read-line) )
+;; Should we send the universe server
+;; a message before we just detach??
+(define (no-sprites-left? world-state)
+  (define this 'no-sprites-left?)
+  (and (not (no-state-yet? world-state))
+       (let* ( [universe (client-state-worlds-sprites world-state)]
+               [params (client-state-params world-state)]
+               [world-id (params-world params)]
+               [sprites (universe-world universe world-id)] )
+         (or (not sprites) ; our world is missing entirely!
+             (not (sequence-ormap sprite? (world-sprites sprites))) ) ) ) )

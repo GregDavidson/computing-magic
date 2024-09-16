@@ -394,3 +394,36 @@
 ;; a sprite-id indicating a sprite to be dropped
 ;; a sprite-proxy used to create or mutate a sprite
 (define (update? u) (or (sprite-id? u) (sprite-proxy? u)))
+
+;; ** Program, Interactive I/O
+
+(require raco/command-name)
+
+(provide program-name)
+
+(provide program-is-standalone?)
+
+(provide get-string-line)
+
+(provide trace-procs)
+
+(define program-name short-program+command-name)
+
+;; is this code running as a standalone program,
+;; i.e. not under DrRacket?
+;; Are there other non-standalone possibilities??
+(define (program-is-standalone?)
+  (not (string=? "drracket" (string-downcase (program-name)))) )
+
+;; Prompt and then read an input line as a string
+(define (get-string-line prompt)
+  (eprintf "~a: " prompt)
+  (read-line) )
+
+(define (trace-procs names)
+  (let ( [this (program-name)] )
+    ;; warn us if name is not bound to a procedure
+    (for-each (λ (name)
+                (if (procedure? (eval (string->symbol name)))
+                    (tracing name)
+                    (eprintf "~a: No procedure ~a to trace\n" this name) ) ) ) ) )
