@@ -1,4 +1,4 @@
-;; (setq-local racket-repl-buffer-name "*sprites-worlds-server-repl*")
+;; -*- mode: racket; racket-repl-buffer-name: "*sprites-worlds-server-repl*"; -*-
 #lang racket/base
 
 ;; * Multiple Worlds Universe Server
@@ -43,7 +43,8 @@
               [*testing* parameter?] ) )
 
 (require (only-in "sprites-worlds-game.rkt"
-                  program-name program-is-standalone? get-string-line ))
+                  program-name program-is-standalone?
+                  trace-procs get-string-line ))
 
  ;; ** Our Goal: Write a Very Generic World Server
 
@@ -155,19 +156,20 @@
             [on-msg handle-world-msg]
             [on-disconnect drop-world] ) )
 
-;; ** Process Command Line or Enter REPL
-
-(command-line
- #:once-each
- [("-t" "--tracing") "trace everywhere" (*tracing* #t)]
- [("-T" "--testing") "make easier to test" (begin (*tracing* #t) (*testing* #t))]
- #:args procs-to-trace
- (trace-procs procs-to-tracep) )
+;; ** Run as Command or within REPL
 
 (if (program-is-standalone?)
-    (go)
-    (let ( [yes (regexp "[[:space:]]*[yY].*")]
+    (begin
+      (command-line
+       #:once-each
+       [("-t" "--tracing") "trace everywhere" (*tracing* #t)]
+       [("-T" "--testing") "make easier to test" (begin (*tracing* #t) (*testing* #t))]
+       #:args procs-to-trace
+       (trace-procs procs-to-trace) )
+      (go) )
+    ;; we should be at a REPL
+    (let ( [yes-pattern (regexp "^ *[yY]")]
            [reply (get-string-line "run universe server? [y/n]" )] )
-      (when (regexp-match yes reply)
+      (when (regexp-match yes-pattern reply)
         (parameterize ( [*tracing* #t] )
           (go) ) ) ) )

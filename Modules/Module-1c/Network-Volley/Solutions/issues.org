@@ -2,19 +2,59 @@
 
 ** Finishing up Refactoring
 
+- params need to be more like clojures
+      - proxies for procedures needing world-specific parameters could provide a
+        form with the procedure name and the needed parameters
+        - this could be turned into a clojure
 - Review names of files
-  - sprites-framework.rkt sprites-client-framework.rkt
-  - universe-server.rkt network-volley-game.rkt
-  - sprites-framework.org sprites-client-framework.org
-  - universe-server.org network-volley-game.org
+      - sprites-framework.rkt sprites-client-framework.rkt
+      - universe-server.rkt network-volley-game.rkt
+      - sprites-framework.org sprites-client-framework.org
+      - universe-server.org network-volley-game.org
 - Delete any comments no longer necessary
 - Put provides forms in parallel tree structure with definitions
 - What command-line code can go in the framework?
 - Somehow move ball and SPRITE-0 code into network-volley-game.rkt
 - Can we move the state code into network-volley-game.rkt ??
 - How can we make everything in the client-framework extensible?
-  - Extensible structures
-  - Extensible/overridable procedures
+      - Extensible structures
+      - Extensible/overridable procedures
+
+** Desirable Renamings
+
+- world-sprites? --> world?
+- make-world-sprites --> make-world
+- world-sprite-set! --> world-sprites-set! or world-set!
+- world-sprite-drop! --> world-sprites-drop! or world-drop!
+
+** Import/Export Issues
+
+(struct-out) forms don't export all components of extended structures.
+- Obtaining the structure id binding via (struct-out) seems to sometimes be
+  unreliable even with simple structures.
+
+Example error message:
+#+begin_example
+https://docs.racket-lang.org/reference/require.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._struct-out%29%29 says:
+if the identifier has a transformer binding of structure-type information, the accessor and mutator bindings of the super-type are not included by struct-out for export.
+#+end_example
+
+;; *** Client-Server message Types
+
+There is no corresponding (struct-in) form or equivalent.
+
+Any structure predicates needed by (contract-in) forms must be required earlier
+in the top-level definitions of the module.
+
+Resulting Policy:
+- Use (struct-out) forms on simple structures which are not going to be extended
+  in an importing module.
+- Explicitly (provide) all components of a structure type required by other modules.
+      - Document such with a commented-out (struct-out) form.  Perhaps someday it will work!
+- Explicitly (require) all required components of a structure type
+      - Require all structure predicates in a single earlier place.
+      - Document the others with a commented-out (struct-in) form. Perhaps
+        someday it will work! (Would you like to make it work??)
 
 ** Giving source files their own REPL
 
@@ -25,6 +65,8 @@ Add this to the top of the source file:
 BEFORE using the shared REPL, run the emacs command
 - M-x eval-last-sexp
 - with point at the end of that line.
+
+Surely there's a better way to accomplish this??
 
 ** How to interpret action messages
 

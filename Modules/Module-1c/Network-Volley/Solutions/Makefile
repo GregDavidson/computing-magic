@@ -5,7 +5,7 @@ B := bin
 vpath $B
 SERVER = sprites-worlds-server
 GAME = network-volley-game
-LIB = sprites-worlds-game.rkt 
+LIB = sprites-worlds-game.rkt
 LIBS = $(LIB) sprites-worlds-client.rkt
 SRC = $(SERVER).rkt $(LIBS) $(GAME).rkt
 BIN = $(SERVER) $(GAME)
@@ -29,9 +29,5 @@ dest-run:
 	ssh -X ngender.net $D/$B/$(SERVER) -t
 dest-clean:
 	ssh $H  '( 'cd' "$B"; rm -f $(BINS) )'
-clean:
-	( 'cd' "$B"; rm -f $(BINS) )
-clean:
-	( 'cd' "$B"; rm -f $(BINS) )
 clean:
 	( 'cd' "$B"; rm -f $(BINS) )

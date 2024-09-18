@@ -1,4 +1,4 @@
-;; (setq-local racket-repl-buffer-name "*sprites-worlds-client-repl*")
+;; -*- mode: racket; racket-repl-buffer-name: "*sprites-worlds-client-repl*"; -*-
 #lang racket/base
 ;; * Multiple Worlds Multiple Sprites Client
 
@@ -11,28 +11,12 @@
 
 ;; ** What We Require
 
-;; (struct-out) forms don't always do the job so we
-;; sometimes comment them out and follow them with
-;; the individual exports.
-
-;; having a little trouble with importing struct params-base
-;; so let's do it up front and the simplest way
-(require (only-in "sprites-worlds-game.rkt"
-                 params-base params-base? make-params-base params-base-world ))
-
-;; import structure ids
-(require (only-in "sprites-worlds-game.rkt"
-                  params-base
-                  message
-                  welcome-message
-                  goodbye-message
-                  sprite-proxy
-                  actions ))
-
 ;; Racket Package Requires
 
-(require 2htdp/image
-         2htdp/universe
+(require (only-in 2htdp/image
+                  image? image-color? place-image image-height image-width
+                  bitmap/file )
+         (only-in 2htdp/universe make-package)
          racket/cmdline
          racket/contract/base
          racket/contract/region
@@ -41,7 +25,12 @@
          racket/math
          racket/function )
 
-;; Application Package Type Predicates
+;; Require Structure IDs
+
+(require (only-in "sprites-worlds-game.rkt"
+                  sprite-proxy params-base message ))
+
+;; Require Type Predicates
 
 (require
  (contract-in "sprites-worlds-game.rkt"
@@ -53,11 +42,14 @@
               [sprite-proxy? (-> any/c boolean?)]
               [sprite-id? (-> any/c boolean?)]
               [world-id? (-> any/c boolean?)]
-              ;;[params-base? (-> any/c boolean?)]
+              [params-base? (-> any/c boolean?)]
               [update? (-> any/c boolean?)]
               [actions? (-> any/c boolean?)] ) )
 
-;; struct sprite is here for its type predicate
+;; ** struct sprite
+
+;; struct sprite needs to be here before the contract-in expressions needing its
+;; type predicate
 
 ;; Each distinct sprite will have a unique key
 (struct/contract
@@ -69,7 +61,7 @@
            [to-draw (or/c procedure? #f)] )
   #:mutable #:transparent )
 
-;; Application Package Non-Type Requires
+;; Non-Type Requires
 
 (require
  (contract-in "sprites-worlds-game.rkt"
@@ -107,132 +99,78 @@
               [make-message (-> (or/c  params-base? world-id?) message?)]
               [message-world (-> message? world-id?)]
               [message-params (-> message? (or/c params-base? world-id?))]
+              [make-welcome (-> world-id? (listof (cons/c symbol? any/c)) welcome-message?)]
               [welcome-message-alist (-> welcome-message? (listof (cons/c symbol? any/c)))]
-              ;; [make-params-base (-> world-id? params-base?)]
-              ;; [params-base-world (-> params-base? world-id?)]
-              ;; see comment by definition of struct params !!
-              ;; [make-params (-> world-id? string? integer? params?)]
-              ;; [params-world (-> params? world-id?)]
-              ;; [params-color (-> params? image-color?)]
-              ;; [params-falling (-> params? integer?)]
+              [make-goodbye (-> (or/c  params-base? world-id?) goodbye-message?)]
+              [make-params-base (-> world-id? params-base?)]
+              [params-base-world (-> params-base? world-id?)]
               [make-actions (-> params-base? (listof update?) actions?)]
               [actions-updates (-> actions? (listof update?))]
 
               [my-parameter (->* (any/c procedure? symbol?) ((or/c #f symbol? string?)) parameter?)]
               [*tracing* parameter?]
               [tracing (->* () (symbol?) boolean?)]
-              [*testing* parameter?] ) )
+              [*testing* parameter?]
+              [trace-procs (-> (listof string?) void)]
+              [get-string-line (-> string? string?)]
+              [program-is-standalone? (-> boolean?)] ) )
 
-;; provide contracts for these
-(require (only-in "sprites-worlds-game.rkt"
-                  make-welcome
-                  make-goodbye ))
-
-;; Generic alist management procedures
+;; Returns 3 alist management procedures
+;; TODO Write a contract for this!
 (require (only-in "sprites-worlds-game.rkt" obj-alist-procs))
 
 ;; ** What We Provide
 
-;; (struct-out) forms don't always do the job so we
-;; sometimes comment them out and follow them with
-;; the individual exports along with related bindings.
-
-
 ;; *** What We Re-Export from Game
 
-;; having a little trouble with exporting
-;; struct params-base and struct params
-;; so let's do it up front and the simplest way
-(require (only-in "sprites-worlds-game.rkt"
-                 params-base params-base? make-params-base params-base-world ))
-
-(provide ;; the easy way isn't working:
+(provide
  #;(struct-out sprite-proxy)
- ;; sprites-worlds-game.rkt:381:2: struct-out: no binding for structure-type identifier in: struct:sprite-proxy
- ;; so we do it the explicit way
  sprite-proxy sprite-proxy? make-sprite-proxy
  sprite-proxy-x sprite-proxy-y sprite-proxy-dx sprite-proxy-dy
  sprite-proxy-on-tick sprite-proxy-on-key
  sprite-proxy-to-draw
- ;; easy way
  #;(struct-out message)
- ;; explicit way
  message message? make-message message-params
  message-world
- ;; easy way
  #;(struct-out welcome-message)
- welcome-message welcome-message? welcome-message-alist
+ welcome-message? welcome-message-alist
  make-welcome
- ;; easy way
  #; (struct-out goodbye--message)
- ;; explicit way
- goodbye-message goodbye-message? make-goodbye
- ;; easy way
- #; (struct-out actions)
- ;; explicit way
-  actions actions? make-actions actions-updates
+ goodbye-message? make-goodbye
  )
 
-;; 2htdp Re-Exports
-#;(provide empty-scene
-         image-width
-         image-height
-         make-package
-         key=?
-         LOCALHOST
-         big-bang )
+(provide universe?
+         make-universe
+         world-sprites?
+         sprite-id?
+         world-sprite-drop!
+         world-id?
+         world-id->string
+         )
 
-;; separate into Re-Exports vs. exports of local defines
 (provide world-sprites
          command-line
          my-parameter
          proxy->sprite gather-actions-on-tick gather-actions-on-key
          make-proxy
-         universe-world
-         choose-color )
+         universe-world )
 
-(provide 
- params-base params-base? make-params-base params-base-world
- params params? make-params params-world params-color params-falling )
-
-(provide *tracing* tracing *testing*)
-
-;; *** What We Provide Of Our Own
-
-(provide universe?
-         world-sprites?
-         sprite-id?
-         world-id?
-         )
-
-(provide CANVAS-WIDTH
-         CANVAS-HEIGHT
-         (struct-out sprite)
-         mutate-sprite-from-proxy!
-         no-state-yet
-         no-state-yet?
-         (struct-out client-state)
-         update-sprites!
-         receive )
-
-;; Can't use struct-out
-#; (struct-out sprite-proxy)  ; doesn't work!
-;; sprites-worlds-game.rkt:331:2: struct-out: no binding for structure-type identifier in: struct:sprite-proxy
-#; (struct-out message)
-#; (struct-out actions)
-
-(provide sprite-proxy
+(provide #;(struct-out sprite-proxy)
          sprite-proxy?
          make-sprite-proxy
-         sprite-proxy-sprite 
+         sprite-proxy-sprite
          sprite-proxy-image
-         sprite-proxy-x 
-         sprite-proxy-y 
-         sprite-proxy-dx 
-         sprite-proxy-dy 
+         sprite-proxy-x
+         sprite-proxy-y
+         sprite-proxy-dx
+         sprite-proxy-dy
          sprite-proxy-on-tick
-         sprite-proxy-on-key 
+         sprite-proxy-on-key
          sprite-proxy-to-draw )
+
+(provide
+ params-base params-base? make-params-base params-base-world )
+;; params params? make-params params-world params-color params-falling )
 
 (provide make-message message? message-params)
 
@@ -240,30 +178,34 @@
 
 (provide make-actions actions? actions-updates)
 
+(provide *tracing* tracing *testing* trace-procs)
+
+(provide get-string-line program-is-standalone?)
+
+;; *** What We Provide Of Our Own
+
+(provide (struct-out sprite)
+         mutate-sprite-from-proxy!
+         no-state-yet
+         no-state-yet?
+         (struct-out client-state)
+         update-sprites!
+         choose-color
+         )
+
 (provide on-tick-register! on-key-register! image-register!)
 
-(provide receive no-sprites-left? draw-world update-world-on-key update-world-on-tick)
+(provide draw-world update-world-on-key update-world-on-tick)
 
-(provide get-string-line)
-
-;; What else to provide???
-
+(provide half)
 
 ;; * What We Define
 
-;; ** Our World Parameters
+;; ** Miscellanea
 
-;; Our World Parameters give context to
-;; any procedures which are creating
-;; foreign entities, i.e. sprites which
-;; belong to other worlds
-
-(struct params params-base (color falling)
-  #:constructor-name make-params
-  #:prefab )
-
-(define params-world params-base-world)
-
+;; Intended for pixel sizes.  Application should
+;; try to make them even numbers!
+(define (half n) (quotient n 2))
 
 ;; ** Client-Side 2http Framework Types
 
@@ -278,43 +220,7 @@
 ;;   - a serializable symbolic expression to send to the Server
 ;;     - 2http serialization requirements are quite limited
 
-;; ** Sizes, Constants and Colors
-
-;; *** Our Canvas
-
-(define CANVAS-WIDTH 400)               ; pixels
-(define CANVAS-HEIGHT 300)              ; pixels
-(define EMPTY-CANVAS (empty-scene CANVAS-WIDTH CANVAS-HEIGHT))
-
-;; *** Ball Sizes
-
-(define (half n) (quotient n 2))
-
-(define BALL-RADIUS 20)
-(define BALL-MARGIN 1)
-(define BALL-SIZE (* 2 (+ BALL-RADIUS BALL-MARGIN)))
-(define BALL-TEXT-SIZE (half BALL-RADIUS))
-
-;; *** Ball Accelerations
-
-(define DX-BOOST 6)
-(define DY-BOOST 6)
-(define DY-FALLING -4) ; disabled when *testing*
-
-;; *** a proxy template for our first sprite
-
-;; This will be copied when we receive our welcome message
-;; after we connect to the universe server.  Some of the
-;; field values may be changed in the copy.  This structure
-;; will also be used in testing.
-
-(define PROXY-0  (make-sprite-proxy
-                  0 'make-ball ; sprite-id image-function
-                  (half CANVAS-WIDTH) (- CANVAS-HEIGHT BALL-SIZE)
-                  0 0 ; dx dy
-                  'move-sprite 'boost-sprite-on-key 'draw-sprite ))
-
-;; *** Managing Colors
+;; ** Managing Colors
 
 ;; Choose colors which will, for any number of clients, be maximally
 ;; distinguishable. Uses may have color blindness so be use additional methods
@@ -428,19 +334,19 @@
 
 ;; Given a path or symbol as a key, return the associated image
 ;; and ensure it's registered.
-(define (get-image params key)
+(define (get-image params key #:fallback [fallback #f])
   (define this 'get-image-key)
-  (let* ( [fallback ; better than throwing an error??
-           (λ ()
-             (eprintf "~a key ~a failed, substituting ball\n" this key)
-             (make-ball params) ) ]
-          [found (image-key->val key)]
-          [bitmap/file/cache
-           (λ (path)
-             (with-handlers ( [exn:fail? (λ (exn) (fallback))] )
-               (let ( [image (bitmap/file path)] )
-                 (image-register! path image)
-                 image ) ) ) ] )
+  (let ( [found (image-key->val key)]
+         [bitmap/file/cache
+          (λ (path)
+            (with-handlers ( [exn:fail?
+                              (λ (exn) (if fallback
+                                           (fallback)
+                                           (error this "no image for key ~a" key)
+                                           )) ] )
+              (let ( [image (bitmap/file path)] )
+                (image-register! path image)
+                image ) ) ) ] )
     (cond [(image? found) found]
           [(string? found) (bitmap/file/cache found)]
           [(string? key) (bitmap/file/cache key)]
@@ -615,142 +521,7 @@
              [else (error this "unknown update ~a" update)] ) )
          updates ) ) )
 
-;; Given
-;; - the state of the world
-;; - action mail from the server
-;; Return an updated WorldState
-;; - possibly including Return Mail
-(define (do-receive world-state mail)
-  (define this 'receive)
-  (if world-state
-      (let ( [params (client-state-params world-state)]
-             [universe (client-state-worlds-sprites world-state)] )
-        (cond
-          [(goodbye-message? mail)
-           (universe-drop! universe (message-world mail)) ]
-          [(actions? mail) (update-sprites! mail universe)]
-          [else (error this "bad mail ~a for state ~a" mail world-state)] )
-        ;; return world-state after mutation by update-sprites!
-        world-state )
-      (begin
-        (unless (welcome-message? mail)
-          (error this "expected welcome instead of ~a" mail) )
-        ;; build our state, our world and our first sprite
-        (let* ( [new-world-id (message-world mail)]
-                [new-color (choose-color new-world-id)]
-                [new-params (make-params new-world-id
-                                         new-color
-                                         (if (*testing*) 0 DY-FALLING) )] )
-          #;(when (tracing this)
-              (eprintf "~a world ~a color ~a\n" this new-world-id new-color) )
-          (let* (
-                 ;; create a proxy to represent our first sprite
-                 [new-sprite-proxy
-                  (struct-copy sprite-proxy PROXY-0 [dx (params-falling new-params)]) ]
-                 ;; put it in an actions message
-                 [new-actions (make-actions new-params (list new-sprite-proxy))]
-                 ;; to perform on our new universe
-                 [new-universe (make-universe (+ 1 new-world-id))] )
-            ;; update locally
-            #;(when (tracing this) (eprintf "~a actions ~a\n" this new-actions))
-            (update-sprites! new-actions new-universe)
-            #;(when (tracing this)
-              (eprintf "~a new params ~a new actions ~a new universe ~a\n" this new-params new-actions new-universe) )
-            ;; return new state, with mail
-            (make-package (make-state new-params new-universe) new-actions) ) ) ) ) )
-
-(define (receive world-state mail)
-  (define this 'receive)
-  (when (tracing this) (eprintf "~a mail ~a for world-state ~a\n" this mail world-state))
-  (let ( [result (do-receive world-state mail)] )
-    (when (tracing this) (eprintf "~a returning ~a\n" this result))
-    result ) )
-
-;; ** Action Procedures and Functions
-
-;; decay moves a value closer to its target value,
-;; i.e. it makes boosts decay.
-(define (decay value target [step 1])
-  (cond [(> value target) (- value step)]
-        [(< value target) (+ value step)]
-        [else value] ) )
-
-;; Why add text to the ball? 10% of humans are color blind!
-;; PRACTICE: Add high-contrast patterns to supplement color
-;; everywhere color is being used to distinguish visual elements. 
-;; EXERCISE: Use the provided name instead (or in addition to)
-;; the id.
-
-(define (make-ball params)
-  (define this 'make-ball)
-  (let ( [color (params-color params)]
-         [id (params-world params)] )
-    (when (tracing this) (eprintf "~a id ~a color ~a\n" this id color))
-    (let ( [image (overlay (text (world-id->string id) BALL-TEXT-SIZE 'black)
-                           (circle BALL-RADIUS "solid" color) )] )
-      image ) ) )
-(image-register! 'make-ball make-ball)
-
-(define (on-canvas? image x y)
-  (and (< 0 x (- CANVAS-WIDTH (image-width image)))
-       (< 0 y (- CANVAS-HEIGHT (image-height image))) ) )
-
-;; ** Sprite Action Methods
-
-;; params sprite -> ActionList
-;; update the sprite's coordinates;
-;; drop it if it's no longer on-canvas;
-;; decay any velocity boosts
-(define (move-sprite params sprite-id s)
-  (let ( [image (sprite-image s)]
-         [x (sprite-x s)] [y (sprite-y s)]
-         [dx (sprite-dx s)] [dy (sprite-dy s)] )
-    (let ( [xx (+ x dx)] [yy (+ y dy)] )
-      (if (not (on-canvas? image xx yy))
-          sprite-id                     ; drop
-          (let ( [dxx (decay dx 0)] [dyy (decay dy (params-falling params))] )
-            (if (and (= x xx) (= y yy) (= dx dxx) (= dy dyy))
-                '() ; nothing changed
-                (make-proxy sprite-id s #:x xx #:y yy #:dx dxx #:dy dyy) ) ) ) ) ) )
-(on-tick-register! 'move-sprite move-sprite)
-
-;; Called by boost-sprite-on-key to do the work
-(define (boost-sprite sprite-id s key ddx ddy)
-  (define this 'boost-sprite)
-  (when (tracing this) (eprintf "~a boosting sprite ~a ~a\n" this sprite-id key))
-  (if (and (zero? ddx) (zero? ddy))
-      '()
-      (make-proxy sprite-id s
-                  #:dx (+ (sprite-dx s) ddx)
-                  #:dy (+ (sprite-dy s) ddy) ) ) )
-
-;; Sprite Key -> ActionList
-;; apply any boosts to its velocity
-(define (boost-sprite-on-key params sprite-id s k)
-  (cond
-    [(key=? k "up") (boost-sprite sprite-id s k 0 DY-BOOST)]
-    [(key=? k "down") (boost-sprite sprite-id s k 0 (- DY-BOOST))]
-    [(key=? k "left") (boost-sprite sprite-id s k (- DX-BOOST) 0)]
-    [(key=? k "right") (boost-sprite sprite-id s k DX-BOOST 0)]
-    [else '()] ) )
-(on-key-register! 'boost-sprite-on-key boost-sprite-on-key)
-
-;; ** Rendering Method
-
-;; Like place-image, but relative to the left-bottom corner
-;; of the sprite and the canvas.
-(define (draw-image image x y canvas)
-  (let ( [center-x (+ x (half (image-width image)))]
-         [center-y (+ y (half (image-height image)))] )
-    (place-image image center-x (- CANVAS-HEIGHT center-y) canvas) ) )
-
-(define (draw-sprite sprite canvas)
-  (draw-image (sprite-image sprite)
-              (sprite-x sprite) (sprite-y sprite)
-              canvas ) )
-(to-draw-register! 'draw-sprite draw-sprite)
-
-;; ** big-bang callback procedures
+;; ** Delegate big-bang Callback Procedures to Sprite Methods
 
 ;; Notice the similarity of
 ;; - gather-actions-on-tick and gather-actions-on-key
@@ -788,7 +559,7 @@
       world-state  ; we've not been welcomed yet
       (let ( [universe (client-state-worlds-sprites world-state)]
              [our-params (client-state-params world-state)] )
-        (let* ( [our-world-id (params-world our-params)]
+        (let* ( [our-world-id (params-base-world our-params)]
                 [our-sprites (universe-world universe our-world-id)]
                 [actions (gather-actions-on-tick our-params our-sprites)] )
           (if (not actions)
@@ -850,7 +621,7 @@
              [our-params (client-state-params world-state)] )
         (if (not (and universe our-params))
             world-state ; we've not be welcomed yet
-            (let* ( [our-world-id (params-world our-params)]
+            (let* ( [our-world-id (params-base-world our-params)]
                     [our-sprites (universe-world universe our-world-id)]
                     [actions (gather-actions-on-key our-params our-sprites key)] )
               (when (tracing this) (eprintf "~a actions: ~a\n" this actions))
@@ -858,7 +629,8 @@
                   world-state ; no updates from this key
                   (begin
                     (update-sprites! actions universe) ; may invalidate our-sprites binding
-                    (when (tracing this) (eprintf "~a ours-updated ~a\n" this (universe-world universe our-world-id)))
+                    (when (tracing this)
+                      (eprintf "~a ours-updated ~a\n" this (universe-world universe our-world-id)))
                     (make-package world-state actions) ) ) ) ) ) ) )
 
 (define (update-world-on-key world-state key)
@@ -868,15 +640,31 @@
     (when (tracing this) (eprintf "~a returning ~a\n" this result))
     result ) )
 
+;; *** Rendering (Drawing)
+
+;; Like place-image, but relative to the left-bottom corner
+;; of the sprite and the canvas.
+(define (draw-image image x y canvas)
+  (let ( [center-x (+ x (half (image-width image)))]
+         [center-y (+ y (half (image-height image)))] )
+    (place-image image center-x (- (image-height canvas) center-y) canvas) ) )
+
+(define (draw-sprite sprite canvas)
+  (draw-image (sprite-image sprite)
+              (sprite-x sprite) (sprite-y sprite)
+              canvas ) )
+(to-draw-register! 'draw-sprite draw-sprite)
+
+
 ;; Use the drawing methods of all sprites in the universe
 ;; to compose their images onto a single canvas and return
 ;; the result.
 ;; EXERCISE: How could we ensure that our sprites are always drawn on top,
 ;; i.e. when our sprites overlap those from other worlds??
-(define (draw-world world-state)
+(define (draw-world world-state empty-canvas)
   (define this 'draw-world)
   (if (no-state-yet? world-state)
-      EMPTY-CANVAS
+      empty-canvas
       ;; compose the worlds of our world state
       (sequence-fold
        (λ (c w)
@@ -886,18 +674,6 @@
                         c ; start with this canvas
                         ;; generate a sequence of all sprites in our world
                         (world-sprites w) ) )
-       EMPTY-CANVAS ; start with this canvas
+       empty-canvas ; start with this canvas
        ;; generate a sequence of all worlds in our universe
        (universe-worlds (client-state-worlds-sprites world-state)) ) ) )
-
-;; Should we send the universe server
-;; a message before we just detach??
-(define (no-sprites-left? world-state)
-  (define this 'no-sprites-left?)
-  (and (not (no-state-yet? world-state))
-       (let* ( [universe (client-state-worlds-sprites world-state)]
-               [params (client-state-params world-state)]
-               [world-id (params-world params)]
-               [sprites (universe-world universe world-id)] )
-         (or (not sprites) ; our world is missing entirely!
-             (not (sequence-ormap sprite? (world-sprites sprites))) ) ) ) )

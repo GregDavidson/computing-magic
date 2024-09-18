@@ -1,4 +1,4 @@
-;; (setq-local racket-repl-buffer-name "*sprites-worlds-game-repl*")
+;; -*- mode: racket; racket-repl-buffer-name: "*sprites-worlds-game-repl*"; -*-
 #lang racket/base
 ;; * Multiple Worlds Sprites Game Protocol and Overview
 
@@ -15,31 +15,23 @@
 
 ;; ** Require Forms
 
+;; *** Racket Library Requires
+
 (require racket/math
          racket/set
          racket/function
          racket/sequence
          racket/contract/base
-         data/gvector )
+         data/gvector
+         raco/command-name )
 
-;; ** Provide Forms and Trivial Implementations
+;; ** Provide Forms
 
 ;; *** IDs and ID Maps
 
-;; Details below at ** IDs and ID Maps
-
-;; Unique Keys associate Sprite Proxies with Sprites
-;; Because Sprites are associated with a specific World
-;; - the keys can be a combination of a world-id and a sprite-id
-
-(define world-id? natural?)
-(define world-id->string number->string)
-
-(define sprite-id? natural?)
-
 (provide world-id? sprite-id? world-id->string)
 
-;; world-sprites map sprite-ids to sprites
+;; Client World Procedures
 
 (provide (rename-out
           [gvec? world-sprites?]
@@ -50,8 +42,7 @@
           [gvec-set! world-sprite-set!]
           [gvec-drop! world-sprite-drop!] ))
 
-;; universes map universe-ids to worlds
-;; either iworld or world-sprites
+;; Universe Server Procedures
 
 (provide (rename-out
           [gvec? universe?]
@@ -66,14 +57,68 @@
 
 ;; *** Sprite Proxies
 
+(provide (struct-out sprite-proxy))
+
+;; *** Parameters, Tracing and Testing
+
+(provide my-parameter tracing *tracing* *testing*)
+
+;; *** World Parameters and Messages
+
+(provide (struct-out params-base))
+
+(provide #;(struct-out message)
+         message message? make-message message-params )
+(provide message-world) ; external function
+
+(provide #;(struct-out welcome-message)
+         welcome-message? welcome-message-alist)
+(provide make-welcome) ; external function
+
+(provide goodbye-message? make-goodbye)
+
+(provide actions? make-actions actions-updates)
+
+(provide update?)
+
+;; ** Key <-> Value Associations
+
+(provide obj-alist-procs)
+
+;; ** Program, Interactive I/O
+(provide program-name
+         program-is-standalone?
+         get-string-line
+         trace-procs )
+
+;; ** Definitions
+
+;; **** IDs and ID Maps
+
+;; Details below at ** IDs and ID Maps
+
+;; Unique Keys associate Sprite Proxies with Sprites
+;; Because Sprites are associated with a specific World
+;; - the keys can be a combination of a world-id and a sprite-id
+
+(define world-id? natural?)
+(define world-id->string number->string)
+
+(define sprite-id? natural?)
+
+;; world-sprites map sprite-ids to sprites
+
+;; universes map universe-ids to worlds
+;; either iworld or world-sprites
+
+;; **** Sprite Proxies
+
 ;; Sprite Proxies represent new sprites or
 ;; changes to existing sprites.
 
 ;; Implementation below: ** Sprite Proxies
 
-(provide (struct-out sprite-proxy))
-
-;; *** Parameters, Tracing and Testing
+;; **** Parameters, Tracing and Testing
 
 ;; Tracing controls the display of runtime information
 ;; to aid in understanding and debugging the programs.
@@ -84,9 +129,7 @@
 
 ;; Implementation below: ** Tracing and Testing
 
-(provide my-parameter tracing *tracing* *testing*)
-
-;; *** Client-Server Message Types
+;; **** Client-Server Message Types
 
 ;; a param structure provides context needed to
 ;; run functions to create or update foreign sprites.
@@ -102,23 +145,7 @@
 ;; i.e. a world-id or a params-base structure
 ;; with a list of updates.
 
-(provide
- (struct-out params-base)
- #;(struct-out message)
- message message? make-message message-params
- message-world
- #;(struct-out welcome-message)
- welcome-message welcome-message? welcome-message-alist
- make-welcome ; external procedure
- #; (struct-out goodbye--message)
- goodbye-message goodbye-message? make-goodbye
- #; (struct-out actions)
-  actions actions? make-actions actions-updates
- )
-
-(provide update?)
-
-;; ** Parameters, Tracing and Testing
+;; *** Parameters, Tracing and Testing
 
 ;; fix the problems with the make-parameter guard
 ;; - ensure it is applied to the initial value
@@ -156,9 +183,7 @@
 ;; in particular, disable falling!
 (define *testing* (my-parameter #f boolean? 'testing))
 
-;; ** Key <-> Value Associations
-
-(provide obj-alist-procs)
+;; *** Key <-> Value Associations
 
 ;; In several places we need to have mappings between keys and values. As long
 ;; as these sets aren't too large, we can use alists, i.e. lists of cons pairs
@@ -200,7 +225,7 @@
    (λ (key) (alist-key->val (getter obj) key key-compare?))
    (λ (val) (alist-val->key (getter obj) val val-compare?)) ) )
 
-;; ** Game Parameters
+;; *** World Parameters and Messages
 
 ;; A base structure type for World Parameters needed by
 ;; functions passed by name in our proxy structures.
@@ -217,11 +242,6 @@
 (struct params-base (world)
   #:constructor-name make-params-base
   #:prefab )
-
-;; https://docs.racket-lang.org/reference/require.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._struct-out%29%29 says:
-;; if the identifier has a transformer binding of structure-type information, the accessor and mutator bindings of the super-type are not included by struct-out for export.
-
-;; ** Client-Server message Types
 
 ;; params could be a world-id? or a struct params-base
 (struct message (params)
@@ -266,7 +286,7 @@
   (when (tracing this) (eprintf "~a world ~a alist ~a\n" this n alist))
   (internal-make-welcome n alist) )
 
-;; ** gvec maps ids to values just right
+;; *** gvec maps ids to values just right
 
 ;; Given IDs which are small contiguous numbers
 ;; we can use gvector to manage collections of
@@ -365,7 +385,7 @@
 (define (gvec-drop! gv i)
   (when gv (gvector-set! gv i #f)) )
 
-;; ** Sprite Proxies
+;; *** Sprite Proxies
 
 ;; We need to be able to send sprites across worlds.
 ;; This requires us to serialize them, i.e. convert them to a byte stream.
@@ -395,25 +415,21 @@
 ;; a sprite-proxy used to create or mutate a sprite
 (define (update? u) (or (sprite-id? u) (sprite-proxy? u)))
 
-;; ** Program, Interactive I/O
-
-(require raco/command-name)
-
-(provide program-name)
-
-(provide program-is-standalone?)
-
-(provide get-string-line)
-
-(provide trace-procs)
+;; *** Program, Interactive I/O
 
 (define program-name short-program+command-name)
 
-;; is this code running as a standalone program,
-;; i.e. not under DrRacket?
-;; Are there other non-standalone possibilities??
+;; Is this code running as a standalone program?
+;; If it's running under DrRacket --> #f
+;; If it's running under an Emacs REPL --> #f
+;; - program-name will be "main.rkt"
+;; - so don't name your actual application file that!!
+;; Otherwise --> #t
 (define (program-is-standalone?)
-  (not (string=? "drracket" (string-downcase (program-name)))) )
+  (define this 'program-is-standalone?)
+  (let ( [name (string-downcase (program-name))] )
+    (and (not (string=? name "drracket"))
+         (not (string=? name "main.rkt")) ) ) )
 
 ;; Prompt and then read an input line as a string
 (define (get-string-line prompt)
@@ -426,4 +442,5 @@
     (for-each (λ (name)
                 (if (procedure? (eval (string->symbol name)))
                     (tracing name)
-                    (eprintf "~a: No procedure ~a to trace\n" this name) ) ) ) ) )
+                    (eprintf "~a: No procedure ~a to trace\n" this name) ) )
+              names ) ) )

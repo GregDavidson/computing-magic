@@ -1,4 +1,4 @@
-;; (setq-local racket-repl-buffer-name "*network-volley-game-repl*")
+;; -*- mode: racket; racket-repl-buffer-name: "*network-volley-game-repl*"; -*-
 #lang racket/base
 ;; * Network Volley Multiple Worlds Multiple Sprites Game Client
 
@@ -33,28 +33,40 @@
 
 (define params-world params-base-world)
 
-;; ** Sizes, Constants and Colors
-
-;; *** Our Canvas
+;; ** Canvas Parameters and Rendering (Drawing)
 
 (define CANVAS-WIDTH 400)               ; pixels
 (define CANVAS-HEIGHT 300)              ; pixels
 (define EMPTY-CANVAS (empty-scene CANVAS-WIDTH CANVAS-HEIGHT))
 
-;; *** Ball Sizes
-
-(define (half n) (quotient n 2))
+;; ** Balls
 
 (define BALL-RADIUS 20)
 (define BALL-MARGIN 1)
 (define BALL-SIZE (* 2 (+ BALL-RADIUS BALL-MARGIN)))
 (define BALL-TEXT-SIZE (half BALL-RADIUS))
 
-;; *** Ball Accelerations
-
 (define DX-BOOST 6)
 (define DY-BOOST 6)
 (define DY-FALLING -4) ; disabled when *testing*
+
+;; 10% of humans are color blind so don't just use color!
+;; We're adding text.
+;; PRACTICE: Add high-contrast patterns to supplement color
+;; everywhere color is being used to distinguish visual elements. 
+;; EXERCISE: Use the provided name instead (or in addition to)
+;; the id.
+
+(define (make-ball params)
+  (define this 'make-ball)
+  (let ( [color (params-color params)]
+         [id (params-world params)] )
+    (when (tracing this) (eprintf "~a id ~a color ~a\n" this id color))
+    (let ( [image (overlay (text (world-id->string id) BALL-TEXT-SIZE 'black)
+                           (circle BALL-RADIUS "solid" color) )] )
+      image ) ) )
+(image-register! 'make-ball make-ball)
+
 
 ;; *** a proxy template for our first sprite
 
@@ -142,7 +154,70 @@
     [else '()] ) )
 (on-key-register! 'boost-sprite-on-key boost-sprite-on-key)
 
+;; Should we send the universe server
+;; a message before we just detach??
+(define (no-sprites-left? world-state)
+  (define this 'no-sprites-left?)
+  (and (not (no-state-yet? world-state))
+       (let* ( [universe (client-state-worlds-sprites world-state)]
+               [params (client-state-params world-state)]
+               [world-id (params-world params)]
+               [sprites (universe-world universe world-id)] )
+         (or (not sprites) ; our world is missing entirely!
+             (not (sequence-ormap sprite? (world-sprites sprites))) ) ) ) )
 
+;; Given
+;; - the state of the world
+;; - action mail from the server
+;; Return an updated WorldState
+;; - possibly including Return Mail
+(define (do-receive world-state mail)
+  (define this 'receive)
+  (if world-state
+      (let ( [params (client-state-params world-state)]
+             [universe (client-state-worlds-sprites world-state)] )
+        (cond
+          [(goodbye-message? mail)
+           (world-sprite-drop! universe (message-world mail)) ]
+          [(actions? mail) (update-sprites! mail universe)]
+          [else (error this "bad mail ~a for state ~a" mail world-state)] )
+        ;; return world-state after mutation by update-sprites!
+        world-state )
+      (begin
+        (unless (welcome-message? mail)
+          (error this "expected welcome instead of ~a" mail) )
+        ;; build our state, our world and our first sprite
+        (let* ( [new-world-id (message-world mail)]
+                [new-color (choose-color new-world-id)]
+                [new-params (make-params new-world-id
+                                         new-color
+                                         (if (*testing*) 0 DY-FALLING) )] )
+          #;(when (tracing this)
+              (eprintf "~a world ~a color ~a\n" this new-world-id new-color) )
+          (let* (
+                 ;; create a proxy to represent our first sprite
+                 [new-sprite-proxy
+                  (struct-copy sprite-proxy PROXY-0 [dx (params-falling new-params)]) ]
+                 ;; put it in an actions message
+                 [new-actions (make-actions new-params (list new-sprite-proxy))]
+                 ;; to perform on our new universe
+                 [new-universe (make-universe (+ 1 new-world-id))] )
+            ;; update locally
+            #;(when (tracing this) (eprintf "~a actions ~a\n" this new-actions))
+            (update-sprites! new-actions new-universe)
+            #;(when (tracing this)
+              (eprintf "~a new params ~a new actions ~a new universe ~a\n" this new-params new-actions new-universe) )
+            ;; return new state, with mail
+            (make-package (make-state new-params new-universe) new-actions) ) ) ) ) )
+
+(define (receive world-state mail)
+  (define this 'receive)
+  (when (tracing this) (eprintf "~a mail ~a for world-state ~a\n" this mail world-state))
+  (let ( [result (do-receive world-state mail)] )
+    (when (tracing this) (eprintf "~a returning ~a\n" this result))
+    result ) )
+
+;; ** Run as Command or within REPL
 
 ; String -> WorldState
 ; create a world, hook it up to a server and start it running
@@ -156,7 +231,7 @@
   (when (tracing this) (eprintf "~a ~a" this a-name))
   (big-bang
    no-state-yet
-   [to-draw draw-world]
+   [to-draw (λ (world) (draw-world world EMPTY-CANVAS))]
    [on-key update-world-on-key]
    [on-receive receive]
    [on-tick update-world-on-tick (if (*testing*) 1/10 tick)]
@@ -164,22 +239,11 @@
    [name a-name]
    [register server] ) )
 
-;; ** Process Command Line or Enter REPL
-
 (define *user* (my-parameter #f (or/c symbol? string?) 'user))
 (define *host* (my-parameter LOCALHOST string? 'host))
 
 (define (local) (*host* LOCALHOST))
 (define (ngender) (*host* "ngender.net"))
-
-(command-line
- #:once-each
- [("-t" "--tracing") "trace everywhere" (*tracing* #t)]
- [("-T" "--testing") "ease testing and trace everywhere"
-                     (begin (*testing* #t) (*tracing* #t)) ]
- [("-H" "--host") host "server host" (*host* host)]
- [("-N" "--ngender") "host ngender.net" (*host* "ngender.net")]
- #:args (user . proc-names) (begin (*user user) (trace-procs proc-names)) )
 
 (define (go #:user [user #f] #:host [host #f] #:trace [trace #f] #:test [test #f])
   (define this 'go)
@@ -192,9 +256,19 @@
     (create-world (*user*) (*host*)) ) )
 
 (if (program-is-standalone?)
-    (go)
-    (let ( [yes (regexp "[yY].*")]
+    (begin
+      (command-line
+       #:once-each
+       [("-t" "--tracing") "trace everywhere" (*tracing* #t)]
+       [("-T" "--testing") "ease testing and trace everywhere"
+                           (begin (*testing* #t) (*tracing* #t)) ]
+       [("-H" "--host") host "server host" (*host* host)]
+       [("-N" "--ngender") "host ngender.net" (ngender)]
+       #:args (user . proc-names) (begin (*user* user) (trace-procs proc-names)) )
+      (go) )
+    ;; we should be at a REPL
+    (let ( [yes-pattern (regexp "^ *[yY]")]
            [reply (get-string-line "run world client? [y/n]")] )
-      (when (regexp-match yes reply)
+      (when (regexp-match yes-pattern reply)
         (parameterize ( [*tracing* #t] )
           (go) ) ) ) )
