@@ -34,13 +34,13 @@
 ;; Client World Procedures
 
 (provide (rename-out
-          [gvec? world-sprites?]
-          [make-gvec make-world-sprites]
+          [gvec? world?]
+          [make-gvec make-world]
           [gvec-ref world-sprite]
           [gvec-ids world-sprite-ids]
           (gvec->sequence world-sprites)
-          [gvec-set! world-sprite-set!]
-          [gvec-drop! world-sprite-drop!] ))
+          [gvec-set! world-set!]
+          [gvec-drop! world-drop!] ))
 
 ;; Universe Server Procedures
 
@@ -205,7 +205,6 @@
 (define (alist-key->val alist key [is-equal? equal?] [not-found #f])
   (let ( [found (assoc key alist is-equal?)] )
     (if found (cdr found) not-found) ) )
-
 
 ;; Given the val, return the key part of the (key . val) element in the
 ;; association list. Returns not-found if the val is not found!
@@ -405,8 +404,7 @@
 ;; A sprite-proxy will have the same key as the sprite it is a proxy for.
 ;; Only the key field is required.  The other fields can default to #f if
 ;; the corresponding sprite field is irrelevant, i.e. not requiring an update.
-(struct
-  sprite-proxy (sprite image x y dx dy on-tick on-key to-draw)
+(struct sprite-proxy (sprite image x y dx dy on-tick on-key to-draw)
   #:constructor-name make-sprite-proxy
   #:prefab )
 

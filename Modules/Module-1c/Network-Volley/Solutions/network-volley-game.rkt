@@ -65,7 +65,7 @@
     (let ( [image (overlay (text (world-id->string id) BALL-TEXT-SIZE 'black)
                            (circle BALL-RADIUS "solid" color) )] )
       image ) ) )
-(image-register! 'make-ball make-ball)
+(imager-register! 'make-ball make-ball)
 
 
 ;; *** a proxy template for our first sprite
@@ -75,11 +75,11 @@
 ;; field values may be changed in the copy.  This structure
 ;; will also be used in testing.
 
-(define PROXY-0  (make-sprite-proxy
-                  0 'make-ball ; sprite-id image-function
-                  (half CANVAS-WIDTH) (- CANVAS-HEIGHT BALL-SIZE)
-                  0 0 ; dx dy
-                  'move-sprite 'boost-sprite-on-key 'draw-sprite ))
+(define PROXY-0 (make-sprite-proxy
+                 0 'make-ball ; sprite-id image-function
+                 (half CANVAS-WIDTH) (- CANVAS-HEIGHT BALL-SIZE)
+                 0 0 ; dx dy
+                 'move-sprite 'boost-sprite-on-key 'draw-sprite ))
 
 ;; ** Grouping World Parameters in an Immutable Structure
 
@@ -178,7 +178,7 @@
              [universe (client-state-worlds-sprites world-state)] )
         (cond
           [(goodbye-message? mail)
-           (world-sprite-drop! universe (message-world mail)) ]
+           (world-drop! universe (message-world mail)) ]
           [(actions? mail) (update-sprites! mail universe)]
           [else (error this "bad mail ~a for state ~a" mail world-state)] )
         ;; return world-state after mutation by update-sprites!

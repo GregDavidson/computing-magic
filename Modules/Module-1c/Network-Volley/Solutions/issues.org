@@ -1,11 +1,16 @@
 * Issues
 
+** Bug
+
+The second client dies.  Is this similar to the old problem of
+not knowing how to deal with updates of uncreated sprites?
+
 ** Finishing up Refactoring
 
 - params need to be more like clojures
       - proxies for procedures needing world-specific parameters could provide a
         form with the procedure name and the needed parameters
-        - this could be turned into a clojure
+            - this could be turned into a clojure
 - Review names of files
       - sprites-framework.rkt sprites-client-framework.rkt
       - universe-server.rkt network-volley-game.rkt
@@ -19,13 +24,6 @@
 - How can we make everything in the client-framework extensible?
       - Extensible structures
       - Extensible/overridable procedures
-
-** Desirable Renamings
-
-- world-sprites? --> world?
-- make-world-sprites --> make-world
-- world-sprite-set! --> world-sprites-set! or world-set!
-- world-sprite-drop! --> world-sprites-drop! or world-drop!
 
 ** Import/Export Issues
 
