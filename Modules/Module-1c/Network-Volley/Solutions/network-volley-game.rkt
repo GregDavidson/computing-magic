@@ -53,7 +53,7 @@
 ;; 10% of humans are color blind so don't just use color!
 ;; We're adding text.
 ;; PRACTICE: Add high-contrast patterns to supplement color
-;; everywhere color is being used to distinguish visual elements. 
+;; everywhere color is being used to distinguish visual elements.
 ;; EXERCISE: Use the provided name instead (or in addition to)
 ;; the id.
 
@@ -245,7 +245,7 @@
 (define (local) (*host* LOCALHOST))
 (define (ngender) (*host* "ngender.net"))
 
-(define (go #:user [user #f] #:host [host #f] #:trace [trace #f] #:test [test #f])
+(define (go [user #f] #:host [host #f] #:trace [trace #f] #:test [test #f])
   (define this 'go)
   (parameterize ( [*user* (or user (*user*) (get-string-line "User name"))]
                   [*host* (or host (*host*))]
@@ -271,4 +271,4 @@
            [reply (get-string-line "run world client? [y/n]")] )
       (when (regexp-match yes-pattern reply)
         (parameterize ( [*tracing* #t] )
-          (go) ) ) ) )
+          (go #:trace #t) ) ) ) )

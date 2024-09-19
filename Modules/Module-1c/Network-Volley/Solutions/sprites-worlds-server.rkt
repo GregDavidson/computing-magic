@@ -149,12 +149,14 @@
     (universe-drop! u i)
     (make-bundle u '() (list w)) ) )
 
-(define (go)
-  (universe (make-universe)
-            #;[state #f] ; suppress opening separate state window
-            [on-new add-world]
-            [on-msg handle-world-msg]
-            [on-disconnect drop-world] ) )
+(define (go [trace #f])
+  (define this 'go)
+  (parameterize ( [*tracing* (or trace (*tracing*))] )
+    (universe (make-universe)
+              #;[state #f] ; suppress opening separate state window
+              [on-new add-world]
+              [on-msg handle-world-msg]
+              [on-disconnect drop-world] ) ) )
 
 ;; ** Run as Command or within REPL
 
@@ -171,5 +173,4 @@
     (let ( [yes-pattern (regexp "^ *[yY]")]
            [reply (get-string-line "run universe server? [y/n]" )] )
       (when (regexp-match yes-pattern reply)
-        (parameterize ( [*tracing* #t] )
-          (go) ) ) ) )
+        (go #t) ) ) )

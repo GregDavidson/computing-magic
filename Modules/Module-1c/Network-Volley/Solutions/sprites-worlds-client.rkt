@@ -21,6 +21,7 @@
          racket/contract/base
          racket/contract/region
          racket/sequence
+         racket/stream
          racket/list
          racket/math
          racket/function )
@@ -78,29 +79,6 @@
               [world-set! (-> world? sprite-id? (or/c #f sprite?) void?)]
               [world-drop!  (-> world? natural? void?)] ) )
 
-;; We originally allowed sprite-proxy fields to be false
-;; if they didn't need to be updated.  This failed for
-;; new clients which missed the original creation message.
-#;(require
- (contract-in "sprites-worlds-game.rkt"
-              [sprite-proxy-sprite (-> sprite-proxy? sprite-id?)]
-              [sprite-proxy-image (-> sprite-proxy? (or/c #f string? symbol?))]
-              [sprite-proxy-x (-> sprite-proxy? (or/c #f natural?))]
-              [sprite-proxy-y (-> sprite-proxy? (or/c #f natural?))]
-              [sprite-proxy-dx (-> sprite-proxy? (or/c #f integer?))]
-              [sprite-proxy-dy (-> sprite-proxy? (or/c #f integer?))]
-              [sprite-proxy-dy (-> sprite-proxy? (or/c #f integer?))]
-              [sprite-proxy-on-tick (-> sprite-proxy? (or/c #f symbol?))]
-              [sprite-proxy-on-key (-> sprite-proxy? (or/c #f symbol?))]
-              [sprite-proxy-to-draw (-> sprite-proxy? (or/c #f symbol?))]
-              [make-sprite-proxy
-               (-> sprite-id?
-                   (or/c #f string? symbol?)
-                   (or/c #f natural?) (or/c #f natural?)
-                   (or/c #f integer?) (or/c #f integer?)
-                   (or/c #f symbol?) (or/c #f symbol?) (or/c #f symbol?)
-                   sprite-proxy?)] ) )
-
 (require
  (contract-in "sprites-worlds-game.rkt"
               [sprite-proxy-sprite (-> sprite-proxy? sprite-id?)]
@@ -145,7 +123,7 @@
               [program-is-standalone? (-> boolean?)] ) )
 
 ;; Returns 3 alist management procedures
-;; TODO Write a contract for this!
+;; TODO Write a contract for this!!
 (require (only-in "sprites-worlds-game.rkt" obj-alist-procs))
 
 ;; ** What We Provide
@@ -339,14 +317,11 @@
 
 ;; here's the structure type
 (struct/contract
-  registry (
-            #;[image (listof (cons/c (or/c string? symbol?)
-                                     (or/c image? procedure? string? #f) ))]
-            [imagers (listof (cons/c symbol? procedure?))]
-            [image (listof (cons/c (or/c string? symbol?) image?))]
-            [on-tick (listof (cons/c symbol? procedure?))]
-            [on-key (listof (cons/c symbol? procedure?))]
-            [to-draw (listof (cons/c symbol? procedure?))] )
+  registry ( [imager (listof (cons/c symbol? procedure?))]
+             [image (listof (cons/c (or/c symbol? string?) image?))]
+             [on-tick (listof (cons/c symbol? procedure?))]
+             [on-key (listof (cons/c symbol? procedure?))]
+             [to-draw (listof (cons/c symbol? procedure?))] )
   #:mutable #:transparent )
 
 ;; instantiate the registry structure object
@@ -355,7 +330,7 @@
 ;; define the procedures to manage the association lists
 
 (define-values (imager-register! imager-key->val imager-val->key)
-  (obj-alist-procs proxy-registry registry-imagers set-registry-imagers!) )
+  (obj-alist-procs proxy-registry registry-imager set-registry-imager!) )
 
 (define-values (image-register! image-key->val image-val->key)
   (obj-alist-procs proxy-registry registry-image set-registry-image!) )
@@ -369,55 +344,46 @@
 (define-values (to-draw-register! to-draw-proc to-draw-name)
   (obj-alist-procs proxy-registry registry-to-draw set-registry-to-draw!) )
 
-;; We're mushing together in one registry
-;; (string? filesystem-path) --> image
-;; (symbol? drawing-function-name) --> image
+;; registry-image is holding two different things
+;; - (string? key) = filesystem-path --> image
+;; - (symbol? key) = drawing-function-name --> image
+;; in both cases we recover proxy keys with image-val->key
+;; when (string? key) it serves as a cache
+;; QUESTION: What negative consequences follow this kludge?
 
-;; In a game which generates a lot of procedural images
-;; need to remove any images which are no longer in use.
-;; or not cache them at all.  How should we do this??
-;; HINTS: Instead of using a registry as a cache, let
-;; the image generation procedures managing caching if
-;; they want to and upgrade to a rich image format which
-;; includes the proxy information.
+;; EXERCISE: How might we cache procedural images?
+;; HINTS:
+;; - Let the procedures figure it out
+;; - sprite->image could be a richer structure
+;; QUESTION: Could a solution here clean up the kludge?
 
 ;; Given a path or symbol as a key find or
 ;; ( (load or create) and register) ) the appropriate image
 ;; or return #f if none of this is possible.
-(define (try-get-image params key)
-  (define this 'try-get-image-key)
-  (let ( [found (image-key->val key)] )
-    (if (image? found)
-        found
-        ;; return #f if creation or loading throws an error
-        (with-handlers ( [exn:fail? (λ (exn) #f)] )
-          (let ( [new-image (cond [(symbol? key) ; should be an imager name
-                                 (let ( [imager (imager-key->val key)] )
-                                   (if (not (procedure? imager))
-                                       #f
-                                       (imager params) ) ) ]
-                                [(string? key) ; should be a filesystem path
-                                 (bitmap/file key) ]
-                                [else #f] ) ] )
-            (if (image? new-image) (begin
-                                     (image-register! key new-image)
-                                     new-image )
-                #f ) ) ) ) ) )
-
-;; Given a path or symbol as a key, try to find, load or create
-;; an image or use the fallback with a warning or generate an
-;; error if none of these strategies yields an image!
-(define (get-image params key #:fallback [fallback #f])
-  (define this 'get-image-key)
-  (let ( [found (try-get-image params key)] )
-    (if (image? found)
-        found
-        (if (image? fallback)
-            (begin
-              (eprintf "~a key ~a using fallback image ~a\n" this key fallback)
-              (image-register! key fallback)
-              fallback )
-            (error this "no image for key ~a" key) ) ) ) )
+(define (get-image params key)
+  (define this 'get-image)
+  (let ( [image
+          (cond ;; might it be a path to a bitmap file?
+            [(string? key) (let ( [found (image-key->val key)] )
+                             (if (image? found)
+                                 found
+                                 (let ( [new-image (bitmap/file key)] )
+                                   (image-register! key new-image)
+                                   new-image ) ) )]
+            ;; might it be an image producing function?
+            [(symbol? key) (let ( [imager (imager-key->val key)] )
+                             (if (not (procedure? imager))
+                                 (begin0 #f
+                                         (eprintf "~a warning: unknown imager ~a\n"
+                                                  this key ) )
+                                 (let ( [new-image (imager params)] )
+                                   (image-register! key new-image)
+                                   new-image ) ) )]
+            [else #f] ) ])
+    (if (image? image) (begin0 image
+                               (when (tracing this) (eprintf "~a ~a --> ~a\n"
+                                                             this key image )) )
+        (error this "no image for key ~a") ) ) )
 
 ;; Given a sprite-proxy, convert it to a new sprite.
 ;; This is used with brand new sprites.
@@ -553,6 +519,7 @@
 ;; - ActionMail - an action containing a list of sprite updates from the same world
 ;; - universe - a vector of worlds which are vectors of sprites
 ;; Side Effects: Carries out the sprite updates
+;; Returns the list of updated sprites --> who cares about this???
 (define (update-sprites! actions universe)
   (define this 'update-sprites!)
   ;; return the sprites left after removing those matching the keys in drop-lists
@@ -561,31 +528,32 @@
           [updates (actions-updates actions)]
           [world-sprites (universe-world universe world-id)] )
     (when (tracing this) (eprintf "~a params ~a updates ~a sprites ~a\n" this params updates world-sprites))
-    (map (λ (update)
-           (cond
-             [(sprite-id? update) ; drop this sprite
-              (when world-sprites ; in case the world has been dropped
-                (when (tracing this) (eprintf "~a dropping sprite ~a from world ~a\n"
-                                              this update world-id ))
-                (world-drop! world-sprites update) ) ]
-             [(sprite-proxy? update) ; create or update this sprite
-              (let ( [sprite-id (sprite-proxy-sprite update)] )
-                (when (not world-sprites) ; in case the world has been dropped
-                  (when (tracing this) (eprintf "~a creating new world ~a\n"
-                                                this world-id ))
-                  (universe-set! universe world-id (make-world sprite-id)) )
-                (let* ( [sprites (or world-sprites (universe-world universe world-id))]
-                        [sprite (world-sprite sprites sprite-id)] )
-                  (if sprite ; it already exists, so mutate it in place
-                      (mutate-sprite-from-proxy! params sprite update)
-                      ;; it doesn't exist, so create it
-                      ;; should we check if the sprite-proxy is complete???
-                      (let ( [new-sprite (proxy->sprite params update)] )
-                        (when (tracing this) (eprintf "~a adding new sprite ~a to world ~a at index ~a\n"
-                                                      this new-sprite  world-id sprite-id ))
-                        (world-set! sprites sprite-id new-sprite) ) ) ) ) ]
-             [else (error this "unknown update ~a" update)] ) )
-         updates ) ) )
+    (for-each (λ (update)
+                (cond
+                  [(sprite-id? update) ; drop this sprite
+                   (when world-sprites ; in case the world has been dropped
+                     (when (tracing this) (eprintf "~a dropping sprite ~a from world ~a\n"
+                                                   this update world-id ))
+                     (world-drop! world-sprites update) ) ]
+                  [(sprite-proxy? update) ; create or update this sprite
+                   (let ( [sprite-id (sprite-proxy-sprite update)] )
+                     (when (not world-sprites) ; in case the world has been dropped
+                       (when (tracing this) (eprintf "~a creating world ~a\n"
+                                                     this world-id ))
+                       ;; imperative mutation, because ... reasons!
+                       (set! world-sprites (make-world sprite-id))
+                       (universe-set! universe world-id world-sprites) )
+                     (let ( [sprite (world-sprite world-sprites sprite-id)] )
+                       (if sprite ; it already exists, so mutate it in place
+                           (mutate-sprite-from-proxy! params sprite update)
+                           ;; it doesn't exist, so create it
+                           (let ( [new-sprite (proxy->sprite params update)] )
+                             (when (tracing this) (eprintf "~a adding sprite ~a to world ~a at index ~a\n"
+                                                           this new-sprite  world-id sprite-id ))
+                             (world-set! world-sprites sprite-id new-sprite) ) ) ) ) ]
+                  [else (error this "unknown update ~a" update)] ) )
+              updates )
+    (when (tracing this) (show-world world-id world-sprites)) ) )
 
 ;; ** Delegate big-bang Callback Procedures to Sprite Methods
 
@@ -743,3 +711,26 @@
        empty-canvas ; start with this canvas
        ;; generate a sequence of all worlds in our universe
        (universe-worlds (client-state-worlds-sprites world-state)) ) ) )
+
+
+;; ** Testing
+
+(provide show-world show-universe)
+
+(require (only-in "sprites-worlds-game.rkt"
+                  world? world-sprite world-sprite-ids
+                  universe? universe-world universe-world-ids ))
+
+(define (show-world world-id world)
+  (if (not (world? world))
+      (eprintf "show-world: world = ~a\n" world)
+      (stream-for-each
+       (λ (i) (eprintf "world ~a sprite ~a = ~a\n" world-id i (world-sprite world i)))
+       (world-sprite-ids world) ) ) )
+
+(define (show-universe universe)
+  (if (not (universe? universe))
+      (eprintf "show-universe: universe = ~a\n" universe)
+      (stream-for-each
+       (λ (i) (show-world i (universe-world universe i)))
+       (universe-world-ids universe) ) ) )
