@@ -1,17 +1,18 @@
-;; -*- mode: racket; racket-repl-buffer-name: "*sprites-worlds-game-repl*"; -*-
+;; -*- mode: racket; racket-repl-buffer-name: "*sprites-framework*"; -*-
 #lang racket/base
-;; * Multiple Worlds Sprites Game Protocol and Overview
+;; * Multiple Sprites in Multiple Worlds Framework
 
-;; See sprites-worlds-game.org for information about the game.
+;; See sprites-universes.org for more information
 
-;; This file is required by the Universe Server
-;; and each World Client.  It provides
+;; This module is required by
+;; - the Sprites Universe Server
+;; - the Sprites Client Framework
+;; - and therefore, indirectly, each Game
+;;   (or other World Client)
+;; This module provides
 ;; - inter-client (inter-world) protocol information
 ;; - universe-world protocol information
 ;; - including a sprite-proxy structure
-
-;; The (provide ...) forms follow the Require Forms section.
-;; Non-trivial implementations have their own sections following
 
 ;; ** Require Forms
 
@@ -31,7 +32,7 @@
 
 (provide world-id? sprite-id? world-id->string)
 
-;; Client World Procedures
+;; *** Client World Procedures
 
 (provide (rename-out
           [gvec? world?]
@@ -81,11 +82,11 @@
 
 (provide update?)
 
-;; ** Key <-> Value Associations
+;; *** Key <-> Value Associations
 
 (provide obj-alist-procs)
 
-;; ** Program, Interactive I/O
+;; *** Program, Interactive I/O
 (provide program-name
          program-is-standalone?
          get-string-line
@@ -93,7 +94,7 @@
 
 ;; ** Definitions
 
-;; **** IDs and ID Maps
+;; *** IDs and ID Maps
 
 ;; Details below at ** IDs and ID Maps
 

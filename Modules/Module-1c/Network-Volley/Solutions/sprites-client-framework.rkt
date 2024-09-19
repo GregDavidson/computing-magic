@@ -1,13 +1,8 @@
-;; -*- mode: racket; racket-repl-buffer-name: "*sprites-worlds-client-repl*"; -*-
+;; -*- mode: racket; racket-repl-buffer-name: "*sprites-client-framework*"; -*-
 #lang racket/base
-;; * Multiple Worlds Multiple Sprites Client
+;; * Multiple Sprites in Multiple Worlds Client Framework
 
-;; See sprites-worlds-game.org for information about the game.
-;; - change this name!!
-
-;; The file sprites-words-client.rkt provides
-;; - a Framework for writing 2D Game Clients
-;;   based on Worlds of Sprites
+;; See sprites-universes.org for more information
 
 ;; ** What We Require
 

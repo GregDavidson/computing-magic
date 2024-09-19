@@ -1,9 +1,9 @@
-;; -*- mode: racket; racket-repl-buffer-name: "*sprites-worlds-server-repl*"; -*-
+;; -*- mode: racket; racket-repl-buffer-name: "*sprites-universe-server*"; -*-
 #lang racket/base
 
 ;; * Multiple Worlds Universe Server
 
-;; See sprites-worlds-game.org for information about the game.
+;; See sprites-universes.org for information
 
 ;; The file sprites-words-games.rkt provides
 ;; - inter-client (inter-world) protocol information

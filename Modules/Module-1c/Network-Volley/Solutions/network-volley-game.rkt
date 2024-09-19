@@ -1,8 +1,8 @@
-;; -*- mode: racket; racket-repl-buffer-name: "*network-volley-game-repl*"; -*-
+;; -*- mode: racket; racket-repl-buffer-name: "*network-volley-game*"; -*-
 #lang racket/base
 ;; * Network Volley Multiple Worlds Multiple Sprites Game Client
 
-;; See sprites-worlds-game.org for information about the game.
+;; See sprites-universes.org for more information
 
 ;; ** Requires and Provides
 
