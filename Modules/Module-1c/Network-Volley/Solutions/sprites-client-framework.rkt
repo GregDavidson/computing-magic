@@ -23,13 +23,13 @@
 
 ;; Require Structure IDs
 
-(require (only-in "sprites-worlds-game.rkt"
+(require (only-in "sprites-framework.rkt"
                   sprite-proxy params-base message ))
 
 ;; Require Type Predicates
 
 (require
- (contract-in "sprites-worlds-game.rkt"
+ (contract-in "sprites-framework.rkt"
               [universe? (-> any/c boolean?)]
               [message? (-> any/c boolean?)]
               [welcome-message? (-> any/c boolean?)]
@@ -60,7 +60,7 @@
 ;; Non-Type Requires
 
 (require
- (contract-in "sprites-worlds-game.rkt"
+ (contract-in "sprites-framework.rkt"
               [make-universe (->* () (natural?) universe?)]
               [universe-world (-> universe? world-id? (or/c #f world?))]
               [universe-worlds (-> universe? sequence?)]
@@ -75,7 +75,7 @@
               [world-drop!  (-> world? natural? void?)] ) )
 
 (require
- (contract-in "sprites-worlds-game.rkt"
+ (contract-in "sprites-framework.rkt"
               [sprite-proxy-sprite (-> sprite-proxy? sprite-id?)]
               [sprite-proxy-image (-> sprite-proxy? (or/c string? symbol?))]
               [sprite-proxy-x (-> sprite-proxy? natural?)]
@@ -94,7 +94,7 @@
                    sprite-proxy?)] ) )
 
 (require
- (contract-in "sprites-worlds-game.rkt"
+ (contract-in "sprites-framework.rkt"
               [world-id->string (-> world-id? string?)]
               [make-message (-> (or/c  params-base? world-id?) message?)]
               [message-world (-> message? world-id?)]
@@ -108,7 +108,7 @@
               [actions-updates (-> actions? (listof update?))] ) )
 
 (require
- (contract-in "sprites-worlds-game.rkt"
+ (contract-in "sprites-framework.rkt"
               [my-parameter (->* (any/c procedure? symbol?) ((or/c #f symbol? string?)) parameter?)]
               [*tracing* parameter?]
               [tracing (->* () (symbol?) boolean?)]
@@ -119,7 +119,7 @@
 
 ;; Returns 3 alist management procedures
 ;; TODO Write a contract for this!!
-(require (only-in "sprites-worlds-game.rkt" obj-alist-procs))
+(require (only-in "sprites-framework.rkt" obj-alist-procs))
 
 ;; ** What We Provide
 
@@ -712,7 +712,7 @@
 
 (provide show-world show-universe)
 
-(require (only-in "sprites-worlds-game.rkt"
+(require (only-in "sprites-framework.rkt"
                   world? world-sprite world-sprite-ids
                   universe? universe-world universe-world-ids ))
 

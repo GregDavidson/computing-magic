@@ -19,7 +19,7 @@
 ;; so that we can use them in the contracts of the other
 ;; functions we'll import next.
 (require
- (contract-in "sprites-worlds-game.rkt"
+ (contract-in "sprites-framework.rkt"
               [universe? (-> any/c boolean?)]
               [world-id? (-> any/c boolean?)]
               [message? (-> any/c boolean?)]
@@ -27,7 +27,7 @@
               [goodbye-message? (-> any/c boolean?)] ) )
 
 (require
- (contract-in "sprites-worlds-game.rkt"
+ (contract-in "sprites-framework.rkt"
               [make-universe (->* () (natural?) universe?)]
               [universe-worlds (-> universe? sequence?)]
               [universe-world-index (-> universe? iworld? natural?)]
@@ -42,7 +42,7 @@
               [tracing (->* () (symbol?) boolean?)]
               [*testing* parameter?] ) )
 
-(require (only-in "sprites-worlds-game.rkt"
+(require (only-in "sprites-framework.rkt"
                   program-name program-is-standalone?
                   trace-procs get-string-line ))
 

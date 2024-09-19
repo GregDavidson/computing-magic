@@ -3,10 +3,10 @@ H = ngender.net
 D = Network-Volley
 B := bin
 vpath $B
-SERVER = sprites-worlds-server
+SERVER = sprites-universe-server
 GAME = network-volley-game
-LIB = sprites-worlds-game.rkt
-LIBS = $(LIB) sprites-worlds-client.rkt
+LIB = sprites-framework.rkt
+LIBS = $(LIB) sprites-client-framework.rkt
 SRC = $(SERVER).rkt $(LIBS) $(GAME).rkt
 BIN = $(SERVER) $(GAME)
 help:
@@ -22,7 +22,7 @@ $(SERVER): $(SERVER).rkt $(LIB)
 $(GAME): $(GAME).rkt $(LIBS)
 	raco exe --gui -o $B/$@ $<
 dest-copy:
-	scp $(SRC) ngender.net:$D
+	scp $(SRC) Makefile ngender.net:$D
 dest-make:
 	ssh ngender.net make -C Network-Volley all
 dest-run:

@@ -11,7 +11,7 @@
          racket/sequence
          racket/contract/base
          racket/contract/region
-         "sprites-worlds-client.rkt" )
+         "sprites-client-framework.rkt" )
 
 ;; for testing we provide
 (provide PROXY-0
