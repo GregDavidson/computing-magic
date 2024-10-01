@@ -28,9 +28,8 @@ Alas, getting started with Emacs takes more work than less powerful tools.
 6. Work through the Tutorial until your fingers start to know these basics.
 7. Now you need to start using Emacs for something that matters to you, but first:
        - See the sections below on
-             - See the sections below on
-                   - /Add An Emacs Starter Kit!/
-                   - /Learn OrgMode ASAP!/
+             - /Add An Emacs Starter Kit!/
+             - /Learn OrgMode ASAP!/
 
 Emacs is well worth your effort to learn to use well. I recommend reading all
 the sections of this document as soon as possible.
