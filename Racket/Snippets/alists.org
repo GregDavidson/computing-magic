@@ -1,0 +1,164 @@
+* Association Lists, The Original Lisp Dictionaries, in Scheme
+
+** Context
+
+/Note: The examples in this document use the *racket* implementation of the
+*scheme* dialect of Lisp. Racket-specific extensions are avoided. These examples
+could easily be ported to any other Lisp dialect./
+
+The *idea of a dictionary* is a collection of values which can be looked up with
+associated keys.
+
+An *Association List, aka alist* is a list of keys paired with values.
+
+** Quick Review
+
+Get clear about why the examples produce the outputs shown before continuing
+with this document!
+
+** Pairs and Lists in Lisp
+
+In Lisp pairs and lists are built-in features:
+- a pair :: 2 values allocated by the function ~cons~
+- car :: a function returning the /first/ of the values in a /pair/
+- cdr :: a function returning the /second/ (and only other) value in a /pair/
+- a list :: either
+      - the /empty list/ ~'()~
+      - a /pair/ whose
+            - /car/ is the first element of a list
+            - /cdr/ is a list of any remaining elements
+- list :: a function which creates a list by allocating pairs
+
+What pairs and lists look like in memory:
+- a memory object :: a value stored in one or more adjacent words in memory
+      - not to be confused with objects in object-oriented programming!
+- a pair :: two adjacent words in memory, each storing a single value.
+      - a single memory object, not part of any other memory object
+      - when a value fits in 1 word, it is stored in that word
+      - otherwise a pointer is stored
+            - i.e. the address where the value is stored
+- a list :: 0 or more pairs connected by their cdr values
+      - a non-empty /cdr/ is a pointer to /another pair/ somewhere else in memory
+      - lists are typically not contiguous in memory
+      - the same list can be used as the /cdr/ of multiple other lists!
+      - the last cdr of a /proper list/ should store the value '()
+
+#+begin_src racket
+  #lang scheme
+  (define apair (cons 'thing1 'thing2))
+  (define alist1 (list 'thing1 'thing2))
+  (define alist2 (cons 'thing1 (cons 'thing2 '())))
+  (define alist3 (cons 'one-new-thing alist1))
+  (define alist4 (cons 'another-new-thing alist1))
+  (display apair) (newline) ; --> (thing1 . thing2)
+  (display (car apair)) (newline) ; --> thing1
+  (display (cdr apair)) (newline) ; --> thing2
+  (display alist1) (newline) ; --> (thing1 thing2)
+  (display alist2) (newline) ; --> (thing1 thing2)
+  (display (eq? alist1 alist2)) (newline) ; --> #f different objects in memory
+  (display (equal? alist1 alist2)) (newline) ; --> #t equivalent values
+  (display (car alist1)) (newline) ; --> thing1
+  (display (cdr alist1)) (newline) ; --> (thing2)
+  (display (car (cdr alist1))) (newline) ; --> thing2
+  (display alist3) (newline) ; --> (one-new-thing thing1 thing2)
+  (display (car alist3)) (newline) ; --> one-new-thing
+  (display alist4) (newline) ; --> (another-new-thing thing1 thing2)
+  (display (car alist4)) (newline) ; --> another-new-thing
+  (display (eq? (cdr alist3) (cdr alist4))) ; --> #t same object in memory
+           
+#+end_src
+
+Notes
+- In early lisp dialects
+      - '() was represented by 'nil
+      - which is a symbol and /not a list/!
+- In scheme and scheme-derived dialects
+      - '() is a special value which is considered a list
+- The ~cons~ function always creates a new pair in memory
+- In early lisp dialects
+      - false was represented by the symbol 'nil
+      - all other values were considered true
+      - the canonical true value was the symbol 't
+- In scheme and scheme-derived dialects
+      - false is the special value written as #f
+      - all other values are considered true
+      - the canonical true value is a special value written as #t
+      - (boolean? #f) --> #t
+      - (boolean? #t) --> #t
+      - (boolean? ANYTHING-ELSE) --> #f
+- Predicate functions only return (canonical) true or false
+- In early lisp dialects
+      - "p" for /predicate/ was a common suffix for /predicate function/ names
+      - e.g. listp -- tests if a value is a list
+- In scheme and scheme-derived dialects
+      - "?" is a common suffix for /predicate function/ names
+      - e.g. equal? -- tests if two values are equivalent
+
+** Symbols, Evaluation, Quoting, Equality
+
+A symbol is used to represent a distinct value.
+
+A symbol can be /bound to/ aka /associated with/ a value in an environment.
+- This /association/ is also called a /binding/
+- So an environment is a collection of /bindings/
+- Scheme normally creates bindings with the special form
+      - ~(define symbol value)~
+
+Unless a program explicitly creates symbols in an unusual way
+- Symbols spelled the same are the same symbol
+- Symbols spelled differently are distinct (different) symbols
+
+In lisp all expressions are evaluated unless quoted
+- The /special form/ ~(quote EXPRESSION)~ returns EXPRESSION without evaluation
+- The /reader macro/ ' is equivalent to using the quote form
+      - 'EXPRESSION is the same as (quote EXPRESSION)
+
+The primitive function ~eq?~ checks if two values are the same object
+- if they're the same one-word value, which might be a pointer
+- if that value is a pointer, it must point to the same memory object
+
+The more expensive function ~equal?~ checks if two values are equivalent
+- Two values are equivalent if they can't be distinguished except by using ~eq?~
+
+#+begin_src racket
+  #lang scheme
+  (eq? 'this 'this)
+  (eq? 'this 'that)
+  (eq? (cons 'this 'that) (cons 'this 'that))
+  (equal? 'this 'this)
+  (equal? 'this 'that)
+  (equal? (cons 'this 'that) (cons 'this 'that))
+#+end_src
+
+
+** Alists with eq? keys, e.g. symbols
+
+#+begin_src racket
+#lang scheme
+ 
+#+end_src
+
+** Alists mapping eq? keys to list? values
+
+#+begin_src racket
+#lang scheme
+ 
+#+end_src
+
+
+** Alternatives to alists for dictionaries
+
+#+begin_src racket
+#lang scheme
+ 
+#+end_src
+
+#+begin_src racket
+#lang scheme
+ 
+#+end_src
+
+#+begin_src racket
+#lang scheme
+ 
+#+end_src
