@@ -1,0 +1,65 @@
+* Augmentation of Intellect and Artificial Intelligence Languages and Platforms
+
+Purpose: Uplift Humanity!
+- Leveraging Human Capabilities
+      - Post-Scarcity
+      - Right Livelihood to the max!
+      - Humans Vastly Respecting Humans
+
+** Levels of Intelligence
+
+Each level requires competence with the lower levels.
+
+- Wisdom
+      - Distinguishing Values
+      - Taking into account
+            - Values, Needs, Possibilities
+- Creativity
+      - Highest Creative Level: Distinguishing
+            - New Domains, Contexts, Possibilities
+      - Generating novel designs and plans
+- Understanding
+      - Assigning the correct Context for
+            - Knowledge, Information and Data
+      - Minor creativity
+            - adjustment of Contexts
+- Knowledge
+      - Explicit Knowledge
+            - Structured rules of Multiple Forms of Logic
+                  - Full Predicate Calculus
+                  - First Order Logic
+                  - Probabilstic Logics
+- Information
+- Data
+
+** Levels of Intelligence
+
+** References
+
+*** Augmentation of Intellect References
+s
+- https://en.wikipedia.org/wiki/Intelligence_amplification
+- https://en.wikipedia.org/wiki/NLS_(computer_system)
+- https://en.wikipedia.org/wiki/The_Mother_of_All_Demos
+- https://en.wikipedia.org/wiki/Douglas_Engelbart
+- https://en.wikipedia.org/wiki/Augmented_cognition
+
+- https://www.sagemath.org/
+- https://orgmode.org/
+
+*** Advanced Database References
+
+- https://www.postgresql.org/
+- https://gregdavidson.github.io/wicci-core-S0_lib/
+- https://postgis.net/
+- https://mathesar.org/
+- https://en.wikipedia.org/wiki/Datalog
+      - https://www.datomic.com/
+
+*** Artificial Intelligence References
+
+- https://en.wikipedia.org/wiki/Knowledge_representation_and_reasoning
+- https://github.com/ErgoAI
+- https://en.wikipedia.org/wiki/Blackboard_system
+
+- https://en.wikipedia.org/wiki/Logic_programming
