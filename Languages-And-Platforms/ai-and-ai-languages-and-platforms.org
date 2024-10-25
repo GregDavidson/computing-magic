@@ -28,7 +28,7 @@ Each level requires competence with the lower levels.
             - Structured rules of Multiple Forms of Logic
                   - Full Predicate Calculus
                   - First Order Logic
-                  - Probabilstic Logics
+                  - Probabilistic Logics
 - Information
 - Data
 
@@ -53,8 +53,9 @@ s
 - https://gregdavidson.github.io/wicci-core-S0_lib/
 - https://postgis.net/
 - https://mathesar.org/
-- https://en.wikipedia.org/wiki/Datalog
-      - https://www.datomic.com/
+- https://en.wikipedia.org/wiki/Deductive_database
+      - https://en.wikipedia.org/wiki/Datalog
+            - https://www.datomic.com/
 
 *** Artificial Intelligence References
 
