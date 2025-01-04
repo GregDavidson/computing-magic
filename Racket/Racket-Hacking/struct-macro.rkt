@@ -3,35 +3,15 @@
 
 ;; ** Requires we need for testing only
 
-(require racket/contract)
-(require racket/stream)
+#;(require racket/contract)
+#;(require racket/stream)
 ;; https://docs.racket-lang.org/syntax/Minimal_Library.html
 (require syntax/parse/pre)
 
 ;; ** for-syntax includes we might need
 
-(require (for-syntax
-          racket/base
-          syntax/parse
-          racket/function
-          racket/stream
-          racket/vector
-          syntax/parse
-          ))
-
-;; ** Helpers we might need
-
-(define/contract (stream-andmap-2 f seq0 seq1)
-  (-> procedure? stream? stream? boolean?)
-  (define this 'stream-andmap-2)
-  (let loop ( [s0 seq0] [s1 seq1] )
-    (cond [(and (null? s0) (null? s1)) #t]
-          [(or (null? s0) (null? s1))
-           (error this "irregular streams ~a and ~a" seq0 seq1) ]
-          [(not (f (stream-first s0) (stream-first s1))) #f]
-          [#t (loop (stream-rest s0) (stream-rest s1))] ) ) )
-
-#;(stream-andmap-2 (λ (x y) (> x y)) '(3 2 5) '(2 0 4))
+(require (for-syntax "struct-macro-support.rkt"
+                     ))
 
 ;; https://docs.racket-lang.org/syntax/stxparse-intro.html
 
@@ -51,10 +31,6 @@
   [(name:id . attrs) (list (syntax->datum #'name) (syntax->datum #'attrs))]
   )
 
-;; a syntax class for a list of fields
-#;(define-syntax-class -record-macro-field-list)
-
-
 ;; ** struct/macro/predicate
 
 ;; We need to define a predicate procedure for our structure type
@@ -68,14 +44,12 @@
      (datum->syntax stx `(define (,(string->symbol (string-append (symbol->string (syntax->datum #'id)) "?")) x)
                            (and (vector? x) (>= (vector-length x) ,(length (syntax->list #'fields)))) )) ] ) )
 
-
-
 (define-syntax (struct/macro/predicate stx)
-  (define (predicate-name stx)
+  #;(define (predicate-name stx)
     (string->symbol (string-append (symbol->string (syntax->datum #'id)) "?")) )
   (syntax-case stx ()
     [(_ id fields . config)
-     (identifier? #'id) ; racket-specific??
+     #;(identifier? #'id) ; racket-specific??
      #;(list? #'fields) ; okay??
      #`(define (#,(predicate-name #'id) x)
                            (and (vector? x) (>= (vector-length x) #,(length (syntax->list #'fields)))) ) ] ) )
@@ -90,19 +64,13 @@
 ;; - selector syntaxes
 ;; - mutator syntaxes where applicable
 
-
-;; Research & fix:
-;: Local functions aren't being found!!
-;; Put them in a module and import them
-;; for syntax??
-
 #;(define-syntax (struct/macro/define stx0)
   (syntax-case stx0 ()
     [(_ id fields . config)
      (identifier? #'id) ; racket-specific??
      #;(list? #'fields) ; okay??
      #`(define-syntax (#,(syntax->datum #'id) stx)
-                         (define (predicate-name stx)
+                         #;(define (predicate-name stx)
                            (string->symbol (string-append (symbol->string (syntax->datum #'id)) "?")) )
                          (define (name->index stx)
                            (let ( [goal (syntax->datum stx)] )
@@ -136,7 +104,7 @@
 (define-syntax (struct/macro stx)
   (syntax-case stx ()
     [(_ id fields . config)
-     (identifier? #'id) ; racket-specific??
+     #;(identifier? #'id) ; racket-specific??
      #;(list? #'fields) ; okay??
      #'(begin (struct/macro/predicate id fields . config)
             (struct/macro/define id fields . config) ) ] ) )
