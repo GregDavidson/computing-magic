@@ -15,9 +15,6 @@
          syntax
          )
 
-;; Racket Macro Support
-;; (require (for-syntax "racket-macro-support.rkt"))
-
 ;; ** Helpers we might need
 
 (define/contract (stream-andmap-2 f seq0 seq1)
