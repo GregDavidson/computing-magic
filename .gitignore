@@ -14,3 +14,4 @@ foo-*
 *.broken
 Limbo/
 Draft/
+.DS_Store
