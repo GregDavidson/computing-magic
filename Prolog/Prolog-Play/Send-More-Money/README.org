@@ -1,0 +1,39 @@
+* Cryptarithmetic and Send + More = Money
+
+Here are some explorations of
+- [[https://en.wikipedia.org/wiki/Verbal_arithmetic][Cryptarithmetic]]
+starting with the classic problem
+
+#+begin_src
+    SEND
+  + MORE
+ = MONEY
+#+end_src
+
+Here's my solution in SWI-Prolog using exhaustive depth-first search. The
+arithmetic check hides the builtin ~is~ predicate behind a predicate ~add~ in a
+nod to generalizing the solution in the future.
+
+- [[file:send-more-money-is-swi.pl][send-more-money-is-swi.pl]]
+
+#+begin_src prolog
+?- time(test_solve).
+% 10,835,675 inferences, 0.915 CPU in 0.919 seconds (100% CPU, 11841403 Lips)
+#+end_src
+
+Here's a solution in SWI-Prolog using using SWI's Constraint Logic Programming
+library ~clpfd~:
+
+- [[file:send-more-money-clp-swi.pl][send-more-money-clp-swi.pl]]
+
+#+begin_src prolog
+?- time(test1).
+% 8,191 inferences, 0.002 CPU in 0.002 seconds (100% CPU, 4073758 Lips)
+#+end_src
+
+We see that using ~clpfd~ is much more efficient than exhaustive depth-first
+search. Unfortunately, the ~clpfd~ solution mechanism is a black box.
+
+Can we find a way to explain and control how ~clpfd~ and other Constraint Logic
+Programming libraries work in a manner that is no worse than explaining how
+Prolog and Prolog programming work?
