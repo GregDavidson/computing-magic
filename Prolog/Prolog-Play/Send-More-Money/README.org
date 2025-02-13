@@ -37,3 +37,17 @@ search. Unfortunately, the ~clpfd~ solution mechanism is a black box.
 Can we find a way to explain and control how ~clpfd~ and other Constraint Logic
 Programming libraries work in a manner that is no worse than explaining how
 Prolog and Prolog programming work?
+
+** Resources
+
+- [[https://swish.swi-prolog.org/p/ltc_send_more_money.swinb][Exploration using online SWISH tool]]
+- [[https://bennycheung.github.io/solving-puzzles-using-clp][Solving Puzzles using Constraint Logic Programming in Prolog by Benny Cheung]]
+- [[https://en.wikipedia.org/wiki/Constraint_logic_programming][Constraint logic programming (Wikipedia)]]
+
+Academic Course Materials
+- Paul Fodor, Stony Brook University
+      - [[https://www3.cs.stonybrook.edu/~pfodor/courses/cse505.html][CSE505 - Fall 2019 Computing with Logic course]]
+            - Has some nice material on Flora-2
+- [[https://cliplab.org/~vocal/public_info/seminar_notes/seminar_notes.html][An Introductory Course on Constraint Logic Programming]]
+      - [[https://cliplab.org][CLIP Lab]]
+            - Home of Ciao System
