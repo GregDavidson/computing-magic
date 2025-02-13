@@ -37,7 +37,7 @@ Each level requires competence with the lower levels.
 ** References
 
 *** Augmentation of Intellect References
-s
+
 - https://en.wikipedia.org/wiki/Intelligence_amplification
 - https://en.wikipedia.org/wiki/NLS_(computer_system)
 - https://en.wikipedia.org/wiki/The_Mother_of_All_Demos
