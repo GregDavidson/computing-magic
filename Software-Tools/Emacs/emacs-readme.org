@@ -4,7 +4,7 @@ Part of the [[file:/Data/Greg/Gits-Ours/Computing-Magic/README.org][Computing Ma
 - You can help improve this and other documents using Emacs
 - See the section /Emacs, Git and Participation/ below
 
-[[https://www.gnu.org/software/emacs][Gnu Emacs]] is a ridiculously powerful tool for creative projects such as
+[[https://www.gnu.org/software/emacs][Gnu Emacs]] is a ridiculously powerful platform for creative projects such as
 - Software Development - in any language
 - Creative Writing - books, articles, etc.
 - Time and Project Management
@@ -34,14 +34,17 @@ Alas, getting started with Emacs takes more work than less powerful tools.
 Emacs is well worth your effort to learn to use well. I recommend reading all
 the sections of this document as soon as possible.
 
+*If you're visually impaired:*
+- [[https://emacspeak.sourceforge.net][Emacspeak]] has you covered!
+
 ** What's Emacs good for again?
 
-Emacs began as a tool for software development. Emacs now has /modes/ which
-support more computer programming languages and configuration formats than any
-other tool. The /modes/ are highly configurable so you can adapt them to your
-work style.
+Emacs began as a tool for software development. Emacs has /modes/ which support
+more computer programming languages and configuration formats than any other
+tool. The /modes/ are highly configurable so you can adapt them to your work
+style.
 
-Emacs now has modes for a much larger number of tasks, including
+Emacs also has modes for other tasks, including
 - Creative Writing
 - Personal and Project Scheduling and Time Management
 - Computer System Administration
@@ -49,20 +52,19 @@ Emacs now has modes for a much larger number of tasks, including
 - Graphic Design
 - Playing Games
 - Science, Engineering, Mathematics
-- /and so much more!/
+- /and much more!/
 
-Many of these modes are built alongside other powerful modes, e.g. /OrgMode/
-giving an extremely rich combination of features. And for many tasks, there's a
-choice of modes!
+Many of these modes are built in conjunction with other powerful modes, e.g.
+/OrgMode/ giving an extremely rich combination of features. For many tasks,
+there's a choice of modes!
 
-The downside is that until you install the modes you like and configure them the
-way you want them, Emacs will seem clunky.
-
-But help is available: /Read the Next Section!/
+The default Emacs configuration hasn't changed much since the 1980s. After you
+install the modes you need and configure to your preferences, Emacs will become
+as modern and powerful as you like!
 
 ** Add An Emacs Starter Kit!
 
-You don't have to build a nice Emacs environment from scratch!
+You don't have to configure Emacs from scratch!
 
 There are many [[https://www.emacswiki.org/emacs/StarterKits][Emacs Starter Kits]]!
 
@@ -100,7 +102,8 @@ Suggestion: *Start keeping your notes and resources using Emacs Orgmode.*
 - Start as soon as you've learned the most basic Emacs and Org-Mode features
 - /Keep learning and exploiting more Emacs and Org-Mode features/
 - I've been doing this for years and it's become a lifesaver
-      - Here's a link to my [[https://github.com/GregDavidson/Public-Notes#readme][Public Notes]] if you're curious!
+      - Here's a link to my [[https://github.com/GregDavidson/Public-Notes#readme][Public Notes]]
+      - /From many years of using complex systems!/
 
 *** OrgMode Sub-Topics
 
