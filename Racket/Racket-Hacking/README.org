@@ -1,0 +1,50 @@
+* Racket Hacking
+
+Nothing here is intended to make sense to anyone browsing.
+
+This is a place for experiments which /might/ eventually become something which
+would be moved elsewhere in the repository.
+
+** Some of the files here
+
+[[file][README.org]]
+[[file:macro-record-types.org][macro-record-types.org]]
+
+[[file:racket-parameters.rkt][racket-parameters.rkt]]
+[[file:naked-code.rkt][naked-code.rkt]]
+[[file:struct-macro-support.rkt][struct-macro-support.rkt]]
+[[file:struct-macro.rkt][struct-macro.rkt]]
+
+** Some macro documentation links
+
+*** Racket Related
+
+- [[https://docs.racket-lang.org/guide/macros.html][Macros in the Racket Guide]]
+- [[https://docs.racket-lang.org/syntax][Syntax: Meta-Programming Helpers]]
+- [[https://docs.racket-lang.org/macro-debugger][Racket Macro Debugger: Inspecting Macro Expansion]]
+
+Tutorials
+- [[https://www.greghendershott.com/fear-of-macros][Fear of Macros guide to writing Racket Macros]]
+- [[https://www.gavinmcg.com/2016/02/03/racket-macros.html][Macros in Racket: an Outline]]
+
+- [[https://docs.racket-lang.org/reference/Macros.html][Macros in the Racket Reference]]
+      - [[https://docs.racket-lang.org/reference/stx-patterns.html#%28form._%28%28lib._racket%2Fprivate%2Fstxcase-scheme..rkt%29._syntax-rules%29%29][syntax-rules in the Racket Reference]]
+      - [[https://docs.racket-lang.org/reference/stx-patterns.html#%28form._%28%28lib._racket%2Fprivate%2Fstxcase-scheme..rkt%29._syntax-case%29%29][syntax-case in the Racket Reference]]
+      - [[https://docs.racket-lang.org/reference/stxparam.html#%28form._%28%28lib._racket%2Fstxparam..rkt%29._define-syntax-parameter%29%29][syntax-parameters in the Racket Reference]]
+      - [[https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define-syntax%29%29][define-syntax in the Racket Reference]]
+
+*** Racket Non-Higienic Macro Support
+
+- [[https://docs.racket-lang.org/compatibility/defmacro.html#%28form._%28%28lib._compatibility%2Fdefmacro..rkt%29._define-macro%29%29][Racket Legacy Macro Support: define-macro, defmacro]]
+
+*** Scheme
+
+- [[https://docs.scheme.org/guide/macros/][Macro support in different Scheme dialects]]
+- [[https://en.wikibooks.org/wiki/Scheme_Programming/Macros][Scheme Programming / Macros]]
+- [[https://github.com/mnieper/scheme-macros][Writing Powerful Macros in Scheme]]
+- [[https://piembsystech.com/exploring-the-power-of-macros-in-scheme-programming-language/][The Power of Macros in Scheme]]
+- [[https://www.cs.cmu.edu/Groups/AI/html/r4rs/r4rs_12.html][r4rs Macros]]
+
+*** Other Lisps, e.g. Common Lisp
+
+- [[https://courses.cs.umbc.edu/331/resources/lisp/onLisp/14anaphoricMacros.pdf][Anaphoric Macros in Common Lisp]]

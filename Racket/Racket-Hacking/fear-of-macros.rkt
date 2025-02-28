@@ -1,0 +1,45 @@
+#lang racket/base
+
+;; https://www.greghendershott.com/fear-of-macros/Transform_.html
+
+(require (for-syntax racket/base))
+
+(define-syntax-rule (show exp)
+  (printf "~a = ~a\n" 'exp exp) )
+
+(show #'(+ 2 2))
+(show (+ 2 2))
+
+(define-syntax (show-me stx)
+       (println  stx)
+     #'(void))
+
+(show (show-me '(+ 1 2)))
+
+(define stx #'(if x (list "true") #f))
+(show stx)
+(show  (syntax-source stx))
+(show (syntax-line stx))
+(show (syntax-column stx))
+(show (syntax->datum stx))
+(show (syntax-e #'x))
+(show (syntax-e stx))
+(show (syntax->list stx))
+
+(define-syntax (reverse-me stx)
+    (datum->syntax stx (reverse (cdr (syntax->datum stx)))))
+(show (reverse-me "backwards" "am" "i" list))
+(reverse-me "backwards" "am" "i" values)
+
+(require (for-syntax racket/match))
+(define-syntax (our-if stx)
+    (match (syntax->list stx)
+      [(list _ condition true-expr false-expr)
+       (datum->syntax stx `(cond [,condition ,true-expr]
+                                 [else ,false-expr]))]))
+(show (syntax->datum (expand-once #'(our-if #t "true" "false"))))
+(show (our-if #t "true" "false"))
+
+;; see
+;; begin-for-syntax
+;; define-for-syntax

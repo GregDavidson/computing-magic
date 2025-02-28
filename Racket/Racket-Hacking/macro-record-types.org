@@ -1,15 +1,17 @@
-* Macro-Based Record Types
+* Macro-Based Record (aka Struct/Structure) Types
 
 ** The Idea
+
+Note: We might go with the term record instead of struct/structure.
 
 #+begin_src scheme
   (struct/macro
     macro-name {super-name}*
     ( {field-name {type}? {field-feature}*}* )
-    {record-type-feature}* )
+    {struct-feature}* )
 #+end_src
 
-Defines /macro-name/ as a macro which represents a new record-type, providing
+Defines /macro-name/ as a macro which manages a new record-type, providing
 - constructor :: (macro-name #:new {value}*)
 - predicate :: (macro-name value)
 - selector /for each field/ :: (macro-name record-value field-name)
@@ -39,7 +41,7 @@ Unless otherwise specified, these records are syntactic sugar for vectors.
 
 See also *References* below
 
-- [[file:macro-record-types.rkt][macro-record-types.rkt]]
+- [[file:struct-macro.rkt][struct-macro.rkt]]
   
 
 ** Implementation Notes

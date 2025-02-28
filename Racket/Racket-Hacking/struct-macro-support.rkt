@@ -34,7 +34,7 @@
   #:description "record macro field name"
   (pattern var:id) )
 
-(syntax-parse #'(foo integer? #:mutable)
+#;(syntax-parse #'(foo integer? #:mutable)
   [name:id (syntax->datum #'name)]
   [(name:id . attrs) (list (syntax->datum #'name) (syntax->datum #'attrs))]
   )

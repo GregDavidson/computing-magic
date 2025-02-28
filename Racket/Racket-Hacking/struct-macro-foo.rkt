@@ -52,7 +52,7 @@
      (datum->syntax stx `(define (,(string->symbol (string-append (symbol->string (syntax->datum #'id)) "?")) x)
                            (and (vector? x) (>= (vector-length x) ,(length (syntax->list #'fields)))) )) ] ) )
 
-#;(define-syntax (struct/macro/predicate stx)
+(define-syntax (struct/macro/predicate stx)
   #;(define (predicate-name stx)
     (string->symbol (string-append (symbol->string (syntax->datum #'id)) "?")) )
   (syntax-case stx ()
