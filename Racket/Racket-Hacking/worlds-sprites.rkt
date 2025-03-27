@@ -1,5 +1,9 @@
 #lang racket/base
 
+;; * Provide a stream of all sprites in a Universe
+
+;; according to our Universe framework in
+
 (require (file "/home/greg/Gits/Learner-Gits/Eti/Multiplayer-Flightlander/sprites-client-framework.rkt"))
 
 (require racket/stream)
@@ -59,3 +63,17 @@
         [(client-state? worlds) ; are we too nice?
          (make-all-sprites (client-state-worlds-sprites worlds) sprites) ]
         [else (error this "Not a universe ~a" worlds)] ) )
+
+;; ** Criticism
+
+;; This could/should be generic.
+
+;; For 2/level containers?
+;; For N/level containers?
+;; For a tree of containers?
+
+;; What about feature of missing elements?
+;; Currently they're #f
+;; In suggested optimized version they'd be (natural?)
+;; This could be an optional argument?
+;; Or the container->stream constructors could be optional arguments.
