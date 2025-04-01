@@ -187,7 +187,7 @@ kernel.
       - Unix and it's utility programs were famous for being small and simple.
       - Dennis Ritchie was once asked "What's the best way to write large programs in C"
       - His reply: "Don't!"
-      - See our modest course <a href="https://github.com/GregDavidson/C-By-Example">C By Example</a>.
+      - See our modest course [[https://github.com/GregDavidson/C-By-Example"][C By Example]].
 - C++ extends C with a large number of complex features
       - Many C++ features are designed to replace older features which were
         found to be unreliable yet which were themselves designed to replace
