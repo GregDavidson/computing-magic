@@ -15,8 +15,13 @@ would be moved elsewhere in the repository.
 [[file:struct-macro-support.rkt][struct-macro-support.rkt]]
 [[file:struct-macro.rkt][struct-macro.rkt]]
 
-** Some macro documentation links
+** Some Pattern Matching documentation links\
 
+- [[https://docs.racket-lang.org/guide/match.html][Pattern Matching (Racket Guide)]]
+- [[https://docs.racket-lang.org/reference/match.html][match form (Racket Reference)]]
+- 
+
+** Some macro documentation links
 *** Racket Related
 
 - [[https://docs.racket-lang.org/guide/macros.html][Macros in the Racket Guide]]
