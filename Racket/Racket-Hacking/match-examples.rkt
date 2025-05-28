@@ -213,7 +213,7 @@
   (define (adjust-towards ours theirs) (+ ours (/ (- theirs ours) 2)))
   (match report
     ;; when others match our price, keep our price
-    [(list _ price) #:when (= old-price price) old-price]
+    [(list _ (== old-price)) old-price] ; == matches against variable
     ;; when others have an item on sale, match it
     [(list _ price 'sale) #:when (> old-price price) price]
     ;; our price should never be higher than Macy's
@@ -246,5 +246,14 @@
     [(list who price 'sale) (new-price who price #t)]
     [#t (eprintf "new-price-2: unknown report format ~a\n" report) old-price] ) )
 
-;; When the input data is strings rather than lists, use regular expressions
+
+;; ** TODO
+
+;; Add an example of using ... in patterns
+
+;; ** Also
+
+;; The match form works with lists, vectors, structs and more.  But not strings!
+
+;; When the input data is strings, use regular expressions
 ;; see https://docs.racket-lang.org/guide/regexp.html
