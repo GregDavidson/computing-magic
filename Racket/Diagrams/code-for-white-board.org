@@ -1,0 +1,6 @@
+#lang slideshow
+
+(define two-colors (list "green" "blue"))
+(define three-colors (cons "red" two-colors))
+(define five-element-vector (make-vector  5))
+(define a-string "A string is a contiguous sequence of bytes representing text.")

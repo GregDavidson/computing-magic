@@ -1,0 +1,147 @@
+* Racket ~match~ Macro
+
+This document takes the examples from
+
+- [[https://medium.com/@AlexanderObregon/how-racket-implements-pattern-matching-with-match-and-what-happens-internally-4de99cfcd646][How Racket Implements Pattern Matching with ~match~ and What Happens Internally]]
+
+and explains them with standard Scheme code instead of English.
+
+** ~match~ Use Case
+
+A ~match~ form is a macro which provides syntactic sugar for a conventional ~cond~ form.  A ~match~ form allows you to use a declarative pattern matching syntax which can be nicer than directly calling predicate functions.
+
+** Example 1
+
+#+begin_src racket
+#lang racket
+
+(define (classify x)
+  (match x
+    [(list 'a v) (string-append "A value: " (number->string v))]
+    [(list 'b v) (string-append "B value: " (number->string v))]
+    [_ "Unknown"]))
+
+(classify '(a 10)) ; => "A value: 10"
+(classify '(b 5))  ; => "B value: 5"
+(classify '(z 1))  ; => "Unknown"
+#+end_src
+
+
+
+This makes variable binding in ~match~ safer than, say, destructuring with let, because there’s no risk of accessing a variable from a failed ~match~.
+Patterns Can Be Nested and Combined
+
+Racket allows complex patterns to be written directly into the ~match~ clause. These patterns can include nested lists, pairs, and more. Here’s an example:
+
+#+begin_src racket
+(match x
+  [(list 'pair (list 'x a) (list 'y b)) (+ a b)])
+#+end_src
+
+This pattern is nested three layers deep. The ~match~ macro breaks it down recursively, generating checks for each level. It builds a full plan to test each part of the structure before running the body.
+
+The important thing is that the entire plan is built at compile time. Each part of the pattern is turned into a chain of checks and variable assignments that will only run if the whole structure fits.
+What Happens During Pattern Matching and How It Fails or Succeeds
+
+Once a ~match~ form has been compiled, the rest of the work takes place at runtime. This is the part where the actual input value gets tested against the compiled pattern checks. What was earlier just a description of shapes and bindings is now a set of real conditionals the program will follow to figure out what to do next.
+Matching is Tried One Pattern at a Time
+
+Pattern matching doesn’t try to be clever or jump ahead — it moves through each pattern in the order it appears in your code. The first pattern is checked, and if it matches, that clause runs. If not, it quietly skips to the next one. This continues until either a pattern matches or all of them are exhausted.
+
+This process is simple but important. The order of your patterns matters. If a more general pattern comes first, it can block more specific ones from ever being tried. For example:
+
+#+begin_src racket
+(match '(square 3)
+  [_ "Catch-all"]
+  [(list 'square s) (string-append "Square with side " (number->string s))])
+#+end_src
+
+Here, even though the second pattern looks like a perfect fit, the wildcard _ matches everything and runs first. As a result, the second clause is ignored completely.
+
+That’s part of how ~match~ works—each clause is treated like an exclusive option, and the first one that fits takes control.
+Pattern Matching is Structural
+
+Patterns don’t just test values — they test the shape and arrangement of the value. This means Racket doesn’t only ask, “Is this a list?” It also checks how long the list is, what kinds of things are inside it, and how those things are positioned.
+
+Here’s a basic example:
+
+#+begin_src racket
+(match '(circle 5)
+  [(list 'circle r) r])
+#+end_src
+
+This looks simple, but behind the scenes, several tests are happening:
+
+    First, Racket confirms the value is a list.
+    Then, it checks that the list has exactly two elements.
+    Next, it compares the first element to the symbol 'circle.
+    If all of that lines up, it grabs the second element and binds it to r.
+
+If even one of those steps fails — maybe the list has three elements, or the first item isn’t 'circle—then the whole ~match~ fails and moves on to the next clause.
+
+What makes this work so well is that everything is checked piece by piece. Each part of the pattern is matched against a corresponding part of the input, and the process follows the structure from top to bottom. If the structure doesn’t fit, the ~match~ doesn’t go forward.
+
+You can think of a pattern as a template that the input has to fit perfectly. If something is out of place, it won’t force it. It just walks away and checks the next option.
+Variable Binding in Patterns
+
+When a pattern includes a variable, that variable gets bound only if the ~match~ is successful. The compiler already knows where and how to do that based on the pattern’s layout. There’s no risk of accidentally referencing a variable from a ~match~ that didn’t happen — those variables don’t even exist unless the pattern fits.
+
+Take this example:
+
+#+begin_src racket
+(match '(circle 8)
+  [(list 'circle r) (+ r 2)])
+#+end_src
+
+If the value matches the pattern, r is bound to 8, and the expression (+ r 2) runs, returning 10. If the ~match~ doesn’t succeed, the body doesn’t run, and r is never introduced at all.
+
+This automatic binding makes ~match~ easier to write and read. You don’t need to write extra let forms or check if something exists—you know that if your code is running, the bindings you asked for are already there.
+
+Variables can also show up in multiple places in a pattern. In those cases, the ~match~ succeeds only if all uses of that variable ~match~ the same value. For example:
+
+#+begin_src racket
+(match '(same same)
+  [(list x x) "Both values are equal"]
+  [_ "Values are different"])
+#+end_src
+
+Here, both elements of the list must be the same for the first pattern to ~match~. The variable x appears twice, so the ~match~ only works if both positions hold the same value. If you pass in '(same other), it won’t ~match~.
+
+This kind of behavior helps keep matching expressive without needing extra logic in the body.
+Wildcards and Guards
+
+The underscore _ is a wildcard pattern—it matches anything but doesn’t bind it to a variable. It’s useful when you don’t care about a value and don’t need to refer to it later. It’s also commonly used as a catch-all at the end of a ~match~ form.
+
+Here’s a quick example:
+
+#+begin_src racket
+(match '(triangle 6)
+  [(list 'circle r) "Circle"]
+  [(list 'square s) "Square"]
+  [_ "Other shape"])
+#+end_src
+
+In this code, if the input doesn’t ~match~ the first two patterns, the last clause always runs. The wildcard makes sure that unexpected input doesn’t cause a crash.
+
+There’s another tool in pattern matching often referred to as a guard. In Racket’s ~match~, guards can be written using the #:when keyword or by using a predicate pattern like (? some-predicate). These allow you to run an additional check after a pattern has matched structurally. For instance:
+
+#+begin_src racket
+(match 7
+  [(? even?) "Even"]
+  [(? odd?) "Odd"])
+#+end_src
+
+Each clause here matches any value, but then runs a test using a predicate function. even? and odd? are both functions that return true or false, and the ~match~ form uses them to filter what counts as a successful ~match~.
+
+You can also mix structural patterns and guards:
+
+#+begin_src racket
+(match '(user 42)
+  [(list 'user id) #:when (> id 40) "ID is above 40"]
+  [_ "Not matched"])
+#+end_src
+
+Here, the pattern (list 'user id) must ~match~ first. Then, the guard checks whether id is greater than 40. If it isn’t, the ~match~ fails even though the pattern itself looked fine. This makes guards useful for more precise matches that depend on values, not just structure.
+Conclusion
+
+Racket’s ~match~ form does a lot of work behind the curtain. What starts as a readable pattern is transformed at compile time into a clear set of checks, conditionals, and variable bindings. By the time your program runs, every step has already been planned. Whether the pattern fits or not comes down to structure and order, not guesswork. All of it works because the compiler builds the logic ahead of time, turning pattern matching into something both precise and efficient without needing extra control flow in your code.
