@@ -1,0 +1,17 @@
+* Racket Macros
+
+** RESOURCES
+
+https://www.gavinmcg.com/2016/02/03/racket-macros.html
+
+https://www.greghendershott.com/fear-of-macros/index.html
+
+https://docs.racket-lang.org/guide/pattern-macros.html
+
+*** Syntax Parse
+
+[[https://docs.racket-lang.org/syntax][Syntax: Meta-Programming Helpers (Racket)]]
+- [[https://docs.racket-lang.org/syntax/stxparse-intro.html][Introduction]]
+- [[https://docs.racket-lang.org/syntax/Parsing_Syntax.html#%28form._%28%28lib._syntax%2Fparse..rkt%29._syntax-parse%29%29][syntax-parse]]
+- [[https://docs.racket-lang.org/syntax/stxparse-examples.html][Examples]]
+  [[https://docs.racket-lang.org/syntax-parse-example/index.html][More Examples]]
