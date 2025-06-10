@@ -1,6 +1,6 @@
 #lang racket/base
 
-(require racket/stream)
+(require rackunit)
 
 (require (for-syntax
           racket/base ) )
@@ -10,6 +10,41 @@
           racket/syntax
           racket/vector
           racket/contract ) ; )
+
+;; New ideas:
+;; 0. All keyword "flags" are syntactic
+;;    sugar for keyword "options" which
+;;    are keywords ending in a : suffix.
+;; 1. Transform "special flags" into
+;;    the value of a special option,
+;;    e.g. #:list --> (#:scheme: . #:list)
+;; 2. Transform amy other flag #:foo
+;;    into an option (#:foo: . #t)
+;; 3. (struct/macro id ...) starts a transformation cascade:
+;;    (struct/macro/ id (SPECIAL-OPTION: VALUE) (field-names...) (field-specs...) (options...))
+;;    (struct/macro/SPECIAL-OPTION VALUE id  (field-names...) (field-specs...) (options...))
+;;    which eventually leads to a macro which generates the macro which generates the
+;;    macros and functions which implement the concrete representation of the protocol.
+;; -- The intermediate macros are subject to tweaking if it factors out some of the common
+;;    work of the descendant macros.
+
+; (begin-for-syntax
+
+(define struct/macro-special-flags
+  '( (#:scheme: #:vector #:list #:record)
+     (#:racket: #:racket/struct #:racket/contract #:racket/serializable #:racket/prefab #:racket/class)
+   ) )
+
+(define (struct/macro-special flag [specials struct/macro-special-flags])
+  (ormap (λ (lst) (if (memq flag (cdr lst)) (car lst) #f)) specials) )
+
+(check-equal? (struct/macro-special '#:list) '#:scheme:)
+(check-equal? (struct/macro-special '#:racket/prefab) '#:racket:)
+(check-false (struct/macro-special '#:mutable))
+
+; )
+                                     
+;; All of this goes away shortly
 
 ; (begin-for-syntax
 
@@ -127,8 +162,8 @@
                       (datum->syntax (if (pair? flags-stxs) (car flags-stxs) id-stx) flags-stxs)
                       (datum->syntax (if (pair? options-stxs) (car options-stxs) id-stx) options-stxs) ) ) )
           ;; else continue parsing the specification
-          (let* ( [stx-1 (car stxs)]       ; the 1st syntax object
-                  [stxs-1 (cdr stxs)] )    ; the rest of the spec (list of syntax objects)
+          (let ( [stx-1 (car stxs)]       ; the 1st syntax object
+                 [stxs-1 (cdr stxs)] )    ; the rest of the spec (list of syntax objects)
             (printf "~a: ~a --> ~a\n" this 'stx-1 stx-1)
             (cond [(struct/macro-flag-type? stx-1)
                    ;; then continue with this flag
@@ -145,7 +180,7 @@
                      ;; continue to accumulate syntax
                      (parse-specs stxs-1 (cons name-stx field-names-rev) (cons spec-stx field-specs-rev) flags-rev options-rev) ) ] ) ) ) )
     (let-values ( [(names specs flags options) (parse-specs spec-stxs)] )
-      #`(struct/macro/ #,names #,specs #,flags #,options) ) ) )
+      #`(struct/macro/ #,id-stx #,names #,specs #,flags #,options) ) ) )
 
 ;; Do we want struct/macro to separate out contracts as well???
 ;; Do we want struct/macro to put the unique representation type option before the other options???
@@ -162,12 +197,13 @@
 (struct/macro #'(struct/macro foo [a integer?] [b string?]))
 
 #|
-(require rackunit)
-(struct/macro foo (a b))
-(define s (foo #f 1 2)) ; ctor
-(check-true (foo? s)) ; (check-true (foo s #t))
-(check-false (foo? 1)) ; (check-true (foo s #f))
-(check-equal? (foo s a) 1)
-(check-equal? (foo s b) 2)
-(check-exn exn:fail? (λ () (foo "furble" a)))
+#; (struct/macro foo (a b))
+#; (define s (foo #f 1 2)) ; ctor
+#; (check-true (foo? s))
+#; (check-equal? (check-true (foo? s)) (check-true (foo s #t)))
+#; (check-equal? (check-false (foo? 1)) (check-true (foo s #f)))
+#; (check-equal? (foo s a) 1)
+#; (check-equal? (foo s b) 2)
+#; (check-equal? (call-with-values (λ () (foo s a b)) list) (list (foo s a) (foo s b)))
+#; (check-exn exn:fail? (λ () (foo "furble" a)))
 |#
