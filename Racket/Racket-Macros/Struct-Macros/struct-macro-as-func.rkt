@@ -1,15 +1,77 @@
 #lang racket/base
 
-(require rackunit)
+;; * (struct/macro ...) development
 
+;; We're going to develop our eventual macros
+;; i.e. syntax-phase macro transformers
+;; as regular runtime functions for easier development.
+;; Once they work, we'll shift them into syntax-phase.
+
+;; ** Phase Control Meta-Macros
+
+;; Allow us to write code which can either happen at
+;; syntax-phase or runtime-phase
+
+;; Needed now for meta-macros, likely needed anyway
+;; when our runtime transformers become macros.
 (require (for-syntax
-          racket/base ) )
+          racket/base
+          racket/syntax
+          ) )
 
-(require
+;; To control the phase, switch which macro is commented-out
+;; in each of the following pairs.
+
+#;(define-syntax (maybe-for-testing stx)
+  (syntax-case stx ()
+    [(_ args ...)
+     #'(void) ]))
+
+(define-syntax (maybe-for-testing stx)
+  (syntax-case stx ()
+    [(_ args ...)
+     #`(begin args ...) ]))
+
+(maybe-for-testing (require rackunit))
+
+#;(define-syntax (maybe-require-for-syntax stx)
+  (syntax-case stx ()
+    [(_ args ...)
+     #`(require (for-syntax args ...)) ]))
+
+(define-syntax (maybe-require-for-syntax stx)
+  (syntax-case stx ()
+    [(_ args ...)
+     #`(require args ...) ]))
+
+#;(define-syntax (maybe-begin-for-syntax stx)
+  (syntax-case stx ()
+    [(_ args ...)
+     #`(begin-for-syntax args ...) ]))
+
+(define-syntax (maybe-begin-for-syntax stx)
+  (syntax-case stx ()
+    [(_ args ...)
+     #`(begin args ...) ]))
+
+#;(define-syntax (maybe-define-syntax stx)
+  (syntax-case stx ()
+    [(_ args ...)
+     #`(define-syntax args ...) ]))
+
+(define-syntax (maybe-define-syntax stx)
+  (syntax-case stx ()
+    [(_ args ...)
+     #`(define args ...) ]))
+
+
+;; ** Requirements and Global Lists
+
+(maybe-require-for-syntax
           racket/stream
           racket/syntax
           racket/vector
-          racket/contract ) ; )
+          racket/contract )
 
 ;; New ideas:
 ;; 0. All keyword "flags" are syntactic
@@ -28,25 +90,29 @@
 ;; -- The intermediate macros are subject to tweaking if it factors out some of the common
 ;;    work of the descendant macros.
 
-; (begin-for-syntax
+(maybe-begin-for-syntax
 
-(define struct/macro-special-flags
-  '( (#:scheme: #:vector #:list #:record)
-     (#:racket: #:racket/struct #:racket/contract #:racket/serializable #:racket/prefab #:racket/class)
-   ) )
+ (define struct/macro-special-flags
+   '( (#:scheme: #:vector #:list #:record)
+      (#:racket: #:racket/struct #:racket/contract #:racket/serializable #:racket/prefab #:racket/class)
+      ) )
 
-(define (struct/macro-special flag [specials struct/macro-special-flags])
-  (ormap (λ (lst) (if (memq flag (cdr lst)) (car lst) #f)) specials) )
+ (define (struct/macro-special flag [specials struct/macro-special-flags])
+   (ormap (λ (lst) (if (memq flag (cdr lst)) (car lst) #f)) specials) )
 
-(check-equal? (struct/macro-special '#:list) '#:scheme:)
-(check-equal? (struct/macro-special '#:racket/prefab) '#:racket:)
-(check-false (struct/macro-special '#:mutable))
+ )
 
-; )
+(maybe-for-testing
+
+ (check-equal? (struct/macro-special '#:list) '#:scheme:)
+ (check-equal? (struct/macro-special '#:racket/prefab) '#:racket:)
+ (check-false (struct/macro-special '#:mutable))
+
+ )
                                      
-;; All of this goes away shortly
+;; ** All of this goes away shortly
 
-; (begin-for-syntax
+(maybe-begin-for-syntax
 
   (define (struct/macro-keyword? k ends-with-colon)
     (if (syntax? k)
@@ -88,31 +154,12 @@
   (define struct/macro-field-options (struct/macro-options:'() ))
   (define struct/macro-options (struct/macro-options: (append struct/macro-field-options
                                                               '(#:super: #:alias: #:ctor:) )))
-  ;; assert??
-  ;; - (element-of struct/macro-default-representation struct/macro-representations)
-  ;; - (subset struct/macro-field-flags struct/macro-flags)
-  ;; - (subset struct/macro-representations struct/macro-flags)
-  ;; - (subset struct/macro-field-options struct/macro-options) ; should both exist
-  ; )
+  
+  )
 
-;; A struct/macro form expands to a struct/macro/ form
-;; A struct/macro form must match
-;; (struct/macro id {field-spec|option-keyword|option-keyword value}...)
-;; - there must be at least one field-spec
-;; - elements after id may be in any order
-;; - option-keyword names must end with a : iff they take a value
-;; a field-spec must match (id contract field-option...)
-;; - we check that
-;;   - id is a symbol
-;;   - some expression is in the contract position
-;; - we do NOT check
-;;   - the contract is a valid racket contract
-;;   - the field options are valid -- see parse-field-spec
-;; EXPANSION TO AN INTERMEDIATE FORM (not to be written by humans)
-;; (struct/macro/ identifier (field-name...) (field-spec...) (option-keyword...) ({option-keyword value}...))
-;; - the arguments are in this fixed order
-;; - the field names have been separated from the field specifications
-(define #;-syntax (struct/macro stx)
+;; ** struct/macro
+
+(maybe-define-syntax (struct/macro stx)
   ;; stx or anything ending in -stx is a syntax object
   ;; stxs or anything ending in -stxs is a list of syntax objects
   (let* ( [this 'struct/macro]
@@ -192,18 +239,18 @@
     #'(void)
     ) )
 
-#;(struct/macro foo [a integer?] [b string?])
+(maybe-for-testing
+ (struct/macro #'(struct/macro foo [a integer?] [b string?]))
+ )
 
-(struct/macro #'(struct/macro foo [a integer?] [b string?]))
-
-#|
-#; (struct/macro foo (a b))
-#; (define s (foo #f 1 2)) ; ctor
-#; (check-true (foo? s))
-#; (check-equal? (check-true (foo? s)) (check-true (foo s #t)))
-#; (check-equal? (check-false (foo? 1)) (check-true (foo s #f)))
-#; (check-equal? (foo s a) 1)
-#; (check-equal? (foo s b) 2)
-#; (check-equal? (call-with-values (λ () (foo s a b)) list) (list (foo s a) (foo s b)))
-#; (check-exn exn:fail? (λ () (foo "furble" a)))
-|#
+#;(maybe-for-testing
+ (struct/macro foo (a b))
+ (define s (foo #f 1 2)) ; ctor
+ (check-true (foo? s))
+ (check-equal? (check-true (foo? s)) (check-true (foo s #t)))
+ (check-equal? (check-false (foo? 1)) (check-true (foo s #f)))
+ (check-equal? (foo s a) 1)
+ (check-equal? (foo s b) 2)
+ (check-equal? (call-with-values (λ () (foo s a b)) list) (list (foo s a) (foo s b)))
+ (check-exn exn:fail? (λ () (foo "furble" a)))
+ )
