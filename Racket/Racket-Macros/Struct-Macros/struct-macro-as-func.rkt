@@ -124,15 +124,6 @@
  (define (struct/macro-special flag [specials struct/macro-special-options])
    (ormap (λ (lst) (if (memq flag (cdr lst)) (car lst) #f)) specials) )
 
-#;(define (struct/macro-special-pair  flag [specials struct/macro-special-options])
-  (let ( [val (struct/macro-special flag specials)] )
-    (if val (cons val flag) #f) ) )
-
-#;(define (struct/macro-flag-pair flag)
-  (define this 'struct/macro-flag-pair)
-  (unless (struct/macro-keyword? flag #f) (error this "expected plain flag, got ~a" flag))
-  #`(#,(string->keyword (string-append (keyword->string flag) ":")) . #t) )
-
 ;; given a keyword (possibly wrapped in a syntax object)
 ;; returns whether the spelling of that keyword object ends in a : (colon)
 ;; - deprecated feature: also works on strings
@@ -188,6 +179,7 @@
 
 )
 
+;; bring these up to date with new option system
 #;(maybe-for-testing
 
  (check-equal? (struct/macro-special '#:list) '#:scheme:)
