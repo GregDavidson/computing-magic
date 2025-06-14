@@ -162,8 +162,10 @@
     (let* ( [special (struct/macro-special k)]
             [option-name (or special (struct/macro-add-colon-suffix k))]
             [option-val (if special k #t)] )
-      (printf "[flag '~a] [k '~a] [special '~a] [option-name '~a] [option-val '~a]\n" flag k special option-name option-val)
-          (values (struct/macro-stx flag option-name) (struct/macro-stx flag option-val)) ) ) )
+      (printf "[flag '~a] [k '~a] [special '~a] [option-name '~a] [option-val '~a]\n"
+              flag k special option-name option-val )
+          (values (struct/macro-stx flag option-name)
+                  (struct/macro-stx flag option-val) ) ) ) )
 
 ;; Given:
 ;; - stx a syntax item
@@ -179,22 +181,28 @@
      (cond [(not k) (values stx #f #f stxs)]
            [ (not (struct/macro-has-colon-suffix? k))
              (let-values ( [(option-key option-value) (struct/macro-flag-to-option-values k)] )
-               (struct/macro-option-values (struct/macro-stx stx option-key) (cons (struct/macro-stx stx option-value) stxs)) ) ]
+               (struct/macro-option-values (struct/macro-stx stx option-key) ; for context
+                                           (cons (struct/macro-stx stx option-value) stxs) ) ) ]
            [else (unless (pair? stxs) (error #f "option ~a needs value" k))
-                 (values (struct/macro-stx stx (cons stx (car stxs))) (not (not (struct/macro-special? k))) (cdr stxs)) ] ) ) )
+                 (values (struct/macro-stx stx (cons stx (car stxs)))
+                         (not (not (struct/macro-special? k)))
+                         (cdr stxs) ) ] ) ) )
 
 )
 
 (maybe-for-testing
 
  ;; Given
- ;;   p: a procedure which returns multiple values
+ ;;   p: a procedure which returns any number of values
  ;;   args: suitable arguments for p
  ;; Returns
- ;;   a list of the values p returned
+ ;;   a list of the values p returned,
+ ;;   with any that are syntax objects unwrapped
  (define (evalues->list p . args)
    (printf "p ~a args ~a\n" p args)
-   (call-with-values (λ () (apply p args)) (λ lst (map (λ (stx) (if (syntax? stx) (syntax-e stx) stx)) lst))) )
+   (call-with-values (λ () (apply p args)) ; maybe producing multiple values
+                     ;; convert all arguments into a list, unwrapping any syntax objects
+                     (λ lst (map (λ (stx) (if (syntax? stx) (syntax-e stx) stx)) lst)) ) )
  
  (check-eq? (struct/macro-keyword? '#:list) '#:list)
  (check-eq? (struct/macro-keyword? #'#:list) '#:list)
@@ -296,7 +304,7 @@
                  [stxs-1 (cdr stxs)] )    ; the rest of the spec (list of syntax objects)
             (printf "~a: ~a --> ~a\n" this 'stx-1 stx-1)
             (if (struct/macro-keyword? stx-1)
-                (let-values ( [(option special? rest) (struct/macro-option-values stx stxs)] )
+                (let-values ( [(option special? rest) (struct/macro-option-values stx-1 stxs-1)] )
                   (if special?
                       (begin
                         (when special-option (raise-syntax-error #f "only 1 special option permitted" special-option stx-1 stxs))
