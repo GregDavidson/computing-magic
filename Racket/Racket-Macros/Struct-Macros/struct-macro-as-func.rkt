@@ -113,19 +113,19 @@
  ;; return that keyword (unwrapped); otherwise #f
  (define (struct/macro-keyword? k)
    (cond [(syntax? k) (struct/macro-keyword? (syntax-e k))]
-         [(keyword? k)]
+         [(keyword? k) k]
          [else #f] ) )
 
  ;; return truthy if k is an option name at the head of one of the lists, #f otherwise
  (define (struct/macro-special? k [specials struct/macro-special-options])
-   (memq k specials) )
+   (assq k specials) )
  
  ;; return colon-prefixed special option name for given flag, or #f if none
  (define (struct/macro-special flag [specials struct/macro-special-options])
    (ormap (λ (lst) (if (memq flag (cdr lst)) (car lst) #f)) specials) )
 
-;; given a keyword (possibly wrapped in a syntax object)
-;; returns whether the spelling of that keyword object ends in a : (colon)
+;; Given a keyword (possibly wrapped in a syntax object)
+;; returns whether the spelling of that keyword object ends in a : (colon).
 ;; - deprecated feature: also works on strings
 (define (struct/macro-has-colon-suffix? k)
   (cond [(syntax? k) (struct/macro-has-colon-suffix? (syntax-e k))]
@@ -133,7 +133,7 @@
         [(string? k) (char=? #\: (string-ref k (sub1 (string-length k))))]
         [else (error #f "unknown value ~a" k)] ) )
 
-;; given a keyword (possibly wrapped in a syntax object)
+;; Given a keyword (possibly wrapped in a syntax object)
 ;; which does NOT have a colon suffix
 ;; returns the same type but with the keyword now sporting a colon suffix.
 ;; - deprecated feature: also works on strings
@@ -146,54 +146,103 @@
          (string-append k ":") ]
         [else (error #f "unknown value ~a" k)] ) )
 
-;; Given a flag, a non-colon-suffixed keyword (possibly wrapped as syntax),
+;; wrap exp in syntax if it isn't already
+;; and if stx is, using stx for context.
+(define (struct/macro-stx stx exp)
+  (cond [(syntax? exp) exp]
+        [(syntax? stx) (datum->syntax stx exp)]
+        [else exp] ) )
+
+;; Given a flag: a non-colon-suffixed keyword (possibly wrapped as syntax),
 ;; return two values to use as the unabbreviated option name and value
 ;; both wrapped as syntax if flag was.
 (define (struct/macro-flag-to-option-values flag)
-  (unless (and (syntax flag) (not (struct/macro-has-colon-suffix? flag))) (error #f "expected plain flag, got ~a" flag))
-  (let* ([k (struct/macro-keyword? flag)]
-         [special (struct/macro-special k)]
-         [option-name (or special k)]
-         [option-val (if special k #t)] )
-    (if (syntax flag)
-        (values (datum->syntax flag option-name) (datum->syntax flag option-val))
-        (values option-name option-val) ) ) )
+  (let ( [k (struct/macro-keyword? flag)] )
+    (unless (not (struct/macro-has-colon-suffix? k)) (error #f "expected plain flag, got ~a" flag))
+    (let* ( [special (struct/macro-special k)]
+            [option-name (or special (struct/macro-add-colon-suffix k))]
+            [option-val (if special k #t)] )
+      (printf "[flag '~a] [k '~a] [special '~a] [option-name '~a] [option-val '~a]\n" flag k special option-name option-val)
+          (values (struct/macro-stx flag option-name) (struct/macro-stx flag option-val)) ) ) )
 
 ;; Given:
 ;; - stx a syntax item
 ;; - stxs a list of the syntax objects following stx
 ;; returns three values
-;; 1. the struct/macro option keyword corresponding to stx or #f
+;; 1. the struct/macro option pair at stx stxs
 ;; 2. a boolean value: is-special-option?
 ;; 3. the rest of the rest of list to process
 ;; Note: We're consuming 1 item from the givens if we have an abbreviated option
 ;;       otherwise we're consuming two items.
- (define (struct/macro-option-vals stx stxs)
+ (define (struct/macro-option-values stx stxs)
    (let ( [k (struct/macro-keyword? stx)] )
      (cond [(not k) (values stx #f #f stxs)]
            [ (not (struct/macro-has-colon-suffix? k))
              (let-values ( [(option-key option-value) (struct/macro-flag-to-option-values k)] )
-               (struct/macro-option-vals stx (datum->syntax stx option-key) (cons (datum->syntax stx option-value) stxs)) ) ]
+               (struct/macro-option-values (struct/macro-stx stx option-key) (cons (struct/macro-stx stx option-value) stxs)) ) ]
            [else (unless (pair? stxs) (error #f "option ~a needs value" k))
-                 (values (cons stx (car stxs)) (struct/macro-special? k) (cdr stxs)) ] ) ) )
+                 (values (struct/macro-stx stx (cons stx (car stxs))) (not (not (struct/macro-special? k))) (cdr stxs)) ] ) ) )
 
 )
 
-;; bring these up to date with new option system
-#;(maybe-for-testing
+(maybe-for-testing
 
- (check-equal? (struct/macro-special '#:list) '#:scheme:)
- (check-equal? (struct/macro-special '#:racket/prefab) '#:racket:)
+ ;; Given
+ ;;   p: a procedure which returns multiple values
+ ;;   args: suitable arguments for p
+ ;; Returns
+ ;;   a list of the values p returned
+ (define (evalues->list p . args)
+   (printf "p ~a args ~a\n" p args)
+   (call-with-values (λ () (apply p args)) (λ lst (map (λ (stx) (if (syntax? stx) (syntax-e stx) stx)) lst))) )
+ 
+ (check-eq? (struct/macro-keyword? '#:list) '#:list)
+ (check-eq? (struct/macro-keyword? #'#:list) '#:list)
+ (check-false (struct/macro-keyword? 'list))
+
+ (check-true (not (not (struct/macro-special? '#:scheme:))))
+ (check-false (not (not (struct/macro-special? '#:list))))
+ (check-false (struct/macro-special '#:mutable))
+ 
+ (check-eq? (struct/macro-special '#:list) '#:scheme:)
+ (check-eq? (struct/macro-special '#:racket/prefab) '#:racket:)
  (check-false (struct/macro-special '#:mutable))
 
- (check-equal? (struct/macro-special-pair '#:list) '(#:scheme: . #:list))
- (check-equal? (struct/macro-special-pair '#:racket/prefab) '(#:racket: . #:racket/prefab))
- (check-false (struct/macro-special-pair '#:mutable))
- 
+ (check-equal? (evalues->list struct/macro-flag-to-option-values '#:list) '(#:scheme: #:list))
+ (check-equal? (evalues->list struct/macro-flag-to-option-values '#:mutable) '(#:mutable: #t))
+
+ (let* ( [key-1 '#:mutable]
+         [key-2 '#:list]
+         [key-3 '#:mutable:]
+         [stxs-1 (list #'#t #'#:maybe #'#:more)]
+         [stxs-3 (cdr stxs-1)] )
+   (check-equal? (evalues->list struct/macro-option-values key-1 stxs-1) (list (cons '#:mutable:  #t) #f stxs-1))
+   (check-equal? (evalues->list struct/macro-option-values key-2 stxs-1) (list (cons '#:scheme: '#:list)  #t stxs-1))
+   ;; this one isn't checking: !!
+   #;(check-equal? (evalues->list struct/macro-option-values key-3 stxs-1) (list (cons '#:mutable: #f) #f stxs-3))
+   )
+  
  )
                                      
 ;; ** struct/macro
 
+;; The specification of struct/macro may change to facilitate
+;; the implementation of the downstream macros!
+
+;; Input:: (struct/macro id {field-spec | option | flag} ...)
+;; Output: (struct/macro/ { special-option }? id ( field-name ... ) ( field-spec ... } option-pair ...)
+;; id: symbol
+;; option: option-name option-value
+;; option-name: keyword ending in :
+;; option-value: symbol, keyword, boolean, tbd??
+;; flag: a keyword NOT ending in : as an abbreviation for an option
+;; - see (struct/macro-flag-to-option-values flag) above
+;; special-option: option-pair
+;; option-pair: ( option-name . option-value )
+;; field-name: symbol
+;; field-spec: list of ( contract field-option ...?  )
+;; contract: type | predicate function | racket contract
+;; field-option: tbd??
 (maybe-define-syntax (struct/macro stx)
   ;; stx or anything ending in -stx is a syntax object
   ;; stxs or anything ending in -stxs is a list of syntax objects
@@ -247,7 +296,7 @@
                  [stxs-1 (cdr stxs)] )    ; the rest of the spec (list of syntax objects)
             (printf "~a: ~a --> ~a\n" this 'stx-1 stx-1)
             (if (struct/macro-keyword? stx-1)
-                (let-values ( [(option special? rest) (struct/macro-option-vals stx stxs)] )
+                (let-values ( [(option special? rest) (struct/macro-option-values stx stxs)] )
                   (if special?
                       (begin
                         (when special-option (raise-syntax-error #f "only 1 special option permitted" special-option stx-1 stxs))
@@ -259,7 +308,7 @@
                   (parse-specs stxs-1 (cons name-stx field-names-rev) (cons spec-stx field-specs-rev) special-option options-rev) ) ) ) ) )
     (let-values ( [(names specs special-option options) (parse-specs spec-stxs)] )
       (if special-option
-          #`(struct/macro/ #,id-stx #,names #,specs #,special-option #,options)
+          #`(struct/macro/ #,special-option #,id-stx #,names #,specs #,options)
           #`(struct/macro/ #,id-stx #,names #,specs #,options) ) ) ) )
 
 ;; ** struct/macro/
@@ -273,8 +322,16 @@
     #'(void)
     ) )
 
+;; These examples should be automatically checked, yes???
+
+;; This one is fine:
 (maybe-for-testing
  (struct/macro #'(struct/macro foo [a integer?] [b string?]))
+ )
+
+;; This one reveals an error!!!
+(maybe-for-testing
+ (struct/macro #'(struct/macro foo #:list [a integer?] [b string?]))
  )
 
 ;; ** Representations
@@ -289,10 +346,10 @@
  (struct/macro foo (a b))
  (define s (foo #f 1 2)) ; ctor
  (check-true (foo? s))
- (check-equal? (check-true (foo? s)) (check-true (foo s #t)))
- (check-equal? (check-false (foo? 1)) (check-true (foo s #f)))
- (check-equal? (foo s a) 1)
- (check-equal? (foo s b) 2)
+ (check-eq? (foo? s) (foo s #t))
+ (check-eq? (foo? 1) (foo s #f))
+ (check-=? (foo s a) 1)
+ (check-=? (foo s b) 2)
  (check-equal? (call-with-values (λ () (foo s a b)) list) (list (foo s a) (foo s b)))
  (check-exn exn:fail? (λ () (foo "furble" a)))
  )
