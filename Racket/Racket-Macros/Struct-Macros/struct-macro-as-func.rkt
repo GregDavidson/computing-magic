@@ -14,8 +14,14 @@
 
 ;; for tracing
 (define-syntax-rule (show exp)
-  (let ( [exp-val exp] )
-    (printf "~a --> ~a\n" 'exp exp-val)
+  (letrec (
+           [exp-val exp]
+           [bare (λ (e) (cond
+                          [(syntax? e) (syntax-e e)]
+                          [(list? e) (map bare e)]
+                          [else e] ))]
+           )
+    (printf "~a --> ~a\n" (bare 'exp) (bare exp-val))
     exp-val ) )
  
 ;; ** Phase Control Meta-Macros
@@ -127,35 +133,40 @@
          [(keyword? k) k]
          [else #f] ) )
 
- ;; return truthy if k is an option name at the head of one of the lists, #f otherwise
- (define (struct/macro-special? k [specials struct/macro-special-options])
-   (assq k specials) )
+ ;; return k if it is an option name at the head of one of the sublists, #f otherwise
+ (define (struct/macro-special? k [sublists struct/macro-special-options])
+   (if (syntax? k)
+       (struct/macro-special? (syntax-e k) sublists)
+       (let ( [sublist (assq k sublists)] )
+         (if sublist (car sublist) #f) ) ) )
  
  ;; return colon-prefixed special option name for given flag, or #f if none
- (define (struct/macro-special flag [specials struct/macro-special-options])
-   (ormap (λ (lst) (if (memq flag (cdr lst)) (car lst) #f)) specials) )
+ (define (struct/macro-special-name flag [sublists struct/macro-special-options])
+   (ormap
+    (λ (sublist) (if (memq flag (cdr sublist)) (car sublist) #f))
+    sublists ) )
 
 ;; Given a keyword (possibly wrapped in a syntax object)
 ;; returns whether the spelling of that keyword object ends in a : (colon).
 ;; - deprecated feature: also works on strings
-(define (struct/macro-has-colon-suffix? k)
+(define (struct/macro-has-colon-suffix? k #:this [this 'struct/macro-has-colon-suffix?])
   (cond [(syntax? k) (struct/macro-has-colon-suffix? (syntax-e k))]
         [(keyword? k) (struct/macro-has-colon-suffix? (keyword->string k))]
         [(string? k) (char=? #\: (string-ref k (sub1 (string-length k))))]
-        [else (error #f "unknown value ~a" k)] ) )
+        [else (raise-syntax-error this "unknown value ~a" k)] ) )
 
 ;; Given a keyword (possibly wrapped in a syntax object)
 ;; which does NOT have a colon suffix
 ;; returns the same type but with the keyword now sporting a colon suffix.
 ;; - deprecated feature: also works on strings
-(define (struct/macro-add-colon-suffix k)
-  (unless (not (struct/macro-has-colon-suffix? k)) (error #f  "expected plain keyword, got ~a" k))
+(define (struct/macro-add-colon-suffix k #:this [this 'struct/macro-add-colon-suffix])
+  (unless (not (struct/macro-has-colon-suffix? k)) (raise-syntax-error this  "expected plain keyword, got ~a" k))
   (cond [(syntax? k) (syntax (struct/macro-add-colon-suffix (syntax-e k)))]
         [(keyword? k) (string->keyword (struct/macro-add-colon-suffix (keyword->string k)))]
         [(string? k)
-         (unless (not (struct/macro-has-colon-suffix? k)) (error #f  "expected plain flag, got ~a" k))
+         (unless (not (struct/macro-has-colon-suffix? k)) (raise-syntax-error this  "expected plain flag, got ~a" k))
          (string-append k ":") ]
-        [else (error #f "unknown value ~a" k)] ) )
+        [else (raise-syntax-error this "unknown value ~a" k)] ) )
 
 ;; DEVELOPMENT FEATURE
 ;; an alternative to datum->syntax
@@ -169,39 +180,42 @@
         [else exp] ) )
 
 ;; Given a flag: a non-colon-suffixed keyword (possibly wrapped as syntax),
-;; return two values to use as the unabbreviated option name and value
-;; both wrapped as syntax if flag was.
-(define (struct/macro-flag-to-option-values flag)
+;; return an option-pair wrapped in the same syntax, if any.
+(define (struct/macro-flag-to-option-pair
+         flag                   ; a keyword without a : suffix
+         #:check-special [check-special #f] ; should we consider special keywords?
+         #:this [this 'struct/macro-flag-to-option-pair] )
   (let ( [k (struct/macro-keyword? flag)] )
-    (unless (not (struct/macro-has-colon-suffix? k)) (error #f "expected plain flag, got ~a" flag))
-    (let* ( [special (struct/macro-special k)]
-            [option-name (or special (struct/macro-add-colon-suffix k))]
-            [option-val (if special k #t)] )
-      (printf "[flag '~a] [k '~a] [special '~a] [option-name '~a] [option-val '~a]\n"
-              flag k special option-name option-val )
-          (values (struct/macro-stx flag option-name)
-                  (struct/macro-stx flag option-val) ) ) ) )
+    (unless (not (struct/macro-has-colon-suffix? k)) (raise-syntax-error this "expected plain flag, got ~a" flag))
+    (let* (
+           [special-name (and check-special (struct/macro-special-name k))]
+           [option-name (or special-name (struct/macro-add-colon-suffix k))]
+           [option-val (if special-name k #t)] )
+      (eprintf "[flag '~a] [k '~a] [special-name '~a] [option-name '~a] [option-val '~a]\n"
+               flag k special-name option-name option-val )
+      (struct/macro-stx flag (cons option-name option-val)) ) ) )
 
 ;; Given:
 ;; - stx a syntax item
 ;; - stxs a list of the syntax objects following stx
 ;; returns three values
 ;; 1. the struct/macro option pair at stx stxs
-;; 2. a boolean value: is-special-option?
-;; 3. the rest of the rest of list to process
+;; 2. a special option-name keyword or #f if none
+;; 3. the rest of the list to process
 ;; Note: We're consuming 1 item from the givens if we have an abbreviated option
 ;;       otherwise we're consuming two items.
- (define (struct/macro-option-values stx stxs)
+ (define (struct/macro-option-values stx stxs #:this [this 'struct/macro-option-values])
    (let ( [k (struct/macro-keyword? stx)] )
-     (cond [(not k) (values stx #f #f stxs)]
-           [ (not (struct/macro-has-colon-suffix? k))
-             (let-values ( [(option-key option-value) (struct/macro-flag-to-option-values k)] )
-               (struct/macro-option-values (struct/macro-stx stx option-key) ; for context
-                                           (cons (struct/macro-stx stx option-value) stxs) ) ) ]
-           [else (unless (pair? stxs) (error #f "option ~a needs value" k))
-                 (values (struct/macro-stx stx (cons stx (car stxs)))
-                         (not (not (struct/macro-special? k)))
-                         (cdr stxs) ) ] ) ) )
+     (unless k (raise-syntax-error this "expected keyword, not ~a" stx))
+     (cond
+       [(not (struct/macro-has-colon-suffix? k))
+        (values (struct/macro-flag-to-option-pair stx #:check-special #t)
+                (struct/macro-special-name k)
+                stxs ) ]
+       [else (unless (pair? stxs) (raise-syntax-error this "option ~a needs value" k))
+             (values (struct/macro-stx stx (cons stx (car stxs)))
+                     (struct/macro-special-name k)
+                     (cdr stxs) ) ] ) ) )
 
 )
 
@@ -226,14 +240,14 @@
 
  (check-true (not (not (struct/macro-special? '#:scheme:))))
  (check-false (not (not (struct/macro-special? '#:list))))
- (check-false (struct/macro-special '#:mutable))
+ (check-false (struct/macro-special-name '#:mutable))
  
- (check-eq? (struct/macro-special '#:list) '#:scheme:)
- (check-eq? (struct/macro-special '#:racket/prefab) '#:racket:)
- (check-false (struct/macro-special '#:mutable))
+ (check-eq? (struct/macro-special-name '#:list) '#:scheme:)
+ (check-eq? (struct/macro-special-name '#:racket/prefab) '#:racket:)
+ (check-false (struct/macro-special-name '#:mutable))
 
- (check-equal? (evalues->list struct/macro-flag-to-option-values '#:list) '(#:scheme: #:list))
- (check-equal? (evalues->list struct/macro-flag-to-option-values '#:mutable) '(#:mutable: #t))
+ (check-equal? (struct/macro-flag-to-option-pair '#:list) '(#:scheme: . #:list))
+ (check-equal? (struct/macro-flag-to-option-pair '#:mutable) '(#:mutable: . #t))
 
  (let* ( [key-1 '#:mutable]
          [key-2 '#:list]
@@ -241,7 +255,7 @@
          [stxs-1 (list #'#t #'#:maybe #'#:more)]
          [stxs-3 (cdr stxs-1)] )
    (check-equal? (evalues->list struct/macro-option-values key-1 stxs-1) (list (cons '#:mutable:  #t) #f stxs-1))
-   (check-equal? (evalues->list struct/macro-option-values key-2 stxs-1) (list (cons '#:scheme: '#:list)  #t stxs-1))
+   (check-equal? (evalues->list struct/macro-option-values key-2 stxs-1) (list (cons '#:scheme: '#:list)  '#:scheme: stxs-1))
    ;; this one isn't checking: !!
    #;(check-equal? (evalues->list struct/macro-option-values key-3 stxs-1) (list (cons '#:mutable: #f) #f stxs-3))
    )
@@ -254,8 +268,14 @@
 
 (maybe-begin-for-syntax
 
- ;; TODO Replace this with real code!!
- (define (struct/macro-expand-options stxs) stxs)
+ ;; Given a list of syntax-encoded options
+ ;; Return a list of syntax-encoded option-pairs
+ (define (struct/macro-expand-options stxs [option-pairs-rev '()] #:this [this 'struct/macro-expand-options])
+   (if  (null? stxs)
+        (reverse option-pairs-rev)
+        (let-values ( [(option-pair is-special stxs-rest) (struct/macro-option-values (car stxs) (cdr stxs))] )
+          (when is-special (raise-syntax-error this "unexpected special option at ~a" stxs))
+          (struct/macro-expand-options stxs-rest (cons option-pair option-pairs-rev)) ) ) )
  
  ;; parse-field-spec takes a list of syntax objects specifying one field
  ;; (field-name contract {FIELD-OPTIONS}...?)
@@ -264,10 +284,10 @@
  ;; - a syntax object containing the rest of the field specification
  ;; Development feature you should not count on:
 ;;  if the stxs are not wrapped as syntax objects we will return regular values!
- (define (struct/macro-parse-field-spec stxs)
+ (define (struct/macro-parse-field-spec stxs #:this [this 'struct/macro-parse-field-spec])
    (unless (and (list? stxs)
                 (>= (length stxs) 2))
-     (raise-syntax-error #f "expected structure field specification" stxs))
+     (raise-syntax-error this "expected structure field specification" stxs))
    (let* (
           [field-name-stx (car stxs)]
           [field-name (if (syntax? field-name-stx) (syntax-e field-name-stx) field-name-stx)]
@@ -280,7 +300,7 @@
                   #;(procedure? contract) ; scheme
                   #;(contract? (cadr stxs)) ; racket -- requires a provide!
                   )
-       (raise-syntax-error #f "invalid structure field specification" stxs) )
+       (raise-syntax-error this "invalid structure field specification" stxs) )
      (values field-name-stx (struct/macro-stx field-name-stx (cons contract-stx options-stx))) ) )
 
 )
@@ -289,14 +309,9 @@
 
 (maybe-begin-for-syntax
 
- ;; TODO need to pull out the code for expand-options
- ;; and move it to the placeholder above!!
- 
  ;; parse-specs takes
- ;; - start-stxs :: a list of syntax objects specifying a struct
- ;;   - this is used for context in errors
+ ;; - id-stx :: structure id stx for error context
  ;; - stxs :: a list of syntax objects specifying a struct
- ;;   - this starts out eq? to start-stxs
  ;; and returns four syntax objects, containing:
  ;; - field-names (list of symbols)
  ;; - field-specs (list beginning with contract followed by options)
@@ -304,9 +319,10 @@
  ;; - option-values (list of pairs - the car of which is a colon-suffixed keyword)
  ;; the lists within field-names and within field-specs correspond 1-1 and are non-empty
  ;; - we're currently only checking that field-specs are non-empty!!
- (define (parse-specs start-stxs stxs [field-names-rev '()] [field-specs-rev '()] [special-option #f] [options-rev '()])
-   (define this 'parse-specs)
+ (define (parse-specs id-stx stxs [field-names-rev '()] [field-specs-rev '()] [special-option #f] [options-rev '()] #:this [this 'parse-specs])
    (show this)
+   (show id-stx)
+   (show stxs)
    (show field-names-rev)
    (show field-specs-rev)
    (show special-option)
@@ -315,32 +331,37 @@
    (if (null? stxs)
        ;; then return the four values, if valid
        (begin
-         (unless (pair? field-specs-rev) (raise-syntax-error #f "expected field specification" start-stxs))
+         ;; field-specs-rev musn't be empty as we require at least one field specification
+         (unless (pair? field-specs-rev) (raise-syntax-error this "missing field specifications" id-stx))
          (let* ( [field-names-stxs (reverse field-names-rev)] ; non-empty
                  [field-specs-stxs (reverse field-specs-rev)] ; non-empty
                  [options-stxs (reverse options-rev)] )
-           ;; return the lists as syntax objects using
-           ;; (datum->syntax context-syntax-object list-of-syntax-objects)
+           ;; return the lists as syntax objects
            (values (datum->syntax (car field-names-stxs) field-names-stxs)
                    (datum->syntax (car field-specs-stxs) field-specs-stxs)
                    special-option
-                   (datum->syntax (car (if (pair? options-stxs) options-stxs start-stxs)) ; syntax context
+                   (datum->syntax (if (pair? options-stxs) (car options-stxs) id-stx) ; syntax context
                                   options-stxs ) ) ) )
        ;; else continue parsing the specification
-       (let ( [stx-1 (car stxs)]       ; the 1st syntax object
-              [stxs-1 (cdr stxs)] )    ; the rest of the spec (list of syntax objects)
-         (printf "~a: ~a --> ~a\n" this 'stx-1 stx-1)
-         (if (struct/macro-keyword? stx-1)
-             (let-values ( [(option special? rest) (struct/macro-option-values stx-1 stxs-1)] )
-               (if special?
+       (let ( [first-stx (car stxs)] 
+              [rest-stxs (cdr stxs)] )
+         (show first-stx)
+         (show rest-stxs)
+         (if (struct/macro-keyword? first-stx)
+             (let-values ( [(option-pair maybe-special? more-stxs) (struct/macro-option-values first-stx rest-stxs)] )
+               (if maybe-special?
                    (begin
-                     (when special-option (raise-syntax-error #f "only 1 special option permitted" special-option stx-1 stxs))
-                     (parse-specs stxs rest field-names-rev field-specs-rev option options-rev) )
-                   (parse-specs stxs rest field-names-rev field-specs-rev special-option (cons option options-rev)) ) )
-             ;; else, stx-1 "should" be a field specifier list - but is it?
-             (let-values ( [(name-stx spec-stx) (struct/macro-parse-field-spec (syntax-e stx-1))] )
-               ;; continue to accumulate syntax
-               (parse-specs stxs stxs-1 (cons name-stx field-names-rev) (cons spec-stx field-specs-rev) special-option options-rev) ) ) ) ) )
+                     (when special-option (raise-syntax-error this
+                                                              "only 1 special option allowed for ~a, already have ~a, now seeing ~a"
+                                                              id-stx special-option option-pair ))
+                     (parse-specs id-stx more-stxs field-names-rev field-specs-rev option-pair options-rev #:this this) )
+                   (parse-specs id-stx more-stxs field-names-rev field-specs-rev special-option (cons option-pair options-rev) #:this this) ) )
+             ;; else, first-stx "should" be a field specifier list - but is it?
+             (let-values ( [(name-stx spec-stx) (struct/macro-parse-field-spec (syntax-e first-stx))] )
+               (parse-specs id-stx rest-stxs
+                            (cons name-stx field-names-rev)
+                            (cons spec-stx field-specs-rev)
+                            special-option options-rev #:this this ) ) ) ) ) )
  
  )
 
@@ -358,26 +379,25 @@
  ;; option-name: keyword ending in :
  ;; option-value: symbol, keyword, boolean, tbd??
  ;; flag: a keyword NOT ending in : as an abbreviation for an option
- ;; - see (struct/macro-flag-to-option-values flag) above
+ ;; - see (struct/macro-flag-to-option-pair flag) above
  ;; special-option: option-pair
  ;; option-pair: ( option-name . option-value )
  ;; field-name: symbol
  ;; field-spec: list of ( contract field-option ...?  )
  ;; contract: type | predicate function | racket contract
  ;; field-option: tbd??
- (maybe-define-syntax (struct/macro stx)
+ (maybe-define-syntax (struct/macro stx #:this [this 'struct/macro])
                       ;; stx or anything ending in -stx is a syntax object
                       ;; stxs or anything ending in -stxs is a list of syntax objects
-                      (let* ( [this 'struct/macro]
-                              [args-stxs (cdr (syntax->list stx))]
-                              [id-stx (car args-stxs)]
-                              [spec-stxs (cdr args-stxs)] )
-                        (unless (identifier id-stx)
-                          (raise-syntax-error #f "expected structure id" stxs) )
+                      (let*  ( [args-stxs (cdr (syntax->list stx))]
+                               [id-stx (car args-stxs)]
+                               [spec-stxs (cdr args-stxs)] )
+                        (unless (identifier? id-stx)
+                          (raise-syntax-error this "expected structure id" stx) )
                         (show this)
                         (show id-stx)
                         (show spec-stxs)
-                        (let-values ( [(names specs special-option options) (parse-specs spec-stxs spec-stxs)] )
+                        (let-values ( [(names specs special-option options) (parse-specs id-stx spec-stxs)] )
                           (if special-option
                               #`(struct/macro/ #,special-option #,id-stx #,names #,specs #,options)
                               #`(struct/macro/ #,id-stx #,names #,specs #,options) ) ) ) )
@@ -388,23 +408,20 @@
 
 ;; Do we want struct/macro to separate out contracts as well???
 
-(define-syntax (struct/macro/ stx)
-  (let ( [this 'struct/macro/] )
+(define-syntax (struct/macro/ stx #:this [this 'struct/macro/])
     (printf "~a stx ~a\n" stx)
     (printf "~a form ~a\n" (syntax-e stx))
     #'(void)
-    ) )
+  )
 
 ;; These examples should be automatically checked, yes???
 
-;; This one is fine:
 (maybe-for-testing
- (struct/macro #'(struct/macro foo [a integer?] [b string?]))
+ (show (struct/macro #'(struct/macro foo [a integer?] [b string?])))
  )
 
-;; This one reveals an error!!!
 (maybe-for-testing
- (struct/macro #'(struct/macro foo #:list [a integer?] [b string?]))
+ (show (struct/macro #'(struct/macro foo #:list [a integer?] [b string?])))
  )
 
 ;; ** Representations
