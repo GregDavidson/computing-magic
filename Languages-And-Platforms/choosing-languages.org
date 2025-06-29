@@ -1,3 +1,5 @@
+like this?
+
 * Choosing Computer Languages
 
 Part of the [[https://github.com/GregDavidson/computing-magic/tree/main#readme][Computing Magic]] materials on [[https://github.com/GregDavidson/computing-magic/tree/main/Languages-And-Platforms#readme][Languages and Platforms]]
@@ -195,6 +197,12 @@ kernel.
       - Existing C++ programs use those unreliable features so C++ programmers
         have to know all of them!
       - C++ is a very complex language which is hard to learn to use well!
+- CUDA extends C and C++ for General-Purpose GPU Programming
+      - Created by NVIDIA for massively parallel numerical computing
+      - Ideal for simulations, machine learning, data analysis, and graphics
+      - Lets you write kernels that run on thousands of GPU threads
+      - Requires understanding of low-level memory and concurrency models
+
 - [[https://www.rust-lang.org][Rust]] is a modern alternative to C and C++
       - higher-level than C yet just as efficient
       - simpler and more reliable than C++
@@ -275,6 +283,23 @@ for programming language to manipulate your documents in creative ways.
 - [[https://en.wikipedia.org/wiki/TeX][ΤΕΧ]] - a Turning-Complete markup language for printed documents
 - [[https://www.libreoffice.org/discover/what-is-opendocument/][Open Document]] - the basis for [[https://www.libreoffice.org][LibreOffice]] and [[https://www.fsf.org/campaigns/opendocument/][More]]
 - [[https://docs.racket-lang.org/scribble][Scribble: A Racket-based Documentation Language]]
+
+*** Theorem Proving and Formal Verification
+
+Some languages are designed for expressing and verifying formal proofs —
+often alongside writing code. These are especially good for building
+mathematically rigorous systems and for learning about logic and type theory.
+
+Paradigms
+- Pure Functional Programming with Dependent Types
+- Constructive Logic and Interactive Proof Development
+
+- [[https://lean-lang.org][Lean]] is a modern theorem prover and functional language
+      - Lean 4 aims to be a practical general-purpose language
+      - Integrates dependent types, macros, and a growing standard library
+      - Supported by an active community and [[https://github.com/leanprover-community/mathlib4][Mathlib4]] for formal math
+      - Especially good for learning type theory, logic, and formal verification
+
 
 *** Shells and [[https://en.wikipedia.org/wiki/Domain-specific_language][Domain Specific Languages]]
 
