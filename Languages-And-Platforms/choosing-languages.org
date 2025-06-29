@@ -1,5 +1,3 @@
-like this?
-
 * Choosing Computer Languages
 
 Part of the [[https://github.com/GregDavidson/computing-magic/tree/main#readme][Computing Magic]] materials on [[https://github.com/GregDavidson/computing-magic/tree/main/Languages-And-Platforms#readme][Languages and Platforms]]
