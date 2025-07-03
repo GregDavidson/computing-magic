@@ -18,58 +18,90 @@ more discriminating. The languages truly worth our time must be
 - Useful :: practically /and/ pedagogically
 - Elegant :: minimum complexity and cognitive burden for maximum utility
 
-We can immediately dismiss the [[http://www.paulgraham.com/avg.html][blub languages]] because they lack power and don't
-teach us much; indeed, [[https://www.cs.virginia.edu/~evans/cs655/readings/ewd498.html][they can even harm us]] or [[https://nibblestew.blogspot.com/2020/03/its-not-what-programming-languages-do.htmlquality][lead us astray]]! These essays
-are old and I'll avoid the mistake of listing today's /blub/ or harmful
-languages - they might be languages you currently like! You'll be able to form
-your own opinions after gaining experience with some unquestionably excellent
-languages.
+Regardless of their level, a programmer can always get better at
+programming and have the practice of programming be more wonderful,
+Given that this document is part of the Computing-Magic curriculum of
+the League for Extraordinary Learners, our interest is in languages
+which are both practical and which also support programmers in their
+ongoing learning path.
 
-I generally disregard programmers' opinions about a programming language unless
+We can immediately dismiss the [[http://www.paulgraham.com/avg.html][blub languages]] because they lack power
+and don't teach us much; indeed, [[https://www.cs.virginia.edu/~evans/cs655/readings/ewd498.html][they can even harm us]] or [[https://nibblestew.blogspot.com/2020/03/its-not-what-programming-languages-do.htmlquality][lead us
+astray]]! These essays are old but not obsolete.  I'll avoid the mistake
+of listing today's /blub/ or harmful languages - they might be
+languages you currently like and I don't want to offend you! You'll be
+able to form your own opinions after gaining experience with some
+unquestionably excellent languages.
+
+You can generally disregard programmers' opinions about a programming
+language unless
 - they have significant experience using it
       - the way it was designed to be used
-      - in ways unanticipated by its designers
-- they have significant experience with alternative languages
+      - and in ways unanticipated by its designers
+- and they have significant experience with alternative languages
       - both in the same family and in different families
 Opinions of such experienced experts are well worth listening to!
 
 ** Some Especially Great Languages
 
-For the more complete list and explanation, see /Families Of Great Languages/ below.
+For a more complete list with extended explanations, see /Families Of
+Great Languages/ below.
 
-- [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]], inside of [[file:Racket/README.org][Racket]], a modern [[https://github.com/GregDavidson/on-lisp][Lisp]]
-      - Scheme is an unusually clean and general language.
-            - Scheme is primarily used for learning programming.
-      - Racket extends Scheme with practical extensions, libraries, tools and more.
-            - Racket is a good general-purpose language.
-            - Racket may be an even better language for learning programming.
-                  - especially beginning with [[https://docs.racket-lang.org/quick][graphic arts computing]]
-- [[Emacs/elisp-vs-scheme.org][Emacs Lisp]], inside of [[https://www.gnu.org/software/emacs][Emacs]]
-      - focused on customizing your tool stack
-      - there are extraordinary productivity tools written in Emacs Lisp
-      - you can easily extend them or write new ones!
-- [[file:SQL/SQL-README.org][SQL]], inside of [[https://www.postgresql.org][PostgreSQL]]
-      - SQL makes data storage and access a dream
-      - PostgreSQL is Open Source Free Software (FLOSS)
-      - PostgreSQL allows you to extend SQL and the Database
-            - many powerful PostgreSQL extensions are freely available (FLOSS)
-            - and you can create magic with your own PostgreSQL extensions!
-- [[https://duckduckgo.com/?t=ffab&q=posix+shell][Posix Shells]], inside of [[https://www.gnu.org][Gnu/Linux]] or [[https://duckduckgo.com/?t=ffab&q=macintosh+command+line][Mac]] or [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows Subsystem for Linux]]
-      - focused on customizing your tool stack
-      - anything you can do manually, you can automated with a /Shell Script/!
-- Web Languages
-      - [[https://www.typescriptlang.org][TypeScript]] or [[https://clojurescript.org][ClojureScript]]
-            - highly dynamic lisp-like languages
-            - ideal for animating rich web pages
-- [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic]] [[https://en.wikipedia.org/wiki/Constraint_logic_programming][and]] [[https://en.wikipedia.org/wiki/Constraint_programming][Constraint]] Programming
-      - [[file:Prolog/README.org][Prolog]] is the simplest Logic Programming Language
-            - excellent for Learning AI Programming Techniques
-      - /Constraint Logic Programming/ is extraordinarily powerful
-            - many HLLs cater to this style of programming
-            - part of the general practice of [[https://en.wikipedia.org/wiki/Automated_reasoning][Automated Reasoning]]
-- [[https://en.wikipedia.org/wiki/Knowledge-based_systems][Knowledge-Based]] Programming
-      - this paradigm is especially good for creating /Knowledge-Based Expert Systems/
-      - good example languages are [[https://flora.sourceforge.net][Flora-2]] and its successor [[https://github.com/ErgoAI][ErgoAI]]
+[[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]], inside of [[file:Racket/README.org][Racket]], a modern [[https://github.com/GregDavidson/on-lisp][Lisp]]
+- Scheme is an unusually clean and general language.
+      - The original Scheme is primarily used for learning programming.
+      - There are several pragmatic Lisps based on Scheme.
+- Racket extends Scheme with practical extensions, libraries, tools and more.
+      - Racket is a good general-purpose language.
+      - Racket may be an even better language for learning programming.
+	    - especially beginning with [[https://docs.racket-lang.org/quick][graphic arts computing]]
+
+[[Emacs/elisp-vs-scheme.org][Emacs Lisp]], inside of [[https://www.gnu.org/software/emacs][Emacs]]
+- a very old Lisp, but the secret to the power of Emacs
+- there are extraordinary productivity tools written in Emacs Lisp
+- you can easily extend them or write new ones!
+
+[[file:SQL/SQL-README.org][SQL]], inside of [[https://www.postgresql.org][PostgreSQL]]
+- SQL makes data storage and access a dream
+- PostgreSQL is Open Source Free Software (FLOSS)
+- PostgreSQL allows you to extend SQL and the Database
+      - many powerful PostgreSQL extensions are freely available (FLOSS)
+      - and you can create magic with your own PostgreSQL extensions!
+
+[[https://duckduckgo.com/?t=ffab&q=posix+shell][Posix Shells]], inside of [[https://www.gnu.org][Gnu/Linux]] or [[https://duckduckgo.com/?t=ffab&q=macintosh+command+line][Mac]] or [[https://docs.microsoft.com/en-us/windows/wsl/about][Windows Subsystem for Linux]]
+- focused on customizing your tool stack
+- anything you can do manually, you can automated with a /Shell Script/!
+
+Web Languages
+- [[https://www.typescriptlang.org][TypeScript]] or [[https://clojurescript.org][ClojureScript]]
+      - highly dynamic lisp-like languages
+      - ideal for animating rich web pages
+
+[[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic]] [[https://en.wikipedia.org/wiki/Constraint_logic_programming][and]] [[https://en.wikipedia.org/wiki/Constraint_programming][Constraint]] Programming
+- [[file:Prolog/README.org][Prolog]] is the simplest Logic Programming Language
+      - excellent for Learning AI Programming Techniques
+- /Constraint Logic Programming/ is extraordinarily powerful
+      - many HLLs cater to this style of programming
+      - part of the general practice of [[https://en.wikipedia.org/wiki/Automated_reasoning][Automated Reasoning]]
+
+[[https://en.wikipedia.org/wiki/Knowledge-based_systems][Knowledge-Based]] Programming
+- this paradigm is especially good for creating /Knowledge-Based Expert Systems/
+- good example languages are [[https://flora.sourceforge.net][Flora-2]] and its successor [[https://github.com/ErgoAI][ErgoAI]]
+
+There are many enlightening languages which will make you a better
+programmer, even if you don't use them in your major projects.
+
+"A language that doesn't affect the way you think about programming, is not worth knowing." -- Alan Perlis 
+
+A few Enlightening Languages - see below for more information on these!
+- Lean, Coc, Agda :: these languages teach you how to write programs
+  which can be proved to be correct, i.e. to meet a program's
+  specification fully and to be free of bugs.
+- Smalltalk, e.g. Pharo and Squeak :: Smalltalk will teach you
+  what Object-Oriented Programming is really about, as well as teach
+  you how to program in a live image.
+- Array Languages, e.g. APL, BQN, J, K :: These languages will teach
+  you how to understand and utilize multi-dimensional arrays.
 
 ** Families Of Great Languages
 
@@ -80,17 +112,19 @@ With experience, you can pick up a language in a familiar family and be
 productive in a few hours and masterful in a few days - I stopped counting
 languages after I'd used 60 languages for significant projects.
 
-
 *** [[https://github.com/GregDavidson/on-lisp#readme][Lisps]]
 
-The Lisp family contains some of the most flexible general purpose high-level
-languages. See [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]] for more depth. Lisps in the Scheme family are among the
-most elegant, where elegance refers to a combination of power and simplicity.
+The Lisp family contains some of the most flexible general purpose
+high-level languages. See [[https://github.com/GregDavidson/on-lisp#readme][On Lisp]] for more depth. Lisps in the Scheme
+subfamily are among the most elegant, where elegance refers to a
+combination of power and simplicity.
 
 Lisp systems are Multi-Paradigm with good support for
 - Functional Programming
 - Object-Oriented Programming
 - Imperative Programming
+- Metaprogramming
+- and other paradigms!
 
 Pros:
 - Programmer Freedom to Mix&Match Styles and Paradigms
@@ -99,20 +133,42 @@ Pros:
 Cons:
 - Mixing&Matching can make programs hard to understand!
 
-- [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme invented Lisp Killer Features]]
-      - All Scheme Procedures are Lambda Procedures
-      - End-Calls aka Tail-Calls are Compiled Away
-      - Delimited Continuations provide Ultimate Control!
-      - The Numeric Tower
-- Languages based on or evolved from Scheme
-      - [[https://racket-lang.org][Racket - builds a rich ecosystem around Scheme]]
-      - [[https://www.gnu.org/software/guile][Guile - Scheme with Pragmatic Extensions]]
-- Clojure aims for minimalism and pulls it off!
-      - [[https://clojure.org][Clojure compiles to the JVM]]
-      - [[https://clojurescript.org][ClojureScript compiles to JavaScript]]
-- [[https://en.wikipedia.org/wiki/Common_Lisp][Common Lisp is the most featureful Lisp]]
-- [[Emacs/elisp-vs-scheme.org][Emacs Lisp is the source of Emacs power]]
+[[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme invented or Extended Lisp Killer Features]]
+- All Scheme Procedures are Lambda Procedures
+- End-Calls aka Tail-Calls are Compiled Away
+- Delimited Continuations provide Ultimate Control!
+- The Numeric Tower
+- Hygienic Syntax Macros
+- Scheme is the simplest Lisp
+- Scheme may be the most powerful Lisp!
+- There are many Lisps based on or evolved from Scheme
+- [[https://cisco.github.io/ChezScheme][Chez Scheme]] is the most efficient Scheme implementation
 
+[[https://racket-lang.org][Racket - builds a rich ecosystem around Scheme]]
+- The power of Scheme with extra convenience features.
+- There are [[https://docs.racket-lang.org/guide/more-hash-lang.html][Other Racket Languages]]
+   - [[https://docs.racket-lang.org/ts-guide/index.html][Typed Racket]] adds the power of statically-typed Functional programming
+
+[[https://www.gnu.org/software/guile][Guile - Scheme with Pragmatic Extensions]]
+- Another Scheme-derived Lisp with extra convenience features.
+- Popular for scripting with [[https://www.gnu.org][Gnu Projects]]
+
+Clojure aims for minimalism and pulls it off!
+- [[https://clojure.org][Clojure compiles to the JVM]]
+- [[https://clojurescript.org][ClojureScript compiles to JavaScript]]
+
+[[https://en.wikipedia.org/wiki/Common_Lisp][Common Lisp has the most features]]
+- Influenced by Scheme but not quite as powerful.
+- Has lots and lots of additoinal pragmatic features.
+- [[https://coalton-lang.github.io/][Coalton]] adds the power of statically-typed Functional programming
+- SBCL is the most efficient Lisp implementation
+
+[[Emacs/elisp-vs-scheme.org][Emacs Lisp is the source of Emacs power]]
+- Lacks the innovations of Scheme and other modern Lisps.
+- Emacs Lisp hackers tend to use an imperative style
+    - Lots of mutation and dynamic variables
+- The ability to script Emacs is its killer feature!
+      
 *** [[https://en.wikipedia.org/wiki/Category:Logic_programming_languages][Logic]] [[https://en.wikipedia.org/wiki/Constraint_logic_programming][and]] [[https://en.wikipedia.org/wiki/Constraint_programming][Constraint]] Programming
 
 Logic and Constraint programming is the highest-level of Declarative
@@ -252,6 +308,25 @@ the types and relationships in the program.  Haskell will teach you powerful
 ways of thinking about programming and how to create programs that are much
 more reliable than usual.
 
+[[https://www.scala-lang.org][Scala]] is like Haskell but [1] for the JVM (so it interoperates with
+Java, etc.) and [2] it mixes features for Object-Oriented Programming
+with features for Functional Programming.
+
+**** Proof-Oriented Programming 
+
+- [[https://en.wikipedia.org/wiki/Lean_(proof_assistant)][Lean]]
+- [[https://en.wikipedia.org/wiki/Calculus_of_constructions][CoC]]
+- [[https://en.wikipedia.org/wiki/Agda_(programming_language)][Agda]]
+
+These languages were developed as proof assistants, i.e. as tools to
+assist people in creating logical proofs, including proofs of
+correctness for computer programs.  These "tools" can also be used as
+programming languages!  As programming languages, they tend to be
+lacking performance as well as library and tool support.
+
+These are great languages and tools for learning how to write bug-free
+software!
+
 *** Web and XML Languages
 
 - JavaScript
@@ -295,7 +370,8 @@ Text-Oriented DSLs
 - [[https://en.wikipedia.org/wiki/Ed_(text_editor)][ed scriptable file editor]]
 - [[https://en.wikipedia.org/wiki/Sed][sed scriptable stream editor]]
 - [[https://en.wikipedia.org/wiki/AWK][awk powerful scriptable text processor]]
-
+- and many, many more!
+  
 Automated development tools are like Shells for Shells
 - [[https://en.wikipedia.org/wiki/Make_(software)][make: automate complex file processing]]
 
