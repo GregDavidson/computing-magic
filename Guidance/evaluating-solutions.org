@@ -1,0 +1,32 @@
+* Evaluating Solutions to Computing Challenges
+
+A computing challenge aka "problem" inspires you to come up with a solution. How
+can you evaluate its quality?
+
+How it enriched YOU
+- Did you have fun coming up with your solution?
+- Did you learn things?
+  - Are you now more capable?
+  - Are you inspired to explore more?
+- What other possibilities now show up?
+
+Practical issues?
+- How does your solution's resource requirements compare to other solutions?
+  - Time & Space complexity
+  - Human Interface resources, if any
+  - Others, e.g. network, graphics, co-processors, ...
+
+How easy is it to use as 1 or more black boxes?
+- Usage as a library or component or module?
+  - Composability is a big deal!
+- Non-intrusive Extensibility, customizability
+
+Beauty of the solution
+- Clarity
+- In what langugaes and/or notations?
+
+Evolvability
+- Where can you go from your solution?
+  - in which design spaces?
+  - small or large jumps?
+- What's possible by combining your solution with other ideas?

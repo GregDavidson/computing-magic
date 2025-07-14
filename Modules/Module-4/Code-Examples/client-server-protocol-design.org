@@ -1,0 +1,327 @@
+* Client/Server Protocol Design
+
+** What's This?
+
+This document provides an introduction to and guidance for designing an
+Application-Custom Client/Server Communication and Coordination Protocol and
+Implementation.
+
+An example of such a Protocol for a simple Guessing Game is described in the
+files
+#+begin_src sh
+  ls game-*.{rkt,org} | sort | sed 's/\(.*\)/[[file:\1][\1]]/'
+#+end_src
+
+#+RESULTS:
+| [[file:game-protocol-1.org][game-protocol-1.org]] |
+| [[file:game-protocol-1.rkt][game-protocol-1.rkt]] |
+| [[file:game-serve-1.rkt][game-serve-1.rkt]]    |
+
+
+Abstract Example
+#+begin_src plantuml :results verbatim
+  Client -> Server : Connect
+  Client -> Server : Authenticate
+  mainframe "loop"
+    Client -> Server : Request Resource
+    Client <- Server : Provide Resource
+  Client -> Server : Disconnect
+#+end_src
+#+RESULTS:
+#+begin_example
+     ,------.          ,------.
+     |Client|          |Server|
+     `--+---'          `--+---'
+        |     Connect     |
+        | ---------------->
+        |                 |
+        |   Authenticate  |
+        | ---------------->
+        |                 |
+        | Request Resource|
+        | ---------------->
+        |                 |
+        | Provide Resource|
+        | <----------------
+        |                 |
+        |    Disconnect   |
+        | ---------------->
+     ,--+---.          ,--+---.
+     |Client|          |Server|
+     `------'          `------'
+#+end_example
+
+
+** Design Considerations for a Non-Web Framework
+
+*** Design a Custom Protocol
+
+A Client/Server Protocol Consists of Several Layers
+#+begin_example
+     ,------.                          ,------.
+     |Client|<--Application Protocol-->|Server|
+     `--+---'                          `--+---'
+        ^                                 ^
+        |                                 |
+        v                                 v
+     ,------.                          ,------.
+     |Client|<------Representation---->|Server|
+     `--+---'                          `--+---'
+        ^                                 ^
+        |                                 |
+        v                                 v
+     ,------.                          ,------.
+     |Client|<---Transport Protocol--->|Server|
+     `------'                          `------'
+
+#+end_example
+
+
+The layers are
+- Application Protocol :: Expresses the semantics of the application, typically
+  in terms of requests and responses related to the application's needs.
+- Representation :: How the Application Protocol is represented in terms of Byte
+  I/O. This can be a Human Readable Text Representation or a machine efficient
+  Binary Representation. It is possible to provide both and switch between them.
+- Transport Protocol :: Typically a Stream Protocol such as [[https://en.wikipedia.org/wiki/Transmission_Control_Protocol][TCP/IP]], occasionally
+  a Datagram Protocol such as [[https://en.wikipedia.org/wiki/User_Datagram_Protocol][UDP/IP.]]
+
+**** Application Protocol Design
+
+Identify your Application's Use Cases
+- In interactions between user(s) and the Client Application
+- In interactions between the Client Application and any Servers
+- Create a [[https://en.wikipedia.org/wiki/Use_case_diagram][Use Case Diagram]] for each such set of Interactions
+      - one for a User interacting with the Application
+      - one for a Client interacting with a Server
+
+Identify your Application's States and draw one or more [[https://en.wikipedia.org/wiki/State_diagram][State Diagrams]].
+
+Specify A Record Type (RT) for each State Transition crossing Client/Server
+boundaries - see the Client/Server Use Cases and the related State Diagram(s).
+
+Each RT should specify
+- a unique Tag
+- 0 or more Fields carrying Data Values
+
+Within a particular RT
+- The number of Fields should always be the same
+- Each Field should have
+      - A mnemonic Field Name
+      - A fixed datatype
+- Some Fields might be Container Types, e.g. Vector/Array
+      - A fixed datatype for all elements of such a field
+      - Avoid nested containers if possible!
+
+Each message sent between Client and Server
+- Conforms to exactly one of the established RTs
+
+**** Application Protocol Design
+
+***** Human Readable Text Format
+
+It's simplest if each message consist of one or more lines where
+- The lines are easily human readable
+- Its easy to tell how many lines are part of each Message
+- It's easy to tell how much storage is required to store any large data values
+  contained in the message before reading such.
+
+***** Binary Formats
+
+Look for a library or tool which will efficiently /Serialize Record Types/ in
+your Programming Language, i.e. efficiently turn the contents of one of your
+records into bytes when you're /Sending A Record/ and vice versa when you're
+/Receiving A Record/.
+
+**** Data and Metadata
+
+The Message Representation contains Metadata
+
+The Metadata in the first Line directly tells us
+- the Tag
+- How many Fields the Record contains
+- The datatype of each Field
+- The number of fixed-size Fields on the same line
+- The type and value of each of those Fields
+      - ?? And maybe a Field Name for each Field ??
+- The number of Fields on following lines
+Even though all of this could be known by looking up the RT from the Tag
+
+The Metadata in the first Line also gives us size information
+- The number of following lines
+- The total number of bytes to hold all of the data
+
+For every Field of Variable Size
+- i.e. Composite Types
+- e.g. Byte & Text Strings, Vectors, Lists, etc.
+the Metadata tells us
+- the total size of the Field in bytes
+- the number of Elements contained in the Field
+- the type of the Elements
+- with the actual data following one or more lines
+      - it tells us how many lines that will be
+      - it also tells us how many bytes to read
+      - (we need to know whether we need to discard any remaining newline)
+
+We should try for A Homogeneous and Flat Representation
+- i.e. Elements of size-varying Fields
+- must all be of the same non-size-varying type
+
+If we need more complex data
+- We can use JSON for simple hierarchical data
+- We can use serialized s-expressions for graph structures
+But it would really be best to avoid these complexities!
+
+**** Reading & Interpreting Messages
+
+We can read at the beginning of the first Line of a Message
+      - the number of Fields
+      - the number of bytes required to store the Tag & Fields
+
+Storage Strategies
+1. We can allocate one hunk of bytes and store everything in it
+2. We can allocate Record Containers and Large Fields Separately
+      - Record Slots can store small Field Values directly
+      - Record Slots can point to Large Field Objects
+Low-Level Languages require that we specify such niceties explicitly
+- e.g. C, Rust
+High-Level Languages decide such details automatically
+- e.g. Racket
+
+If we fully trust arriving Messages then the entire reading process can happen
+without checking the Tag.
+
+If there's a chance the Process we're communicating with or the Channel we're
+communicating over might be unreliable
+1. We should first use the Tag to fetch the Record Type
+2. We should validate all Metadata before reading any Fields
+       - especially before reading any Variable-Sized Fields
+3. Any violation should result in
+       - Logging diagnostic data
+       - Cutting off this relationship
+       - Releasing any resources associated with it
+
+**** Latency vs. Throughput
+
+Computing within a Process is fast
+- tens to hundreds of millions of Procedure Calls each second
+- billions of primitive operations each second
+
+Packets and messages between processes can be very slow
+- less than a thousand operations per second
+- similar to transactions with a Hard Disk Drive
+
+Communication and Coordination between your Client and Server could easily
+become the biggest performance limitation in your system!
+
+But there's a difference between Throughput and Latency
+- Latency is how long you have to wait for an operation to complete
+- Throughput is how much data can be processed in an operation
+
+In a /Synchronous Protocol/
+- After the Client Sends A Request it has to wait for a Response from the Server
+- After the Server Sends A Response it has to wait for the next Request from the Client
+- These are called /Round Trips/
+- Unless the amount of processing or data delivered in each /Round Trip/ is
+  large enough to make all of the waiting negligible, a synchronous protocol can
+  easily be a performance bottleneck.
+
+You might be able to use an /Asynchronous Protocol/
+- Examine your Use Case and State Diagrams
+- Is it possible to do useful work while Requests and Responses are making their
+  way between Client and Server?
+- For a Client: Is it possible to overlap processing of one or more Responses
+  and sending new Requests?
+- For a Server: Is it possible to overlap processing of one or more Requests and
+  sending Responses?
+
+/Asynchronous Protocols/ are much harder to design and debug than /Synchronous
+Protocols/ and the amount of performance gain they can provide will be specific
+to your application's semantics. It could be very large or negligible.
+
+We will not attempt to give any general guidance for creating a /Custom
+Asynchronous Protocol/ although we will give one example of a highly successful
+Asynchronous Protocol in the next section.
+
+***** The X Window System Overlapping Events & Requests
+
+When graphical workstations were first connected to computer networks in
+institutions in the 1980s, e.g. University Campuses, a problem quickly arose:
+The applications users wanted to run were often only able to run on specialize
+remote computers, yet users wanted to interact with those applications on their
+local graphical workstation.
+
+There was an obvious concern that the latency between remote applications and
+the local graphics system was going to produce terrible performance. The
+designers of the [[https://en.wikipedia.org/wiki/X_Window_System][X Window System]] came up with a brilliant design.
+
+Client and Server reversed their usual locations
+- The /X Display Server/ ran on the /User's Local Workstation/.
+- The Remote Applications connected to the /X Display Server/ as Clients.
+
+Applications sent /Requests/ to the User's Server, e.g.
+- Tell me how much screen real estate is available
+- Create windows arranged in such and such a way
+- Draw such and such items in those windows
+
+The /X Server/ sent /Events/ to the User's Server, e.g.
+- Here's how much room is available for a window
+- Part of a window has been uncovered and needs its contents redrawn
+- New user input from keyboard, mouse, touch screen, etc.
+
+The genius of the system was in the Buffering
+- The Clients (Applications) did not immediately send their Requests
+      - Requests were initially added to a Client-Side Buffer
+      - A Request Buffer would only be sent to the Server when
+            - The Buffer had enough payload for good throughput
+            - Processing of all input Events was complete
+- The X Server did not immediately send Events to a Client
+      - Events were initially added to a Server-Side Buffer
+      - An Event Buffer would only be sent to the Client when
+            - The Buffer had enough payload for good throughput
+            - Processing of all Requests for that Client was complete
+
+In practice the Client and the Server rarely had to wait for one another
+- The Application would be busy processing Events
+- The Server would be busy performing Requests
+
+Remote graphical applications often ran /faster/ than locally installed
+applications, especially if they were doing lots of computation and/or accessing
+remote data.
+
+*** RPCs with Compatible Data Structures
+
+Remote processes can seem to be part of one multi-module program.
+
+Within a Process computing happens through Procedure Calls.
+
+Across Communicating Processes, computing happens through Remote Procedure
+Calls, aka RPCs.
+
+Syntactically these look the same.
+
+The principle difference is that
+- the overhead of calling a local Procedures is less than an microsecond
+- the overhead of an RPC is generally tens of milliseconds
+- that's 1000 times slower!
+
+The overhead of RPCs might not matter if
+- the call overhead is subsumed in the amount of work done within the call
+
+RPCs require Client & Server to use a compatible data language
+
+In the simplest case, Client & Server are written in the same Language with the
+same libraries.
+
+Alternatively, similar data structures can be converted as part of the call overhead
+- Some tools do this automatically
+- Usually using an intermediate representation "on the wire"
+- Some systems simply use very general Data Structures
+      - e.g. S-Expressions, JSON, SQL Records, etc.
+
+It's also possible to have asynchronous semantics for some RPCs
+- You call the RPC and get back a placeholder value
+- You're notified by an Event when the placeholder can be exchanged for the actual return value
+- You can then design your program
+      - to do other work while waiting for RPCs to complete
+      - perhaps issuing multiple overlapping RPCs

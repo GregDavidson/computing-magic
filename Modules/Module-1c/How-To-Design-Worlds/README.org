@@ -1,0 +1,17 @@
+* Racket Tutorials: How To Design Worlds
+
+[[https://world.cs.brown.edu][How to Design Worlds (HTDW)]] is a tutorial on
+- Writing Graphical Computer Games
+- as a path towards towards mastering Computer Programming
+- using [[https://racket-lang.org/][The Racket Programming Language]]
+- and the ideas of the book [[https://htdp.org][How To Design Programs (HTDP)]]
+
+** Directory: [[file:HTDW-Videos][HTDW-Videos]]
+
+Here you will find are short videos showing what the games look like.
+
+** Directory: [[file:Flight-Lander][Flight-Lander]]
+
+Flight-Lander is the first game.
+
+Here you will find various solutions to the step-by-step challenges.

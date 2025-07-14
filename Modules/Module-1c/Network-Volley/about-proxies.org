@@ -1,0 +1,7 @@
+* Proxies for Sprites
+
+Sprites have values we can't easily send across worlds
+- Functions
+- Images
+
+Sprites 

@@ -1,0 +1,141 @@
+#+TITLE: Computing Magic
+#+SUBTITLE: Posix Systems vs. Microsoft Windows
+* Posix Systems vs. Microsoft Windows
+
+** TL;DR
+
+If you don't want to read a lot of historical and technical context,
+feel free to /Skip to *How To Become Most Productive* below!/
+
+** What do we mean by a Posix System
+
+By /Posix Systems/ we mean /Operating Systems/ inspired by and largely
+compatible with the /Unix Timesharing System/ developed at /AT&T Bell
+Laboratories/ with key contributions from the /Computer Systems Research Group/
+at the /University of California at Berkeley/.
+- [[https://en.wikipedia.org/wiki/Unix][Wikipedia: Unix]]
+- [[https://en.wikipedia.org/wiki/POSIX][Wikipedia: POSIX]]
+
+Supporting the productivity and quality of software development has always been
+extremely important in the Unix and Unix-inspired Operating Systems.
+
+Today's most important Posix systems for software developers are
+- [[https://en.wikipedia.org/wiki/Linux_distribution][Wikipedia: Linux Distributions]] based on [[https://www.gnu.org/][Gnu/Linux]]
+- MacOS on the Apple Macintosh based on [[https://en.wikipedia.org/wiki/History_of_the_Berkeley_Software_Distribution][BSD]]
+- Other [[https://en.wikipedia.org/wiki/List_of_BSD_operating_systems][versions of BSD]]
+See also
+- https://distrowatch.com/
+
+** What do we mean by a Microsoft Windows System
+
+The original Microsoft Windows ran on top of [[https://en.wikipedia.org/wiki/MS-DOS][MS-DOS,]] a primitive Operating
+System designed for launching purchased software products running as sole
+applications (nothing else could run simultaneously) on the early [[https://en.wikipedia.org/wiki/IBM_Personal_Computer][IBM PC]].
+- Ran on the original 16-bit Intel 8086 CPUs
+- Fast volatile storage: 64K bytes of DRAM (K as in thousand)
+- Slow persistent storage: 128K byte floppy disks
+- No Networking, No Multi-Tasking
+- No Multi-User features so No Security
+- No software development environment
+
+[[https://en.wikipedia.org/wiki/Windows_NT][Microsoft Windows NT]] replaced the original Microsoft Windows in 1993. It
+was a completely new operating system.
+- No memory limits on 32 or 64 bit 8086-compatible computers
+- Expectation of faster and larger hard disks (and now of SSDs)
+- TCP/IP Networking borrowed from BSD
+- Some Multi-User features
+- Increasing Security Features
+- Multi-Tasking Features
+- Microsoft promotes their proprietary =.net= environment
+      - Even though Microsoft doesn't themselves use it!
+- A Posix-Compatible software development environment can be added
+- A [[https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux][Windows Subsystem for Linux]] can now be added
+      - Runs as part of the Kernel in Microsoft Windows 10
+      - Runs as a VM (Virtual machine) on Microsoft Windows 11
+
+** Use of Graphical Applications
+
+All modern operating systems support a similar broad range of graphical
+applications such as
+- [[https://en.wikipedia.org/wiki/Productivity_software#Office_suite][Office Suites]] for Office Work
+- Graphical Software Development via [[https://en.wikipedia.org/wiki/Integrated_development_environment][IDEs]]
+- Games
+- etc.
+
+The Apple Macintosh provides a Graphical Desktop and is strongly oriented
+towards doing everything with Graphical Applications, despite being implemented
+on a BSD system.
+
+Most Linux Desktop Distributions, e.g. Ubuntu and Mint also initially install a
+Graphical Desktop and a broad range of Graphical Applications are easily
+installed, usually free of charge!
+
+Graphical applications are elaborate menu-driven systems
+- Mouse actions or =keyboard shortcuts= invoke pre-programmed functios
+
+Typical Advantages:
+- Uses anticipated by the designers are often remarkably easy.
+- Features are usually relatively discoverable
+      - reading a manual is often not necessary
+
+Typical Disadvantages:
+- Unanticipated uses can be difficult to impossible
+Scripting (automation) is typically awkward or impossible
+- Sophisticated applications still need significant training
+      - e.g. effective use of Spreadsheet Programs
+
+** Non-Graphical Scripting Environments
+
+Computer Experts usually prefer using non-graphical scripting tools and
+non-graphical commands with only the occasional use of graphical programs.
+
+Typical Disadvantages:
+- You have to know what commands are available
+- You often have to look up obscure options and syntax
+- /Both of these are less of an issue for experts!/
+
+Typical advantages:
+- The built-in features are typically more advanced and general
+- Creative, unanticipated uses are expected and highly productive
+- /Anything you can do manually you can automate with scripts!/
+
+Also
+- It's easy to launch any desired Graphical Applications by name
+- Some Graphical Applications are designed to work well with commands
+      - e.g. Emacs
+      - Though some would call Emacs the /Worst of Both Worlds!/
+
+** How To Become Most Productive
+
+*If you mostly use /Graphical Tools/*
+- you will likely become moderately productive
+- you are unlikely to ever become highly productive
+
+*If you mostly use /Command Tools/*
+- It will take longer to become moderately productive
+- You will want to do a lot of steady gradual learning
+- You will probably want to take notes on what you learn
+- If you keep at it, you will become highly productive
+      - If you still keep at it, you will become a wizard
+- *There will be no limit to how productive you become!*
+      - The highest-level wizards are called Gurus!
+
+Key things to help you on this path
+- [[https://github.com/GregDavidson/computing-magic/blob/main/Software-Tools/Emacs/emacs-readme.org][Learn Emacs and OrgMode!]]
+- [[https://github.com/GregDavidson/computing-magic/blob/main/Scripting/README.org][Learn Scripting!]]
+
+- Bottom line :: If you want to become highly productive, play the game of
+  trying to do as much as possible with Scriptable, non-graphical tools.
+
+- Extra value :: Learning to automate tasks with scripting will also make you a
+  better software developer!
+
+** WSL Notes
+
+Access Your Linux (WSL) Files in Windows 10
+- They're under a subdirectory of \\wsl$
+      - e.g. =\\wsl$\Ubuntu-22.04=
+
+Access Windows 10 Files under WSL Linux
+- They're under a subdirectory of =/mnt=
+      - e.g. =/mnt/c= for the Microsoft /C Drive/

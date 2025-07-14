@@ -1,0 +1,59 @@
+* The C Programming Language
+
+** TL;dr
+
+The [[https://en.wikipedia.org/wiki/ANSI_C][ANSI C]] programming language of 1989 is
+- simple
+- easy to learn and to use for small simple programming projects
+- useful for a beginning understanding how machines run programs
+
+Every serious programmer should learn C in order to learn
+- procedural programming
+- how computers run programs
+
+C should be avoided for any new large or complex projects.
+
+A good start for learning ANSI C is
+- [[https://github.com/GregDavidson/C-By-Example][C By Example]]
+
+** The C Paradigm
+
+The C Programming Language is designed for
+- low-level procedural programming
+      - directly manipulating each byte or word
+- low-level operating-system components
+- small simple applications
+ 
+The C Programming Language was originally
+- very simple
+- easy to compile to most machine architectures
+- with predictable performance
+
+
+** The C Paradigm
+
+The C Programming Language belongs to an era
+- the late 1960s and early 1970s
+when computers were
+- much simpler than today's computers
+- with much less performance
+
+C was the main language of the Unix Operating System
+- starting with the 4th Edition of [[https://en.wikipedia.org/wiki/Research_Unix][Research Unix]] in 1973
+- the Unix Kernel and most Unix Libraries and Utilities were written in C
+
+The success of C and Unix influenced many other Operating Systems to choose C as
+their main implementation language including
+- the [[https://en.wikipedia.org/wiki/List_of_BSD_operating_systems][BSD]] family's kernels, libraries and utilities
+      - The BSDs are strongly based on the Unix architecture
+- the [[https://en.wikipedia.org/wiki/Mach_(kernel)][Mach Microkernel]]
+- Apple's Operating Systems -- based on Mach and BSD
+- The Linux Kernel along with most GNU Libraries and Utilities
+      - Gnu/Linux is strongly based on the Unix architecture
+
+When the author of C, [[https://en.wikipedia.org/wiki/Dennis_Ritchie][Dennis Ritchie]] was asked
+- What's the best way of writing larger programs in C?
+he famously replied
+- Don't!
+
+C does not have the 

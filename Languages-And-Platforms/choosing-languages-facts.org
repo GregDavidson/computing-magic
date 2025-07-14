@@ -1,0 +1,182 @@
+* Facts Behind Choosing Computer Languages
+
+Choosing which computer language to use for a given task goes way beyond the facts in this document.  These facts are only intended as a supplement to the decision process preceeding such a choice.
+
+First read [[file:choosing-languages.org][Choosing Languages]]
+
+** Complexity
+
+The more complex a programming language is the harder it is to
+- Learn the language and best practice
+- Understand existing programs
+- "Maintain" existing programs
+
+Maintenance accounts for most of the cost of software development.
+
+Program Maintenance refers to
+- Adpating the program to changing requirements
+  - Adding new features
+  - Changing the program's behavior to meet new requirements
+- Adapting it to changes in the program's environment, e.g.
+  - Application Programming Interface changes
+    - used for access to Libraries and Operating Systems
+  - Format changes in external data
+- Correcting bugs or other undesired behavior
+
+Writing a program from scratch may initially seem easier than
+modifying an existing program.
+- A programmer only needs to use familiar language features and techniques
+The quality of a new program must include
+- Satisfying all requirements, including required performance
+- Ease of understanding and maintenance
+
+** Expressibility and Conciseness
+
+
+
+** Optimization and Performance Measurement Issues
+
+If a program is using more resources (time, memory, network I/O, etc.)
+than desired, there are many issues that might be at issue
+- The [[https://en.wikipedia.org/wiki/Computational_complexity][Computational Complexity]] of the algorithms used
+  - This will mostly matter for when processing large datasets
+- Coding details of program hotspots
+  - Typically more than 90% of the program's costs occur in less than 10% of the code
+  - Finding hotspots generally requires [[https://en.wikipedia.org/wiki/Profiling_(computer_programming)][Profiling]]
+    - Programmer guesses are notoriously unreliable!
+  - Uninformed optimization damages program maintainability
+- Resource issues may be architectural
+  - Choice of libraries
+  - Distribution of program over networks
+  - External file or database access
+  - Cacheing strategies
+  - etc.
+- => Choice of Programming Language and Implementation
+
+** Programming Language and Implementation Performance Issues
+
+Because of the complexities in the previous section, language and implementation performance issues must not be overstated
+- Is the performance issue large enough to override easy optimizations?
+- Does this language make it easier or harder to express this program, including
+  - useful optimizations
+  - ongoing maintenance
+- Does the performance issue apply to the programs we're interested in, e.g.
+  - Is performance dominated by a library we trust to be close to optimal?
+  - Is performance dominated by I/O requirements we have no control over?
+
+When we look at choosing programming languages for solving a particular problem we want to consider
+- Is the language a good match for solving this problem?
+  - Given the experience of the programmers who will be doing the work?
+- What performance and maintenance results are to be expected?
+
+It is /very/ difficult to objectively measure the performance of different programming languages
+1. Programs to be compared must be implemented comparably
+    - Architecture, Design, Algorithms, Code Quality
+2.  Programs must be implemented in a natural manner for each language and its tooling
+    - Weirdly optimized programs are not reasonable examples.
+    - We must look at what real programmers can produce with reasonable effort.
+3.  Note that (1) and (2) contradict one another!
+  
+Nevertheless, some languages and implementations seem to
+- enhance programmer productivity
+- produce overall better programs
+- with better overall performance
+- for important classes of programs
+  
+*** Performance of Typically Faster Languages
+
+- [[https://benchmarksgame-team.pages.debian.net/benchmarksgame/box-plot-summary-charts.html][Benchmarks of 15 Faster Languages]]
+  - C, C++, Rust, C#, Chapel, F#, Fortran (Intel), Julia, Swift, Java, Haskell (GHC), Go, Ada, Common Lisp (SBCL), JavaScript (Node.js)
+
+Notes on some of these "Faster Languages"
+    
+- Rust
+  - Just about as fast as you can get
+  - More expressive (higher-level) than the other super-fast languages
+    - Especially for [[https://en.wikipedia.org/wiki/Systems_programming][Systems Programming]] rather than application programming
+  - Less prone to errors and crashes than the other super-fast languages
+- Swift
+  - Higher-Level than Rust, e.g. provides automatic Garbage Collection
+  - Easier for application programming rather than Systems Programming
+- Julia
+  - Especially good for Numeric "Scientific/Engineering" applications
+- Haskell
+  - Uses the Statically-Typed Functional-Programming Paradigm 
+    - Especially good for solving complex and tricky problems efficiently.
+    - Great language for learning Functional Programming
+  - Sophisticated type system helps in design and prevents errors.
+  - Requires programmers well trained in the Paradigm
+    - Such training will increase their productivity using all languages!
+- Common Lisp and other Lisps
+  - Good support for multiple Paradigms, including
+    - Functional Programming
+    - Object-Oriented Programming
+    - Metaprogramming
+  - Highly expressive and flexible
+    - This may allow easier solutions and maintenance
+    - Can lead some programmers to create "overly clever" code.
+      - Good leadership and overview can prevent this.
+  - Usually uses dynamic typing which can conceal bugs
+    - Some Lisps provide optional static typing and contracts
+  - Performance varies enormously with implementation!
+    - See SBCL Common Lisp, Clojure, Chez Scheme and Racket
+      
+*** General Python Comments
+
+Python competes with Javascript as the most popular of the [[https://en.wikipedia.org/wiki/Scripting_language][Scripting
+Languages]] It also has much worse performance many others, e.g. Perl,
+Tcl, Lua and JavaScript.  It is around 50 times slower than the
+fastest [[https://en.wikipedia.org/wiki/General-purpose_programming_language][General-Purpose Languages]]!
+
+Python is usually used with fast libraries written in C which make it
+appear reasonably performant - as long as what you're wanting to do is
+well supported by the provided libraries.  As soon as your needs
+diverge from what those libraries provide your performance will
+plummet.  You may be punished for creativity, i.e. expressing your new
+ideas directly in Python.
+
+You can get around Python's limitations if you know C well as you can
+write new core algorithms and data structures in C and just use Python
+to "glue" things together.  This was the original idea behind
+scripting languages.
+
+*** Python vs. JVM Languages
+
+- [[https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/python.html][Python 3 vs. Java]]
+  - Python 3 is around 50 to 100 times slower than Java!
+
+Python often seems nicer to use than JavaPython code
+- Typically smaller code size, including less boilerplate
+- Simpler syntax and semantics
+
+Python is better compared to more modern JVM Languages
+- Java interoperates perfectly with other JVM Languages
+- See especially Clojure, Scala, Kotlin
+
+Managing package dependencies is famously complex with both Python and
+the JVM!
+
+*** More on Lisp Family Languages
+
+**** Performance of Some Lisp Implementations
+
+- [[https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/sbcl-racket.htm][Performance of Common Lisp ()SBCL) vs Racket]]
+  - Racket tends to be around 2 - 3 times slower than SBCL
+    - It depends enormously on how you write the code!
+
+**** Performance of Some Scheme Implementations
+
+Scheme is more of the most expressive and powerful programming
+languages ever design yet is also one of the simplest.  This
+combination of power and simplicity is what mathematicians and
+designers call elegance.
+
+- [[https://ecraven.github.io/r7rs-benchmarks][Scheme Benchmarks 2024]]
+
+
+* Unsorted References
+
+- [[https://www.reddit.com/r/lisp/comments/osqgqe/common_lisp_still_beats_java_rust_julia_dart_in][Common Lisp still beats Java, Rust, Julia, Dart in 2021]]
+  - [[https://renato.athaydes.com/posts/revisiting-prechelt-paper-comparing-languages.html][comparing Java, Lisp, C/C++ and scripting languages, Revisited]]
+  - [[https://page.mi.fu-berlin.de/prechelt/Biblio/jccpprtTR.pdf][C, C++, Java, Perl, Python, Rexx, and Tcl for string-processing]]
+  - [[https://flownet.com/ron/papers/lisp-java/lisp-java.pdf][Common Lisp as an Alternative to Java]]

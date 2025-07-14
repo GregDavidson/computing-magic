@@ -1,0 +1,74 @@
+* Flight Lander Game
+
+From Chapter 5 of the Tutorial
+- [[https://world.cs.brown.edu][How to Design Worlds (HTDW)]]
+Based on the 1st edition of
+- [[https://htdp.org][How to Design Programs (HTDP)]]
+
+HTDW is a great tutorial to writing games, with some issues
+- It uses a graphics library obsoleted by the 2nd edition of HTDP
+- Programming is limited by the [[https://docs.racket-lang.org/htdp-langs/index.html][Racket Student Languages]]
+- It assumes we're using the DrRacket editor with its ability to embed images in
+  a program's source.
+
+** 1HTDP-ASL
+
+A sequence of example programs based on the old 1st edition of
+- [[https://htdp.org][How To Design Programs (HTDP)]]
+- Using HTDP's [[https://docs.racket-lang.org/htdp-langs/advanced.html][Advanced Student Language]]
+- Requires you to use DrRacket for embedded images.
+
+Utility: It follows the HTDW text closely.
+
+** 2HTDP-ASL
+
+A sequence of solutions based on
+- the [[https://docs.racket-lang.org/teachpack/2htdp2htdp.html][2htdp libraries of HTDP 2nd Edition]]
+- still using HTDP's [[https://docs.racket-lang.org/htdp-langs/advanced.html][Advanced Student Language]]
+- still requires DrRacket for embedded images.
+
+You can compare these examples with the 1HTDP originals.
+
+** 2HTDP-Racket
+
+A sequence of solutions based on
+- the [[https://docs.racket-lang.org/teachpack/2htdp2htdp.html][2htdp libraries of HTDP 2nd Edition]]
+- still using HTDP's [[https://docs.racket-lang.org/htdp-langs/advanced.html][Advanced Student Language]]
+- Using the full Racket Language
+      - ~#lang racket~
+- You can use any editor and development environment
+      - DrRacket is still a good choice!
+
+** Sprite-Racket
+
+We now start to create a more powerful game architecture.
+- We refactor the simple world of
+      - Lots of global values
+      - A world of numeric positions
+Into a world of
+- Sprites :: Active Mutable Graphical Objects
+
+Sprites will allow us to have
+- more sophisticated features
+- with less complexity!
+
+We carefully use some [[https://github.com/GregDavidson/computing-magic/blob/main/Racket/imperative-racket.rkt][Racket Imperative Features]]
+- beginning with [[file:Sprite-Racket/flight-lander-in-racket-9-mutable.rkt][flight-lander-in-racket-9-mutable.rkt]]
+- but only Sprites will be mutable!
+
+** Resources
+
+The old airplane shows up as an outline underwater when using the
+original teachpack.  It doesn't show up at all when using the
+2htdp/image teachpack.  The solution was to create the modified
+airplane image.
+
+- original airplane from HTDW :: airplane-small.png
+- modified airplane :: airplane-small-clipped-alpha.png
+      - clipped to the edges
+      - outside area turned transparent with an alpha channel
+
+** Miscellanea
+
+- Eti-Coaching
+- flight-lander-4-main+new-plane.rkt

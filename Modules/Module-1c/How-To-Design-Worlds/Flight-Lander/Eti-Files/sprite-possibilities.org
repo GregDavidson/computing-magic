@@ -1,0 +1,82 @@
+* Sprite Possibilities
+
+We're now ready to implement more interesting games.
+
+Here are some features which will help.
+- Look over these features.
+- Pick one you think you you'd like to add first.
+- Start coding it!
+- Hints are on lines beginning with ==>
+
+** Feature 1: Have Sprites draw themselves
+
+Currently sprites are drawn onto the canvas using the global function
+place-object
+
+What if sprite's had a draw-on method similar to their on-tick and on-key
+methods which took a canvas as an argument?
+
+What kind of things could we do?
+
+- We could draw the outlines of our hotboxes so they'd be visible
+  so we could get their placement just right.
+
+- We could have sprites which had multiple images
+  - like the rocket which had optional flames
+  - like airplane landing gear which could be lowered
+  - like robots with movable arms
+  - like explosions when they're hits
+
+==> What changes do you need to make:
+- in the definition of sprite
+- in draw-world
+
+==> Hints:
+Instead of calling
+- (place-object a-sprite canvas)
+which draws all sprites the same way
+we would instead call
+- ( (a-sprite draw-on) canvas )
+which would allow the sprite to customize how it was drawn.
+
+*** Feature 2: Make (sprite-overlap s1 s2) use hotboxes!
+
+This would do the iteration
+
+#+begin_src racket
+  (define (sprite-kill-hurt s1 s2)
+    (for/or ( [killbox (sprite-killboxes s1)] )
+      (for/or ( [hurtbox (sprite-hurtboxes s1)] )
+        (hotbox-overlap killbox hurtbox) ) ) )
+#+end_src
+
+==> Look up for/or in the Racket documentation!
+
+==> Figure out:
+- how to write hotbox-overlap (hint, it's similar to sprite-overlap)
+- what if s1 doesn't have any killboxes?
+- what if s2 doesn't have any hurtboxes?
+
+*** Feature 3: Allow sprites to have named parts and named hotboxes
+
+Interesting sprites might have
+- Parts which are composed of smaller sprites attached at key places
+- Hotboxes which are neither killboxes nor hotboxes but do other things
+      - they could be places where interesting things happen
+            - e.g. where missiles come from
+      - they could be places where parts are attached
+            - e.g. where arms attach, where the landing gear attaches, etc.
+
+An Association List is a list of sublists (smaller lists) where
+- (first sublist) is a name
+      - e.g. a symbol or string
+- (cdr sublist) contains one or more values of interest
+      - e.g. a hotbox, a component sprite, etc.
+and
+- (assq name list-of-sublists) will look up a sublist by name
+
+==> Look up assq in the Racket documentation!
+
+==> If sprites have named hotboxes and/or named parts:
+- How do you add those things to the definition of sprite
+- What sprite functions would make them easy to use?

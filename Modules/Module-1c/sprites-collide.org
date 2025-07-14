@@ -1,0 +1,12 @@
+* Detecting Sprite Collisions
+
+Give a game (or simulation) world with sprites (moving objects in a world
+model), how can we detect when those objects collide?
+
+#+begin_src racket
+  #lang racket
+  (printf "Hello ~a\n" 'User)
+#+end_src
+
+#+RESULTS:
+: Hello User

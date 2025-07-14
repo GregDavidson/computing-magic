@@ -1,0 +1,2 @@
+echo Hello from ${0##*/}
+echo `date -I` is a good day to run!

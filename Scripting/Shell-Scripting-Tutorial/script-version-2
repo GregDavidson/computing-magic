@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+script_name="${0##*/}"
+echo Hello from "$script_name"
+echo `date -I` is a good day to run!

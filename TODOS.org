@@ -1,0 +1,15 @@
+* Little Things TODO
+
+For bigger things, see
+
+[[file:ROADMAP.org][the Computing Magic ROADMAP]]
+
+** Putting new things in place
+
+- African Mask
+- Flight Lander
+
+** Create an organized Nursery
+
+FIND MISSING ~/Play/Lang materials!!!
+ls Play/Lang.~1~/Lisps/

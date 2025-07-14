@@ -1,0 +1,29 @@
+* Creating Games R&D Folder
+
+This folder contains experiments in creating games with Racket.
+
+Mostly the code here is testing out ideas.
+
+Do not assume that anything here is suitable for use!
+
+** How can we unify Racket 2D graphics systems?
+
+Racket has several systems
+- pict
+- metapict
+  - almost compatible with pict except for coordinate axes
+- 2htdp/image
+  - works with 2htdp/universe
+- svg handling
+
+Can we make pict compatible with
+- 2htdp/universe -- making 2htdp/image unnecessary?
+- 2htdp/image -- adding functionality to pict?
+
+The
+https://docs.racket-lang.org/draw/overview.html
+racket/draw
+
+  - Racket uses a postscript-like drawing system
+  - cairo handles both
+universe?
