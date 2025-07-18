@@ -2,6 +2,7 @@ to-*
 *.o
 *.po
 *.itf
+*.swp
 *~
 *#
 foo.*
