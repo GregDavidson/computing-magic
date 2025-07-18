@@ -408,11 +408,14 @@
 
 ;; Do we want struct/macro to separate out contracts as well???
 
-(define-syntax (struct/macro/ stx #:this [this 'struct/macro/])
-    (printf "~a stx ~a\n" stx)
-    (printf "~a form ~a\n" (syntax-e stx))
-    #'(void)
-  )
+(maybe-define-syntax (struct/macro/ stx #:this [this 'struct/macro]) ; this is playing coy!
+  (show this)
+  (show stx)
+  (show (syntax-e stx))
+  (syntax-case stx ()
+              [(_ id (#:scheme: . #:vector) . specs) #'(struct/macro/scheme/vector id #,@specs)]
+              [(_ id rep . specs) (raise-syntax-error this "unknown representation ~a in struct/macro ~a" #'rep #'id)]
+              [(_ ...) (raise-syntax-error this "unknown syntax ~a" stx)] ) )
 
 ;; These examples should be automatically checked, yes???
 
@@ -424,9 +427,38 @@
  (show (struct/macro #'(struct/macro foo #:list [a integer?] [b string?])))
  )
 
+(maybe-for-testing
+ (show (struct/macro/ #'(struct/macro/ vrec (#:scheme: . #:vector) (a b) (integer? string?) ()))) 
+ )
+
 ;; ** Representations
 
-;; *** Scheme Lists??
+;; *** Scheme Vectors
+
+(define-syntax (struct/macro/scheme/vector stx)
+  (syntax-case stx ()
+    [(_ id (fields ...) (specs ...) (options ...))
+     ;; ensure we've got symbols in all the right places!magit
+     (for-each (λ (x) (unless (identifier? x)
+                        (raise-syntax-error #f "not an identifier" stx x)) )
+               (cons #'id (syntax->list #'(fields ...))) )
+     (with-syntax ( [pred-id (format-id #'id "~a?" #'id)] )
+       #`(begin
+           (define (id fields ...) ; constructor
+             (apply vector (cons 'id  (list fields ...))) )
+           (define (pred-id v) ; predicate
+             (and (vector? v) (eq? (vector-ref v 0) 'id)) )
+           ;; Define an accessor for each field.
+           #,@(for/list ( [x (syntax->list #'(fields ...))]
+                          [n (in-naturals 1)] )
+                (with-syntax ( [acc-id (format-id #'id "~a-~a" #'id x)]
+                               [ix n] )
+                  #`(define (acc-id v)
+                      (unless (pred-id v)
+                        (error 'acc-id "~a is not a ~a struct" v 'id) )
+                      (vector-ref v ix) ) ) ) ) ) ] ) )
+  
+  ;; *** Scheme Lists??
 
 ;; Shall we start with this or another one??
 

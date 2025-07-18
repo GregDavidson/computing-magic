@@ -2,7 +2,13 @@
 
 ** The Idea
 
-Note: We might go with the term record instead of struct/structure.
+- Note :: What some dialects of Lisp (and other computer languages) call a
+Record, other dialects and languages call a structure - and the latter
+often abbreviate structure as struct.  Currently we're using Record
+for the concept and struct for a representation of such.
+- Also note :: the idea of Object-Oriented Programming is based on the
+  idea of Records and the Objects which are Class Instances are
+  definitely Structures!
 
 #+begin_src scheme
   (struct/macro
@@ -27,15 +33,43 @@ Unless otherwise specified, these records are syntactic sugar for vectors.
 
 ** Example
 
-#+begin_src scheme
-   (struct/macro person
-     ( [name string?] [interests (listof symbol?)] )
-     #:vector i)
-   (define john (person #:new "John Doe" '(rationality possibility)))
-   (when (person john)
-     (printf "~a is interested in ~a\n"
-             (person john name) (person john interests) ) )
+#+begin_src racket
+  #lang racket
+  (require racket/function)
+  ;; Define structure type person
+  (struct/macro person
+                ( [name string?] [interests (listof symbol?)] )
+                #:vector i)
+  ;; Using the person constructor person:
+  (define john (person: "John Doe" '(rationality possibility)))
+  ;; person predicate and selectors
+  (when (person? john)
+    (printf "~a is interested in ~a\n"
+            (person john name) (person john interests) ) )
+  ;; person predicate and selectors
+  (when (person? john)
+    (printf "~a is interested in ~a\n"
+            (person john name) (person john interests) ) )
+  ;; which is equivalent to
+  (when (person? john)
+    (call-with-values
+                      (λ () (person name interests))
+                      (curry printf "~a is interested in ~a\n") ) )
 #+end_src
+
+Possible equivalences or alternatives
+- person? :: person #:isa
+- person: :: person #:new
+  
+Possible additional features
+- (person! person-expression {field-name value}...) :: modify some fields if structure is mutable
+  - compare with ~(set-person-name! john "Grocho Marx")~
+- (person! person-expression {field-name #:update: update-function}...) :: modify with an update-function
+- (person! person-expression {field-name #:update: update-function}...) :: modify with an update-function
+  - cou
+- (person #:from person-expression {field-name value}..?) :: new from old with 0 or more replacement values
+  - compare with [[https://docs.racket-lang.org/reference/struct-copy.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._struct-copy%29%29][Racket's struct-copy]]
+
 
 ** Closely Related Links
 
@@ -45,7 +79,6 @@ See also *References* below
   
 
 ** Implementation Notes
-
 
 Metaprogramming Features
 - to allow for inheritance, etc.
