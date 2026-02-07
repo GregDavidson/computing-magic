@@ -4,6 +4,7 @@ Computing Magic is a [[https://github.com/GregDavidson/loel/blob/main/Devel/crea
 
 This curriculum is under continuous development by its participants!
 
+
 ** TL;DR
 
 The main path through this curriculum is a set of Modules. After completing the
@@ -21,6 +22,8 @@ Fasten your seat-belt and watch [[https://www.youtube.com/watch?v=6avJHaC3C2U][T
 Mastering /Computing Magic/ will allow you to get computers to do with ease what
 would be hopelessly difficult to do using ordinary technologies.
 
+: Add examples
+
 With Computing Magic we can design
 - Fabulous Machines
 - Customized Biological Organisms
@@ -29,6 +32,7 @@ With Computing Magic we can design
 - Applications which Make You More Intelligent
 - and much more!
 
+: Tighten this
 We can explore our creations with /Virtual Reality/, share them with
 /Collaborative Computing/ and materialize them in the Real World with
 - 3D Printers
@@ -38,6 +42,7 @@ We can explore our creations with /Virtual Reality/, share them with
 - Networks
 - etc.
 
+: Digital Sundial Example!
 Instead of creating digital artifacts manually, e.g. with /Graphical User
 Interfaces/ and/or /Interactive Editors/, Computing Magic we can often tell a
 Computer Program /what we want/ (the specification) and have the Computer

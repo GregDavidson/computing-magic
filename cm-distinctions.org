@@ -2,45 +2,50 @@
 #+OPTIONS: toc:nil 
 #+OPTIONS: num:nil
 
-*** Computing Distinctions
+* Vocabulary and Distinctions for Computing Magic
 
-**** Representation and Search
+Please help further develop this document in quality, quantity and
+format!
+
+** Computing Distinctions
+
+*** Representation and Search
 [[https://duckduckgo.com/?t=lm&q=representation+and+search][DDG: Representation and Search]]
-**** Early vs. Late Binding
-**** Lazy vs. Strict Evaluation
-**** Multiple Notations, Multiple Languages, Customizable Views
-**** Text vs. Database vs. Persistent Virtual Store
+*** Early vs. Late Binding
+*** Lazy vs. Strict Evaluation
+*** Multiple Notations, Multiple Languages, Customizable Views
+*** Text vs. Database vs. Persistent Virtual Store
 Homoiconicity.
-**** Intentional vs. Implementation Typing
-**** Paradigms
+*** Intentional vs. Implementation Typing
+*** Paradigms
 [[https://en.wikipedia.org/wiki/Programming_paradigm][Programming Paradigms]]
 [[https://en.wikipedia.org/wiki/Concepts,_Techniques,_and_Models_of_Computer_Programming][Concepts, Techniques, and Models of Computer Programming]]
-**** Integral Proving and Programming
-**** Metaprogramming
-**** Rule of Least Power
+*** Integral Proving and Programming
+*** Metaprogramming
+*** Rule of Least Power
 [[https://en.wikipedia.org/wiki/Rule_of_least_power][Rule of Least Power]]
 Regular Expressions, RTNs, Relational Algebra, Horne Clauses
-**** Constancy, Monotonicity, Versioning
+*** Constancy, Monotonicity, Versioning
 - No loss of information
 - Time Travel
 - Hidden violations maybe OK!
-**** Artificial Intelligence Techniques
+*** Artificial Intelligence Techniques
 - [[https://en.wikipedia.org/wiki/Knowledge_representation_and_reasoning][Knowledge Representation and Reasoning]]
 - [[https://en.wikipedia.org/wiki/Blackboard_(design_pattern)][Blackboard Architecture]]
 - [[https://en.wikipedia.org/wiki/Logic_programming][Logic Programming]]
 - [[https://en.wikipedia.org/wiki/Constraint_programming][Constraint Programming]]
 - [[https://en.wikipedia.org/wiki/Constraint_logic_programming][Constraint Logic Programming]]
-**** Efficiency
+*** Efficiency
 - Algorithm and Heuristic Efficiency
 - Impedance issues between HLLs and conventional machines
 - Compilers, Interpreters, Runtime support overhead
 - Energy Efficiency
 - Programmer Efficiency
-**** Process, Methodology, Architecture, Design, Implmentation, etc.
+*** Process, Methodology, Architecture, Design, Implmentation, etc.
 - [[https://en.wikipedia.org/wiki/Software_architecture][Software Architecture]]
 - Deployment
 - "Maintenance"
-**** Miscellaneous
+*** Miscellaneous
 - [[https://en.wikipedia.org/wiki/Design_Patterns][Design Patterns]]
 - Bootstrapping
 - InterLisp

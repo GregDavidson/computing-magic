@@ -1,44 +1,92 @@
 * Computing Magic Examples
 
-** Making us Smarter!
-*** Sketchpad
-- https://en.wikipedia.org/wiki/Sketchpad
-*** ThingLab
-- https://en.wikipedia.org/wiki/ThingLab
+** Systmms Which Make us Smarter!
+
+Interactive design notebooks based on constraint programming make
+people smarter.  Two early systems proved that.  Nothing comparable exists at the curren time - would you like to build one?
+
+- [[https://en.wikipedia.org/wiki/Sketchpad][Sketchpad]]
+- [[https://en.wikipedia.org/wiki/ThingLab][ThingLab]]
+
 *** Expert Systems
+
 - https://en.wikipedia.org/wiki/Expert_system
-- 
-- [[https://en.wikipedia.org/wiki/Mycin][Mycin]] exceeded human capacity for diagnosing and treating Encephalitis
-- Emycin was an Expert-System Shell derived from Mycin by deleting Mycin's domain knowlege
-- Tiresias was an Emycin Expert System for building Emycin-based Expert Systems!
-How do we tell truths that might hurt?
+
+Expert Systems replicate the expertise of human experts in a specific
+domain.  Would you like to have one as a personal assistant to handle
+all of your routine tasks?
+
+**** Mycin, EMycin, Tiresias
+
+[[https://en.wikipedia.org/wiki/Mycin][Mycin]] exceeded human capacity for diagnosing and treating Encephalitis.
+
+Emycin was an Expert-System Shell derived from Mycin by deleting Mycin's domain knowlege
+
+Tiresias was one such Emycin Expert System, for building Emycin-based
+Expert Systems!
+
+Although Mycin was evaluated as more superior at diagnosis and
+treament prescriptions than the most expert human specialists, it was
+not put into practice because it required that nurses and physicians
+would need to use a computer terminal and at that time nurses and
+physicians didn't have the skills or the patience to do so!
+
+- [[https://link.springer.com/chapter/10.1007/978-3-642-93264-9_78][Constructing an Expert System Using EMYCIN]]
 
 *** Do What I Mean
-- https://en.wikipedia.org/wiki/DWIM
+
+- [[https://en.wikipedia.org/wiki/DWIM][DWIM: Do What I Mean]]
 
 There's a rich history of software tools which model what a computer
-user/designer/programmer/etc. is trying to do and assist them in doing it.
-Automated software assistants free us to do the creative work by doing
-everything else.
+user/designer/programmer/etc. is trying to do and assist them in doing
+it.  Automated software assistants free us to do the creative work by
+handling all of the predictable parts.  DWIM continuously learned by
+monitoring all errors (exceptions) reported by everyone using the same programming system (InterLisp).
 
 ** Collaboration
 
-*** Augment
-- https://en.wikipedia.org/wiki/The_Mother_of_All_Demos
-*** Croquet
-- https://en.wikipedia.org/wiki/Croquet_Project
+Two especially brilliant systems have no worthy successor today.
+Would you like to create one?
+
+- [[https://en.wikipedia.org/wiki/The_Mother_of_All_Demos][Augment]] :: The Mother of all Demos
+- [[https://en.wikipedia.org/wiki/Croquet_Project][Croquet]]
 
 ** Fabulous Machines
-*** Lisp Machines
-- MIT Lisp Machine
-- VLSI Lisp Machine
+
+*** Revolutionary Personal Computers
+
+The early commercial personal computers were extraordinary for their
+price, but they were very limited in their functionality.
+
+Much more powerful and flexible machines were being developed for
+power users:
+
+- [[https://en.wikipedia.org/wiki/Lisp_machine][Lisp Machines]]
+- [[https://en.wikipedia.org/wiki/Xerox_Alto][Xerox Alto]]
+
+Before these more powerful machines could take advantage of the
+cheaper VLSI technology they were supplanted by the cheaper but less
+functional [[https://en.wikipedia.org/wiki/Workstation][Personal Workstations]] running a [[https://en.wikipedia.org/wiki/POSIX][POSIX]] which were then
+largely supplanted by Apple Macintoshes or Microsoft Windows PCs.
+
+In terms of raw computing power, today's Macs and PCs are more
+powerful than those earlier computers.  But the earlier systems had
+features making them in many ways more powerful.  Can the right
+software upgrade our modern fast-but-stupid systems to equal or
+surpass these earlier systems?
 
 ** 3D Design & Printing
 
-The goal is to create an automated system which can create any designed manufactured product, including another system like itself.  Thus
-- the price of all goods becomes little more than the cost of their raw materials
-- Automated production of equipment to produce raw materials will further depress prices
-- Collaboration in creating and refining digital designs will rapidly improve all goods
+The goal is to create an automated manufacturing system which can
+create any designed manufactured product, including another automated
+manufacturing system!  Thus
+- The price of all goods can become little more than the cost of their
+  raw materials
+- Automated production of equipment to produce raw materials can
+  bring prices down further
+- More people able to participate with design and manufacturing,
+  including hobbyists leads to more collaboration in creating and
+  refining designs leading to a rapid evolution of innovative products
 - Patent-free Open source designs will improve the fastest!
 
 3D Printers are just one component of such a system. The whole thing is
@@ -47,23 +95,24 @@ sometimes called a *Fab Lab*
 - http://cba.mit.edu/about/
 - https://en.wikipedia.org/wiki/Fab_lab
 
-*** RepRap
-https://reprap.org/wiki/RepRap
+- [[https://reprap.org/wiki/RepRap][RepRap 3D Printers]]
 
 *** Digital Sundial
+
 This video is important because it shows the general idea with such an accessible example:
 - https://www.mojoptix.com/2015/10/25/mojoptix-001-digital-sundial/
 - 
 *** Relativity Space Rockets
+
 SpaceX prints large parts of their rockets using 3D Printers.  Relativity Space prints their entire rockets with 3D Printers!
 - https://www.relativityspace.com/
-- 
+
 *** Synthetic Biology
+
 Did you know that biologists created a synthetic lifeform from scratch more than 10 years ago?
 And that they've been refining it ever since?
 
 - https://redice.tv/news/craig-venter-creates-first-synthetic-life-form
-- 
 - https://en.wikipedia.org/wiki/Artificial_gene_synthesis
 
 *** Automated Chemistry
@@ -86,33 +135,37 @@ of exotic metal alloys and other materials.
   of tools, and so on without limit.
 - [[https://en.wikipedia.org/wiki/Bootstrapping][Bootstrapping]] can be applied to physical tools, software tools and even
   conceptual tools!
- 
-** Automating Computing
-*** ProgrammingLanguages
-**** Mid-Level Languages
-***** What Computers Are
-****** TODO get my article back online!!!
-***** C
+
+** Notes for Improving This Document
+
+Everything below here consists of materials which will hopefully lead to an improved version of this document - unless you get there before we do!
+
+*** Automating Computing
+**** ProgrammingLanguages
+***** Mid-Level Languages
+****** What Computers Are
+******* TODO get my article back online!!!
+****** C
 - [[https://github.com/GregDavidson/C-By-Example#readme][Crash Course: C By Example]]
-***** Rust
+****** Rust
 If you're interested in creating the kinds of programming which have traditionally been
 done in C and C++, e.g. creating Operating Systems, Rust is likely your best
 language!
-**** Higher-Level Languages
-***** Lisps
-***** Ad Hoc Metaprogramming
-***** Scripting
-**** Declarative Programming
-***** Functional Programming
-***** Logic Programming
-***** Constraint Programming
-***** Declarative Metaprogramming
+***** Higher-Level Languages
+****** Lisps
+****** Ad Hoc Metaprogramming
+****** Scripting
+***** Declarative Programming
+****** Functional Programming
+****** Logic Programming
+****** Constraint Programming
+****** Declarative Metaprogramming
 
-** Misc
+*** Misc
 
 - [[https://genius.com/Marc-andreessen-why-software-is-eating-the-world-annotated][Software Is Eating The World]]
 
-*** Clumsy Software Holds us Back!
+**** Clumsy Software Holds us Back!
 - [[http://www.paulgraham.com/avg.html][Paul Graham: Beating The Averages]]
 - [[https://wiki.c2.com/?BlubParadox][C2: Blub Paradox]]
 - https://en.wikipedia.org/wiki/Programming_paradigm

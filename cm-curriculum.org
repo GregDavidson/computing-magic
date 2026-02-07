@@ -1,9 +1,13 @@
-#+TITLE: Virtual Infinity Systems
+#+TITLE: League Of Extraordinary Learners
 #+SUBTITLE: Computing Magic Curriculum
 #+OPTIONS: toc:nil 
 #+OPTIONS: num:nil
 
-*  Computing Magic Curriculum
+* Computing Magic Curriculum
+
+These are some fairly rough notes on the design of the LOEL Computing
+Magic Curriculum.  Perhaps they'll be useful for anyone working on
+improving that curriculum.
 
 ** Summary
 
@@ -101,6 +105,7 @@ also modular, e.g. multiple such can be combined.
    - Array Paradigm
       - [[https://www.youtube.com/watch?v=a9xAKttWgP4][Life in APL]]
       - https://xpqz.github.io/learnapl/intro.html
+      - [[https://mlochbaum.github.io/BQN/][BQN]]
       - [[https://www.jsoftware.com/#/README][The J Programming Language]]
    - Object Oriented Paradigm
       - https://pharo.org/
