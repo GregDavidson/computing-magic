@@ -436,3 +436,10 @@ should end the game?" It would be good to delegating the work of =game-over= to
 the sprites, but we'd need to make the values returned by our sprites contain
 more information. It turns out that we need to do that anyway if we want to be
 able to add and delete sprites during the game. =WORLD= must become =world=!
+
+** Misc Notes to maybe make things better!
+
+Do everything with Proxies except for what's in the world vectors.
+
+Add a name field for sprites for debugging.
+

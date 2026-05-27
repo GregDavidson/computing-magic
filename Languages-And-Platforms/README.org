@@ -15,6 +15,10 @@ Any sufficiently advanced technology is indistinguishable from magic.\\
 A [[file:choosing-languages.org][great programming language]] running on a [[file:choosing-platforms.org][great platform]] should amplify your
 computing abilities, giving you seemingly /magical skills/.
 
+** Details
+
+- [[file:language+platform-powers.org][What Should Great Languages and Platforms Provide?]]
+
 ** What Should Great Languages Provide?
 
 #+begin_quote

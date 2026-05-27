@@ -3,25 +3,27 @@
 Git is a strange beast, consisting of
 - Plumbing :: which makes it work
 - Porcelein :: which makes it more comfortable
-- High-Level Interfaces :: which are /sometimes/ helpful
+  - The official porcelein is sometimes confusing.
+  - Alternative high-level interfaces can obscure understanding.
 
 ** What's Git for?
 
 Git is designed to assist groups or communities in collaboratively developing
-and improving sophisticated projects which consist primarily of /files/ of
-/text/, aka /textfiles/.
+and improving sophisticated projects which consist primarily of /textfiles/, i.e. /files/ of /text/.
 
 And although =git= was primarily designed to assist with collaborative projects,
 =git= can also be used by individuals for their solo projects.
 
 ** So What's a /textfile/?
 
-These days /text/ usually consists of [[https://en.wikipedia.org/wiki/Unicode][Unicode]] characters, which include all of
-the characters used in all traditional human writing systems along with some
-extras, including a collection of [[https://en.wikipedia.org/wiki/Emoji][Emojis]]. Humans have been storing /Text/ on
-various media (paper, parchment, clay tablets, walls, billboards, etc.) for
-thousands of years. Storing /text/ in computer /files/ allows us to animate and
-automate a lot of otherwise tedious /text/ processing.
+These days /text/ usually consists of [[https://en.wikipedia.org/wiki/Unicode][Unicode]] characters, which
+include all of the characters used in all traditional human writing
+systems along with some extras, e.g. a collection of [[https://en.wikipedia.org/wiki/Emoji][Emojis]]. Humans
+have been storing /text/ on various media (paper, parchment, clay
+tablets, walls, billboards, etc.) for thousands of years. Storing
+/text/ in computer /files/ allows us to streamline a lot of /text
+processing/ tasks.  It also allows creating a streamlined way to run
+powerful software tools by using textfiles as laboratory notebooks.
 
 In addition to projects using /textfile/ to store novels, poetry, textbooks and
 all of the other kinds of writings which humans do, Many projects use

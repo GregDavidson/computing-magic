@@ -12,7 +12,7 @@ Complete the [[https://docs.racket-lang.org/quick/][Quick Tutorial]] through Ste
 
 Explore [[https://docs.racket-lang.org/turtles/Traditional_Turtles.html][Turtle Graphics]]
 
-Limit yourself to the three key turtle commands
+- Important :: Only use the turtle commands
 - =(move distance)=
 - =(draw distance)=
 - =(turn angle)=
@@ -38,7 +38,7 @@ Create your own fancy procedures to
       - Build them up from parameterized pieces
 - Draw /wild things!/
 
-Some more examples are at [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/turtle-examples.rkt][turtle-examples.rkt]].
+More examples are at [[https://github.com/racket/htdp/blob/master/htdp-lib/graphics/turtle-examples.rkt][turtle-examples.rkt]].
 
 Imperative vs. Functional
 - An /Imperative/ is a /Command/ to change something in the world
@@ -55,7 +55,7 @@ In Imperative Turtle Graphics
 
 Most graphics programming models and libraries are /Imperative/.
 
-** How can this be made /Functional?/
+** Making Turtle Graphics /Functional?/
 
 The hip geeks say that Functional Programming is better, but what is it?
 - [[https://www.cs.nott.ac.uk/~pszgmh//faq.html#functional-languages][Functional Programming FAQ]]
