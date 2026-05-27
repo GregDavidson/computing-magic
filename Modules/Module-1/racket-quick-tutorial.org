@@ -1,0 +1,24 @@
+* Quick: Programming with Pictures
+
+** TL;dr
+
+Do the [[https://docs.racket-lang.org/quick][Racket "Quick" Tutorial]] now!
+
+** Getting Maximum Value from the "Quick" Tutorial
+
+As you try each example
+- Try variations
+- Play and Explore
+
+Allow yourself to get lost and confused
+- but don't stay that way!
+
+*** Getting Unconfused
+  
+In the [[https://docs.racket-lang.org/quick][Racket "Quick" Tutorial Webpage]] you can click on the names of any Racket Procedure, e.g. circle, hc-append, etc. to look it up in the [[https://docs.racket-lang.org/reference][Racket Reference]].
+
+[[file:racket-manual-tips.org][Racket: Tips on Looking Things Up]]
+
+If DrRacket was installed "correctly" you can get help on any 
+
+Why The [[https://docs.racket-lang.org/quick][Racket "Quick" Tutorial]] is an ideal introduction to programming because 

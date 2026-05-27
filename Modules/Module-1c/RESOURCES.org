@@ -1,0 +1,5 @@
+* Resources for Module 1C: [[file:README.org::*Learn Programming by Creating Computer Games!][Learn Programming by Creating Computer Games!]]
+
+** Racket Big Bang & Universe
+
+- [[https://web.archive.org/web/20131224015605/https://www.cs.tufts.edu/comp/50/handouts/big-bang.html][How big-bang programs work]]

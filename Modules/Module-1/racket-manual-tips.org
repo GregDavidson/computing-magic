@@ -1,0 +1,64 @@
+#+STARTUP: nofold hidedrawers
+* Racket: Tips on Looking Things Up
+
+Tips for finding and reading [[https://docs.racket-lang.org][Racket Documentation]] including
+- Racket Tutorials
+- Racket Reference vs. Racket Guide
+- Searching from DrRacket
+- *how to avoid getting lost or distracted*
+
+** How To Avoid Getting Lost Or Distracted In Manuals
+
+When you browse into a Reference Manual or other document to look up
+something to help you with something you're trying to accomplish
+- Focus on what's relevant to your immediate need
+- Bookmark and/or otherwise make note of anything
+  - Immediately relevant to your current need
+  - Anything else which seems truly important for later!
+- Leave the document once you have what you need!
+  - With a Web Browser
+    - Use TABs
+    - Use the Back Button!
+
+** The [[https://docs.racket-lang.org/guide][Racket Guide]] vs. The [[https://docs.racket-lang.org/reference][Racket Reference]]
+
+For your first introduction to a Racket concept or feature, prefer the 
+[[https://docs.racket-lang.org/guide][Racket Guide]].
+
+When you want complete information on one specific feature, look it up in the  [[https://docs.racket-lang.org/reference][Racket Reference]].
+
+There are handy links in the [[https://docs.racket-lang.org/guide][Racket Guide]] links to the details in the
+[[https://docs.racket-lang.org/reference][Racket Reference]]!
+
+When you're reading Racket Documentation in a web browser, there is a
+handy ...search manuals... box in every to help you quickly find what
+you want in the [[https://docs.racket-lang.org/reference][Racket Reference]].
+
+** Racket Tutorials
+
+If you're reading a Racket Tutorial in a Web Browser, every procedure
+
+name should be a link to the [[https://docs.racket-lang.org/reference][Racket Reference]] topic of that name.
+
+** Getting Help from DrRacket
+
+Using DrRacket to look up a Racket Library or Racket Procedure
+- Put your cursor on it
+  - the procedure name in a form (first thing in the list)
+  - the library name in a require form
+- Press F1
+- This should bring up a WebPage in your Default Browser with a list
+  of "hits" for what you're looking up.
+- (if nothing happens, DrRacket is not configured quite right.  Perhaps this can be fixed.  Otherwise, you can open the Racket Documentation using https://docs.racket-lang.org/index.html)
+
+:FAQ:
+- Q :: When I hit F1 in DrRacket, nothing happens!
+- A :: Somehow DrRacket is not configured quite right!
+  - You can go directly to the Racket Documentation at
+     - https://docs.racket-lang.org
+       - Note the ...search manuals.. in the upper left!
+  - You might check the settings in DrRacket Edit->Preferences->Browser
+- Q :: The webpage says "No Matches Found"
+- A :: Are you looking up a standard Racket feature?
+  - Or something defined in a file of the project you're working with?
+:END:
