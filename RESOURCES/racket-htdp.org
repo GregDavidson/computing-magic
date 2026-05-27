@@ -1,0 +1,50 @@
+* Racket, How to Design Programs, Etc.
+
+** The Racket System
+
+We've been inspired by the [[https://racket-lang.org][Racket System]]
+- The excellent Scheme Language core
+- The support for /Programming in the Large/
+- The ability to create new languages which work together
+- the excellent tutorials, especially
+  - especially the extraordinary [[https://docs.racket-lang.org/quick][An Introduction to Racket with Pictures]]
+    - one of the best ways to start learning Computing Magic!
+    - /and now copied by some other languages, e.g. Clojure!/
+
+We recommend engaging with [[https://docs.racket-lang.org/quick][An Introduction to Racket with Pictures]] to
+everyone, total beginners, experts and everyone in-between: You'll
+have fun and learn a lot!  Be sure to really engage in it:
+- try out each example
+- create your own variations
+Make a second pass looking up interesting or unclear constructs in
+- [[https://docs.racket-lang.org/guide][The Racket Guide]]
+- [[https://docs.racket-lang.org/reference][The Racket Reference]] - using F1 from DrRacket
+- look up what's going on in the Guide and the Reference
+
+** How to Design Programs Book and Materials
+
+- [[https://htdp.org][How to Design Programs]] official page
+- [[https://htdp.org/2024-11-6/Book][HTDP/2E, the Second Edition]]
+- [[https://docs.racket-lang.org/teachpack/2htdp2htdp.html][the 2E "Teachpacks"]] -- Racket Libraries to support the book
+
+There are also some great materials based on the First Edition, HTDP/1E
+- [[https://world.cs.brown.edu/1/][How to Design Worlds]]
+
+*** Still older materials
+
+- [[http://www.plt-scheme.org/software/drscheme/learning.html][PLT Scheme]]
+- [[https://programbydesign.org][Program by Design]]
+- [[https://programbydesign.org/Materials/][Program by Design Materials]]
+
+[[https://www.crisheiss.dev/blog][Cristobal Heiss's Blog]] Posts
+- especially [[https://www.crisheiss.dev/posts/htdw/][How to Design Worlds]]
+
+- [[https://web.archive.org/web/20150318225436/http://schemecookbook.org/][the Schematics Scheme Cookbook]] - retrieved from archive.org
+
+
+** Additional Racket Resources  
+
+See the [[https://beautifulracket.com][Beautiful Racket]] book for the vision behind Racket
+
+- How to Design Programs materials
+
