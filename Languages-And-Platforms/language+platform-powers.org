@@ -1,0 +1,175 @@
+# +OPTIONS: toc:nil
+#+OPTIONS: num:nil date:nil author:nil
+#+TITLE: What can Great Languages and Platforms Provide?
+
+* What can Great Languages and Platforms Provide?
+
+See [[*Notes][the Notes section below]] for details and context!
+
+A Platform :: Something you can build things on!
+
+A *Computer Programming System* consists of several elements
+- An Operating System :: abstracts the Computer's Hardware
+  - to provide a portable and easier platform to build on.
+- Languages :: let us express the code which /programs/ the system.
+- Libraries :: provided frequently-useful solutions to small problems.
+- Frameworks :: A collection of software - mostly libraries - which
+  work together to provide a higher-level platform more convenient for
+  building certain kinds of programs.
+
+#+begin_quote
+[[https://www.cs.utexas.edu/~EWD/][Edsger Dijkstra's]] General Programming Strategy
+1. Imagine a system which would make solving the problem easy
+   - this might be a language, library or framework.
+2. Sketch out how you'd solve the problem with your imagined system
+3. Now [Recursive Step]: Implement your imagined system!
+#+end_quote
+
+A key aspect of Dijkstra's approach is that it's iterative with
+feedback loops.  See [[*Dijkstra's General Programming Strategy Expanded][the details]] in [[*Notes][the Notes section below]]!
+
+** What Should Great Languages Provide?
+
+#+begin_quote
+Programming languages should be designed not by piling feature on top of
+feature, but by removing the weaknesses and restrictions that make additional
+features appear necessary. \\
+- Report on the R5RS standard for the Scheme Programming Language
+#+end_quote
+
+*** Goals for Programming Languages
+
+A /Great Programming Language/ should make programming
+- reliable :: behaving as expected
+      - a powerful, expressive and consistent semantic model
+      - supporting all important paradigms
+            - especially declarative paradigms
+                  - e.g. functional, constraint, relational
+            - and metaprogramming
+                  - generic or abstract code from which specialized code is
+                    automatically generated as needed
+                  - e.g. generic functions & modules; abstract types & kinds
+- productive :: being as easy as possible to
+      - understand and maintain
+            - behavior profile is lexically apparent
+                  - types, constraints, etc.
+                  - easy to understand
+                  - automatically verified
+      - innovate and evolve
+            - friendly to new ideas
+            - hackable without fighting existing structure
+      - port to another OS or CPU
+            - should be automatic by default
+            - anything non-portable should be labeled as such
+- efficient :: fast and not a memory hog
+      - no need to write libraries in another language
+      - compiling efficiently to all desired and major CPUs
+            - e.g. by using the backend of =llvm= or =gcc=
+
+
+*** Features of Great Programming Languages
+
+Notes:
+- All of today's languages are missing some of the important features
+  listed here!
+- Most popular languages are missing many of the important features listed here!
+
+  Most Languages are missing 
+
+See this [[file:choosing-languages.org][survey of great programming languages]].
+
+**** First Class Procedures and Functions
+
+**** Declarative Structure
+
+
+
+
+** What Should Great Platforms Provide?
+
+A /Great Computing Platform/ should
+- Support great languages
+- Provide a rich set of useful libraries
+- Allow easy interoperation of code written in different source languages
+- Enhance program understanding and analysis
+- Provide great editing and refactoring tools
+- Provide portability across different OSs and CPUs
+- Management of system lifecycles
+      - Version management integrated with
+      - Automated testing and deployment
+
+See this [[file:choosing-platforms.org][survey of programming platforms]].
+
+** Notes
+# Comments require the space after the # Remove the space after the #
+# to activate the #+ directives!  * ; alas, this didn't work right!
+# +TITLE: Org Mode Notes +SUBTITLE: Features Worth Noting
+# Down #+AUTHOR: _ #+DATE: _ +OPTIONS: toc:nil +OPTIONS: num:nil
+# +OPTIONS: date:nil +OPTIONS: author:nil +MACRO: NEWLINE @@latex:\\@@
+# @@html:<br>@@ @@ascii:|@@ (insert (expand-file-name
+# (buffer-file-name)))
+
+# * TITLE
+
+Context for this document is under the final section
+
+** First Section {{{NEWLINE}}} and More!
+
+
+
+** Notes
+
+*** Context
+
+- Purpose (short line) :: A starting-point for documents using
+  OrgMode.
+- Abstract :: An abstract should be a paragraph of modest size.
+- Purpose ::
+- Essential Origin Context ::
+
+*** Format
+
+This document is a textfile using [[https://orgmode.org/][Org Mode]] formatting.
+
+*** Meta
+
+- Purpose :: Discover What Great Languages and Platforms Can Provide!
+- LOEL Topic Domains :: On-Computing Computing-Magic On-Lisp
+
+*** Dijkstra's General Programming Strategy Expanded
+
+Dijkstra's Strategy in more detail:
+
+#+begin_quote
+[[https://www.cs.utexas.edu/~EWD/][Edsger Dijkstra's]] General Programming Strategy
+1. Imagine a system which would make solving the problem easy
+   - this might be a language, library or framework.
+   - Repeatedly revise and even completely re-imagine this system
+     based on feedback from what you discover in Steps 2 and 3 about
+     what you really need it to be.
+2. Sketch out how you'd solve the problem with your imagined system
+   - If you find insufficiencies in your imagined system, return to
+     step 1 with your increased understanding.
+   - Continue until you've got a straight shot from your sketch to
+     solving your problem on your imagined system.
+   - You may need to revise or even completely redo this step when the
+     system in Step 1 changes and/or base on what you discover in
+     Step 3.
+3. If Step 1 and Step 2 look promising enough
+   - Your new challenge is to implement your imagined system!
+   - This is a Recursive Step
+   - While engaged in solving this step, be open to seeing
+     significantly better alternatives to this system as previously
+     imagined.  Such realizations plus the discovery of serious
+     difficulties in realizing this imagined system suggest going back
+     to our earlier Steps 1 and 2 for revisions.
+#+end_quote
+
+Executing this strategy as a classic recursive algorithmic will be
+very inefficient!  There will be too much work which will have to be
+redone!  Instead one must start very tentatively and then iteratively
+revise what one is discovering at every level.
+
+Another way of saying this is to use the "recursive algorithm" to
+produce a "recursively structured document" which we iteratively
+elaborate towards a complete solution.
