@@ -26,7 +26,7 @@ The last two are fairly efficient.
 Note how closely it resembles mathematics notation!
 
 #+begin_src haskell
-// Compute the fibonacci number of any natural number
+// Compute the Fibonacci number of any natural number
 // using a naive, mathematically-inspired algorithm.
 fib 0 = 0
 fib 1 = 1
@@ -46,14 +46,14 @@ Racket probably adds too many features, but
 And ... Racket is all written in Racket!
 - so you can extend it or modify it to suit your needs!
 
-You can view Racket and and Scheme as Very-High-Level-Languages
+You can view Racket and Scheme as Very-High-Level-Languages
 - Although there are some quite decent Scheme and Racket compilers
 - So raw efficiency should not be a concern for practical work.
 
 
 #+begin_src racket
 #lang racket
-;; Compute the fibonacci number of any natural number
+;; Compute the Fibonacci number of any natural number
 ;; using a naive, mathematically-inspired algorithm.
 (define/contract (fib n)
   ;; a function which takes a natural number and returns a natural number
@@ -69,7 +69,7 @@ You can view Racket and and Scheme as Very-High-Level-Languages
 ** C
 
 #+begin_src C
-/* Compute the fibonacci number of any natural number
+/* Compute the Fibonacci number of any natural number
  * using a naive, mathematically-inspired algorithm.
  */
 unsigned int fib(unsigned int n) {
@@ -130,14 +130,14 @@ c3
 
 ** Optimized Implementations
 
-A big selling point for high-level langauges, since the days of FORTRAN, is that they can express concepts in a similar manner to mathematics.  The problem with this is that mathematics is only concerned with correctness, not with efficiency!
+A big selling point for high-level languages, since the days of FORTRAN, is that they can express concepts in a similar manner to mathematics.  The problem with this is that mathematics is only concerned with correctness, not with efficiency!
 
 By following the mathematical definition of the Fibonacci function closely, the high-level language implementations above are extremely inefficient to run on a real computer.
 
 One of the advantages of High-Level Languages is that it's easier for human beings to analyze and improve programs written in HLLs than computationally equivalent programs written in Machine Languages.
 
 The naive versions above cost O(fib(n)) additions, i.e. "on the order of"
-fib(n) additions to compute the fibonacci number of n. This is
+fib(n) additions to compute the Fibonacci number of n. This is
 /very/ expensive!
 
 What follows are some much more efficient implementations.
@@ -146,7 +146,7 @@ What follows are some much more efficient implementations.
 
 #+begin_src haskell
 {-# LANGUAGE BangPatterns #-}
-// Compute the fibonacci number of any natural number
+// Compute the Fibonacci number of any natural number
 // in n simple arithmetic steps.
 fib n = go n (0,1)
   where
@@ -158,7 +158,7 @@ fib n = go n (0,1)
 
 #+begin_src racket
   #lang racket
-  ;; Compute the fibonacci number of any natural number
+  ;; Compute the Fibonacci number of any natural number
   ;; in n simple arithmetic steps.
   (define/contract (fib-n n)
     ;; a function which takes a natural number and returns a natural number
@@ -173,13 +173,13 @@ fib n = go n (0,1)
 #+end_src
 
 You can see an even more efficient algorithm for computing the
-fibonacci numbers at [[https://www.literateprograms.org/fibonacci_numbers__scheme_.html][Computing the Fibonacci Numbers in Scheme Lisp]] or
+Fibonacci numbers at [[https://www.literateprograms.org/fibonacci_numbers__scheme_.html][Computing the Fibonacci Numbers in Scheme Lisp]] or
 in an example below.
 
 ** C Improved
 
 #+begin_src C
-// Compute the fibonacci number of any natural number
+// Compute the Fibonacci number of any natural number
 // in n simple arithmetic steps.
   unsigned long long fib(unsigned int n) {
     if (n <= 1) {
@@ -222,7 +222,7 @@ One last point:
 
 The C, Haskell, Assembly and Machine Language programs above can only
 calculate Fibonacci numbers up to the size of a machine word. A modern
-64-bit machine can represent fibonacci numbers up to fib(93). Lisps
+64-bit machine can represent Fibonacci numbers up to fib(93). Lisps
 are Very-High-Level-Languages. When numbers won't fit in a machine
 word, they simply allocate more words as needed.
 
@@ -234,7 +234,7 @@ This program prints:
 - and it's fast, about 10 steps for (fib 1000)!
 #+begin_src racket
 #lang racket
-;; Compute the fibonacci number of n
+;; Compute the Fibonacci number of n
 ;; using Dijkstra's algorithm in approximately log(n) steps.
 (define/contract (fib-logn n)
   ;; a function which takes a natural number and returns a natural number
