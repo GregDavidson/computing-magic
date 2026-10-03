@@ -1,5 +1,10 @@
 * ==> START HERE for Computing Magic
 
+** NOTICE OF GitHub FAILURE
+  - As of 2026-10-01 GitHub is failing to correctly display this document!
+  - See the section below titled: ** Availability Of This Document
+
+
 Computing Magic is a [[https://github.com/GregDavidson/loel/blob/main/Devel/creating-curricula.org][Curriculum]] of the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]].
 
 This curriculum is under continuous development by its participants!
@@ -103,3 +108,21 @@ support for =OrgMode= as do several popular programming environments. When
 you're ready to unlock the full power of =OrgMode= you'll want to learn [[https://github.com/GregDavidson/computing-magic/blob/main/Software-Tools/Emacs/emacs-readme.org][Emacs]].
 
 This is [[https://github.com/GregDavidson/loel/blob/main/Short-Works/open-content.org][Open Content]] from the [[https://github.com/GregDavidson/loel#readme][League of Extraordinary Learners]]!
+** Availability Of This Document
+
+This document is normally available at all the following urls:
+- Codeberg :: 
+- GitLab :: 
+- GitHub ::
+  - GitHub is currently failing to correctly process OrgMode documents.
+  - as of 2026-10-01
+
+Please consult the LICENCE or LICENSE.org or LICENSE.md file at the
+top of this repository for freedoms and restrictions in your use of
+the contents of this repository, including this document.
+
+Even when not required, we would appreciate
+- attribution with a reference to our respository,
+- your sending us any improvements you make to these materials,
+- information about any significant usage of these materials in your projects,
+- and thank you!
