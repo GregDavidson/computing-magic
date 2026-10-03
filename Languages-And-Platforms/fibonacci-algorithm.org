@@ -18,6 +18,13 @@ The last two are fairly efficient.
 - F(1) = 1
 - F(n) = F(n-1) + F(n-2)
 
+** Haskell Language
+
+[[https://www.haskell.org/][Haskell]] is the most efficient and practical of the uncompromising
+/Functional Programming Languages/.
+
+Note how closely it resembles mathematics notation!
+
 #+begin_src haskell
 // Compute the fibonacci number of any natural number
 // using a naive, mathematically-inspired algorithm.
@@ -135,7 +142,7 @@ fib(n) additions to compute the fibonacci number of n. This is
 
 What follows are some much more efficient implementations.
 
-** Haskell (GHC)
+** Haskell (GHC) Improved
 
 #+begin_src haskell
 {-# LANGUAGE BangPatterns #-}
@@ -147,7 +154,7 @@ fib n = go n (0,1)
                    | otherwise = go (n-1) (b, a+b)
 #+end_src
 
-** Lisp (Racket Dialect)
+** Lisp (Racket Dialect) Improved
 
 #+begin_src racket
   #lang racket
@@ -168,6 +175,8 @@ fib n = go n (0,1)
 You can see an even more efficient algorithm for computing the
 fibonacci numbers at [[https://www.literateprograms.org/fibonacci_numbers__scheme_.html][Computing the Fibonacci Numbers in Scheme Lisp]] or
 in an example below.
+
+** C Improved
 
 #+begin_src C
 // Compute the fibonacci number of any natural number
@@ -217,6 +226,8 @@ calculate Fibonacci numbers up to the size of a machine word. A modern
 are Very-High-Level-Languages. When numbers won't fit in a machine
 word, they simply allocate more words as needed.
 
+** Ultimate Algorithm in Racket
+
 This program prints:
 - (fib 100) :: 354224848179261915075
 - (fib 1000) :: 43466557686937456435688527675040625802564660517371780402481729089536555417949051890403879840079255169295922593080322634775209689623239873322471161642996440906533187938298969649928516003704476137795166849228875
@@ -247,6 +258,8 @@ This program prints:
 (printf "- (fib 100) :: ~a\n" (fib-logn 100))
 (printf "- (fib 1000) :: ~a\n" (fib-logn 1000))
 #+end_src
+
+** C with GMP Library
 
 Other high-level languages can work with large numbers too, but
 generally by using libraries, which make the code much less natural.
@@ -367,6 +380,8 @@ int main(int argc, char *argv[]) {
 
 Do you see that using a supposedly HLL in this manner destroys the
 point of using a HLL?
+
+** Note On Python and Similar "Incomplete Languages"
 
 BTW: Python has an unusually inefficient implementation, generally
 making pure [[https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/python3-gpp.html][Python programs around 50 times slower than programs in C
