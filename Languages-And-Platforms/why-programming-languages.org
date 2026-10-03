@@ -94,7 +94,7 @@ The big breakthrough came about when
 *The first Compiler* was written to allow simple mathematical formulas
 to be expressed in a *Not-Very-High-Level-Language called FORTRAN*
 (Formula Translator).
-- Fortran programs were very primitive but ran almost as fast as ML
+- FORTRAN programs were very primitive but ran almost as fast as ML
 programs.
 
 *The first Interpreter* was written to allow *every possible kind of
@@ -110,7 +110,7 @@ But this all happened in the 1950s!
 By the late 1960s there were hundreds of popular HLLs
 - many of them had efficient Compilers
   - including Lisp by that point!
-  - yes, Lisp had become as fast as Fortran!
+  - yes, Lisp had become as fast as FORTRAN!
 
 The state-of-the-art for writing good compilers was still young!    
 - Many of the most expressive VHLLs only had Interpreters!
@@ -126,12 +126,12 @@ The state-of-the-art for writing good compilers was still young!
   - Powerful Text Editors
   - Spreadsheets
   - Relational Databases
-  - Most AI techniqus
+  - Most AI techniques
   - etc.    
 
 Alas, once those new ideas were well understood they were generally
 reimplemented using Medium-High-Level-Languages like
-- Fortran (which had gotten somewhat better)
+- FORTRAN (which had gotten somewhat better)
 - C
 - Pascal
 - et al.
@@ -178,9 +178,9 @@ Most languages are biased towards one or a few Programming Paradigms.
 
 Not sure where to start?
 - Try the [[https://docs.racket-lang.org/quick/][Quick Tutorial: An Introduction to Racket with Pictures]]
-- Followup later with [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]]
-  - but right now <2026-10-02 Fri>
-  - github seems to be messing up that repository!
+- 
+- Followup later with [[https://gitlab.com/GregDavidson/computing-magic/-/blob/main/README.org?ref_type=heads][Computing Magic (GitLab)]]
+  - Also on GitHub but they're having an issue right now <2026-10-02 Fri>
 
 Once you understand the power of several of the major paradigms,
 you're going to prefer languages which are paradigm agnostic, i.e.
