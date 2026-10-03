@@ -17,6 +17,7 @@ computing abilities, giving you seemingly /magical skills/.
 
 ** Details
 
+- [[file:why-programming-languages.org][Why High-Level Programming Languages Matter]]
 - [[file:language+platform-powers.org][What Should Great Languages and Platforms Provide?]]
 
 ** What Should Great Languages Provide?

@@ -1,0 +1,204 @@
+* Why High-Level Programming Languages Matter
+
+High-Level Computer Programming Languages (HLLs for short)
+were created to help Humans, NOT to help machines!
+
+** Computers Easily "Understand" Machine Language, Humans Don't!
+
+Okay, computers don't "understand" Machine Language (ML) programs the
+way humans understand programs, but they don't need to. Each model of
+computer is designed to perfectly "execute" (aka "run" aka "follow the
+instructions of") programs written in its native ML. That ML can
+express all programs that that machine is capable of executing and
+with the highest efficiency possible.
+
+There are two big problems with ML programs:
+1. Humans can't easily understand, create or modify ML programs.
+2. Computers can't directly execute programs written in the ML of a
+   different kind of computer. They even have trouble with the MLs of
+   computers in the same architecture "family", e.g. the various
+   models of x86-64 architecture computers offered by AMD and Intel.
+
+The second problem is fairly easily solved:
+- Problem 2, Solution 1: Use an ML to ML translator program to
+  translate between two different MLs. This is how, e.g. Apple runs
+  x86-64 programs on its [[https://en.wikipedia.org/wiki/Mac_transition_to_Apple_silicon][custom ARM64 architecture machines]].
+- Problem 2, Solution 2: Create a universal ML which can be easily
+  translated into the native MLs of any computer. The recent
+  [[https://webassembly.org/][WebAssembly ML aka Wasm]] has been adopted by every major Web Browser
+  to allow those browsers to translate programs written in Wasm into
+  the native ML of a user's computer. This allows websites to
+  distribute "Universal" Wasm programs to browsers and have them run
+  at full native speed and efficiency after a quick translation. But
+  as with other MLs, humans have trouble understanding, creating or
+  modifying programs written in Wasm. This means you can't usefully
+  examine the code your browser is running!
+
+In summary:
+- MLs are great for computers but lousy for humans.
+- Humans need something else to make programming more accessible.
+
+** How Can Computers Execute Programs Written In HLLs?
+
+HLLs express computer programs using concepts which make sense to
+humans, but not to computers. Computers cannot understand HLLs. There
+are two solutions to this:
+- Solution 1: Create an ML program which can /directly execute/ the
+  expressions of a given HLL.
+  - Such a program is called "an Interpreter".
+  - Interpreters generally execute HLL programs 10 to 50 times slower
+    than equivalent ML programs directly executed by a computer.
+  - As an example, the usual Python implementation uses an Interpreter
+    and programs written in pure Python tend to run around 50 times
+    slower than ML programs performing the same algorithms.
+- Solution 2: Create an ML program which can /translate/ "source"
+  programs in a given HLL into "target" programs in a particular ML.
+  - Such translator programs are called /compilers/.
+  - Once translated, the ML programs may run close to the speed of an
+    optimally written ML program - maybe only 2 to 5 times slower
+    depending on the semantic distance between the HLL and the ML and
+    the cleverness of the compiler.
+
+** HLLs Help Humans Understand, Create and Modify Programs!
+
+The first High-Level Computer Programming Languages were languages
+designed to facilitate understanding of programming ideas /between
+humans!/ Human "programmers" would write their ideas in a HLL to
+clarify their own thoughts and to share their ideas with other
+programmers. When programmers decided that the programs were
+sufficiently complete, they would be given to other humans, called
+"coders". Programmers were relatively high-status [[https://en.wikipedia.org/wiki/White-collar_worker]["white-collar"
+workers]] whereas in most organizations coders were of lower-status,
+similar to [[https://en.wikipedia.org/wiki/Blue-collar_worker]["blue-collar" workers]].
+
+Why didn't Programmers simply write their programs in a regular human
+language, e.g. English?  Simply put
+- human languages lack the required highly-specific concepts
+- what exactly is meant by
+  - a parameter, a list, a table, a loop, execution, etc.
+
+HLLs efficiently communicate programming ideas just as
+- blueprints efficiently communicate architectural ideas
+- musical notation efficiently communicates musical scores
+- mathematical notation efficiently communicates mathematical ideas
+- etc.
+All of these things /could/ be expressed with large amounts of
+English, but it would be very cumbersome
+- like reading the formalized language used in legal agreements!
+
+The big breakthrough came about when
+- a few clever programmers and coders
+- figured out how to write Interpreters and Compilers
+- to allow Programmers to communicate directly with computers!
+
+*The first Compiler* was written to allow simple mathematical formulas
+to be expressed in a *Not-Very-High-Level-Language called FORTRAN*
+(Formula Translator).
+- Fortran programs were very primitive but ran almost as fast as ML
+programs.
+
+*The first Interpreter* was written to allow *every possible kind of
+computation* to be expressed in a *Very-High-Level-Language called
+Lisp* (List Processor).
+- Early Lisp programs were much more general and expressive
+  - closer to human ways of creative thinking
+- but because they were implemented by an Interpreter
+  - Lisp got an early reputation for inefficiency.
+
+But this all happened in the 1950s!
+
+By the late 1960s there were hundreds of popular HLLs
+- many of them had efficient Compilers
+  - including Lisp by that point!
+  - yes, Lisp had become as fast as Fortran!
+
+The state-of-the-art for writing good compilers was still young!    
+- Many of the most expressive VHLLs only had Interpreters!
+- VHLLs could
+  - make programmers tremendously productive!
+  - boost programmer creativity!
+- These included
+  - Constraint, Logic, Array and Set Oriented Programming Languages
+  - Prolog, APL, J, SETL, Smalltalk, et al.
+- VHLLs were used in Computer Science and AI Research to try out new ideas!
+- Ideas originally pioneered in VHLLs include
+  - Graphical User Interfaces
+  - Powerful Text Editors
+  - Spreadsheets
+  - Relational Databases
+  - Most AI techniqus
+  - etc.    
+
+Alas, once those new ideas were well understood they were generally
+reimplemented using Medium-High-Level-Languages like
+- Fortran (which had gotten somewhat better)
+- C
+- Pascal
+- et al.
+This tended to stop or greatly slow down further innovation!
+
+** Programming Paradigms and Languages
+
+*What is Computing?*
+- Is it Numbers + Branching + Loops?
+- Is it [[https://gregdavidson.github.io/on-computing/what-computers-are/][Bits and Words?]]
+- Is it Objects + Classes + Methods?
+- What about Multimedia, Robots and AI?
+/There is no objective Right Answer to this question!/
+
+There are lots of different *Concepts Of Computing!*
+- At the theory level it goes very deep
+  - Lambda Calculus and Combinators, oh my!
+- At the Programming Level it's *Paradigms!*
+- This will give you the beginnings of the idea
+  - [[https://www.youtube.com/watch?v=veX6D48PM58][A few Programming Paradigms quickly and naively explained!]]
+  - Even though it's criminally incomplete and shallow!
+
+If you're seriously interested in programming, you'll want to read
+- [[https://webperso.info.ucl.ac.be/~pvr/VanRoyChapter.pdf][Programming Paradigms for Dummies: What Every Programmer Should Know]]
+- /if this link breaks, search for the title!/
+- This is a chapter in one of the two best foundational
+  textbooks and courses in computing:
+- [[https://webperso.info.ucl.ac.be/~pvr/book.html][Concepts, Techniques, and Models of Computer Programming (CTM)]]
+- which uses the exotic Multi-Paradigm language Oz
+The other (gentler but maybe more narrow) is
+- [[https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/index.html][Structure and Interpretation of Computer Programs (SICP]])
+- which uses the elegant language Scheme
+There's also an [[https://www.sicpdistilled.com/][adaptation of SICP for Clojure]]
+
+You CAN write programs
+- using any paradigm(s)
+- in any programming language - even Machine Language!
+- but most combinations will be painful!
+
+Most languages are biased towards one or a few Programming Paradigms.
+- This is good for learning that or those Paradigms!
+- Learn OOP in [[https://github.com/hpi-swa-lab/SqueakByExample-english/#readme][Smalltalk]], not Java or Python!!
+- Learn array programming in [[https://mlochbaum.github.io/BQN/][BQN]] or [[https://www.jsoftware.com/][J]]
+
+Not sure where to start?
+- Try the [[https://docs.racket-lang.org/quick/][Quick Tutorial: An Introduction to Racket with Pictures]]
+- Followup later with [[https://github.com/GregDavidson/computing-magic#readme][Computing Magic]]
+  - but right now <2026-10-02 Fri>
+  - github seems to be messing up that repository!
+
+Once you understand the power of several of the major paradigms,
+you're going to prefer languages which are paradigm agnostic, i.e.
+languages which let you use whatever paradigms you find most useful in
+attacking particular parts of the problems you're trying to solve.
+- [[https://racket-lang.org/][Racket]]'s particularly good!
+- So are [[https://clojure.org/][Clojure]] and [[https://clojurescript.org/][ClojureScript]]!
+
+** Let's See Some Examples!
+
+Let's implement John Conway's Game of Life in the VHLL /APL/~
+- First learn the simple rules: [[https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life][John Conway's Game of Life]]
+- [[https://www.youtube.com/watch?v=a9xAKttWgP4][Conway's Game Of Life in APL - minimum time video, maximum wow!]]
+- [[https://www.youtube.com/watch?v=pMslgySQ8nc][Similar YouTube video but with more explanation!]]
+
+Watch the first 40 minutes of
+- [[https://www.youtube.com/watch?v=6avJHaC3C2U][The Art of Code - Dylan Beattie]]
+
+Let's do compare a simple algorithm in several languages
+- [[file:fibonacci-algorithm.org][The Fibonacci Algorithm in Various Languages]]
+- From Very-High-Level-Languages to Machine Language!

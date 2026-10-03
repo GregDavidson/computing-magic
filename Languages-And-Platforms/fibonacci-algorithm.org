@@ -1,0 +1,380 @@
+* The Fibonacci Algorithm in Various Languages
+
+See the lovely [[https://en.wikipedia.org/wiki/Fibonacci_sequence][Wikipedia Article With Pictures]]!
+
+Algorithms for computing the Fibonacci Numbers
+- Starting with High-Level-Languages (HLLs)
+- Moving towards progressively Lower-Level Languages
+- Until we reach Machine Language (ML).
+
+The initial implementations are terribly inefficient
+- don't use them!
+The last two are fairly efficient.
+- Which would you like to work with?
+
+** Mathematics Notation
+
+- F(0) = 0
+- F(1) = 1
+- F(n) = F(n-1) + F(n-2)
+
+#+begin_src haskell
+// Compute the fibonacci number of any natural number
+// using a naive, mathematically-inspired algorithm.
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)
+#+end_src
+
+** Racket Dialect of Scheme Family of Lisp
+
+Scheme is an elegant academic language. Ideal for teaching and some
+kinds of research.
+
+Racket starts with the power and elegance of Scheme
+- and adds a lot of convenient and practical features
+- to be more practical for the real world.
+Racket probably adds too many features, but
+- we can ignore what we don't want!
+And ... Racket is all written in Racket!
+- so you can extend it or modify it to suit your needs!
+
+You can view Racket and and Scheme as Very-High-Level-Languages
+- Although there are some quite decent Scheme and Racket compilers
+- So raw efficiency should not be a concern for practical work.
+
+
+#+begin_src racket
+#lang racket
+;; Compute the fibonacci number of any natural number
+;; using a naive, mathematically-inspired algorithm.
+(define/contract (fib n)
+  ;; a function which takes a natural number and returns a natural number
+  (-> natural? natural?)
+  ;; a helper function, computes fib of n - m.
+  (define (fib- n m) (fib (- n m)))
+  ;; the heart of fib
+  (if (<= n 1)
+      n                                 ; 0 -> 0, 1 -> 1
+      (+ (fib- n 1) (fib- n 2)) ) )
+#+end_src
+
+** C
+
+#+begin_src C
+/* Compute the fibonacci number of any natural number
+ * using a naive, mathematically-inspired algorithm.
+ */
+unsigned int fib(unsigned int n) {
+  if (n <= 1) {
+    return n;
+  } else {
+    return fib(n - 1) + fib(n - 2);
+  }
+}
+#+end_src
+
+[[https://en.wikipedia.org/wiki/X86_assembly_language][x86-64 assembly language]] using [[https://en.wikipedia.org/wiki/Intel_syntax][Intel syntax]]
+#+begin_src asm
+  fib:
+    mov rax, rdi               ; The argument is stored in rdi, put it into rax
+    test rdi, rdi              ; Is the argument zero?
+    je .return_from_fib        ; Yes - return 0, which is already in rax
+    cmp rdi, 2                 ; No - compare the argument to 2
+    jbe .return_1_from_fib     ; If it is less than or equal to 2, return 1
+    mov rcx, rdi               ; Otherwise, put it in rcx, for use as a counter
+    mov rdx, 1                 ; The first previous number starts out as 1, put it in rdx
+    mov rsi, 1                 ; The second previous number also starts out as 1, put it in rsi
+.fib_loop:
+    lea rax, [rsi + rdx]       ; Put the sum of the previous two numbers into rax
+    cmp rcx, 2                 ; Is the counter 2?
+    je .return_from_fib        ; Yes - rax contains the result
+    mov rsi, rdx               ; No - make the first previous number the second previous number
+    dec rcx                    ; Decrement the counter
+    mov rdx, rax               ; Make the current number the first previous number
+    jmp .fib_loop              ; Keep going
+.return_1_from_fib:
+    mov rax, 1                 ; Set the return value to 1
+.return_from_fib:
+    ret                        ; Return	
+#+end_src
+
+Assembly Language is just a nice way to express a specific Machine Language Program.  The above Assembly Language program "assembles" (translates) to the pure Machine Language program presented here:
+
+#+begin_src x806-64
+89 f8
+85 ff
+74 26
+83 ff 02
+76 1c
+89 f9
+ba 01 00 00 00
+be 01 00 00 00
+8d 04 16
+83 f9 02
+74 0d
+89 d6
+ff c9
+89 c2
+eb f0
+b8 01 00 00
+c3
+#+end_src
+
+** Optimized Implementations
+
+A big selling point for high-level langauges, since the days of FORTRAN, is that they can express concepts in a similar manner to mathematics.  The problem with this is that mathematics is only concerned with correctness, not with efficiency!
+
+By following the mathematical definition of the Fibonacci function closely, the high-level language implementations above are extremely inefficient to run on a real computer.
+
+One of the advantages of High-Level Languages is that it's easier for human beings to analyze and improve programs written in HLLs than computationally equivalent programs written in Machine Languages.
+
+The naive versions above cost O(fib(n)) additions, i.e. "on the order of"
+fib(n) additions to compute the fibonacci number of n. This is
+/very/ expensive!
+
+What follows are some much more efficient implementations.
+
+** Haskell (GHC)
+
+#+begin_src haskell
+{-# LANGUAGE BangPatterns #-}
+// Compute the fibonacci number of any natural number
+// in n simple arithmetic steps.
+fib n = go n (0,1)
+  where
+    go !n (!a, !b) | n==0      = a
+                   | otherwise = go (n-1) (b, a+b)
+#+end_src
+
+** Lisp (Racket Dialect)
+
+#+begin_src racket
+  #lang racket
+  ;; Compute the fibonacci number of any natural number
+  ;; in n simple arithmetic steps.
+  (define/contract (fib-n n)
+    ;; a function which takes a natural number and returns a natural number
+    (-> natural? natural?)
+    ;; a helper function to accumulate the result
+    (define (fib-aux n a b)
+      (if (zero? n)
+          a
+          (fib-aux (sub1 n) b (+ a b)) ) )
+    ;; the heart of fib
+    (fib-aux n 0 1) )
+#+end_src
+
+You can see an even more efficient algorithm for computing the
+fibonacci numbers at [[https://www.literateprograms.org/fibonacci_numbers__scheme_.html][Computing the Fibonacci Numbers in Scheme Lisp]] or
+in an example below.
+
+#+begin_src C
+// Compute the fibonacci number of any natural number
+// in n simple arithmetic steps.
+  unsigned long long fib(unsigned int n) {
+    if (n <= 1) {
+        return n;
+    } else {
+      unsigned long long f_nminus2, f_nminus1, f_n;       
+      for (f_nminus2 = f_nminus1 = 1, f_n = 0; ; --n) {
+  	  f_n = f_nminus2 + f_nminus1;
+  	  if (n <= 2) {
+  	      return f_n;
+            }
+  	  f_nminus2 = f_nminus1;
+  	  f_nminus1 = f_n;
+      }
+    }
+  }
+}
+#+end_src
+
+This C implementation has the same computational complexity as the
+implementation in Racket above it. But how it works is, imnsho, not as
+clear.  Which implementation do you find easiest to understand?
+
+Suggested exercises:
+1. Look at the Dijkstra algorithm in the link above or in the next
+   example and implement it in either C or another language which you
+   are more comfortable with.
+   - Outside of the Scheme family of Lisps, most languages don't
+     support [[tail call optimization][tail call optimization]], so you can't have your functions
+     delegate to a new call the way we do with fib-aux in the Scheme
+     example, or you'll lose the efficiency gain!
+   - You'll probably want to use a loop, as in the C example!
+2. Try implementing Dijkstra's algorithm in the assembly language of
+   your machine of choice!
+   - Making it efficient will teach you /a lot/ about how machines
+     really work!
+   - And why we prefer to use HLLs!
+   
+One last point:
+
+The C, Haskell, Assembly and Machine Language programs above can only
+calculate Fibonacci numbers up to the size of a machine word. A modern
+64-bit machine can represent fibonacci numbers up to fib(93). Lisps
+are Very-High-Level-Languages. When numbers won't fit in a machine
+word, they simply allocate more words as needed.
+
+This program prints:
+- (fib 100) :: 354224848179261915075
+- (fib 1000) :: 43466557686937456435688527675040625802564660517371780402481729089536555417949051890403879840079255169295922593080322634775209689623239873322471161642996440906533187938298969649928516003704476137795166849228875
+- and it's fast, about 10 steps for (fib 1000)!
+#+begin_src racket
+#lang racket
+;; Compute the fibonacci number of n
+;; using Dijkstra's algorithm in approximately log(n) steps.
+(define/contract (fib-logn n)
+  ;; a function which takes a natural number and returns a natural number
+  (-> natural? natural?)
+  (define (fib-aux a b p q count)
+    (cond [ (zero? count) b ]
+	  [ (even? count)
+	    (fib-aux a
+		     b
+		     (+ (* p p) (* q q))
+		     (+ (* q q) (* 2 p q))
+		     (/ count 2)) ]
+	  [ else
+	    (fib-aux (+ (* b q) (* a q) (* a p))
+		     (+ (* b p) (* a q))
+		     p
+		     q
+		     (- count 1)) ] ) )
+  (fib-aux 1 0 0 1 n) )
+
+(printf "- (fib 100) :: ~a\n" (fib-logn 100))
+(printf "- (fib 1000) :: ~a\n" (fib-logn 1000))
+#+end_src
+
+Other high-level languages can work with large numbers too, but
+generally by using libraries, which make the code much less natural.
+Here's fib-gmp: Fibonacci in the C language using the awesome [[https://gmplib.org/][GMP
+Library]] to manage integers larger than will fit into a machine word:
+
+#+begin_src C
+/*
+ ,* https://github.com/berezovskyi/fibo-gmp/#readme
+ ,* Based on http://www.geeksforgeeks.org/program-for-nth-fibonacci-number/
+ ,* Originally inspired by http://www.ics.uci.edu/~eppstein/161/960109.html
+ ,*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <gmp.h>
+
+void multiply(mpz_t F[2][2], mpz_t M[2][2]);
+void power(mpz_t F[2][2], int n);
+
+/* function that returns nth Fibonacci number */
+void fib(unsigned long int n, mpz_t result) {
+      mpz_t F[2][2];
+
+      mpz_init_set_ui(F[0][0], 1);
+      mpz_init_set_ui(F[0][1], 1);
+      mpz_init_set_ui(F[1][0], 1);
+      mpz_init_set_ui(F[1][1], 0);
+
+      if (n == 0) {
+	      return;
+      }
+
+      power(F, n - 1);
+      mpz_set(result, F[0][0]);
+}
+
+/* Optimized version of power() in method 4 */
+void power(mpz_t F[2][2], int n) {
+      if (n == 0 || n == 1) {
+	      return;
+      }
+
+      mpz_t M[2][2];
+
+      mpz_init_set_ui(M[0][0], 1);
+      mpz_init_set_ui(M[0][1], 1);
+      mpz_init_set_ui(M[1][0], 1);
+      mpz_init_set_ui(M[1][1], 0);
+
+      power(F, n / 2);
+      multiply(F, F);
+
+      if (n % 2 != 0) {
+	      multiply(F, M);
+      }
+
+      mpz_clear(M[0][0]);
+      mpz_clear(M[0][1]);
+      mpz_clear(M[1][0]);
+      mpz_clear(M[1][1]);
+}
+
+void multiply(mpz_t F[2][2], mpz_t M[2][2])
+{
+      mpz_t x, y, z, w;
+      mpz_inits(x, y, z, w, NULL);
+      mpz_mul(x, F[0][0], M[0][0]);
+      mpz_addmul(x, F[0][1], M[1][0]);
+      mpz_mul(y, F[0][0], M[0][1]);
+      mpz_addmul(y, F[0][1], M[1][1]);
+      mpz_mul(z, F[1][0], M[0][0]);
+      mpz_addmul(z, F[1][1], M[1][0]);
+      mpz_mul(w, F[1][0], M[0][1]);
+      mpz_addmul(w, F[1][1], M[1][1]);
+
+      mpz_set(F[0][0], x);
+      mpz_set(F[0][1], y);
+      mpz_set(F[1][0], z);
+      mpz_set(F[1][1], w);
+
+      mpz_clears(x, y, z, w, NULL);
+}
+
+char *ord_indicator(unsigned int n) {
+      int rem_h = n % 100;
+
+      if (rem_h >= 10 && rem_h <= 20) {
+	      return "th";
+      }
+
+      int rem_ten = n % 10;
+
+      switch (rem_ten) {
+      case 1: return "st";
+      case 2: return "nd";
+      case 3:	return "rd";
+      default: return "th";
+      }
+}
+
+int main(int argc, char *argv[]) {
+      mpz_t result;
+
+      if (argc == 2) {
+	      mpz_init(result);
+	      unsigned long int n = strtoul(argv[1], NULL, 0);
+	      fib(n, result);
+	      gmp_printf("%d%s Fibonacci number: %Zd\n", n, ord_indicator(n), result);
+	      mpz_clear(result);
+	      return 0;
+      }
+
+      printf("Specify which Fibonacci number has to be found.\n");
+      return EINVAL;
+}
+#+end_src
+
+Do you see that using a supposedly HLL in this manner destroys the
+point of using a HLL?
+
+BTW: Python has an unusually inefficient implementation, generally
+making pure [[https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/python3-gpp.html][Python programs around 50 times slower than programs in C
+or 20 times slower than programs in Lisp!]] The way Python gets away
+with this is to import lots of libraries written in C. The popular
+[[https://numpy.org/][Numpy]] package allows you to use the nice high-level Python syntax
+(borrowed from Haskell, btw) to do powerful numeric work. But you
+can't extend or modify how Numpy works in Python. So does Numpy really
+provide a High-Level Language allowing you to think your own thoughts
+or does it stick you in a box you can't get out of? Do you care? Have
+you been trained not to care?
