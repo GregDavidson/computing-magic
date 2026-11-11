@@ -5,11 +5,19 @@ though they do not currently meet the cut for being recommended.
 
 ** Languages Under Development
 
-- [[https://simon.peytonjones.org/assets/pdfs/verse-conf.pdf][The Verse Calculus: a Core Calculus for Functional Logic Programming (PDF)]]
-- [[https://simon.peytonjones.org/assets/pdfs/haskell-exchange-22.pdf][A Verse Slide Deck (PDF)]]
-- [[https://www.youtube.com/watch?v=OJv8rFap0Nw][Beyond functional programming: a taste of Verse (YouTube Video)]]
+*** Theorem Proving Languages
 
-*** Verse
+These languages were developed for proving and/or verifying the proofs of mathematical theorems.  They are also usable as programming languages.  They can also be used as a "System 2" complement to the "System 1" of LLMs.
+
+- [[https://rocq-prover.org/][ROCQ (né Coq) Language and Theorem Prover]]
+  - [[https://github.com/rocq-prover/platform/#readme][Rock Git Repository (Github)]]
+
+*** Functional Logic Languages
+
+- [[https://www.curry-language.org/][Curry - A Truly Integrated Functional Logic Programming Language]]
+  - [[https://github.com/curry-language/#readme][Curry Git Repository (Github)]]
+  
+**** Verse
 
 Verse is under development by some of the key researchers in functional languages and the highly successful and advanced Functional Programming language Haskell.
 
@@ -24,12 +32,37 @@ Verse is under development by some of the key researchers in functional language
 - Verse has an unusual static type system: types are firstclass values.
 - Verse has an effect system, rather than using monads. 
 
-**** Verse References
-
+Verse Calculus and Language
+- [[https://verselang.github.io/book/][The Book of Verse]]
+- [[https://verselang.github.io/book/talks/][Verse Talks & Tutorials]]
 - [[http://lambda-the-ultimate.org/node/5662][Verse Discussion (Lambda the Ultimate)]]
+- [[https://simon.peytonjones.org/assets/pdfs/haskell-exchange-22.pdf][A Verse Slide Deck (PDF)]]
+- [[https://www.youtube.com/watch?v=OJv8rFap0Nw][Beyond functional programming: a taste of Verse (YouTube Video)]]
+  
+Verse Calculus
+- [[https://simon.peytonjones.org/assets/pdfs/verse-conf.pdf][The Verse Calculus: a Core Calculus for Functional Logic Programming (PDF)]]
+  - [[https://github.com/UnrealVerseGuru/VC_VerseCalculus/#readme][Github Repository for Above Document]]
+
+Verse Language
+- [[https://simon.peytonjones.org/assets/pdfs/haskell-exchange-22.pdf][Beyond Functional Programming: The Verse Programming Language (2022 PDF Slide Deck)]]
 
 ** Radical Language Ideas
 
+- Transactional
+- Mostly Non-Mutational with Versioned Mutation
+  - Transactions with Monotonic Mutation fork a new Minor Version
+  - Transactions with Non-Monotonic Mutation fork a new Major Version
+- Persistent
+  - All artifacts life in a Postgres-like RDBMS.
+  - All versions of "Source Code"
+  - All "Live Images"
+    - Portable
+    - Types of code mixable
+      - Like UCSD P-System
+      - Webasm
+      - Advanced and JIT hotspot optimization
+  - Development is done by browsing the database.
+    
 ** Past Languages to Learn From
 
 ** Operating Systems Under Development
