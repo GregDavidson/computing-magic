@@ -1,0 +1,57 @@
+* Promising Languages and Platforms
+
+A number of languages and platforms are worth keeping an eye on even
+though they do not currently meet the cut for being recommended.
+
+** Languages Under Development
+
+- [[https://simon.peytonjones.org/assets/pdfs/verse-conf.pdf][The Verse Calculus: a Core Calculus for Functional Logic Programming (PDF)]]
+- [[https://simon.peytonjones.org/assets/pdfs/haskell-exchange-22.pdf][A Verse Slide Deck (PDF)]]
+- [[https://www.youtube.com/watch?v=OJv8rFap0Nw][Beyond functional programming: a taste of Verse (YouTube Video)]]
+
+*** Verse
+
+Verse is under development by some of the key researchers in functional languages and the highly successful and advanced Functional Programming language Haskell.
+
+- Verse is a functional logic language (like Curry or Mercury).
+- Verse is a declarative language: a variable names a single
+- value, not a cell whose value changes over time.
+- Verse is lenient but not strict:
+
+  - Like strict:, everything gets evaluated in the end
+  - Like lazy: functions can be called before the argument has a value
+
+- Verse has an unusual static type system: types are firstclass values.
+- Verse has an effect system, rather than using monads. 
+
+**** Verse References
+
+- [[http://lambda-the-ultimate.org/node/5662][Verse Discussion (Lambda the Ultimate)]]
+
+** Radical Language Ideas
+
+** Past Languages to Learn From
+
+** Operating Systems Under Development
+
+
+
+** Operating Systems to Learn From
+
+Here are some Operating Systems with some interesting ideas which we
+can learn from in designing the next generation of Operating Systems.
+Some of these still have user communities, however small.  Others no
+longer have significant active users and might not even be runnable on
+modern hardware - although recently most older hardware has become
+available again in emulation, running faster than it originally did,
+so there's hope that everything that has not been completely lost
+might be runnable again.
+
+- MIT Trix
+- Plan 9 From User Space
+- Limbo
+
+** Radical System Ideas
+
+- View an Operating System as a Relational Database.
+  - Interact with it using SQL!
