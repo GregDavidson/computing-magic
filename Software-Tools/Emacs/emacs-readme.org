@@ -70,7 +70,8 @@ There are many [[https://www.emacswiki.org/emacs/StarterKits][Emacs Starter Kits
 
 Some excellent Starter Kits
 - [[https://github.com/bbatsov/prelude][Prelude: A powerful kit compatible with traditional Emacs commands]]
-- [[https://sr.ht/~ashton314/emacs-bedrock/][Bedrock: An extremely minimal kit based on Emacs version 29.1]]
+- [[https://sr.ht/~ashton314/emacs-bedrock/][Bedrock: An extremely minimal kit for up-to-date Emacs]]
+- [[https://github.com/jamescherti/minimal-emacs.d/#readme][minimal-emacs.d - A Customizable Emacs init.el and early-init.el for Better Defaults and Optimized Startup]]
 
 *Are you inclined towards Evil?*
 - I.e. Do you know and love the command set of the =vi= editor family?
